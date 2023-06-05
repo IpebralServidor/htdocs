@@ -1,7 +1,6 @@
 <?php header('Content-Type: text/html; iso-8859-1');?>
 <?php
 include "../conexaophp.php";
-//teste
 
 $codigodebarra = $_POST['codigodebarra'];
 //fim da conexão com o banco de dados

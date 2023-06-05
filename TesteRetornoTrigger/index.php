@@ -3,11 +3,11 @@
 Note: Turning off the default behavior is done here for demonstration  
 purposes only. If setting the configuration fails, display errors and  
 exit the script. */  
-if( sqlsrv_configure("WarningsReturnAsErrors", 0) === false)  
-{  
-     DisplayErrors();  
-     die;  
-}  
+// if( sqlsrv_configure("WarningsReturnAsErrors", 0) === false)  
+// {  
+//      // DisplayErrors();  
+//      // die;  
+// }  
   
 /* Connect to the local server using Windows Authentication and   
 specify the AdventureWorks database as the database in use. */  
@@ -52,30 +52,44 @@ $conn = sqlsrv_connect( $serverName, $connectionInfo);
   
 /* Create the stored procedure. */  
 $tsql2 = "
-     UPDATE TGFITE SET ATUALESTOQUE = -1  where NUNOTA = 2803389 AND SEQUENCIA = 1
+     UPDATE TGFITE SET ATUALESTOQUE = 0  where NUNOTA = 2803389 AND SEQUENCIA = 1
 ";  
-$stmt2 = sqlsrv_query( $conn, $tsql2 );  
+// $stmt2 = sqlsrv_query( $conn, $tsql2 );  
   
 /* If the query fails, display errors and exit the script. */  
-if( $stmt2 === false)  
+if( sqlsrv_query( $conn, $tsql2 ) === false)  
 {  
-     //print_r( sqlsrv_errors(), true);
-     $linhas = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+     // print_r( sqlsrv_errors(), true);
+     // $linhas = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-     var_dump($linhas);
+     // var_dump($linhas);
 
-     $msgerro = DisplayErrors();  
+     // $msgerro = DisplayErrors();  
      // echo $msgerro;
-     echo "<pre>";
-     echo $msgerro;
-     echo "<script> alert('$msgerro'); </script>";
-     die;  
+     // echo "<pre>";
+     // echo $msgerro;
+     // echo "<script> alert('$msgerro'); </script>";
+     // die;  
+
+     $mensagemerro = '';
+
+     if( ($errors = sqlsrv_errors() ) != null) {
+        foreach( $errors as $error ) {
+            // echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+            // echo "code: ".$error[ 'code']."<br />";
+            $mensagemerro = $mensagemerro.$error['message'];
+            //echo $error['message']."<br />";
+            //echo "<script> alert('".$error['message']."'); </script>";
+        }
+     echo $mensagemerro;
+     echo "<script> alert('$mensagemerro'); </script>";
+    }
 }  
 /* Display any warnings. */  
 //DisplayWarnings();  
   
 /* Free the statement resources. */  
-sqlsrv_free_stmt( $stmt2 );  
+//sqlsrv_free_stmt( $stmt2 );  
 
   
   
@@ -127,39 +141,39 @@ sqlsrv_free_stmt( $stmt2 );
 // sqlsrv_close( $conn );  
   
 /* ------------- Error Handling Functions --------------*/  
-function DisplayErrors()  
-{  
-     $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);  
-     foreach( $errors as $error )  
-     {  
-          $erro = $error['message'];
-          $errostring = implode(",", $error);
+// function DisplayErrors()  
+// {  
+//      $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);  
+//      foreach( $errors as $error )  
+//      {  
+//           $erro = $error['message'];
+//           //$errostring = implode(",", $error);
 
-          return $errostring;
+//           return $erro;
 
-          //echo $errostring;
+//           //echo $errostring;
 
 
-          // foreach($error as $row){
-          //      echo implode(",", $row)."\n";
-          // }
-          //echo "<script> alert('$errostring'); </script>";
-          // echo "<pre>";
-          // var_dump($erro);
-          // echo "Error: ".$error['message']."\n"; 
-          // echo "<script> alert('".$error['message']."') </script>";
-     }  
-}  
+//           // foreach($error as $row){
+//           //      echo implode(",", $row)."\n";
+//           // }
+//           //echo "<script> alert('$errostring'); </script>";
+//           // echo "<pre>";
+//           // var_dump($erro);
+//           // echo "Error: ".$error['message']."\n"; 
+//           // echo "<script> alert('".$error['message']."') </script>";
+//      }  
+// }  
   
-function DisplayWarnings()  
-{  
-     $warnings = sqlsrv_errors(SQLSRV_ERR_WARNINGS);  
-     if(!is_null($warnings))  
-     {  
-          foreach( $warnings as $warning )  
-          {  
-               // echo "Warning: ".$warning['message']."\n";  
-          }  
-     }  
-}  
-?>  
+// function DisplayWarnings()  
+// {  
+//      $warnings = sqlsrv_errors(SQLSRV_ERR_WARNINGS);  
+//      if(!is_null($warnings))  
+//      {  
+//           foreach( $warnings as $warning )  
+//           {  
+//                // echo "Warning: ".$warning['message']."\n";  
+//           }  
+//      }  
+// }  
+// ?>  
