@@ -73,8 +73,8 @@
 
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="content-type" ="text/html; charset="utf-8">
+	<meta charset="utf-8"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Detalhes Conferência - <?php echo $usuconf; echo $linhamarcada;?></title>
 
@@ -322,7 +322,7 @@
 					<!-- <h6> Conferência finalizada com Sucesso! </h6> -->
 					<br>Qtd. Volume: <input type="text" name="QTDVOLUME" class="text" value="" style="margin-top: 10px;" required>
 					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Volume: <input type="text" name="VOLUME" class="text" style="margin-top: 10px;" required>
-					<br>&nbsp;&nbsp;&nbsp;Peso Bruto: <input type="text" name="PESOBRUTO" class="text" style="margin-top: 10px;">
+					<br>&nbsp;&nbsp;&nbsp;Peso Bruto: <input type="text" name="PESOBRUTO" class="text" style="margin-top: 10px;" required>
 					<input type="text" name="NUNOTACONF" class="text" value="<?php echo $nunota2 ?>" hidden>
 
 					<input name="Confirmar" type="submit" value="Confirmar" style="margin-left: -35%; margin-top: 10%; margin-bottom: 5.8%; bottom: 0; position: absolute;">
@@ -928,12 +928,12 @@
                             {
 
 
-                                if (msg == "Esse Produto não está cadastrado"){
+                                if (msg == "Codigo de barras nao esta cadastrado!"){
                                 	alert(msg);	
                                 	document.getElementById("quantidade").value = "";
                                 	document.getElementById("codigodebarra").focus();
                                 	document.getElementById("codigodebarra").select();
-                                } else if (msg == "Quantidade inserida não pode ser maior do que a existente na nota!"){
+                                } else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!"){
                                 	alert(msg);	
                                 	document.getElementById("quantidade").focus()
                                 	document.getElementById("quantidade").select();
