@@ -346,7 +346,7 @@
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;" required>
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;" required>
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;" required>
-                    <br>Observação: <textarea id="observacao" cols="30" rows="20" name="OBSERVACAO" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?></textarea>
+                    <br>Observação: <textarea id="observacao" cols="30" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?></textarea>
 
 
 					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" onclick="checkLength()" style="cursor: hand; cursor: pointer; margin-top: 2%;">
@@ -993,7 +993,7 @@
                 insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
             });
 
-        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume)
+        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -1006,7 +1006,7 @@
                 beforeSend: function () {
                     //$("#itensconferidos").html("Carregando...");
                 },
-                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume},//Dados para consulta
+                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -1019,7 +1019,7 @@
 
 
         $('#confirmar').click(function () {
-            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val())
+            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val())
         });
 
 

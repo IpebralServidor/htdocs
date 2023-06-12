@@ -12,8 +12,8 @@ $qtdvol = $_POST['qtdvol'];
 $volume = $_POST['volume'];
 $pesobruto = $_POST['pesobruto'];
 $nunota = $_POST['nunota'];
-// $observacao = $_POST['OBSERVACAO'];
-$observacao = ' ';
+$observacao = $_POST['observacao'];
+//;$observacao = ' ';
 $usuconf = $_SESSION["idUsuario"];
 
 echo $qtdvol;
