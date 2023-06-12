@@ -341,19 +341,21 @@
 
 			<div id="popupconf" class="popupconf">
 
-				<form action="finalizarconf.php" method="post" style="margin-top: -10px; text-align: center;width: 100%">
+				<div style="margin-top: -10px; text-align: center;width: 100%">
 					<!-- <h6> Conferência finalizada com Sucesso! </h6> -->
-					<br>Qtd. Volume: <input type="text" name="QTDVOLUME" class="text" value="" style="margin-top: 5px;" required>
-					<br>Volume: <br><input type="text" name="VOLUME" class="text" style="margin-top: 5px;" required>
-					<br>Peso Bruto: <input type="text" minlength="10" name="PESOBRUTO" class="text" style="margin-top: 5px;" required>
+					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;" required>
+					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;" required>
+					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;" required>
                     <br>Observação: <textarea id="observacao" cols="30" rows="20" name="OBSERVACAO" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?></textarea>
 
-                    <input type="text" name="NUNOTACONF" class="text" value="<?php echo $nunota2 ?>" hidden>
 
-					<br><input name="Confirmar" type="submit" value="Confirmar" onclick="checkLength()" style="cursor: hand; cursor: pointer; margin-top: 2%;">
+					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" onclick="checkLength()" style="cursor: hand; cursor: pointer; margin-top: 2%;">
+
+					<div id="insereitem2" style="display: inline-block; margin-top: 5px;"></div>
+
                     <button class="fechar" onclick="fecharconf();">X</button>
 
-				</form>
+				</div>
 
 			</div>
 
@@ -991,7 +993,7 @@
                 insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
             });
 
-        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao)
+        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -1004,25 +1006,20 @@
                 beforeSend: function () {
                     //$("#itensconferidos").html("Carregando...");
                 },
-                data: {usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao},//Dados para consulta
+                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    if (msg == "Codigo de barras nao esta cadastrado!"){
-                        alert(msg);
-                        document.getElementById("quantidade").value = "";
-                        document.getElementById("codigodebarra").focus();
-                        document.getElementById("codigodebarra").select();
-                    } else {
-                        $("#insereitem").html(msg);
-                    }
+                    
+                        $("#insereitem2").html(msg);
+                    
                 }
             });
         }
 
 
-        $('#Confirmar').click(function () {
-            finalizar($("#<?").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
+        $('#confirmar').click(function () {
+            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val())
         });
 
 
