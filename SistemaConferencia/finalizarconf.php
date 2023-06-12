@@ -8,10 +8,11 @@ include "../conexaophp.php";
 
 //var_dump($linhas);
 
-$qtdvol = $_POST['QTDVOLUME'];
-$volume = $_POST['VOLUME'];
-$pesobruto = $_POST['PESOBRUTO'];
-$nunota = $_POST['NUNOTACONF'];
+$qtdvol = $_POST['qtdvol'];
+$volume = $_POST['volume'];
+$pesobruto = $_POST['pesobruto'];
+$nunota = $_POST['nunota'];
+$observacao = $_POST['observacao'];
 $usuconf = $_SESSION["idUsuario"];
 
 echo $qtdvol;
@@ -23,14 +24,14 @@ echo "<br>";
 echo $nunota;
 
 
-   $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', $qtdvol, '$volume' ";
+   $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', $qtdvol, '$volume', '$observacao' ";
 
     $stmt4 = sqlsrv_query( $conn, $tsql4); 
 
 
 
     echo "<script> alert('Conferência finalizada.'); </script>"; 
-    header("Location: listaconferencia.php");
+    //header("Location: listaconferencia.php");
     
 
 

@@ -19,7 +19,8 @@
 
 	$tsql2 = "  SELECT NUMNOTA,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODVEND) + ' - ' + APELIDO,
-					   CONVERT(VARCHAR(MAX),TGFCAB.CODPARC) + ' - ' + TRIM(RAZAOSOCIAL)
+					   CONVERT(VARCHAR(MAX),TGFCAB.CODPARC) + ' - ' + TRIM(RAZAOSOCIAL),
+                       TGFCAB.OBSERVACAO
 				FROM TGFCAB INNER JOIN
 					 TGFPAR ON TGFPAR.CODPARC = TGFCAB.CODPARC INNER JOIN
 					 TGFVEN ON TGFVEN.CODVEND = TGFCAB.CODVEND
@@ -32,6 +33,7 @@
 	{ $NUMNOTA = $row2[0];
 	  $VENDEDOR = $row2[1];
 	  $PARCEIRO = $row2[2];
+	  $OBSERVACAO = $row2[3];
 
 	}
 
@@ -181,6 +183,20 @@
         return false;
     }
 }
+
+        function insere_pendencia(){
+            if($('.checkbox:checked').length > 0){
+                var result = confirm("Tem certeza que deseja inserir esse(s) item(ns)?");
+                if(result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                alert('Selecione pelo menos uma linha para poder inserir!');
+                return false;
+            }
+        }
 	
 	function confirmar_conf() {
 		var result = confirm("Tem certeza que deseja confirmar essa conferência?");
@@ -220,8 +236,15 @@
 				document.getElementById('popupconf').style.display = 'block';
 			}
 			function fecharconf(){
+                document.getElementById("observacao").required = true;
 				document.getElementById('popupconf').style.display =  'none';
 			}
+            function checkLength() {
+                var element = document.getElementById("observacao").required = true;
+                if (element.value.length != 6) {
+                    alert("length must be exactly 6 characters")
+                }
+            }
 			function abrirconfdivergencia(){
 				document.getElementById('popupconfdivergencia').style.display =  'block';
 			}
@@ -243,7 +266,7 @@
 		</script>
 
 </head>
-<body style="width: 100%; height: 100%; overflow: hidden; position: fixed;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+<body id="bodyCss" style="width: 100%; height: 100%; overflow: hidden; position: fixed;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
 
 	<span style="margin-bottom: 0; margin-left: 30px; font-size: 20px;">
 			<!--<button onclick="window.location.href='listaconferencia.php'"></button>-->
@@ -318,21 +341,18 @@
 
 			<div id="popupconf" class="popupconf">
 
-				<form action="finalizarconf.php" method="post" style="margin-left: 10px; margin-top: -10px;">
+				<div style="margin-top: -10px; text-align: center;width: 100%">
 					<!-- <h6> Conferência finalizada com Sucesso! </h6> -->
-					<br>Qtd. Volume: <input type="text" name="QTDVOLUME" class="text" value="" style="margin-top: 10px;" required>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Volume: <input type="text" name="VOLUME" class="text" style="margin-top: 10px;" required>
-					<br>&nbsp;&nbsp;&nbsp;Peso Bruto: <input type="text" name="PESOBRUTO" class="text" style="margin-top: 10px;" required>
-					<input type="text" name="NUNOTACONF" class="text" value="<?php echo $nunota2 ?>" hidden>
+					<br>Qtd. Volume: <input type="text"  id="QTDVOLUME" name="QTDVOLUME" class="text" value="" style="margin-top: 5px;" required>
+					<br>Volume: <br><input type="text" id="VOLUME" name="VOLUME" class="text" style="margin-top: 5px;" required>
+					<br>Peso Bruto: <input type="text" minlength="10" id="PESOBRUTO" name="PESOBRUTO" class="text" style="margin-top: 5px;" required>
+                    <br>Observação: <input type="text"  cols="30" rows="20" id="OBSERVACAO" name="OBSERVACAO" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?>
 
-					<input name="Confirmar" type="submit" value="Confirmar" style="margin-left: -35%; margin-top: 10%; margin-bottom: 5.8%; bottom: 0; position: absolute;">
- 
-				</form>
+					<br><input id="Confirmar" name="Confirmar" type="submit" value="Confirmar" style="cursor: hand; cursor: pointer; margin-top: 2%;">
+                    <div id="insereitem2" style="display: inline-block; margin-top: 5px;"></div>
+                    <button class="fechar" onclick="fecharconf();">X</button>
 
-	
-				<button style="cursor: hand; cursor: pointer; position: absolute; right: 0; bottom: 0; margin-bottom: 5.8%; margin-right: 33%;" onclick="fecharconf();">Fechar</button>
-
-				
+				</div>
 
 			</div>
 
@@ -408,43 +428,49 @@
 
 			<div id="popuppendencias" class="popuppendencias">
 				
-				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Produtos com Divergência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
-				<div style=" width: 98%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
-					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
-						  <tr> 
-						    <th width="20.0%" align="center">Referencia</th>
-						    <th width="40.0%" style="text-align: center;">Descrição do Produto</th>
-						    <th width="20.0%" >Local</th>
-						    <th width="20.0%" align="center">Quantidade</th>
-						  </tr>
+				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com Divergência</h4>
+				<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
+                    <form style="margin: 0" name="bulk_action_form" action="inserependencia.php" method="post" onSubmit="return insere_pendencia();">
+                        <table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="table">
+                              <tr>
+                                <th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th>
+                                <th width="20.0%" align="center">Referencia</th>
+                                <th width="40.0%" style="text-align: center;">Descrição do Produto</th>
+                                <th width="20.0%" >Local</th>
+                                <th width="20.0%" align="center">Quantidade pendente</th>
+                                <th width="20.0%" align="center">Controle</th>
+                              </tr>
 
 
-						  <?php 
-							$tsql2 = "select * from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)  
-										"; 
+                              <?php
+                                $tsql2 = "select * from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)  
+                                            ";
 
-							$stmt2 = sqlsrv_query( $conn, $tsql2);  
+                                $stmt2 = sqlsrv_query( $conn, $tsql2);
 
-							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
-							{ 
-						?>
+                                while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
+                                {
+                              ?>
 
-							  <tr style="cursor: hand; cursor: pointer;">
-							   <tr> 
-							    <td width="20.0%" ><?php echo $row2[0]; ?></td>
-							    <td width="40.0%"><?php echo $row2[1]; ?></td>
-							    <td width="20.0%" align="center"><?php echo $row2[2]; ?></td>
-							    <td width="20.0%" align="center"><?php echo $row2[3]; ?></td>
-							  </tr>
-							 
+                                  <tr style="cursor: hand; cursor: pointer;">
+                                   <tr>
+                                    <td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox"/></td>
+                                    <td width="20.0%" ><?php echo $row2[0]; ?></td>
+                                    <td width="20.0%"><?php echo $row2[1]; ?></td>
+                                    <td width="20.0%" align="center"><?php echo $row2[2]; ?></td>
+                                    <td width="20.0%" align="center"><?php echo $row2[3]; ?></td>
+                                    <td width="20.0%" align="center"><?php echo $row2[4]; ?></td>
+                                  </tr>
 
-						<?php
-						}
-						?>
+                              <?php
+                                }
+                              ?>
 
-					</table>
+                        </table>
+                        <button type="submit" style="cursor: hand; cursor: pointer; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 13%; margin-top: 10px; position: absolute; background-color: green; color: white; onclick=";">Inserir item</button>
+                    </form>
+                    <button style="cursor: hand; cursor: pointer; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 2%; margin-top: 10px; position: absolute;" onclick="fecharpendencias();">Fechar</button>
 				</div>
-				<button style="cursor: hand; cursor: pointer; position: relative; float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 2%; margin-top: 10px; position: absolute;" onclick="fecharpendencias();">Fechar</button>
 			</div>
 
 
@@ -973,11 +999,44 @@
                 insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
             });
 
+        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao)
+        {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'finalizarconf.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    //$("#itensconferidos").html("Carregando...");
+                },
+                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    $("#insereitem2").html(msg);
+                    /*if (msg == "Codigo de barras nao esta cadastrado!"){
+                        alert(msg);
+                        document.getElementById("quantidade").value = "";
+                        document.getElementById("codigodebarra").focus();
+                        document.getElementById("codigodebarra").select();
+                    } else {
+                        $("#insereitem").html(msg);
+                    }*/
+                }
+            });
+        }
 
+
+        $('#Confirmar').click(function () {
+            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvolume").val(), $("#volume").val(), $("#observacao").val())
+        });
 
 
         function caracteristica(codigodebarra)
-            {
+            {.
                 //O método $.ajax(); é o responsável pela requisição
                 $.ajax
                         ({
@@ -1132,6 +1191,7 @@ if (codbarselecionado != 0){
 	  }, 50);
 	}
 }
+
 
 
     </script>
