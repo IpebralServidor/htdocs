@@ -1010,9 +1010,12 @@
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    
-                        $("#insereitem2").html(msg);
-                    
+                    if(msg != "Finalizado com sucesso"){
+                        alert(msg);
+                    }else{
+                        alert(msg);
+                        window.location.href='listaconferencia.php';
+                    }
                 }
             });
         }
@@ -1042,7 +1045,9 @@
                             //função que será executada quando a solicitação for finalizada.
                             success: function (msg)
                             {
-                                $("#caracteristicas").html(msg);
+                                if (msg == "A observacao devera preenchida corretamente"){
+                                    alert(msg);
+                                }
                             }
                         });
             }

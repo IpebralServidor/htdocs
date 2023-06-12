@@ -16,30 +16,13 @@ $observacao = $_POST['observacao'];
 //;$observacao = ' ';
 $usuconf = $_SESSION["idUsuario"];
 
-echo $qtdvol;
-echo "<br>";
-echo $volume;
-echo "<br>";
-echo $pesobruto;
-echo "<br>";
-echo $nunota;
-echo "<br>";
-echo $observacao;
-echo "<br>";
-echo $usuconf;
-
-
 
    $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', $qtdvol, '$volume', '$observacao' ";
 
-   var_dump($tsql4);
-    $stmt4 = sqlsrv_query( $conn, $tsql4); 
+    $stmt4 = sqlsrv_query( $conn, $tsql4);
 
+    $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);
 
-
-    echo "<script> alert('Conferência finalizada.'); </script>"; 
-    //header("Location: listaconferencia.php");
-    
-
+    echo $row[0];
 
 ?>
