@@ -56,20 +56,23 @@ tr:active{background-color: yellow;}
 	overflow: auto;
 	z-index: 999;
 }
+.bodyCss{
+}
 
 
 .popupconf {
-	position: fixed;
+	position: absolute;
 	top: 0; bottom: 0; 
 	left: 0; right:0;
 	margin: auto;
-	width: 450px;
-	height: 160px;
+	width: 250px;
+	height: 300px;
 	padding: 15px;
 	border: solid 1px #4c4d4f;
 	background: white;
 	display: none;
-	z-index: 9999;
+	z-index: 9999999;
+	border-radius: 2%;
 }
 
 

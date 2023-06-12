@@ -341,18 +341,19 @@
 
 			<div id="popupconf" class="popupconf">
 
-				<div style="margin-top: -10px; text-align: center;width: 100%">
+				<form action="finalizarconf.php" method="post" style="margin-top: -10px; text-align: center;width: 100%">
 					<!-- <h6> Conferência finalizada com Sucesso! </h6> -->
-					<br>Qtd. Volume: <input type="text"  id="QTDVOLUME" name="QTDVOLUME" class="text" value="" style="margin-top: 5px;" required>
-					<br>Volume: <br><input type="text" id="VOLUME" name="VOLUME" class="text" style="margin-top: 5px;" required>
-					<br>Peso Bruto: <input type="text" minlength="10" id="PESOBRUTO" name="PESOBRUTO" class="text" style="margin-top: 5px;" required>
-                    <br>Observação: <input type="text"  cols="30" rows="20" id="OBSERVACAO" name="OBSERVACAO" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?>
+					<br>Qtd. Volume: <input type="text" name="QTDVOLUME" class="text" value="" style="margin-top: 5px;" required>
+					<br>Volume: <br><input type="text" name="VOLUME" class="text" style="margin-top: 5px;" required>
+					<br>Peso Bruto: <input type="text" minlength="10" name="PESOBRUTO" class="text" style="margin-top: 5px;" required>
+                    <br>Observação: <textarea id="observacao" cols="30" rows="20" name="OBSERVACAO" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?></textarea>
 
-					<br><input id="Confirmar" name="Confirmar" type="submit" value="Confirmar" style="cursor: hand; cursor: pointer; margin-top: 2%;">
-                    <div id="insereitem2" style="display: inline-block; margin-top: 5px;"></div>
+                    <input type="text" name="NUNOTACONF" class="text" value="<?php echo $nunota2 ?>" hidden>
+
+					<br><input name="Confirmar" type="submit" value="Confirmar" onclick="checkLength()" style="cursor: hand; cursor: pointer; margin-top: 2%;">
                     <button class="fechar" onclick="fecharconf();">X</button>
 
-				</div>
+				</form>
 
 			</div>
 
@@ -963,15 +964,6 @@
                                 	alert(msg);	
                                 	document.getElementById("quantidade").focus()
                                 	document.getElementById("quantidade").select();
-                                } else if (msg == "Produto nao existe na nota!"){
-                                	alert(msg);	
-                                	document.getElementById("quantidade").value = "";
-                                	document.getElementById("codigodebarra").focus();
-                                	document.getElementById("codigodebarra").select();
-                                } else if (msg == "Estoque insuficiente!"){
-                                	alert(msg);	
-                                	document.getElementById("quantidade").focus()
-                                	document.getElementById("quantidade").select();
                                 } else {
                                 $("#insereitem").html(msg);
                                 
@@ -1012,31 +1004,32 @@
                 beforeSend: function () {
                     //$("#itensconferidos").html("Carregando...");
                 },
-                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao},//Dados para consulta
+                data: {usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    $("#insereitem2").html(msg);
-                    /*if (msg == "Codigo de barras nao esta cadastrado!"){
+                    if (msg == "Codigo de barras nao esta cadastrado!"){
                         alert(msg);
                         document.getElementById("quantidade").value = "";
                         document.getElementById("codigodebarra").focus();
                         document.getElementById("codigodebarra").select();
                     } else {
                         $("#insereitem").html(msg);
-                    }*/
+                    }
                 }
             });
         }
 
 
         $('#Confirmar').click(function () {
-            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvolume").val(), $("#volume").val(), $("#observacao").val())
+            finalizar($("#<?").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
         });
 
 
+
+
         function caracteristica(codigodebarra)
-            {.
+            {
                 //O método $.ajax(); é o responsável pela requisição
                 $.ajax
                         ({
