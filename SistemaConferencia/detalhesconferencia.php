@@ -523,8 +523,8 @@
 				<form method="post" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-recontagem" value="Realizar Recontagem">
 				</form>
-				<form method="post" action="cortaritens.php?nunota=<?php echo $nunota2; ?>" style="width: 100%;">
-					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-corte" value="Cortar Itens Divergentes">
+				<form method="post" action="" style="width: 100%;">
+					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-corte" onclick="abrirconf();" value="Cortar Itens Divergentes">
 				</form>
 				<!-- <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="" >Cortar itens divergentes</button> -->
 				
@@ -799,10 +799,10 @@
 			<div style="overflow: auto; width: 100%; height: 95%;" >
 			<table width="2000" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="minhaTabela">
 			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
-			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Referência&nbsp;</font></th>
-			    <th width="5%" ><font  face="Arial, Helvetica, sans-serif">Produto&nbsp;</font></th>
-			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Cód. Barra&nbsp;</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qtd. Neg.</font></th>
+			    <!--<th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Referência&nbsp;</font></th>-->
+                <!--<th width="5%" ><font  face="Arial, Helvetica, sans-serif">Produto&nbsp;</font></th>-->
+                <!--<th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Cód. Barra&nbsp;</font></th>-->
+                <!--<th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qtd. Neg.</font></th>-->
 			    <th width="25%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Descrição (Produto)</font></th>
 			    <th width="10%" align="center"><font  face="Arial, Helvetica, sans-serif">Nro. Único</font></th>
 			    <th width="10%" align="center"><font  face="Arial, Helvetica, sans-serif">Sequência</font></th>
@@ -815,10 +815,10 @@
 
 						<!-- Pesquisa o Número da Nota no Banco para que sejam retornados os itens -->
 			<?php 
-				$tsql2 = "  SELECT PRO.REFERENCIA,
-								   ITE.CODPROD,
-								   BAR.CODBARRA,
-								   ITE.QTDNEG,
+				$tsql2 = "  SELECT /*PRO.REFERENCIA,*/
+								   /*ITE.CODPROD,*/
+								   /*BAR.CODBARRA,*/
+								   /*ITE.QTDNEG,*/
 								   PRO.DESCRPROD,
 								   CAB.NUNOTA,
 								   ITE.SEQUENCIA,
@@ -1008,6 +1008,7 @@
             $.ajax
             ({
                 //Configurações
+                type: 'POST',//Método que está sendo utilizado.
                 type: 'POST',//Método que está sendo utilizado.
                 dataType: 'html',//É o tipo de dado que a página vai retornar.
                 url: 'finalizarconf.php',//Indica a página que está sendo solicitada.
