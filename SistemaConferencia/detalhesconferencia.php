@@ -966,6 +966,15 @@
                                 	alert(msg);	
                                 	document.getElementById("quantidade").focus()
                                 	document.getElementById("quantidade").select();
+                                } else if (msg == "Produto nao existe na nota!"){
+                                	alert(msg);	
+                                	document.getElementById("quantidade").value = "";
+                                	document.getElementById("codigodebarra").focus();
+                                	document.getElementById("codigodebarra").select();
+                                } else if (msg == "Estoque insuficiente!"){
+                                	alert(msg);	
+                                	document.getElementById("quantidade").focus()
+                                	document.getElementById("quantidade").select();
                                 } else {
                                 $("#insereitem").html(msg);
                                 
