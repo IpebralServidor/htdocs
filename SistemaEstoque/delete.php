@@ -14,9 +14,14 @@ echo "<br>".$sequencia;
 
 $tsql2 = "
 
-	DECLARE @NUNOTA INT = (SELECT AD_VINCULONF FROM TGFCAB WHERE NUNOTA = $nunotaorig)
+	IF((SELECT STATUSNOTA FROM TGFCAB WHERE NUNOTA = $nunotaorig) <> 'L')
+	BEGIN
+	
+		DECLARE @NUNOTA INT = (SELECT AD_VINCULONF FROM TGFCAB WHERE NUNOTA = $nunotaorig)
 
-	DELETE FROM TGFITE WHERE NUNOTA = @NUNOTA AND SEQUENCIA in ($sequencia, $sequencia*-1)
+		DELETE FROM TGFITE WHERE NUNOTA = @NUNOTA AND SEQUENCIA in ($sequencia, $sequencia*-1)
+		
+	END
 
 		 ";
 
