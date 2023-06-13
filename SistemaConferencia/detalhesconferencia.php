@@ -523,7 +523,7 @@
 				<form method="post" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-recontagem" value="Realizar Recontagem">
 				</form>
-				<form method="post" action="" style="width: 100%;">
+				<form method="post" action="cortaritens.php?nunota=<?php echo $nunota2; ?>" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-corte" onclick="abrirconf();" value="Cortar Itens Divergentes">
 				</form>
 				<!-- <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="" >Cortar itens divergentes</button> -->
@@ -876,10 +876,10 @@
 				    <td width="5%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
 				    <td width="25%" align="center"><?php echo $row2[4]; ?></td>
 				    <td width="10%" align="center"><?php echo $row2[5]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[6]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[7]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[8]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[9]; ?></td>
+				    <!--<td width="10%" align="center"><?php echo $row2[6]; ?></td>-->
+				    <!--<td width="5%" align="center"><?php echo $row2[7]; ?></td>-->
+				    <!--<td width="10%" align="center"><?php echo $row2[8]; ?></td>-->
+				    <!--<td width="10%" align="center"><?php echo $row2[9]; ?></td>-->
 				  </tr></a>
 				
 			<?php
