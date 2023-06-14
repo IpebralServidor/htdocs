@@ -1055,9 +1055,7 @@
                             //função que será executada quando a solicitação for finalizada.
                             success: function (msg)
                             {
-                                if (msg == "A observacao devera preenchida corretamente"){
-                                    alert(msg);
-                                }
+                                $("#caracteristicas").html(msg);
                             }
                         });
             }
