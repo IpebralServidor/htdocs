@@ -373,17 +373,17 @@
 				<div style=" width: 98%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
 					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
 						  <tr> 
-						    <th width="10.6%" >Produto</th>
+						    <th width="16.6%" >Referência</th>
 						    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 						    <th width="10.6%" align="center">Complemento</th>
 						    <th width="12.6%" align="center">Controle</th>
 						    <th width="12.6%" align="center">Qtd. Conferida</th>
-						    <th width="16.6%" align="center">Qtd. Pedido</th>
+						    <th width="10.6%" align="center">Qtd. Pedido</th>
 						  </tr>
 
 
 						  <?php 
-							$tsql2 = "  select TGFITE.CODPROD, 
+							$tsql2 = "  select TGFPRO.REFERENCIA, 
 											   DESCRPROD, 
 											   COMPLDESC, 
 											   TGFITE.CONTROLE, 
@@ -407,12 +407,12 @@
 
 							  <tr style="cursor: hand; cursor: pointer;">
 							   <tr> 
-							    <td width="10.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
+							    <td width="16.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
 							    <td width="36.6%"><?php echo $row2[1]; ?>&nbsp;</td>
 							    <td width="10.6%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
 							    <td width="12.6%" align="center"><?php echo $row2[3]; ?></td>
 							    <td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
-							    <td width="16.6%" align="center"><?php echo $row2[5]; ?></td>
+							    <td width="10.6%" align="center"><?php echo $row2[5]; ?></td>
 							  </tr></a>
 							 
 
@@ -523,7 +523,7 @@
 				<form method="post" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-recontagem" value="Realizar Recontagem">
 				</form>
-				<form method="post" action="" style="width: 100%;">
+				<form method="post" action="cortaritens.php?nunota=<?php echo $nunota2; ?>" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-corte" onclick="abrirconf();" value="Cortar Itens Divergentes">
 				</form>
 				<!-- <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="" >Cortar itens divergentes</button> -->
@@ -876,10 +876,10 @@
 				    <td width="5%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
 				    <td width="25%" align="center"><?php echo $row2[4]; ?></td>
 				    <td width="10%" align="center"><?php echo $row2[5]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[6]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[7]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[8]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[9]; ?></td>
+				    <!--<td width="10%" align="center"><?php echo $row2[6]; ?></td>-->
+				    <!--<td width="5%" align="center"><?php echo $row2[7]; ?></td>-->
+				    <!--<td width="10%" align="center"><?php echo $row2[8]; ?></td>-->
+				    <!--<td width="10%" align="center"><?php echo $row2[9]; ?></td>-->
 				  </tr></a>
 				
 			<?php
