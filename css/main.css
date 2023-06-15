@@ -22,7 +22,10 @@ tr{transition:all .25s ease-in-out}
 tr:hover{background-color:#FFFF95;cursor: pointer}
 tr:active{background-color: yellow;}
 
-.selected{background-color: yellow;}
+/**Cor quando selecionado**/
+#minhaTabela tr.selecionado td{
+  background-color: yellow;
+}
 
 .popupdivergencias{
 	position: fixed;
@@ -36,21 +39,40 @@ tr:active{background-color: yellow;}
 	background: white;
 	display: none;
 	overflow: auto;
-	z-index: 10;
+	z-index: 999;
 }
 
-.popupconf {
+.popuppendencias{
 	position: fixed;
 	top: 0; bottom: 0; 
 	left: 0; right:0;
 	margin: auto;
-	width: 450px;
-	height: 160px;
+	width: 800px;
+	height: 400px;
 	padding: 15px;
 	border: solid 1px #4c4d4f;
 	background: white;
 	display: none;
-	z-index: 0;
+	overflow: auto;
+	z-index: 999;
+}
+.bodyCss{
+}
+
+
+.popupconf {
+	position: absolute;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 250px;
+	height: 300px;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 9999999;
+	border-radius: 2%;
 }
 
 
@@ -65,7 +87,7 @@ tr:active{background-color: yellow;}
 	border: solid 1px #4c4d4f;
 	background: white;
 	display: none;
-	z-index: 0;
+	z-index: 9999;
 }
 
 .popupconfdivcorte {
@@ -184,6 +206,10 @@ border-top: solid 5px #e54e43;
 	cursor: pointer;
 }
 
-
-
-
+.btnPendencia {
+	cursor: hand; cursor: pointer; 
+	color: white;
+  background-color: #e54e43;
+  margin-left: 20px;
+  border: solid #e54e43 1px;
+}
