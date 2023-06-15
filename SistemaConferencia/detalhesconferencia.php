@@ -2,6 +2,8 @@
 	include "../conexaophp.php";
 	require_once 'App/auth.php';
 
+	//TESTE GITHUB
+	
 	$usuconf = $_SESSION["idUsuario"];
 
 	if(isset($_SESSION["codbarraselecionado"])){
@@ -333,17 +335,10 @@
 
 				<div style="margin-top: -10px; text-align: center;width: 100%">
 					<!-- <h6> Conferência finalizada com Sucesso! </h6> -->
-<<<<<<< Updated upstream
-					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;" required>
-					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;" required>
-					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;" required>
-                    <br>Observação: <textarea id="observacao" cols="30" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?></textarea>
-=======
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;">
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;">
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;">
                     <br>Observação: <textarea id="observacao" cols="30" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;"><?php echo $OBSERVACAO; ?></textarea>
->>>>>>> Stashed changes
 
 
 					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" style="cursor: hand; cursor: pointer; margin-top: 2%;">
@@ -368,42 +363,18 @@
 				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Produtos com Divergência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
 				<div style=" width: 98%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
 					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
-<<<<<<< Updated upstream
-						  <tr> 
-						    <th width="16.6%" >Referência</th>
-=======
 						  <tr>
 						    <th width="10.6%" >Referência</th>
->>>>>>> Stashed changes
 						    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 						    <th width="10.6%" align="center">Complemento</th>
 						    <th width="12.6%" align="center">Controle</th>
 						    <th width="12.6%" align="center">Qtd. Conferida</th>
-						    <th width="10.6%" align="center">Qtd. Pedido</th>
+						    <th width="16.6%" align="center">Qtd. Pedido</th>
 						  </tr>
 
 
-<<<<<<< Updated upstream
-						  <?php 
-							$tsql2 = "  select TGFPRO.REFERENCIA, 
-											   DESCRPROD, 
-											   COMPLDESC, 
-											   TGFITE.CONTROLE, 
-											   ISNULL(TGFCOI2.QTDCONF,0), 
-											   TGFITE.QTDNEG
-										from TGFITE inner join
-											 TGFCAB ON TGFCAB.NUNOTA = TGFITE.NUNOTA FULL OUTER JOIN
-											 TGFCOI2 on TGFCOI2.NUCONF = TGFCAB.NUCONFATUAL
-													AND TGFCOI2.CODPROD = TGFITE.CODPROD INNER JOIN
-											 TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
-										where TGFITE.NUNOTA = '{$nunota2}'
-										  and (TGFCOI2.QTDCONF <> TGFITE.QTDNEG or TGFCOI2.QTDCONF is null)
-										order by TGFCOI2.SEQCONF desc
-										"; 
-=======
 						  <?php
 							$tsql2 = "select * from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2)";
->>>>>>> Stashed changes
 
 							$stmt2 = sqlsrv_query( $conn, $tsql2);
 
@@ -412,18 +383,13 @@
 						?>
 
 							  <tr style="cursor: hand; cursor: pointer;">
-<<<<<<< Updated upstream
-							   <tr> 
-							    <td width="16.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
-=======
 							   <tr>
 							    <td width="10.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
->>>>>>> Stashed changes
 							    <td width="36.6%"><?php echo $row2[1]; ?>&nbsp;</td>
 							    <td width="10.6%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
 							    <td width="12.6%" align="center"><?php echo $row2[3]; ?></td>
 							    <td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
-							    <td width="10.6%" align="center"><?php echo $row2[5]; ?></td>
+							    <td width="16.6%" align="center"><?php echo $row2[5]; ?></td>
 							  </tr></a>
 
 
@@ -535,15 +501,9 @@
 				<form method="post" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-recontagem" value="Realizar Recontagem">
 				</form>
-<<<<<<< Updated upstream
-				<form method="post" action="cortaritens.php?nunota=<?php echo $nunota2; ?>" style="width: 100%;">
-					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-corte" onclick="abrirconf();" value="Cortar Itens Divergentes">
-				</form>
-=======
 				<div style="width: 100%;">
                     <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" name="btn-corte" onclick="fecharconfdivcorte(); abrirconf();">Cortar Itens Divergentes</button>
 				</div>
->>>>>>> Stashed changes
 				<!-- <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="" >Cortar itens divergentes</button> -->
 
 				<button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="fecharconfdivcorte(); abrirconf();">Concluir</button>
@@ -833,11 +793,7 @@
 
 
 						<!-- Pesquisa o Número da Nota no Banco para que sejam retornados os itens -->
-<<<<<<< Updated upstream
-			<?php 
-=======
 			<?php
->>>>>>> Stashed changes
 				$tsql2 = "  SELECT /*PRO.REFERENCIA,*/
 								   /*ITE.CODPROD,*/
 								   /*BAR.CODBARRA,*/
@@ -899,17 +855,10 @@
 				    <td width="5%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
 				    <td width="25%" align="center"><?php echo $row2[4]; ?></td>
 				    <td width="10%" align="center"><?php echo $row2[5]; ?></td>
-<<<<<<< Updated upstream
-				    <!--<td width="10%" align="center"><?php echo $row2[6]; ?></td>-->
-				    <!--<td width="5%" align="center"><?php echo $row2[7]; ?></td>-->
-				    <!--<td width="10%" align="center"><?php echo $row2[8]; ?></td>-->
-				    <!--<td width="10%" align="center"><?php echo $row2[9]; ?></td>-->
-=======
 <!--				    <td width="10%" align="center">--><?php //echo $row2[6]; ?><!--</td>-->
 <!--				    <td width="5%" align="center">--><?php //echo $row2[7]; ?><!--</td>-->
 <!--				    <td width="10%" align="center">--><?php //echo $row2[8]; ?><!--</td>-->
 <!--				    <td width="10%" align="center">--><?php //echo $row2[9]; ?><!--</td>-->
->>>>>>> Stashed changes
 				  </tr></a>
 
 			<?php
@@ -1005,15 +954,6 @@
                                 	alert(msg);
                                 	document.getElementById("quantidade").focus()
                                 	document.getElementById("quantidade").select();
-                                } else if (msg == "Produto nao existe na nota!"){
-                                	alert(msg);	
-                                	document.getElementById("quantidade").value = "";
-                                	document.getElementById("codigodebarra").focus();
-                                	document.getElementById("codigodebarra").select();
-                                } else if (msg == "Estoque insuficiente!"){
-                                	alert(msg);	
-                                	document.getElementById("quantidade").focus()
-                                	document.getElementById("quantidade").select();
                                 } else {
                                 $("#insereitem").html(msg);
 
@@ -1048,7 +988,6 @@
             ({
                 //Configurações
                 type: 'POST',//Método que está sendo utilizado.
-                type: 'POST',//Método que está sendo utilizado.
                 dataType: 'html',//É o tipo de dado que a página vai retornar.
                 url: 'finalizarconf.php',//Indica a página que está sendo solicitada.
                 //função que vai ser executada assim que a requisição for enviada
@@ -1062,15 +1001,9 @@
                     if(msg != "Finalizado com sucesso"){
                         alert(msg);
                     }else{
-<<<<<<< Updated upstream
-                        alert(msg);
-                        window.location.href='listaconferencia.php';
-                    }
-=======
 						alert(msg);
 						window.location.href='listaconferencia.php';
 					}
->>>>>>> Stashed changes
                 }
 			});
         }
