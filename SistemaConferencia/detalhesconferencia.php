@@ -199,8 +199,8 @@
         }
 
 	function confirmar_conf() {
-		var result = confirm("Tem certeza que deseja confirmar essa conferência?");
-        if(result){
+		//var result = confirm("Tem certeza que deseja confirmar essa conferência?");
+        //if(result){
         	if(<?php echo $QtdDivergencias ?> == 0 && <?php echo $QtdDivCorte ?> == 0){
 	        	abrirconf();
 	            return true;
@@ -211,9 +211,9 @@
         		abrirconfdivergencia();
             return true;
         	}
-        }else{
-            return false;
-        }
+        // }else{
+        //     return false;
+        // }
 	}
 
 	</script>
