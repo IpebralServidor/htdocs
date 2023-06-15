@@ -25,11 +25,11 @@
 					 TGFPAR ON TGFPAR.CODPARC = TGFCAB.CODPARC INNER JOIN
 					 TGFVEN ON TGFVEN.CODVEND = TGFCAB.CODVEND
 				WHERE NUNOTA = {$nunota2}
-							"; 
+							";
 
-	$stmt2 = sqlsrv_query( $conn, $tsql2);  
+	$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-	while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+	while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 	{ $NUMNOTA = $row2[0];
 	  $VENDEDOR = $row2[1];
 	  $PARCEIRO = $row2[2];
@@ -61,13 +61,13 @@
 					UPDATE TGFCAB SET NUCONFATUAL = @ULTCOD, LIBCONF = 'S' WHERE NUNOTA = @NUNOTA
 
 				END
-						"; 
-		
+						";
+
 		$stmt3 = sqlsrv_query( $conn, $tsql3);
 
 		$tsql4 = " exec [sankhya].[AD_STP_MARCALINHA_CONFERENCIA] '$codbarraselecionado', $nunota2";
 		$stmt4 = sqlsrv_query( $conn, $tsql4);
-		while( $row2 = sqlsrv_fetch_array( $stmt4, SQLSRV_FETCH_NUMERIC))  
+		while( $row2 = sqlsrv_fetch_array( $stmt4, SQLSRV_FETCH_NUMERIC))
 		{ $linhamarcada = $row2[0];
 		}
 
@@ -96,7 +96,7 @@
 <script type="text/javascript" src="js/easing.js"></script>
 	<script type="text/javascript">
 			jQuery(document).ready(function($) {
-				$(".scroll").click(function(event){		
+				$(".scroll").click(function(event){
 					event.preventDefault();
 					$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 				});
@@ -107,7 +107,7 @@
 	<link href="css/main.css" rel='stylesheet' type='text/css' />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-	<?php 
+	<?php
 		$tsql2 = "  select COUNT(*)
 					from TGFITE inner join
 							TGFCAB ON TGFCAB.NUNOTA = TGFITE.NUNOTA FULL OUTER JOIN
@@ -116,11 +116,11 @@
 							TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
 					where TGFITE.NUNOTA = '{$nunota2}'
 						and (TGFCOI2.QTDCONF <> TGFITE.QTDNEG or TGFCOI2.QTDCONF is null)
-				"; 
+				";
 
-		$stmt2 = sqlsrv_query( $conn, $tsql2);  
+		$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-		while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+		while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 		{ $QtdDivergencias = $row2[0];
 		}
 
@@ -132,11 +132,11 @@
 							TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
 					where TGFITE.NUNOTA = '{$nunota2}'
 						and ISNULL(TGFCOI2.QTDCONF,0) <> TGFITE.QTDNEG
-				"; 
+				";
 
-		$stmt3 = sqlsrv_query( $conn, $tsql3);  
+		$stmt3 = sqlsrv_query( $conn, $tsql3);
 
-		while( $row2 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))  
+		while( $row2 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))
 		{ $QtdDivCorte = $row2[0];
 		}
 
@@ -144,7 +144,7 @@
 	?>
 
 	<script type="text/javascript">
-		
+
 
 
 		$(document).ready(function(){
@@ -159,7 +159,7 @@
 	            });
 	        }
 	    });
-		
+
 	    $('.checkbox').on('click',function(){
 	        if($('.checkbox:checked').length == $('.checkbox').length){
 	            $('#select_all').prop('checked',true);
@@ -197,7 +197,7 @@
                 return false;
             }
         }
-	
+
 	function confirmar_conf() {
 		var result = confirm("Tem certeza que deseja confirmar essa conferência?");
         if(result){
@@ -231,20 +231,12 @@
 			function fechardivergencias(){
 				document.getElementById('popupdivergencias').style.display =  'none';
 			}
-
 			function abrirconf(){
 				document.getElementById('popupconf').style.display = 'block';
 			}
 			function fecharconf(){
-                document.getElementById("observacao").required = true;
-				document.getElementById('popupconf').style.display =  'none';
+                document.getElementById('popupconf').style.display =  'none';
 			}
-            function checkLength() {
-                var element = document.getElementById("observacao").required = true;
-                if (element.value.length != 6) {
-                    alert("length must be exactly 6 characters")
-                }
-            }
 			function abrirconfdivergencia(){
 				document.getElementById('popupconfdivergencia').style.display =  'block';
 			}
@@ -274,8 +266,8 @@
 			<strong> Nro. Nota: &nbsp </strong> <?php echo $NUMNOTA ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 			<strong>Vendedor: </strong> <?php echo $VENDEDOR ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 			<strong>Nro. Único: </strong> <?php echo $nunota2; ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-			<strong>Parceiro: </strong> <?php echo $PARCEIRO; ?> 
-			
+			<strong>Parceiro: </strong> <?php echo $PARCEIRO; ?>
+
 	</span>
 
 	<div id="ErroQtdMaior" class="ErroQtdMaior">
@@ -287,51 +279,49 @@
 	</div>
 
 
-	<!-- <form action="detalhesconferencia.php?nunota=<?php echo $nunota2 ?>&codbarra=<?php echo $codbarra ?>" method="post" style="margin-left: 80px; margin-top: -20px;" name="fmrInsreItens"> -->
-		<div style="margin-left: 80px; margin-top: -20px;">
-				<br><br>
-				Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' style="margin-right: 30px;" required>
 
-				Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" style="margin-right: 30px; text-align: left;">
+    <div style="margin-left: 80px; margin-top: -20px;">
+        <br><br>
+        Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' style="margin-right: 30px;" required>
 
-				Controle: <input type="text" name="CONTROLE" id="controle" class="text">
+        Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" style="margin-right: 30px; text-align: left;">
 
-				<input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 50px;">
+        Controle: <input type="text" name="CONTROLE" id="controle" class="text">
 
-				<div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
+        <input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 50px;">
 
+        <div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
 
-			</div>
-	<!-- </form> -->
+    </div>
+
 
 	<!-- Itens em Conferência-->
 	<div id="container" style="width:100%; height: 90%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
-		
+
 		<div id="ItensConferencia" style="width: 48%; height:48%; /*background-color: green;*/ display: inline-block; margin-right: 0; overflow: hidden; margin: 1%;">
 
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Itens em Conferência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
 
 
 
-			<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer;" onclick="confirmar_conf();">Finalizar Conferência</button> 
+			<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer;" onclick="confirmar_conf();">Finalizar Conferência</button>
 			<button style="cursor: hand; cursor: pointer;" onclick="abrirdivergencias();">Produtos Divergentes</button>
 
-			<?php 	
+			<?php
 
-			$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)  
-										"; 
+			$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
 
-			$stmt2 = sqlsrv_query( $conn, $tsql2);  
+			$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-			while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))  
-			{ 
-				$auxiliar = $row2['contador'];	
-				
+			while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))
+			{
+				$auxiliar = $row2['contador'];
+
 			}
 
 			// echo '<script>window.alert("'.$auxiliar.'")</script>';
 
-			if($auxiliar > 0){ 										
+			if($auxiliar > 0){
 				echo '<button id="btnPendencia" class="btnPendencia" onclick="abrirpendencias();">Pendências</button>';
 
 			}
@@ -343,25 +333,31 @@
 
 				<div style="margin-top: -10px; text-align: center;width: 100%">
 					<!-- <h6> Conferência finalizada com Sucesso! </h6> -->
+<<<<<<< Updated upstream
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;" required>
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;" required>
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;" required>
                     <br>Observação: <textarea id="observacao" cols="30" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;" required><?php echo $OBSERVACAO; ?></textarea>
+=======
+					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;">
+					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;">
+					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;">
+                    <br>Observação: <textarea id="observacao" cols="30" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;"><?php echo $OBSERVACAO; ?></textarea>
+>>>>>>> Stashed changes
 
 
-					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" onclick="checkLength()" style="cursor: hand; cursor: pointer; margin-top: 2%;">
+					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" style="cursor: hand; cursor: pointer; margin-top: 2%;">
 
 					<div id="insereitem2" style="display: inline-block; margin-top: 5px;"></div>
 
                     <button class="fechar" onclick="fecharconf();">X</button>
 
 				</div>
-
 			</div>
 
 
-			<!-- 
-				POP UP de Produtos Divergentes 
+			<!--
+				POP UP de Produtos Divergentes
 			-->
 
 			<div id="popupdivergencias" class="popupdivergencias">
@@ -372,8 +368,13 @@
 				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Produtos com Divergência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
 				<div style=" width: 98%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
 					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
+<<<<<<< Updated upstream
 						  <tr> 
 						    <th width="16.6%" >Referência</th>
+=======
+						  <tr>
+						    <th width="10.6%" >Referência</th>
+>>>>>>> Stashed changes
 						    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 						    <th width="10.6%" align="center">Complemento</th>
 						    <th width="12.6%" align="center">Controle</th>
@@ -382,6 +383,7 @@
 						  </tr>
 
 
+<<<<<<< Updated upstream
 						  <?php 
 							$tsql2 = "  select TGFPRO.REFERENCIA, 
 											   DESCRPROD, 
@@ -398,23 +400,32 @@
 										  and (TGFCOI2.QTDCONF <> TGFITE.QTDNEG or TGFCOI2.QTDCONF is null)
 										order by TGFCOI2.SEQCONF desc
 										"; 
+=======
+						  <?php
+							$tsql2 = "select * from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2)";
+>>>>>>> Stashed changes
 
-							$stmt2 = sqlsrv_query( $conn, $tsql2);  
+							$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 							{ $NUCONF = $row2[0];
 						?>
 
 							  <tr style="cursor: hand; cursor: pointer;">
+<<<<<<< Updated upstream
 							   <tr> 
 							    <td width="16.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
+=======
+							   <tr>
+							    <td width="10.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
+>>>>>>> Stashed changes
 							    <td width="36.6%"><?php echo $row2[1]; ?>&nbsp;</td>
 							    <td width="10.6%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
 							    <td width="12.6%" align="center"><?php echo $row2[3]; ?></td>
 							    <td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
 							    <td width="10.6%" align="center"><?php echo $row2[5]; ?></td>
 							  </tr></a>
-							 
+
 
 						<?php
 						}
@@ -425,12 +436,12 @@
 				<button style="cursor: hand; cursor: pointer; position: relative; float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 2%; margin-top: 10px; position: absolute;" onclick="fechardivergencias();">Fechar</button>
 			</div>
 
-			<!-- Fim 
-			POP UP de Produtos Divergentes 
+			<!-- Fim
+			POP UP de Produtos Divergentes
 			-->
 
 			<div id="popuppendencias" class="popuppendencias">
-				
+
 				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com Divergência</h4>
 				<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
                     <form style="margin: 0" name="bulk_action_form" action="inserependencia.php" method="post" onSubmit="return insere_pendencia();">
@@ -477,7 +488,7 @@
 			</div>
 
 
-			<!-- 
+			<!--
 				POP UP Para Conferência Finalizada com Divergência
 			-->
 
@@ -492,12 +503,12 @@
 				<button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="fecharconfdivergencia(); abrirconf();">Concluir</button>
 			</div>
 
-			<!-- Fim 
+			<!-- Fim
 				POP UP Para Conferência Finalizada com Divergência
 			-->
 
 
-			<!-- 
+			<!--
 				POP UP Para Conferência Finalizada com Divergência (Corte)
 			-->
 
@@ -510,10 +521,11 @@
 									UPDATE TGFNUM SET ULTCOD = @ULTCOD WHERE ARQUIVO = 'TGFCON2' and CODEMP = 1 and SERIE = '.'
 
 									UPDATE TGFCAB SET NUCONFATUAL = @ULTCOD WHERE TGFCAB.NUNOTA = $nunota2
-					            "; 
+					            ";
 
-					    $stmt3 = sqlsrv_query( $conn, $tsql3); 
+					    $stmt3 = sqlsrv_query( $conn, $tsql3);
 									}
+
 
 			?>
 
@@ -523,24 +535,31 @@
 				<form method="post" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-recontagem" value="Realizar Recontagem">
 				</form>
+<<<<<<< Updated upstream
 				<form method="post" action="cortaritens.php?nunota=<?php echo $nunota2; ?>" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-corte" onclick="abrirconf();" value="Cortar Itens Divergentes">
 				</form>
+=======
+				<div style="width: 100%;">
+                    <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" name="btn-corte" onclick="fecharconfdivcorte(); abrirconf();">Cortar Itens Divergentes</button>
+				</div>
+>>>>>>> Stashed changes
 				<!-- <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="" >Cortar itens divergentes</button> -->
-				
+
 				<button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="fecharconfdivcorte(); abrirconf();">Concluir</button>
+				<button class="fechar" onclick="fecharconfdivcorte();">X</button>
 			</div>
 
-			<!-- Fim 
+			<!-- Fim
 				POP UP Para Conferência Finalizada com Divergência (Corte)
 			-->
 
 		 <div style="overflow: auto; height: 83.5%;">
 
 		 	<div id="produtoconferencia">
-			
+
 				<table width="1300" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="table">
-				  <tr> 
+				  <tr>
 				    <th width="10.6%" >Produto</th>
 				    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 				    <th width="10.6%" align="center">UN</th>
@@ -565,8 +584,8 @@
 		<!-- Itens Conferidos-->
 
 		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0; margin: 1%; overflow: hidden;">
-			
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens Conferidos</h4><h4 style="width: 6%; color: black; display: inline-block; margin-bottom:0; text-align: center;padding-bottom: 1px; "><?php 
+
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens Conferidos</h4><h4 style="width: 6%; color: black; display: inline-block; margin-bottom:0; text-align: center;padding-bottom: 1px; "><?php
 				$tsql2 = "  DECLARE @NUNOTA INT = $nunota2
 							DECLARE @NUCONF INT = (SELECT NUCONFATUAL from TGFCAB where NUNOTA = @NUNOTA)
 
@@ -574,11 +593,11 @@
 							FROM TGFPRO INNER JOIN
 								 TGFCOI2 ON TGFCOI2.CODPROD = TGFPRO.CODPROD
 							WHERE TGFCOI2.NUCONF = @NUCONF
-								 "; 
+								 ";
 
-						$stmt2 = sqlsrv_query( $conn, $tsql2);  
+						$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 						{ $QtdConferidos = $row2[0];
 						}
 
@@ -590,7 +609,7 @@
 		<div style="overflow: auto; height: 92%; width: 109.5%;" id="itensconferidos">
 			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 30px; margin-left: 7px;" id="table">
 			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
-			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th> 
+			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th>
 			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
 			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Produto</font></th>
 			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qtd. Conf.</font></th>
@@ -607,7 +626,7 @@
 			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Tip. Contr. Est.</font></th>
 			  </tr>
 
-			<?php 
+			<?php
 				$tsql2 = "  DECLARE @NUNOTA INT = {$nunota2}
 							DECLARE @NUCONF INT = (SELECT NUCONFATUAL from TGFCAB where NUNOTA = @NUNOTA)
 
@@ -629,17 +648,17 @@
 								 TGFCOI2 ON TGFCOI2.CODPROD = TGFPRO.CODPROD
 							WHERE TGFCOI2.NUCONF = @NUCONF
 							ORDER BY SEQCONF DESC
-						 "; 
+						 ";
 
-				$stmt2 = sqlsrv_query( $conn, $tsql2);  
+				$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-				while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+				while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 				{ $NUCONF = $row2[0];
 			?>
 
-				
+
 				  <tr >
-				  	<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[3]/$nunota2"; ?>]" class="checkbox"/></td>  
+				  	<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[3]/$nunota2"; ?>]" class="checkbox"/></td>
 				    <td width="4%" ><?php echo $row2[0]; ?>&nbsp;</td>
 				    <td width="5%"><?php echo $row2[1]; ?>&nbsp;</td>
 				    <td width="5%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
@@ -655,7 +674,7 @@
 				    <td width="5%" align="center"><?php echo $row2[12]; ?></td>
 				    <td width="10%" align="center"><?php echo $row2[13]; ?></td>
 				  </tr>
-				 
+
 
 			<?php
 			}
@@ -663,7 +682,7 @@
 			</table></div>
 			<div style="background-color: white ; position: absolute; top: 4px; width: 2000px; z-index: 10; height: 30px; margin-top:35px;">
 			<input type="submit" name="bulk_delete_submit" value="Apagar Item(ns) Selecionado(s)" style="position: absolute; top: 5px; margin-left: 0px; border-collor: white; width: 230px; text-align: left; border-radius: 5px; border-width: 1px; padding-top:1px;"></div>
-		 
+
 		</form>
 		</div> <!-- Itens Conferidos -->
 
@@ -671,7 +690,7 @@
 
 		<!-- Imagem e Consulta de Produtos -->
 		<div id="Imagem do Produto" style="width: 48%; height: 43%; /*background-color: #D9DAFA;*/ display: inline-block; overflow: hidden; margin: 1%; ">
-			
+
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 100%; text-align:center;">Informações do Produto</h4>
 
 			<div style="width: 50%; height: 100%; line-height: 100%; align-items: center; display: inline-flex; margin-top: 0; padding-top: 0" id="imagemproduto">
@@ -681,17 +700,17 @@
 						$tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
 
 						$stmt2 = sqlsrv_query( $conn, $tsql2);
-						
-						if($stmt2){
-							$row_count = sqlsrv_num_rows( $stmt2 ); 
 
-						
-							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
-							{ 
+						if($stmt2){
+							$row_count = sqlsrv_num_rows( $stmt2 );
+
+
+							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
+							{
 								echo '<img style="vertical-align: middle;  max-width: 280px; margin: auto; max-height: 90%;" src="data:image/jpeg;base64,'.base64_encode($row2[0]).'"/>';
 								//$imageData = $row2["image"];
 							}
-						} 
+						}
 
 					?>
 
@@ -699,7 +718,7 @@
 			</div > <!-- Parte da Imagem -->
 
 			<!-- Parte das Características -->
-			<div style=" display: inline-block; height: 90%; width: 49%; overflow-y: hidden; overflow-x: hidden; margin-top: 10px;"> 
+			<div style=" display: inline-block; height: 90%; width: 49%; overflow-y: hidden; overflow-x: hidden; margin-top: 10px;">
 
 				<div id="caracteristicas">
 
@@ -712,7 +731,7 @@
 				                <!--<h2>Title 1</h2>-->
 				                <article>
 				                <div style="margin-top: 10px;">
-				                   
+
 								</div>
 				                </article>
 				            </div>
@@ -723,7 +742,7 @@
 				            <div class="tab-content" style="overflow: auto;">
 				                <!-- <h2>Title 2</h2> -->
 				                <article>
-					                
+
 				                </article>
 				            </div>
 				        </li>
@@ -733,7 +752,7 @@
 				            <div class="tab-content">
 				                <!-- <h2>Title 3</h2> -->
 				                <article>
-				                    
+
 				                </article>
 				            </div>
 				        </li>
@@ -743,7 +762,7 @@
 				            <div class="tab-content">
 				                <!-- <h2>Title 4</h2> -->
 				                <article>
-				                	
+
 				                </article>
 				            </div>
 				        </li>
@@ -753,7 +772,7 @@
 				            <div class="tab-content">
 				                <!-- <h2>Title 5</h2> -->
 				                <article>
-				                    
+
 				                </article>
 				            </div>
 				        </li>
@@ -771,8 +790,8 @@
 
 
 		<div id="Itens do Pedido" style="width: 48%; height:43%; /*background-color: red;*/ display: inline-block; float: right;  margin-top: -200px; margin: 1%; overflow: hidden; margin-left: 0;">
-			
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4><h4 style="display: inline-block; margin-bottom: 0; text-align: center; width: 6%;"><?php 
+
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4><h4 style="display: inline-block; margin-bottom: 0; text-align: center; width: 6%;"><?php
 				$tsql2 = "  SELECT COUNT(1)
 							FROM TGFCAB CAB INNER JOIN
 									TGFITE ITE ON ITE.NUNOTA = CAB.NUNOTA INNER JOIN
@@ -784,11 +803,11 @@
 											  					) INNER JOIN
 									TGFVOL VOL ON VOL.CODVOL = ITE.CODVOL 
 							WHERE CAB.NUNOTA = $nunota2
-								 "; 
+								 ";
 
-						$stmt2 = sqlsrv_query( $conn, $tsql2);  
+						$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 						{ $QtdPedido = $row2[0];
 						}
 
@@ -810,11 +829,15 @@
 			    <th width="10%" align="center"><font  face="Arial, Helvetica, sans-serif">Descrição (UN)</font></th>
 			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Controle</font></th>
 			  </tr>
-			
+
 
 
 						<!-- Pesquisa o Número da Nota no Banco para que sejam retornados os itens -->
+<<<<<<< Updated upstream
 			<?php 
+=======
+			<?php
+>>>>>>> Stashed changes
 				$tsql2 = "  SELECT /*PRO.REFERENCIA,*/
 								   /*ITE.CODPROD,*/
 								   /*BAR.CODBARRA,*/
@@ -860,15 +883,15 @@
 								 --TGFCON2 CONF ON CONF.NUCONF = CAB.NUCONFATUAL
 							WHERE CAB.NUNOTA = {$nunota2}
 							ORDER BY SEQUENCIA
-							"; 
+							";
 
-				$stmt2 = sqlsrv_query( $conn, $tsql2);  
+				$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-				while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
+				while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 				{ $NUCONF = $row2[0];
 			?>
 
-				
+
 				  <tr style="cursor: hand; cursor: pointer;">
 				    <td width="10%" ><?php echo $row2[0]; ?>&nbsp;</td>
 				    <td width="5%" ><?php echo $row2[1]; ?>&nbsp;</td>
@@ -876,12 +899,19 @@
 				    <td width="5%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
 				    <td width="25%" align="center"><?php echo $row2[4]; ?></td>
 				    <td width="10%" align="center"><?php echo $row2[5]; ?></td>
+<<<<<<< Updated upstream
 				    <!--<td width="10%" align="center"><?php echo $row2[6]; ?></td>-->
 				    <!--<td width="5%" align="center"><?php echo $row2[7]; ?></td>-->
 				    <!--<td width="10%" align="center"><?php echo $row2[8]; ?></td>-->
 				    <!--<td width="10%" align="center"><?php echo $row2[9]; ?></td>-->
+=======
+<!--				    <td width="10%" align="center">--><?php //echo $row2[6]; ?><!--</td>-->
+<!--				    <td width="5%" align="center">--><?php //echo $row2[7]; ?><!--</td>-->
+<!--				    <td width="10%" align="center">--><?php //echo $row2[8]; ?><!--</td>-->
+<!--				    <td width="10%" align="center">--><?php //echo $row2[9]; ?><!--</td>-->
+>>>>>>> Stashed changes
 				  </tr></a>
-				
+
 			<?php
 			}
 			?>
@@ -891,21 +921,21 @@
 		</div> <!-- Itens do Pedido -->
 
 
-	
+
 	</div> <!--container-->
 
 
 	<script>
-    
+
         var index,
             table = document.getElementById("table");
-       
-        
-        
+
+
+
         // display selected row data into input text
         function selectedRowToInput()
         {
-        	 
+
             //
 
             for(var i = 1; i < table.rows.length; i++)
@@ -915,7 +945,7 @@
 
                 table.rows[i].onclick = function()
                 {
-                	   
+
                   if(typeof index !== "undefined" ) {
                     table.rows[index].classList.toggle("selected");
                   }
@@ -928,8 +958,8 @@
             }
         }
         selectedRowToInput();
-    
-        
+
+
         function removeSelectedRow()
         {
             table.deleteRow(index);
@@ -958,12 +988,21 @@
 
 
                                 if (msg == "Codigo de barras nao esta cadastrado!"){
-                                	alert(msg);	
+                                	alert(msg);
                                 	document.getElementById("quantidade").value = "";
                                 	document.getElementById("codigodebarra").focus();
                                 	document.getElementById("codigodebarra").select();
                                 } else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!"){
-                                	alert(msg);	
+                                	alert(msg);
+                                	document.getElementById("quantidade").focus()
+                                	document.getElementById("quantidade").select();
+                                } else if (msg == "Produto nao existe na nota!"){
+                                	alert(msg);
+                                	document.getElementById("quantidade").value = "";
+                                	document.getElementById("codigodebarra").focus();
+                                	document.getElementById("codigodebarra").select();
+                                } else if (msg == "Estoque insuficiente!"){
+                                	alert(msg);
                                 	document.getElementById("quantidade").focus()
                                 	document.getElementById("quantidade").select();
                                 } else if (msg == "Produto nao existe na nota!"){
@@ -977,10 +1016,10 @@
                                 	document.getElementById("quantidade").select();
                                 } else {
                                 $("#insereitem").html(msg);
-                                
+
                                  if(document.getElementById("codigodebarra").value === ""){
 					             	document.getElementById("codigodebarra").focus();
-					             } 
+					             }
 
 					             if(document.getElementById("quantidade").value != "1" ){
 					             		document.getElementById("codigodebarra").value = "";
@@ -992,12 +1031,12 @@
 					            // 	document.getElementById("codigodebarra").focus();
 					            // }
 
-								}                                
+								}
                             }
                         });
             }
-            
-            
+
+
             $('#conferir').click(function () {
                 insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
             });
@@ -1023,11 +1062,17 @@
                     if(msg != "Finalizado com sucesso"){
                         alert(msg);
                     }else{
+<<<<<<< Updated upstream
                         alert(msg);
                         window.location.href='listaconferencia.php';
                     }
+=======
+						alert(msg);
+						window.location.href='listaconferencia.php';
+					}
+>>>>>>> Stashed changes
                 }
-            });
+			});
         }
 
 
@@ -1059,8 +1104,8 @@
                             }
                         });
             }
-            
-            
+
+
             $('#conferir').click(function () {
                 caracteristica($("#codigodebarra").val())
             });
@@ -1086,8 +1131,8 @@
                             }
                         });
             }
-            
-            
+
+
             $('#conferir').click(function () {
                 produtoconferencia($("#codigodebarra").val(), <?php echo $nunota2; ?>)
             });
@@ -1114,8 +1159,8 @@
                             }
                         });
             }
-            
-            
+
+
             $('#conferir').click(function () {
                 imagemproduto($("#codigodebarra").val())
             });
@@ -1142,8 +1187,8 @@
                             }
                         });
             }
-            
-            
+
+
             $('#conferir').click(function () {
                 itensconferidos(<?php echo $nunota2; ?>)
             });
@@ -1151,7 +1196,7 @@
 
             if(document.getElementById("codigodebarra").value === ""){
             	document.getElementById("codigodebarra").focus();
-            } 
+            }
 
             document.addEventListener("keypress",function(e){
 
