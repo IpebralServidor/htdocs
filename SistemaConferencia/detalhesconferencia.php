@@ -1,9 +1,6 @@
 <?php
 	include "../conexaophp.php";
 	require_once 'App/auth.php';
-
-	//TESTE GITHUB
-	//TESTE GITHUB 2
 	
 	$usuconf = $_SESSION["idUsuario"];
 

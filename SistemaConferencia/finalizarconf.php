@@ -33,5 +33,4 @@ $usuconf = $_SESSION["idUsuario"];
 
    echo $row[0];
 
-   //TESTE GITHUB
 ?>
