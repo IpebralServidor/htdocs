@@ -22,12 +22,14 @@ $usuconf = $_SESSION["idUsuario"];
     $row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC);
     $linhas = $row2[0];
 
+    
+    
     if($linhas > 0){
         $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao' ";
     }else{
-        $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao' ";
+        $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '' ";
     }
-
+    //var_dump($tsql4);
    $stmt4 = sqlsrv_query( $conn, $tsql4);
    $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);
 
