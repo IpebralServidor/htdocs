@@ -3,6 +3,9 @@
 	require_once 'App/auth.php';
 	
 	$usuconf = $_SESSION["idUsuario"];
+	$VLR1700 = 0;
+	$VLR1720 = 0;
+	$VLR1780 = 0;
 
 	if(isset($_SESSION["codbarraselecionado"])){
 		$codbarraselecionado = $_SESSION["codbarraselecionado"];
@@ -70,6 +73,18 @@
 		while( $row2 = sqlsrv_fetch_array( $stmt4, SQLSRV_FETCH_NUMERIC))
 		{ $linhamarcada = $row2[0];
 		}
+
+	
+	$tsql4 = "SELECT * FROM [sankhya].[AD_FN_LISTAGEM_TOPS]($nunota2)";
+
+	$stmt5 = sqlsrv_query( $conn, $tsql4);
+
+	while( $row2 = sqlsrv_fetch_array( $stmt5, SQLSRV_FETCH_NUMERIC))
+	{ 
+		$VLR1700 = $row2[0];
+		$VLR1720 = $row2[1];
+		$VLR1780 = $row2[2];
+	}
 
 ?>
 
@@ -258,30 +273,30 @@
 		</script>
 
 </head>
-<body id="bodyCss" style="width: 100%; height: 100%; overflow: hidden; position: fixed;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+<body id="bodyCss" style="width: 100%; margin: 0; height: 100%; overflow: hidden; position: absolute;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+	<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: fixed;">
+		<table width="100%" id="table">
+			<tr>
+				<th width="33.3%">1700: R$ <?php echo $VLR1700 ?></th>
+				<th width="33.3%">1720: R$ <?php echo $VLR1720 ?></th>
+				<th width="33.3%">1780: R$ <?php echo $VLR1780 ?></th>
+			</tr>
+		</table>
+	</div>
+	<div style="margin-top: 2%; position: fixed;">
+		<span style="margin-bottom: 0; margin-left: 30px; font-size: 20px;">
+				<!--<button onclick="window.location.href='listaconferencia.php'"></button>-->
+				<strong> Nro. Nota: &nbsp </strong> <?php echo $NUMNOTA ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<strong>Vendedor: </strong> <?php echo $VENDEDOR ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<strong>Nro. Único: </strong> <?php echo $nunota2; ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+				<strong>Parceiro: </strong> <?php echo $PARCEIRO; ?>
 
-	<span style="margin-bottom: 0; margin-left: 30px; font-size: 20px;">
-			<!--<button onclick="window.location.href='listaconferencia.php'"></button>-->
-			<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 40px; margin-top: 45px; position: fixed;" src="images/Seta Voltar.png" /></aabr></a>
-			<strong> Nro. Nota: &nbsp </strong> <?php echo $NUMNOTA ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-			<strong>Vendedor: </strong> <?php echo $VENDEDOR ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-			<strong>Nro. Único: </strong> <?php echo $nunota2; ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-			<strong>Parceiro: </strong> <?php echo $PARCEIRO; ?>
-
-	</span>
-
-	<div id="ErroQtdMaior" class="ErroQtdMaior">
-		<button class="fechar" id="fechar" onclick="fechar();">X</button>
-
-		<div style=" width: 98%; height: 100%; position: absolute; overflow: auto; margin-top: 5px;">
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Quantidade Maior do que a Permitida</h4>
-		</div>
+		</span>
 	</div>
 
+    <div style="margin-left: 30px; margin-top: 4.8%; position: fixed;">
 
-
-    <div style="margin-left: 80px; margin-top: -20px;">
-        <br><br>
+		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 40px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
         Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' style="margin-right: 30px;" required>
 
         Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" style="margin-right: 30px; text-align: left;">
@@ -296,9 +311,9 @@
 
 
 	<!-- Itens em Conferência-->
-	<div id="container" style="width:100%; height: 90%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
+	<div id="container" style="width:100%; height: 85%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
 
-		<div id="ItensConferencia" style="width: 48%; height:48%; /*background-color: green;*/ display: inline-block; margin-right: 0; overflow: hidden; margin: 1%;">
+		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin: 1%;">
 
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Itens em Conferência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
 
@@ -996,7 +1011,7 @@
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    if(msg != "Finalizado com sucesso"){
+                    if(!msg.includes("Finalizado com sucesso")){
                         alert(msg);
                     }else{
 						alert(msg);
