@@ -264,6 +264,9 @@
 			function fecharconfdivcorte(){
 				document.getElementById('popupconfdivcorte').style.display =  'none';
 			}
+			function fecharconfdivpendencia(){
+				document.getElementById('popuppendencias').style.display =  'none';
+			}
 			function abrirErroQtd(){
 				document.getElementById('ErroQtdMaior').style.display =  'block';
 			}
@@ -405,14 +408,13 @@
 							    <td width="16.6%" align="center"><?php echo $row2[5]; ?></td>
 							  </tr></a>
 
-
 						<?php
 						}
 						?>
 
 					</table>
 				</div>
-				<button style="cursor: hand; cursor: pointer; position: relative; float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 2%; margin-top: 10px; position: absolute;" onclick="fechardivergencias();">Fechar</button>
+				<button class="fechar" onclick="fechardivergencias();">X</button>
 			</div>
 
 			<!-- Fim
@@ -420,51 +422,51 @@
 			-->
 
 			<div id="popuppendencias" class="popuppendencias">
+				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com Pendências</h4>
+				<form style="background-color: red; margin: 0" name="bulk_action_form" action="inserependencia.php" method="post" onSubmit="return insere_pendencia();">
+					<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
+						<table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="table">
+								<tr>
+									<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th>
+									<th width="20.0%" align="center">Referencia</th>
+									<th width="40.0%" style="text-align: center;">Descrição do Produto</th>
+									<th width="20.0%" >Local</th>
+									<th width="20.0%" align="center">Quantidade pendente</th>
+									<th width="20.0%" align="center">Controle</th>
+								</tr>
 
-				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com Divergência</h4>
-				<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
-                    <form style="margin: 0" name="bulk_action_form" action="inserependencia.php" method="post" onSubmit="return insere_pendencia();">
-                        <table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="table">
-                              <tr>
-                                <th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th>
-                                <th width="20.0%" align="center">Referencia</th>
-                                <th width="40.0%" style="text-align: center;">Descrição do Produto</th>
-                                <th width="20.0%" >Local</th>
-                                <th width="20.0%" align="center">Quantidade pendente</th>
-                                <th width="20.0%" align="center">Controle</th>
-                              </tr>
 
+								<?php
+									$tsql2 = "select * from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)  
+												";
 
-                              <?php
-                                $tsql2 = "select * from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)  
-                                            ";
+									$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-                                $stmt2 = sqlsrv_query( $conn, $tsql2);
+									while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
+									{
+								?>
 
-                                while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
-                                {
-                              ?>
+									<tr style="cursor: hand; cursor: pointer;">
+									<tr>
+										<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox"/></td>
+										<td width="20.0%" ><?php echo $row2[0]; ?></td>
+										<td width="20.0%"><?php echo $row2[1]; ?></td>
+										<td width="20.0%" align="center"><?php echo $row2[2]; ?></td>
+										<td width="20.0%" align="center"><?php echo $row2[3]; ?></td>
+										<td width="20.0%" align="center"><?php echo $row2[4]; ?></td>
+									</tr>
 
-                                  <tr style="cursor: hand; cursor: pointer;">
-                                   <tr>
-                                    <td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox"/></td>
-                                    <td width="20.0%" ><?php echo $row2[0]; ?></td>
-                                    <td width="20.0%"><?php echo $row2[1]; ?></td>
-                                    <td width="20.0%" align="center"><?php echo $row2[2]; ?></td>
-                                    <td width="20.0%" align="center"><?php echo $row2[3]; ?></td>
-                                    <td width="20.0%" align="center"><?php echo $row2[4]; ?></td>
-                                  </tr>
+								<?php
+									}
+								?>
 
-                              <?php
-                                }
-                              ?>
-
-                        </table>
-                        <button type="submit" style="cursor: hand; cursor: pointer; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 13%; margin-top: 10px; position: absolute; background-color: green; color: white; onclick=";">Inserir item</button>
+						</table>
+					</div>    
+                    <button type="submit" style="cursor: hand; cursor: pointer;  float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 4%; margin-top: 10px; position: absolute;">Inserir item</button>
                     </form>
-                    <button style="cursor: hand; cursor: pointer; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 2%; margin-top: 10px; position: absolute;" onclick="fecharpendencias();">Fechar</button>
-				</div>
+				<button class="fechar" onclick="fecharconfdivpendencia();">X</button>
 			</div>
+			
 
 
 			<!--

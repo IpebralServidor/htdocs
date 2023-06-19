@@ -38,7 +38,6 @@ tr:active{background-color: yellow;}
 	border: solid 1px #4c4d4f;
 	background: white;
 	display: none;
-	overflow: auto;
 	z-index: 999;
 }
 
@@ -53,7 +52,6 @@ tr:active{background-color: yellow;}
 	border: solid 1px #4c4d4f;
 	background: white;
 	display: none;
-	overflow: auto;
 	z-index: 999;
 }
 .bodyCss{
