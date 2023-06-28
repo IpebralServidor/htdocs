@@ -13,9 +13,7 @@ table td {
 	border: 1px solid #e3e3e3;
 	padding: 4px 8px	;
 }
-
 table tr:nth-child(odd) td {
-	background-color: #e7edf0;
 }
 
 tr{transition:all .25s ease-in-out}
@@ -210,4 +208,179 @@ border-top: solid 5px #e54e43;
   background-color: #e54e43;
   margin-left: 20px;
   border: solid #e54e43 1px;
+}
+.filtro{
+	text-align: center;
+	width:15%; 
+	display: inline-block; 
+	margin-top: 3%;
+	margin-left: 2%;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+	padding: 15px;
+	background-color: white;
+	overflow: auto !important;
+}
+.listaconferencia{
+	display: inline-block; 
+	width: 80%; 
+	float: right; 
+	float: bottom; 
+	height: 97%; 
+	margin-left: 0; 
+	overflow: auto; 
+	margin-right: 1%; 
+	margin-bottom: 0;
+	background-color: white !important;
+	padding: 10px;
+}
+.listaconferencia tr{
+	cursor: hand; 
+	cursor: pointer; 
+	height: 50px;
+	text-align: center;
+}
+.listaconferencia tr:hover{
+	background-color: rgb(231, 228, 20) !important;
+}
+.listaconferencia td{
+	width: 6.6%;
+}
+.listaconferencia thead{
+	background-color: #3a6070;
+	text-align: center;
+}
+
+.listaconferencia p{
+	font-size: 24px;
+	background-color: #3a6070;
+	color: white;
+	font-weight: 550;
+	margin: 0;
+	width: 101%;
+	text-decoration: underline;
+	border-bottom: solid 1px white;
+	padding: 10px;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.btn{
+	width: 100% !important;
+}
+.background-lista{
+	background-color: #eeeeee71;
+	width: 100%; 
+	height: 100%; 
+	overflow: auto !important;
+}
+.img-voltar{
+	padding: 0 !important; 
+	margin-bottom: 20%;
+	
+}
+.img-voltar img{
+	width: 35px;
+	float: left;
+	background-color: #2d4a57;
+	border-radius: 100%;
+}
+.img-voltar a{
+	border: none !important;
+	margin-bottom: 20px !important;
+	text-decoration: none !important;
+	color: #363b48;
+}
+.img-voltar p{
+	float: right;
+	max-height: 5px;
+	padding-top: 3.5%;
+	color: white;
+}
+.btn-back{
+	background-color: #3a6070 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #2d4a57, 0px 10px 5px #999;
+	transition: all 0.2s !important;
+}
+.btn-back:hover{
+	transform: scale(1.03) !important;
+}
+.btn-form{
+	background-color: #3a6070 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #2d4a57, 0px 10px 5px #999;
+	color: white;
+	transition: all 0.2s !important;
+}
+.btn-form:hover{
+	transform: scale(1.03) !important;
+}
+.body-detalhes{
+	overflow: auto;
+}
+.table-valores{
+	background-color: #3a6070;
+	color: white;
+	text-align: center;
+	margin: 0;
+}
+.tabel-valores thead{
+	border: none !important;
+}
+.table-valores th{
+	border-bottom: none !important;
+	border-top: none !important;
+	border-left: solid 1px white !important;
+	border-right: solid 1px white;
+	font-weight: 400 !important;
+}
+.table-infos{
+	text-align: center !important;
+}
+.table-infos th{
+	font-weight: 400 !important;
+}
+.img-voltar-detalhes{
+	padding: 0 !important;
+	margin-left: 1.7%; 	
+	padding-top: 1.5% !important;
+	margin-right: 9% !important;
+	max-width: 4.4%;
+	float: left;
+}
+.img-voltar-detalhes img{
+	width: 35px;
+	float: left;
+	background-color: #2d4a57;
+	border-radius: 100%;
+}
+.img-voltar-detalhes a{
+	border: none !important;
+	margin-bottom: 20px !important;
+	text-decoration: none !important;
+	color: #363b48;
+}
+.btn-detalhes{
+	padding: 0 !important;
+	margin-left: 1.5%; 	
+	padding-top: 2.5% !important;
+	margin-right: 2% !important;
+	float: left;
+}
+.conferencia{
+	width: 40%; 
+	height:50%;  
+	overflow: hidden; 
+	margin-left: 1%;
+	padding: 10px;
+	float: left;
+}
+.btn-form-pendencia{
+	background-color: #ee0909 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #970909, 0px 10px 5px #999;
+	color: white;
+	transition: all 0.2s !important;
+}
+.btn-form-pendencia:hover{
+	transform: scale(1.03) !important;
 }
