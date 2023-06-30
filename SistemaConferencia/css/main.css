@@ -205,14 +205,12 @@ border-top: solid 5px #e54e43;
 .btnPendencia {
 	cursor: hand; cursor: pointer; 
 	color: white;
-  background-color: #e54e43;
-  margin-left: 20px;
-  border: solid #e54e43 1px;
+  	background-color: #e54e43 !important;
+  	border: solid #e54e43 1px !important;
 }
 .filtro{
 	text-align: center;
 	width:15%; 
-	display: inline-block; 
 	margin-top: 3%;
 	margin-left: 2%;
 	border-radius: 10px;
@@ -220,19 +218,44 @@ border-top: solid 5px #e54e43;
 	padding: 15px;
 	background-color: white;
 	overflow: auto !important;
+	float: left;
+}
+.listaconferenciatext{
+	display: inline-block; 
+	width: 80%; 
+	float: right; 
+	margin-left: 0; 
+	overflow: auto; 
+	margin-right: 1%; 
+	margin-bottom: 0;
+	padding-right: 17px;
+	padding-left: 10px;
+	padding-top: 10px;
+	border-bottom: solid 1px white;
+	
+}
+.listaconferenciatext p{
+	background-color: #3a6070;
+	padding: 10px;
+	font-weight: 600 !important;
+	font-size: 150% !important;
+	text-decoration: underline;
+	color: white;
+	margin: 0 !important;
 }
 .listaconferencia{
 	display: inline-block; 
 	width: 80%; 
 	float: right; 
-	float: bottom; 
-	height: 97%; 
+	height: 85%; 
 	margin-left: 0; 
 	overflow: auto; 
 	margin-right: 1%; 
 	margin-bottom: 0;
 	background-color: white !important;
-	padding: 10px;
+	padding-right: 10px;
+	padding-left: 10px;
+	
 }
 .listaconferencia tr{
 	cursor: hand; 
@@ -335,6 +358,7 @@ border-top: solid 5px #e54e43;
 }
 .table-infos{
 	text-align: center !important;
+	background-color: white !important;
 }
 .table-infos th{
 	font-weight: 400 !important;
@@ -383,4 +407,66 @@ border-top: solid 5px #e54e43;
 }
 .btn-form-pendencia:hover{
 	transform: scale(1.03) !important;
+}
+.itensconferencia{
+	width: 48%;
+	height: 48%;
+	margin-left: 1%;
+	float: left;
+	border: solid 1px rgb(197, 197, 197);
+	padding: 10px;
+	overflow: auto;
+}
+.itensconferencia tr{
+	cursor: pointer; 
+	height: 50px;
+	text-align: center;
+}
+.itensconferencia thead{
+	background-color: #3a6070;
+	text-align: center;
+}
+.produtosconferencia{
+	width: 1300;
+	height: 50%;
+}
+.produtosconferencia table{
+	margin-top: 2%;
+}
+.produtosconferencia th{
+	width: 6.6%;
+	font-weight: 400;
+	border: 1px solid white;
+}
+.btnconferencia{
+	margin-top: 2%;
+}
+.btn-admin{
+	float: right !important;
+	width: 200px !important;
+	background-color: white !important;
+	color: #2d4a57 !important;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	transition: all 0.2s !important;
+}
+.table-conferentes{
+	
+	width: 100%;
+}
+.popupconferentes{
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 400px;
+	height: 400px;
+	padding: 15px;
+	background: white;
+	display: none;
+	z-index: 999;
+	overflow: auto;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.popupconferentes h4{
+	text-align: center;
 }

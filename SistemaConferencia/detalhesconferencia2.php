@@ -97,18 +97,16 @@
 
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
 
-	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }>
-</script>
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }></script>
 
-<!-- start-smoth-scrolling -->
-<script type="text/javascript" src="js/move-top.js"></script>
-<script type="text/javascript" src="js/easing.js"></script>
+	<!-- start-smoth-scrolling -->
+	<script type="text/javascript" src="js/move-top.js"></script>
+	<script type="text/javascript" src="js/easing.js"></script>
 	<script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$(".scroll").click(function(event){
@@ -160,76 +158,74 @@
 
 	<script type="text/javascript">
 
-
-
 		$(document).ready(function(){
-	    $('#select_all').on('click',function(){
-	        if(this.checked){
-	            $('.checkbox').each(function(){
-	                this.checked = true;
-	            });
-	        }else{
-	             $('.checkbox').each(function(){
-	                this.checked = false;
-	            });
-	        }
-	    });
+		$('#select_all').on('click',function(){
+			if(this.checked){
+				$('.checkbox').each(function(){
+					this.checked = true;
+				});
+			}else{
+				$('.checkbox').each(function(){
+					this.checked = false;
+				});
+			}
+		});
 
-	    $('.checkbox').on('click',function(){
-	        if($('.checkbox:checked').length == $('.checkbox').length){
-	            $('#select_all').prop('checked',true);
-	        }else{
-	            $('#select_all').prop('checked',false);
-	        }
-	    });
-	});
+		$('.checkbox').on('click',function(){
+			if($('.checkbox:checked').length == $('.checkbox').length){
+				$('#select_all').prop('checked',true);
+			}else{
+				$('#select_all').prop('checked',false);
+			}
+		});
+		});
 
 
-	function delete_confirm(){
-    if($('.checkbox:checked').length > 0){
-        var result = confirm("Tem certeza que deseja apagar esse(s) item(ns)?");
-        if(result){
-            return true;
-        }else{
-            return false;
-        }
-    }else{
-        alert('Selecione pelo menos uma linha para poder excluir!');
-        return false;
-    }
-}
+		function delete_confirm(){
+			if($('.checkbox:checked').length > 0){
+			var result = confirm("Tem certeza que deseja apagar esse(s) item(ns)?");
+			if(result){
+				return true;
+			}else{
+				return false;
+			}
+			}else{
+			alert('Selecione pelo menos uma linha para poder excluir!');
+			return false;
+			}
+		}
 
-        function insere_pendencia(){
-            if($('.checkbox:checked').length > 0){
-                var result = confirm("Tem certeza que deseja inserir esse(s) item(ns)?");
-                if(result){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                alert('Selecione pelo menos uma linha para poder inserir!');
-                return false;
-            }
-        }
+		function insere_pendencia(){
+			if($('.checkbox:checked').length > 0){
+				var result = confirm("Tem certeza que deseja inserir esse(s) item(ns)?");
+				if(result){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				alert('Selecione pelo menos uma linha para poder inserir!');
+				return false;
+			}
+		}
 
-	function confirmar_conf() {
+		function confirmar_conf() {
 		//var result = confirm("Tem certeza que deseja confirmar essa conferência?");
-        //if(result){
-        	if(<?php echo $QtdDivergencias ?> == 0 && <?php echo $QtdDivCorte ?> == 0){
-	        	abrirconf();
-	            return true;
-        	} else if (<?php echo $QtdDivCorte ?> > 0){
+		//if(result){
+			if(<?php echo $QtdDivergencias ?> == 0 && <?php echo $QtdDivCorte ?> == 0){
+				abrirconf();
+				return true;
+			} else if (<?php echo $QtdDivCorte ?> > 0){
 				abrirconfdivcorte();
 				return true;
 			} else {
-        		abrirconfdivergencia();
-            return true;
-        	}
-        // }else{
-        //     return false;
-        // }
-	}
+				abrirconfdivergencia();
+			return true;
+			}
+		// }else{
+		//     return false;
+		// }
+		}
 
 	</script>
 
@@ -250,7 +246,7 @@
 				document.getElementById('popupconf').style.display = 'block';
 			}
 			function fecharconf(){
-                document.getElementById('popupconf').style.display =  'none';
+				document.getElementById('popupconf').style.display =  'none';
 			}
 			function abrirconfdivergencia(){
 				document.getElementById('popupconfdivergencia').style.display =  'block';
@@ -276,76 +272,109 @@
 		</script>
 
 </head>
-<body id="bodyCss" style="width: 100%; margin: 0; height: 100%; overflow: hidden; position: absolute;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
-	<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: fixed;">
-		<table width="100%" id="table">
-			<tr>
-				<th width="33.3%">1700: R$ <?php echo $VLR1700 ?></th>
-				<th width="33.3%">1720: R$ <?php echo $VLR1720 ?></th>
-				<th width="33.3%">1780: R$ <?php echo $VLR1780 ?></th>
-			</tr>
+<body class="body-detalhes" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+	<div>
+		<table class="table table-valores" id="table">
+			<thead>
+				<tr>
+					<th scope="col">1700: R$ <?php echo $VLR1700 ?></th>
+					<th scope="col">1720: R$ <?php echo $VLR1720 ?></th>
+					<th scope="col">1780: R$ <?php echo $VLR1780 ?></th>
+				</tr>
+			</thead>	
 		</table>
 	</div>
-	<div style="margin-top: 2%; position: fixed;">
-		<span style="margin-bottom: 0; margin-left: 30px; font-size: 20px;">
-				<!--<button onclick="window.location.href='listaconferencia.php'"></button>-->
-				<strong> Nro. Nota: &nbsp </strong> <?php echo $NUMNOTA ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-				<strong>Vendedor: </strong> <?php echo $VENDEDOR ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-				<strong>Nro. Único: </strong> <?php echo $nunota2; ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-				<strong>Parceiro: </strong> <?php echo $PARCEIRO; ?>
-
-		</span>
+	<div>
+		<table class="table table-bordered table-infos" id="table">
+			<thead>
+				<tr>
+					<th scope="col">Nro. Nota: <?php echo $NUMNOTA ?></th>
+					<th scope="col">Vendedor: <?php echo $VENDEDOR ?></th>
+					<th scope="col">Nro. Único: <?php echo $nunota2; ?></th>
+					<th scope="col">Parceiro: <?php echo $PARCEIRO; ?></th>
+				</tr>
+			</thead>	
+		</table>
 	</div>
 
-    <div style="margin-left: 30px; margin-top: 4.8%; position: fixed;">
-
-		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 40px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
-        Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' style="margin-right: 30px;" required>
-
-        Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" style="margin-right: 30px; text-align: left;">
-
-        Controle: <input type="text" name="CONTROLE" id="controle" class="text">
-
-        <input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 50px;">
-
-        <div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
-
+    <div>
+		<div class="img-voltar-detalhes col">
+			<a href="listaconferencia.php">
+				<aabr title="Voltar">
+					<button class="btn btn-back">
+						<img src="images/216446_arrow_left_icon.png">
+					</button>
+				</aabr>
+			</a>
+		</div>
+		<div class="form-row">
+			<div class="col">
+				<label for="codigodebarra">Cód. Barras: </label>
+				<input class="form-control" type="text" name="CODBAR" id='codigodebarra' required>
+			</div>
+			<div class="col">
+				<label for="quantidade">Quantidade: </label>
+				<input class="form-control" type="text" name="QUANTIDADE" id="quantidade" class="text">
+			</div>
+			<div class="col">
+				<label for="controle">Controle:</label>
+				<input class="form-control"  type="text" name="CONTROLE" id="controle" class="text">
+			</div>
+			<div class="btn-detalhes col">
+				<input class="btn btn-form" name="conferir" id="conferir" type="submit" value="Conferir">
+			</div>
+		</div>
     </div>
-
+	<br>
+	<hr>
 
 	<!-- Itens em Conferência-->
-	<div id="container" style="width:100%; height: 85%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
 
-		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin: 1%;">
-
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Itens em Conferência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
-
-
-
-			<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer;" onclick="confirmar_conf();">Finalizar Conferência</button>
-			<button style="cursor: hand; cursor: pointer;" onclick="abrirdivergencias();">Produtos Divergentes</button>
-
-			<?php
-
-			$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
-
-			$stmt2 = sqlsrv_query( $conn, $tsql2);
-
-			while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))
-			{
-				$auxiliar = $row2['contador'];
-
-			}
-
-			// echo '<script>window.alert("'.$auxiliar.'")</script>';
-
-			if($auxiliar > 0){
-				echo '<button id="btnPendencia" class="btnPendencia" onclick="abrirpendencias();">Pendências</button>';
-
-			}
-
-
-			?>
+	<div>
+		<div id="ItensConferencia" class="itensconferencia">
+			<div class="fixed">
+				<h4>Itens em Conferência</h4>
+			</div>
+			<div class="fixed btnconferencia form-row">
+				<div class="col">
+					<button class="btn btn-form" onclick="confirmar_conf();">Finalizar Conferência</button>
+				</div>
+				<div class="col">
+					<button class="btn btn-form" onclick="abrirdivergencias();">Produtos Divergentes</button>
+				</div>
+				
+				<?php
+					$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
+					$stmt2 = sqlsrv_query( $conn, $tsql2);
+	
+					while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))
+					{
+						$auxiliar = $row2['contador'];
+					}
+					// echo '<script>window.alert("'.$auxiliar.'")</script>';
+					if($auxiliar > 0){
+						echo '<div class="col">
+						<button id="btnPendencia" class="btn btnPendencia" onclick="abrirpendencias();">Pendências</button>
+						</div>';
+					}
+				?>
+				</div>
+			<div>
+			<div class="produtosconferencia" id="produtoconferencia">
+				<table id="table">
+					<thead>
+						<tr style="color: white;">
+							<th>Produto</th>
+							<th>Descrição do Produto</th>
+							<th>UN</th>
+							<th>Controle</th>
+							<th>Ref. do Forn.</th>
+							<th>Código de Barras</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
 
 			<div id="popupconf" class="popupconf">
 
@@ -396,7 +425,7 @@
 
 							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 							{ $NUCONF = $row2[0];
-							?>
+						?>
 
 							  <tr style="cursor: hand; cursor: pointer;">
 							   <tr>
@@ -529,26 +558,7 @@
 				POP UP Para Conferência Finalizada com Divergência (Corte)
 			-->
 
-		 <div style="overflow: auto; height: 83.5%;">
-
-		 	<div id="produtoconferencia">
-
-				<table width="1300" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="table">
-				  <tr>
-				    <th width="10.6%" >Produto</th>
-				    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
-				    <th width="10.6%" align="center">UN</th>
-				    <th width="12.6%" align="center">Controle</th>
-				    <th width="12.6%" align="center">Ref. do Forn.</th>
-				    <th width="16.6%" align="center">Código de Barras</th>
-
-
-				  </tr>
-				</table>
-
-			</div>
-
-	 	 </div>
+		
 
 		</div> <!-- Itens Conferência -->
 
@@ -655,8 +665,9 @@
 			}
 			?>
 			</table></div>
-			<div style="background-color: white ; position: absolute; top: 4px; width: 2000px; z-index: 10; height: 30px; margin-top:35px;">
-			<input type="submit" name="bulk_delete_submit" value="Apagar Item(ns) Selecionado(s)" style="position: absolute; top: 5px; margin-left: 0px; border-collor: white; width: 230px; text-align: left; border-radius: 5px; border-width: 1px; padding-top:1px;"></div>
+			<div>
+			<input type="submit" name="bulk_delete_submit" value="Apagar Item(ns) Selecionado(s)">
+			</div>
 
 		</form>
 		</div> <!-- Itens Conferidos -->
@@ -1022,6 +1033,7 @@
                 }
 			});
         }
+
 
         $('#confirmar').click(function () {
             finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val())

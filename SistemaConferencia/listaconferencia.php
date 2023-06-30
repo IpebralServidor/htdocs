@@ -105,12 +105,13 @@ else
 		?>
 
 	</div> <!-- Filtro -->
-
-	<div id="ListaConferencia" class="listaconferencia">
+	<div class="listaconferenciatext">
 		<p class="text-center">Lista de Conferência</p>
+	</div>
+	<div id="ListaConferencia" class="listaconferencia">
 		<table width="4000">
 		<thead>
-			<tr>
+			<tr style="color: white;">
 				<th>Nro. Único</font></th>
 				<th>Tipo Operação</font></th>
 				<th>Status Conferência</font></th>
