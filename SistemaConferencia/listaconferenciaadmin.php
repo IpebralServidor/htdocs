@@ -60,6 +60,45 @@ else
 	<script>
 		function abrirconferentes(){
 			document.getElementById('popupconferentes').style.display = 'block';
+
+
+			  // Adicionar evento de clique aos botões do conferente
+			  var btns = document.getElementsByClassName('conferente-btn');
+			  for (var i = 0; i < btns.length; i++) {
+			    btns[i].addEventListener('click', function() {
+			      //var nota = document.querySelector('input[name="select-all"]:checked').parentNode.nextElementSibling.innerHTML;
+			      var checkedCheckboxes = document.querySelectorAll('#ListaConferencia tbody .checkbox:checked');
+
+
+			      var user = this.getAttribute('data-user');
+
+			      var notas = "";
+
+			      for (var i = 0; i <= checkedCheckboxes.length; i++) {
+			      	var nota = checkedCheckboxes[i].getAttribute('data-nota');
+			      	//alert(nota + "/" + user);
+
+			      	notas = notas + nota + "/" + user;
+			      	//fazerUpdateNoBanco(nota, user);
+			      	if(i < checkedCheckboxes.length -1){
+			      		notas = notas + "-"
+			      	}
+
+			      	if(checkedCheckboxes.length = i){
+			      		//alert(notas);
+			      		fazerUpdateNoBanco(notas);
+			      	}
+			      }
+
+			      window.location.href='listaconferenciaadmin.php';
+			      window.location.href='listaconferencia.php';
+			      //alert(nota + " " + user);
+			      // console.log(nota);
+
+			    });
+			  }
+
+			
 		}
 		function fecharconferentes(){
 			document.getElementById('popupconferentes').style.display =  'none';
@@ -93,7 +132,7 @@ else
 	<div id="popupconferentes" class="popupconferentes">
 		<h4>Produtos com Divergência</h4>
 		<div >
-			<form action="action2.php">
+			<!-- <form action="action2.php"> -->
 				<table class="table-conferentes">
 					<thead>
 						<tr>
@@ -112,7 +151,9 @@ else
 					<tbody>
 						<tr>
 							<td>
-								<?php echo $row3[1]; ?>
+								<button class="conferente-btn" data-user="<?php echo $row3[0]; ?>">
+									<?php echo $row3[1]; ?>
+								</button>
 							</td>
 						</tr>
 					</tbody>
@@ -121,7 +162,7 @@ else
 						}
 					?>
 				</table>
-			</form>
+			<!-- </form> -->
 		</div>
 	</div>
 
@@ -236,7 +277,7 @@ else
 			<tbody>
 				<tr>
 					<td style="width: 3%;">
-						<input type="checkbox" name="id[<?php echo "$nunota2"; ?>]" class="checkbox"/>
+						<input type="checkbox" class="checkbox" data-nota="<?php echo $row2[0]; ?>"/>
 					</td> 
 					<td><?php echo $row2[0]; ?></td>
 					<td ><?php echo $row2[1]; ?></td>
@@ -273,7 +314,7 @@ else
 		</div><!-- ListaConferencia -->
 
 		<script>
-			function cadastrarnotas(notas, usuario)
+			function fazerUpdateNoBanco(notas)
 				{
 					
 
@@ -289,21 +330,20 @@ else
 								beforeSend: function () {
 									$("#cadastrarnotas").html("Carregando...");
 								},
-								data: {notas: notas, usuario: usuario},//Dados para consulta
+								data: {notas: notas},//Dados para consulta
 								//função que será executada quando a solicitação for finalizada.
 								success: function (msg)
 								{
-									$("#cadastrarnotas").html(msg);
+									//$("#cadastrarnotas").html(msg);
+									console.log('UPDATE executado com sucesso!');
+									alert(msg);
+									alert("Notas inseridas com sucesso!")
+			      			window.location.href='listaconferenciaadmin.php';
 								}
 							});
 				}
 
 
-				$('#atribuir').click(function () {
-
-					//verificar se como passar as notas e o usuario pelo Ajax, pois não será um form 
-					cadastrarnotas($("#notas").val(), $("#usuario"))
-				});
 		</script>
 </body>
 </html>
