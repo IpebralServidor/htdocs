@@ -396,7 +396,7 @@
 
 							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 							{ $NUCONF = $row2[0];
-							?>
+						?>
 
 							  <tr style="cursor: hand; cursor: pointer;">
 							   <tr>
@@ -930,66 +930,92 @@
         }
 
 
+        function ajaxinsereitens(codbarra, quantidade, controle, nunota){
+        	 //O método $.ajax(); é o responsável pela requisição
+				                $.ajax
+		                        ({
+		                            //Configurações
+		                            type: 'POST',//Método que está sendo utilizado.
+		                            dataType: 'html',//É o tipo de dado que a página vai retornar.
+		                            url: 'insereitem.php',//Indica a página que está sendo solicitada.
+		                            //função que vai ser executada assim que a requisição for enviada
+		                            beforeSend: function () {
+		                                //$("#itensconferidos").html("Carregando...");
+		                            },
+		                            data: {codbarra: codbarra, quantidade: quantidade, controle: controle, nunota: nunota},//Dados para consulta
+		                            //função que será executada quando a solicitação for finalizada.
+		                            success: function (msg)
+		                            {
+
+
+		                                if (msg == "Codigo de barras nao esta cadastrado!"){
+		                                	alert(msg);
+		                                	document.getElementById("quantidade").value = "";
+		                                	document.getElementById("codigodebarra").focus();
+		                                	document.getElementById("codigodebarra").select();
+		                                } else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!"){
+		                                	alert(msg);
+		                                	document.getElementById("quantidade").focus()
+		                                	document.getElementById("quantidade").select();
+		                                } else if (msg == "Produto nao existe na nota!"){
+		                                	alert(msg);
+		                                	document.getElementById("quantidade").value = "";
+		                                	document.getElementById("codigodebarra").focus();
+		                                	document.getElementById("codigodebarra").select();
+		                                } else if (msg == "Estoque insuficiente!"){
+		                                	alert(msg);
+		                                	document.getElementById("quantidade").focus()
+		                                	document.getElementById("quantidade").select();
+		                                } else {
+		                                $("#insereitem").html(msg);
+		                                //alert(msg);
+
+		                                 if(document.getElementById("codigodebarra").value === ""){
+							             	document.getElementById("codigodebarra").focus();
+							             }
+
+							             if(document.getElementById("quantidade").value != "1" ){
+							             		document.getElementById("codigodebarra").value = "";
+							             		document.getElementById("quantidade").value = "";
+							             		document.getElementById("codigodebarra").focus();
+							             }
+							             //else if(document.getElementById("codigodebarra").value != "" &&
+							            // 	   	  document.getElementById("quantidade").value == ""){
+							            // 	document.getElementById("codigodebarra").focus();
+							            // }
+
+										}
+		                            }
+		                        });
+        }
 
 
         function insereitens(codbarra, quantidade, controle, nunota)
             {
-                //O método $.ajax(); é o responsável pela requisição
-                $.ajax
-                        ({
-                            //Configurações
-                            type: 'POST',//Método que está sendo utilizado.
-                            dataType: 'html',//É o tipo de dado que a página vai retornar.
-                            url: 'insereitem.php',//Indica a página que está sendo solicitada.
-                            //função que vai ser executada assim que a requisição for enviada
-                            beforeSend: function () {
-                                //$("#itensconferidos").html("Carregando...");
-                            },
-                            data: {codbarra: codbarra, quantidade: quantidade, controle: controle, nunota: nunota},//Dados para consulta
-                            //função que será executada quando a solicitação for finalizada.
-                            success: function (msg)
-                            {
+		        $.ajax({
+		        type: 'POST',
+		        dataType: 'html',
+		        url: 'validacao.php',
+		        data: { codbarra: codbarra, quantidade: quantidade, controle: controle, nunota: nunota },
+		        success: function (validacao) {
+		            if (validacao === 'true') {
+		                // Condição de validação verdadeira, exibir confirm
+		                var confirmacao = confirm('Está passando quantidade a mais. Deseja continuar?');
+		                if (confirmacao) {
 
+				               ajaxinsereitens(codbarra, quantidade, controle, nunota);
 
-                                if (msg == "Codigo de barras nao esta cadastrado!"){
-                                	alert(msg);
-                                	document.getElementById("quantidade").value = "";
-                                	document.getElementById("codigodebarra").focus();
-                                	document.getElementById("codigodebarra").select();
-                                } else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!"){
-                                	alert(msg);
-                                	document.getElementById("quantidade").focus()
-                                	document.getElementById("quantidade").select();
-                                } else if (msg == "Produto nao existe na nota!"){
-                                	alert(msg);
-                                	document.getElementById("quantidade").value = "";
-                                	document.getElementById("codigodebarra").focus();
-                                	document.getElementById("codigodebarra").select();
-                                } else if (msg == "Estoque insuficiente!"){
-                                	alert(msg);
-                                	document.getElementById("quantidade").focus()
-                                	document.getElementById("quantidade").select();
-                                } else {
-                                $("#insereitem").html(msg);
+		                    } else {
+                    // Usuário cancelou, realizar outra ação se necessário
+	                }
+	            } else {
 
-                                 if(document.getElementById("codigodebarra").value === ""){
-					             	document.getElementById("codigodebarra").focus();
-					             }
+	                ajaxinsereitens(codbarra, quantidade, controle, nunota);
 
-					             if(document.getElementById("quantidade").value != "1" ){
-					             		document.getElementById("codigodebarra").value = "";
-					             		document.getElementById("quantidade").value = "";
-					             		document.getElementById("codigodebarra").focus();
-					             }
-					             //else if(document.getElementById("codigodebarra").value != "" &&
-					            // 	   	  document.getElementById("quantidade").value == ""){
-					            // 	document.getElementById("codigodebarra").focus();
-					            // }
-
-								}
-                            }
-                        });
-            }
+	            }
+	        }
+	    });
+     }
 
 
             $('#conferir').click(function () {
@@ -1022,6 +1048,7 @@
                 }
 			});
         }
+
 
         $('#confirmar').click(function () {
             finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val())
