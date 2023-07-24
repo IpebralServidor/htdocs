@@ -10,16 +10,16 @@ $nunota = $_POST['nunota'];
 //$qtd = sqlsrv_num_rows($query);
 ?>
 
-<section class="panel col-lg-9">
+<section class="produtosconferencia">
 
-				<table width="1300" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="table">
+			<table id="table">
 			  <tr> 
-			    <th width="10.6%" >Produto</th>
-			    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
-			    <th width="10.6%" align="center">UN</th>
-			    <th width="12.6%" align="center">Controle</th>
-			    <th width="12.6%" align="center">Ref. do Forn.</th>
-			    <th width="16.6%" align="center">Código de Barras</th>
+			    <th>Produto</th>
+			    <th>Descrição do Produto</th>
+			    <th>UN</th>
+			    <th>Controle</th>
+			    <th>Ref. do Forn.</th>
+			    <th>Código de Barras</th>
 
 
 			  </tr>

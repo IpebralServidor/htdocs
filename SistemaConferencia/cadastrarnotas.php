@@ -8,26 +8,19 @@ include "../conexaophp.php";
 if (isset($_POST['notas'])) {
   
 	$notas = $_POST['notas'];
+	$usuario = $_POST['usuario'];
 
-	$notasSeparadas = explode("-", $notas);
+	$notasSeparadas = explode("/", $notas);
+
 
 	for ($i = 0; $i < count($notasSeparadas); $i++) {
-		$nunota = substr($notasSeparadas[$i], 0, stripos($notasSeparadas[$i], "/"));
-  		$usuario = substr($notasSeparadas[$i], stripos($notasSeparadas[$i], "/")+1);
-  		
-    	echo "Nota " . ($i + 1) . ": " . $nunota . " Usuário: " . $usuario . "\n";
+		$nunota = $notasSeparadas[$i];
+
+		$tsql6 = "EXEC AD_STP_ATRIBUINOTA_CONFERENCIA $nunota, $usuario "; 
+		$stmt6 = sqlsrv_query( $conn, $tsql6);  
+		$row3 = sqlsrv_fetch_array( $stmt6, SQLSRV_FETCH_NUMERIC);
+		
 	}
-
-
-  
-
-  // Realizar a operação de UPDATE no banco de dados usando os dados recebidos
-  // ... seu código de conexão com o banco de dados e a query UPDATE ...
+	echo $row3[0];
 }
-
-
-
-
-
-
 ?>

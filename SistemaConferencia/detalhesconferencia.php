@@ -19,7 +19,6 @@
 	// if($codbarra == 0){
 	// 	$codbarra = '';
 	// }
-
 	$tsql2 = "  SELECT NUMNOTA,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODVEND) + ' - ' + APELIDO,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODPARC) + ' - ' + TRIM(RAZAOSOCIAL),
@@ -95,7 +94,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Detalhes Conferência - <?php echo $usuconf; echo $linhamarcada;?></title>
 
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
@@ -109,6 +110,19 @@
 <!-- start-smoth-scrolling -->
 <script type="text/javascript" src="js/move-top.js"></script>
 <script type="text/javascript" src="js/easing.js"></script>
+<script>
+	function pegarstatus(){
+		
+		var btn = document.getElementById('btnStatus');
+		btn.addEventListener('click', function() {
+		var status = this.getAttribute('data-valor');
+			iniciarpausa(status, <?php echo $nunota2 ?>);
+			window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>&codbarra=0';
+		});
+	}
+		
+</script>
+
 	<script type="text/javascript">
 			jQuery(document).ready(function($) {
 				$(".scroll").click(function(event){
@@ -123,6 +137,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<?php
+		$tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
+		$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
+		$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
+
 		$tsql2 = "  select COUNT(*)
 					from TGFITE inner join
 							TGFCAB ON TGFCAB.NUNOTA = TGFITE.NUNOTA FULL OUTER JOIN
@@ -159,9 +177,6 @@
 	?>
 
 	<script type="text/javascript">
-
-
-
 		$(document).ready(function(){
 	    $('#select_all').on('click',function(){
 	        if(this.checked){
@@ -276,7 +291,7 @@
 		</script>
 
 </head>
-<body id="bodyCss" style="width: 100%; margin: 0; height: 100%; overflow: hidden; position: absolute;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+<body class="body-detalhes" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
 	<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: fixed;">
 		<table width="100%" id="table">
 			<tr>
@@ -293,6 +308,7 @@
 				<strong>Vendedor: </strong> <?php echo $VENDEDOR ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 				<strong>Nro. Único: </strong> <?php echo $nunota2; ?> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 				<strong>Parceiro: </strong> <?php echo $PARCEIRO; ?>
+				
 
 		</span>
 	</div>
@@ -308,15 +324,40 @@
 
         <input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 50px;">
 
+		<?php
+			
+
+			if($rowStatus[0] == "A"){
+				$colorStatus = "green";
+				$valueStatus = "Em andamento";
+				$valueF = "Iniciar pausa";
+			}else if($rowStatus[0] == "P"){
+				$colorStatus = "yellow";
+				$valueStatus = "Em pausa";
+				$valueF = "Finalizar pausa";
+			}
+		?>
+		<button id="btnStatus" data-valor="<?php echo $rowStatus[0] ?>" onclick="pegarstatus();" style="margin-left: 50px;">
+			<?php echo $valueF ?>
+		</button>
+		<div style="margin-left: 75.5%; position: absolute;">
+			<strong>Status da conferência: </strong> <?php echo $valueStatus; ?>
+			<span style="height: 25px; width: 25px; background-color: <?php echo $colorStatus ?>; border-radius: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		</div>
+		
+		
         <div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
 
     </div>
 
+	
+
+
 
 	<!-- Itens em Conferência-->
-	<div id="container" style="width:100%; height: 85%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
+	<div id="container" style="width:100%; height: 80%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
 
-		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin: 1%;">
+		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin: 1%; margin-top: 50px;">
 
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Itens em Conferência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
 
@@ -558,7 +599,7 @@
 
 		<!-- Itens Conferidos-->
 
-		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0; margin: 1%; overflow: hidden;">
+		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0; margin: 1%;  margin-top: 50px;overflow: hidden;">
 
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens Conferidos</h4><h4 style="width: 6%; color: black; display: inline-block; margin-bottom:0; text-align: center;padding-bottom: 1px; "><?php
 				$tsql2 = "  DECLARE @NUNOTA INT = $nunota2
@@ -655,7 +696,7 @@
 			}
 			?>
 			</table></div>
-			<div style="background-color: white ; position: absolute; top: 4px; width: 2000px; z-index: 10; height: 30px; margin-top:35px;">
+			<div style="position: absolute; top: 0px; width: 2000px; z-index: 10; height: 30px; margin-top:20px;">
 			<input type="submit" name="bulk_delete_submit" value="Apagar Item(ns) Selecionado(s)" style="position: absolute; top: 5px; margin-left: 0px; border-collor: white; width: 230px; text-align: left; border-radius: 5px; border-width: 1px; padding-top:1px;"></div>
 
 		</form>
@@ -930,97 +971,92 @@
         }
 
 
-        function ajaxinsereitens(codbarra, quantidade, controle, nunota){
+		function iniciarpausa(status, nota)
+		{
+			//O método $.ajax(); é o responsável pela requisição
+			$.ajax
+				({
+					//Configurações
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'iniciarpausa.php',//Indica a página que está sendo solicitada.
+					//função que vai ser executada assim que a requisição for enviada
+					beforeSend: function () {
+						$("#iniciarpausa").html("Carregando...");
+					},
+					data: {status: status, nota: nota},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+					}
+				});
+		}
+
+
+        function insereitens(codbarra, quantidade, controle, nunota){
         	 //O método $.ajax(); é o responsável pela requisição
-				                $.ajax
-		                        ({
-		                            //Configurações
-		                            type: 'POST',//Método que está sendo utilizado.
-		                            dataType: 'html',//É o tipo de dado que a página vai retornar.
-		                            url: 'insereitem.php',//Indica a página que está sendo solicitada.
-		                            //função que vai ser executada assim que a requisição for enviada
-		                            beforeSend: function () {
-		                                //$("#itensconferidos").html("Carregando...");
-		                            },
-		                            data: {codbarra: codbarra, quantidade: quantidade, controle: controle, nunota: nunota},//Dados para consulta
-		                            //função que será executada quando a solicitação for finalizada.
-		                            success: function (msg)
-		                            {
+			$.ajax
+			({
+				//Configurações
+				type: 'POST',//Método que está sendo utilizado.
+				dataType: 'html',//É o tipo de dado que a página vai retornar.
+				url: 'insereitem.php',//Indica a página que está sendo solicitada.
+				//função que vai ser executada assim que a requisição for enviada
+				beforeSend: function () {
+					//$("#itensconferidos").html("Carregando...");
+				},
+				data: {codbarra: codbarra, quantidade: quantidade, controle: controle, nunota: nunota},//Dados para consulta
+				//função que será executada quando a solicitação for finalizada.
+				success: function (msg)
+				{
 
 
-		                                if (msg == "Codigo de barras nao esta cadastrado!"){
-		                                	alert(msg);
-		                                	document.getElementById("quantidade").value = "";
-		                                	document.getElementById("codigodebarra").focus();
-		                                	document.getElementById("codigodebarra").select();
-		                                } else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!"){
-		                                	alert(msg);
-		                                	document.getElementById("quantidade").focus()
-		                                	document.getElementById("quantidade").select();
-		                                } else if (msg == "Produto nao existe na nota!"){
-		                                	alert(msg);
-		                                	document.getElementById("quantidade").value = "";
-		                                	document.getElementById("codigodebarra").focus();
-		                                	document.getElementById("codigodebarra").select();
-		                                } else if (msg == "Estoque insuficiente!"){
-		                                	alert(msg);
-		                                	document.getElementById("quantidade").focus()
-		                                	document.getElementById("quantidade").select();
-		                                } else {
-		                                $("#insereitem").html(msg);
-		                                //alert(msg);
+					if (msg == "Codigo de barras nao esta cadastrado!"){
+						alert(msg);
+						document.getElementById("quantidade").value = "";
+						document.getElementById("codigodebarra").focus();
+						document.getElementById("codigodebarra").select();
+					} else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!"){
+						alert(msg);
+						document.getElementById("quantidade").focus()
+						document.getElementById("quantidade").select();
+					} else if (msg == "Produto nao existe na nota!"){
+						alert(msg);
+						document.getElementById("quantidade").value = "";
+						document.getElementById("codigodebarra").focus();
+						document.getElementById("codigodebarra").select();
+					} else if (msg == "Estoque insuficiente!"){
+						alert(msg);
+						document.getElementById("quantidade").focus()
+						document.getElementById("quantidade").select();
+					} else {
+					$("#insereitem").html(msg);
+					//alert(msg);
 
-		                                 if(document.getElementById("codigodebarra").value === ""){
-							             	document.getElementById("codigodebarra").focus();
-							             }
+						if(document.getElementById("codigodebarra").value === ""){
+						document.getElementById("codigodebarra").focus();
+						}
 
-							             if(document.getElementById("quantidade").value != "1" ){
-							             		document.getElementById("codigodebarra").value = "";
-							             		document.getElementById("quantidade").value = "";
-							             		document.getElementById("codigodebarra").focus();
-							             }
-							             //else if(document.getElementById("codigodebarra").value != "" &&
-							            // 	   	  document.getElementById("quantidade").value == ""){
-							            // 	document.getElementById("codigodebarra").focus();
-							            // }
+						if(document.getElementById("quantidade").value != "1" ){
+							document.getElementById("codigodebarra").value = "";
+							document.getElementById("quantidade").value = "";
+							document.getElementById("codigodebarra").focus();
+						}
+						//else if(document.getElementById("codigodebarra").value != "" &&
+					// 	   	  document.getElementById("quantidade").value == ""){
+					// 	document.getElementById("codigodebarra").focus();
+					// }
 
-										}
-		                            }
-		                        });
+					}
+				}
+			});
         }
+		$('#conferir').click(function () {
+			insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
+		});
 
 
-        function insereitens(codbarra, quantidade, controle, nunota)
-            {
-		        $.ajax({
-		        type: 'POST',
-		        dataType: 'html',
-		        url: 'validacao.php',
-		        data: { codbarra: codbarra, quantidade: quantidade, controle: controle, nunota: nunota },
-		        success: function (validacao) {
-		            if (validacao === 'true') {
-		                // Condição de validação verdadeira, exibir confirm
-		                var confirmacao = confirm('Está passando quantidade a mais. Deseja continuar?');
-		                if (confirmacao) {
-
-				               ajaxinsereitens(codbarra, quantidade, controle, nunota);
-
-		                    } else {
-                    // Usuário cancelou, realizar outra ação se necessário
-	                }
-	            } else {
-
-	                ajaxinsereitens(codbarra, quantidade, controle, nunota);
-
-	            }
-	        }
-	    });
-     }
-
-
-            $('#conferir').click(function () {
-                insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
-            });
+       
 
         function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao)
         {
@@ -1110,6 +1146,8 @@
             $('#conferir').click(function () {
                 produtoconferencia($("#codigodebarra").val(), <?php echo $nunota2; ?>)
             });
+		
+		
 
 
         function imagemproduto(codigodebarra)
@@ -1186,8 +1224,7 @@
             		}
             	}
 
-            });
-
+        });		
 var codbarselecionado = "<?php echo $codbarraselecionado; ?>";
 
 if (codbarselecionado != 0){

@@ -17,8 +17,8 @@ table tr:nth-child(odd) td {
 }
 
 tr{transition:all .25s ease-in-out}
-tr:hover{background-color:#FFFF95;cursor: pointer}
-tr:active{background-color: yellow;}
+tr:hover{background-color:#FFFF95;cursor: pointer !important}
+tr:active{background-color: yellow !important;}
 
 /**Cor quando selecionado**/
 #minhaTabela tr.selecionado td{
@@ -266,8 +266,8 @@ border-top: solid 5px #e54e43;
 .listaconferencia tr:hover{
 	background-color: rgb(231, 228, 20) !important;
 }
-.listaconferencia td{
-	width: 6.6%;
+.listaconferencia tabel td{
+	max-width: 0.1% !important;
 }
 .listaconferencia thead{
 	background-color: #3a6070;
@@ -465,8 +465,23 @@ border-top: solid 5px #e54e43;
 	display: none;
 	z-index: 999;
 	overflow: auto;
-	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px ;
 }
 .popupconferentes h4{
 	text-align: center;
+}
+#loader{
+	position: fixed;
+	z-index: 99999;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	background: 50% 50% no-repeat rgb(15 10 10/50%);
+}
+#loader img{
+	position: absolute;
+  	top: 30%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);;
 }

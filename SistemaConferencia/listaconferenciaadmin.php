@@ -61,44 +61,40 @@ else
 		function abrirconferentes(){
 			document.getElementById('popupconferentes').style.display = 'block';
 
+			// Adicionar evento de clique aos botões do conferente
+			var btns = document.getElementsByClassName('conferente-btn');
+			for (var i = 0; i < btns.length; i++) {
+				btns[i].addEventListener('click', function() {
+				//var nota = document.querySelector('input[name="select-all"]:checked').parentNode.nextElementSibling.innerHTML;
+				var checkedCheckboxes = document.querySelectorAll('#ListaConferencia tbody .checkbox:checked');
 
-			  // Adicionar evento de clique aos botões do conferente
-			  var btns = document.getElementsByClassName('conferente-btn');
-			  for (var i = 0; i < btns.length; i++) {
-			    btns[i].addEventListener('click', function() {
-			      //var nota = document.querySelector('input[name="select-all"]:checked').parentNode.nextElementSibling.innerHTML;
-			      var checkedCheckboxes = document.querySelectorAll('#ListaConferencia tbody .checkbox:checked');
+				if(checkedCheckboxes[0] == null){
+					alert('Selecione pelo menos uma nota');
+				}else{
 
+					var user = this.getAttribute('data-user');
 
-			      var user = this.getAttribute('data-user');
+					var notas = "";
 
-			      var notas = "";
+					for (var i = 0; i < checkedCheckboxes.length; i++) {
+						var nota = checkedCheckboxes[i].getAttribute('data-nota');
+						//alert(nota + "/" + user);
+						notas += nota;
 
-			      for (var i = 0; i <= checkedCheckboxes.length; i++) {
-			      	var nota = checkedCheckboxes[i].getAttribute('data-nota');
-			      	//alert(nota + "/" + user);
+						if(i < checkedCheckboxes.length -1){
+							notas += "/"
+						}
+					}
 
-			      	notas = notas + nota + "/" + user;
-			      	//fazerUpdateNoBanco(nota, user);
-			      	if(i < checkedCheckboxes.length -1){
-			      		notas = notas + "-"
-			      	}
+					fazerUpdateNoBanco(notas, user);
 
-			      	if(checkedCheckboxes.length = i){
-			      		//alert(notas);
-			      		fazerUpdateNoBanco(notas);
-			      	}
-			      }
+				};
 
-			      window.location.href='listaconferenciaadmin.php';
-			      window.location.href='listaconferencia.php';
-			      //alert(nota + " " + user);
-			      // console.log(nota);
+				window.location.href='listaconferenciaadmin.php';
+				$("#aplicar").click();
 
-			    });
-			  }
-
-			
+				});
+			}
 		}
 		function fecharconferentes(){
 			document.getElementById('popupconferentes').style.display =  'none';
@@ -108,6 +104,9 @@ else
 
 </head>
 <body class="background-lista">
+	<div id="loader" style="display: none;">
+		<img style=" width: 150px;" src="images/soccer-ball-joypixels.gif">
+	</div>
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -130,39 +129,38 @@ else
 	</div>
 
 	<div id="popupconferentes" class="popupconferentes">
-		<h4>Produtos com Divergência</h4>
+		<h4>Lista de conferentes</h4>
 		<div >
-			<!-- <form action="action2.php"> -->
-				<table class="table-conferentes">
-					<thead>
-						<tr>
-							<th>Conferentes</th>
-						</tr>
-					</thead>
+			<table class="table-conferentes">
+				<thead>
+					<tr>
+						<th>Conferentes</th>
+					</tr>
+				</thead>
 
-					<?php 
-						$tsql3 = "SELECT CODUSU, NOMEUSU FROM TSIUSU ORDER BY NOMEUSU ";
+				<?php 
+					$tsql3 = "SELECT CODUSU, NOMEUSU FROM TSIUSU ORDER BY NOMEUSU ";
 
-						$stmt3 = sqlsrv_query( $conn, $tsql3);  
-						$row_count = sqlsrv_num_rows( $stmt3 ); 
-						while( $row3 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))
-						{
-					?>
-					<tbody>
-						<tr>
-							<td>
-								<button class="conferente-btn" data-user="<?php echo $row3[0]; ?>">
-									<?php echo $row3[1]; ?>
-								</button>
-							</td>
-						</tr>
-					</tbody>
-					
-					<?php
-						}
-					?>
-				</table>
-			<!-- </form> -->
+					$stmt3 = sqlsrv_query( $conn, $tsql3);  
+					$row_count = sqlsrv_num_rows( $stmt3 ); 
+					while( $row3 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))
+					{
+				?>
+				<tbody>
+					<tr>
+						<td>
+							<button class="conferente-btn" data-user="<?php echo $row3[0]; ?>">
+								<?php echo $row3[1]; ?>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+				
+				<?php
+					}
+				?>
+			</table>
+			<button class="fechar" onclick="fecharconferentes();">X</button>
 		</div>
 	</div>
 
@@ -190,6 +188,7 @@ else
 				<label for="status">Status:</label>
 				<select name="status" class="form-control">
 					<option value= "todos">Todos</option>
+					<option value= "todosnaoconfirmadas">Todos + 172X NÃO confirmadas</option>
 					<option value= "aguardandoconf">Aguardando Conferência</option>
 					<option value= "emandamento">Em Andamento</option>
 					<option value= "aguardandorecont">Aguardando Recontagem</option>
@@ -201,7 +200,7 @@ else
 				<input type="text" class="form-control" name="parceiro" class="text">
 			</div>				
 			<div class="form-group">
-				<input name="aplicar" class="btn btn-form"  type="submit" value="Aplicar">
+				<input id="aplicar" name="aplicar" class="btn btn-form"  type="submit" value="Aplicar">
 			</div>
 		</form>
 		
@@ -228,7 +227,7 @@ else
 
 			$status = $_POST["status"];
 
-			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf)";
+			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf) ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
 
 			}
 
@@ -251,10 +250,13 @@ else
 		<table width="4000">
 			<thead>			
 				<tr style="color: white;">
-					<th><input type="checkbox" name="select-all" id="select_all" value=""/></font></th>
-					<th>Nro. Único</font></th>
-					<th>Tipo Operação</font></th>
-					<th>Status Conferência</font></th>
+					<th ><input type="checkbox" name="select-all" id="select_all" value=""/></font></th>
+					<th>Nome (Conferente)</th>
+					<th>Cod conferente</th>
+					<th>Nro. Único</th>
+					<th>Tipo Operação</th>
+					<th>Status Separação</th>
+					<th>Status Conferência</th>
 					<th>Parceiro</th>
 					<th>Dt. do Movimento</th>
 					<th>Nro. Nota</th>
@@ -265,7 +267,7 @@ else
 					<th>Sequência da Carga</th>
 					<th>Qtd. Volumes</th>
 					<th>Cód. Conferente</th>
-					<th>Nome (Conferente)</th>
+					<th></th>
 				</tr>
 			</thead>
 
@@ -275,24 +277,41 @@ else
 			?>
 
 			<tbody>
-				<tr>
-					<td style="width: 3%;">
+				<?php
+					if($row2[1] == 1780 || $row2[1] == 1781 || $row2[1] == 1782){
+						$color = "white";
+					}else if(utf8_encode($row2[16]) == 'Separação em andamento'){
+						$color = "#FFFF95;";	
+					}else if(utf8_encode($row2[16]) == 'Separação não iniciada'){
+						$color = "#ff9595;";
+					}else if(utf8_encode($row2[16]) == 'Separação em pausa'){
+						$color = "#9c95ff;";
+					}else if(utf8_encode($row2[16]) == 'Separação concluída'){
+						$color = "#8fffb1";
+					}
+				?>
+				<tr style="background-color:<?php echo $color ?>">
+					
+					<td style="width: 0.1%;">
 						<input type="checkbox" class="checkbox" data-nota="<?php echo $row2[0]; ?>"/>
 					</td> 
-					<td><?php echo $row2[0]; ?></td>
-					<td ><?php echo $row2[1]; ?></td>
-					<td ><?php echo $row2[2]; ?></td>
-					<td ><?php echo $row2[3]; ?></td>
-					<td ><?php echo $row2[4]; ?></td>
-					<td ><?php echo $row2[6]; ?></td>
-					<td ><?php echo $row2[7]; ?></td>
-					<td ><?php echo $row2[8]; ?></td>
-					<td ><?php echo $row2[9]; ?></td>
-					<td ><?php echo $row2[10]; ?></td>
-					<td ><?php echo $row2[11]; ?></td>
-					<td ><?php echo $row2[12]; ?></td>
-					<td ><?php echo $row2[13]; ?></td>
-					<td ><?php echo $row2[14]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[14]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[15]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[0]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[1]; ?></td>
+					<td style="width: 30px;"><?php echo utf8_encode($row2[16]); ?></td>
+					<td style="width: 30px;"><?php echo $row2[2]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[3]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[4]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[6]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[7]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[8]; ?></td>
+					<td style="width: 30px;"><?php echo utf8_encode($row2[9]); ?></td>
+					<td style="width: 30px;"><?php echo $row2[10]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[11]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[12]; ?></td>
+					<td style="width: 30px;"><?php echo $row2[13]; ?></td>
+					<td ></td>
 				</tr> 
 			</tbody>
 
@@ -314,35 +333,32 @@ else
 		</div><!-- ListaConferencia -->
 
 		<script>
-			function fazerUpdateNoBanco(notas)
+			function fazerUpdateNoBanco(notas, usuario)
 				{
-					
-
-
 					//O método $.ajax(); é o responsável pela requisição
 					$.ajax
-							({
-								//Configurações
-								type: 'POST',//Método que está sendo utilizado.
-								dataType: 'html',//É o tipo de dado que a página vai retornar.
-								url: 'cadastrarnotas.php',//Indica a página que está sendo solicitada.
-								//função que vai ser executada assim que a requisição for enviada
-								beforeSend: function () {
-									$("#cadastrarnotas").html("Carregando...");
-								},
-								data: {notas: notas},//Dados para consulta
-								//função que será executada quando a solicitação for finalizada.
-								success: function (msg)
-								{
-									//$("#cadastrarnotas").html(msg);
-									console.log('UPDATE executado com sucesso!');
-									alert(msg);
-									alert("Notas inseridas com sucesso!")
-			      			window.location.href='listaconferenciaadmin.php';
-								}
-							});
-				}
-
+					({
+						//Configurações
+						type: 'POST',//Método que está sendo utilizado.
+						dataType: 'html',//É o tipo de dado que a página vai retornar.
+						url: 'cadastrarnotas.php',//Indica a página que está sendo solicitada.
+						//função que vai ser executada assim que a requisição for enviada
+						beforeSend: function () {
+						$("#loader").show();
+						},
+						complete: function(){
+							$("#loader").hide();
+						},
+						data: {notas: notas, usuario: usuario},//Dados para consulta
+						//função que será executada quando a solicitação for finalizada.
+						success: function (msg)
+						{
+							alert(msg);
+							window.location.href='listaconferenciaadmin.php';
+							
+						}
+					});
+			}
 
 		</script>
 </body>
