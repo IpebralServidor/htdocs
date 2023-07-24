@@ -26,6 +26,21 @@ include 'nav.php';
 
 	<div class="containerMenu">
 		<div class="conteudoMenu">
+			<?php 
+				$codusu = $_SESSION["idUsuario"];
+
+				$tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA
+							FROM TSIUSU 
+							WHERE CODUSU = $codusu";
+
+				$stmtAdmin = sqlsrv_query( $conn, $tsqlAdmin);  
+				$row_countAdmin = sqlsrv_fetch_array( $stmtAdmin, SQLSRV_FETCH_NUMERIC);
+				
+				if($row_countAdmin[0] == 'A'){
+					echo "<a href='./SistemaConferencia/listaconferenciaadmin.php'><button class='botao1'>CONFERÊNCIA <br> ADMIN</button></a>";
+				}
+			?>
+			
 			<a href="./SistemaConferencia/listaconferencia.php"><button class="botao1">CONFERÊNCIA</button></a>
 			<a href="./SistemaEstoque"><button class="botao1">COLETOR</button></a>
 			<a href="./ConsultaEstoque"><button>CONSULTA EST.</button></a>
