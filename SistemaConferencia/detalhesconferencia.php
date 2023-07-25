@@ -315,14 +315,14 @@
 
     <div style="margin-left: 30px; margin-top: 4.8%; position: fixed;">
 
-		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 40px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
-        Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' style="margin-right: 30px;" required>
+		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 65px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
+        Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' required>
 
-        Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" style="margin-right: 30px; text-align: left;">
+        Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" size="5" style="text-align: left;">
 
-        Controle: <input type="text" name="CONTROLE" id="controle" class="text">
+        Controle: <input type="text" name="CONTROLE" size="10" id="controle" class="text">
 
-        <input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 50px;">
+        <input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 30px;">
 
 		<?php
 			
@@ -337,13 +337,11 @@
 				$valueF = "Finalizar pausa";
 			}
 		?>
-		<button id="btnStatus" data-valor="<?php echo $rowStatus[0] ?>" onclick="pegarstatus();" style="margin-left: 50px;">
+		<button id="btnStatus" data-valor="<?php echo $rowStatus[0] ?>" onclick="pegarstatus();">
 			<?php echo $valueF ?>
 		</button>
-		<div style="margin-left: 75.5%; position: absolute;">
-			<strong>Status da conferência: </strong> <?php echo $valueStatus; ?>
+			<strong style="margin-left: 50px;">Conferência: </strong> <?php echo $valueStatus; ?>
 			<span style="height: 25px; width: 25px; background-color: <?php echo $colorStatus ?>; border-radius: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-		</div>
 		
 		
         <div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
@@ -355,17 +353,18 @@
 
 
 	<!-- Itens em Conferência-->
-	<div id="container" style="width:100%; height: 80%; position: absolute; bottom: 0; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
+	<div id="container" style="width:100%; height: 80%; position: absolute; margin-top: 65px; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
 
 		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin: 1%; margin-top: 50px;">
 
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Itens em Conferência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
-
-
-
-			<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer;" onclick="confirmar_conf();">Finalizar Conferência</button>
-			<button style="cursor: hand; cursor: pointer;" onclick="abrirdivergencias();">Produtos Divergentes</button>
-
+			<div style="background-color: #ADADC7" class="d-flex justify-content-around">
+				<div>
+					<h4 style="margin: 0 !important; ">Itens em Conferência</h4>
+				</div>
+				<div class="d-flex justify-content-around">
+					<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
+					<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
+				</div>
 			<?php
 
 			$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
@@ -387,7 +386,7 @@
 
 
 			?>
-
+			</div>
 			<div id="popupconf" class="popupconf">
 
 				<div style="margin-top: -10px; text-align: center;width: 100%">
@@ -395,7 +394,7 @@
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;">
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;">
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;">
-                    <br>Observação: <textarea id="observacao" cols="30" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;"><?php echo $OBSERVACAO; ?></textarea>
+                    <br>Observação: <textarea id="observacao" cols="20" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;"><?php echo $OBSERVACAO; ?></textarea>
 
 
 					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" style="cursor: hand; cursor: pointer; margin-top: 2%;">
@@ -417,7 +416,7 @@
                         <i class='bx bx-x'></i>
                     </div>-->
 
-				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Produtos com Divergência</h4><h4 style="width:6%; display: inline-block; margin-bottom:0; text-align: center;"></h4>
+				<h6 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display:inline-block;">Produtos com Divergência</h6>
 				<div style=" width: 98%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
 					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
 						  <tr>
@@ -599,9 +598,9 @@
 
 		<!-- Itens Conferidos-->
 
-		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0; margin: 1%;  margin-top: 50px;overflow: hidden;">
+		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0;;  margin-top: 50px;">
 
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens Conferidos</h4><h4 style="width: 6%; color: black; display: inline-block; margin-bottom:0; text-align: center;padding-bottom: 1px; "><?php
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; width: 90%; display: inline-block;">Itens Conferidos</h4><h4 style="width: 6%; color: black; display: inline-block; margin-bottom:0; text-align: center;padding-bottom: 1px; "><?php
 				$tsql2 = "  DECLARE @NUNOTA INT = $nunota2
 							DECLARE @NUCONF INT = (SELECT NUCONFATUAL from TGFCAB where NUNOTA = @NUNOTA)
 
@@ -622,8 +621,8 @@
 
 
 		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();"/>
-		<div style="overflow: auto; height: 92%; width: 109.5%;" id="itensconferidos">
-			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 30px; margin-left: 7px;" id="table">
+		<div style="overflow: auto; height: 83%; width: 109.5%;" id="itensconferidos">
+			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 12px;" id="table">
 			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
 			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th>
 			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
@@ -696,8 +695,9 @@
 			}
 			?>
 			</table></div>
-			<div style="position: absolute; top: 0px; width: 2000px; z-index: 10; height: 30px; margin-top:20px;">
-			<input type="submit" name="bulk_delete_submit" value="Apagar Item(ns) Selecionado(s)" style="position: absolute; top: 5px; margin-left: 0px; border-collor: white; width: 230px; text-align: left; border-radius: 5px; border-width: 1px; padding-top:1px;"></div>
+			<div>
+				<button type="submit" name="bulk_delete_submit" style="position: absolute; margin-top: -236px; margin-left: 380px;">Apagar Item(ns) Selecionado(s)</button>
+			</div>
 
 		</form>
 		</div> <!-- Itens Conferidos -->
@@ -831,7 +831,7 @@
 											  ?></h4>
 
 			<!--<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer; " >Espaço</button> -->
-			<div style="overflow: auto; width: 100%; height: 95%;" >
+			<div style="overflow: auto; width: 100%;" >
 			<table width="2000" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="minhaTabela">
 			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
 			    <!--<th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Referência&nbsp;</font></th>-->

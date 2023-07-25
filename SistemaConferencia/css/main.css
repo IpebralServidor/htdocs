@@ -61,7 +61,7 @@ tr:active{background-color: yellow !important;}
 	top: 0; bottom: 0; 
 	left: 0; right:0;
 	margin: auto;
-	width: 250px;
+	width: 450px;
 	height: 300px;
 	padding: 15px;
 	border: solid 1px #4c4d4f;
@@ -73,15 +73,9 @@ tr:active{background-color: yellow !important;}
 
 
 .popupconfdivergencia {
-	position: fixed;
-	top: 0; bottom: 0; 
-	left: 0; right:0;
-	margin: auto;
 	width: 450px;
-	height: 160px;
+	height: 650px;
 	padding: 15px;
-	border: solid 1px #4c4d4f;
-	background: white;
 	display: none;
 	z-index: 9999;
 }
@@ -92,7 +86,7 @@ tr:active{background-color: yellow !important;}
 	left: 0; right:0;
 	margin: auto;
 	width: 450px;
-	height: 160px;
+	height: 260px;
 	padding: 15px;
 	border: solid 1px #4c4d4f;
 	background: white;
@@ -207,6 +201,7 @@ border-top: solid 5px #e54e43;
 	color: white;
   	background-color: #e54e43 !important;
   	border: solid #e54e43 1px !important;
+	font-size: 13px;
 }
 .filtro{
 	text-align: center;
@@ -484,4 +479,8 @@ border-top: solid 5px #e54e43;
   	top: 30%;
   	left: 50%;
   	transform: translate(-50%, -50%);;
+}
+
+.d-flex{
+	background-color: #ADADC7 !important;
 }
