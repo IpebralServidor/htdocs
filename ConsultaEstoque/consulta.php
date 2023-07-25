@@ -42,7 +42,8 @@ $referencia = $_POST['REFERENCIA'];
 							PRO.REFERENCIA,
 							PRO.DESCRPROD,
 							PRO.AD_QTDMAXLOCAL,
-							round(MDV.MEDIA6,2) AS MEDIA
+							round(MDV.MEDIA6,2) AS MEDIA,
+							AGRUPMIN
 					FROM TGFPRO PRO inner join
 							TGFBAR BAR ON BAR.CODPROD = PRO.CODPROD LEFT JOIN
 							TGFEST EST ON EST.CODPROD = PRO.CODPROD 
@@ -61,6 +62,7 @@ $referencia = $_POST['REFERENCIA'];
 				  $descrprod = $row2[2];
 				  $qtdmaxlocal = $row2[3];
 				  $mediavenda = $row2[4];
+				  $agrupmin = $row2[5];
 				}
 
 				/*echo '<span class="infoprodutotext">Parc: {$codparcorig}</span><br>';
@@ -77,6 +79,7 @@ $referencia = $_POST['REFERENCIA'];
 			<span class="infoprodutotext"><b>Descrição Produto:</b> <?php if(!isset($descrprod)){ echo '';} else { echo $descrprod;} ?></span><br>
 			<span class="infoprodutotext"><b>Qtd. Máx. Local:</b> <?php if(!isset($qtdmaxlocal)){ echo '';} else { echo $qtdmaxlocal;} ?></span><br>
 			<span class="infoprodutotext"><b>Média Venda:</b> <?php if(!isset($mediavenda)){ echo '';} else { echo $mediavenda;} ?></span><br>
+			<span class="infoprodutotext"><b>Agrup. Mínimo:</b> <?php if(!isset($agrupmin)){ echo '';} else { echo $agrupmin;} ?></span><br>
 		</div>
 	</div> <!-- Fim infoproduto -->
 
