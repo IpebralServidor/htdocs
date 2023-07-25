@@ -322,7 +322,7 @@
 
         Controle: <input type="text" name="CONTROLE" size="10" id="controle" class="text">
 
-        <input name="conferir" id="conferir" type="submit" value="Conferir" style="margin-left: 30px;">
+        <button name="conferir" id="conferir" type="submit" value="" style="margin-left: 30px;">Conferir</button>
 
 		<?php
 			
