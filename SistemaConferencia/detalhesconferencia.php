@@ -313,7 +313,7 @@
 		</span>
 	</div>
 
-    <div style="margin-left: 30px; margin-top: 4.8%; position: fixed;">
+    <div style="margin-left: 30px; margin-top: 4.8%; position: fixed; z-index: 99999;">
 
 		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 65px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
         Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' required>
@@ -355,7 +355,7 @@
 	<!-- Itens em Conferência-->
 	<div id="container" style="width:100%; height: 80%; position: absolute; margin-top: 65px; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
 
-		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin: 1%; margin-top: 50px;">
+		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin-left: 1%; margin-top: 50px;">
 
 			<div style="background-color: #ADADC7" class="d-flex justify-content-around">
 				<div>
@@ -569,11 +569,11 @@
 				POP UP Para Conferência Finalizada com Divergência (Corte)
 			-->
 
-		 <div style="overflow: auto; height: 83.5%;">
+		 <div style="overflow: auto; height: 86%;">
 
 		 	<div id="produtoconferencia">
 
-				<table width="1300" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="table">
+				<table width="1300" border="1px" bordercolor="black" style="margin-top: 5px;" id="table">
 				  <tr>
 				    <th width="10.6%" >Produto</th>
 				    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
@@ -621,24 +621,24 @@
 
 
 		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();"/>
-		<div style="overflow: auto; height: 83%; width: 109.5%;" id="itensconferidos">
-			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 12px;" id="table">
-			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
-			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th>
-			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
-			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Produto</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qtd. Conf.</font></th>
-			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Cód. Barras</font></th>
-			    <th width="17%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Descrição (Produto)</font></th>
-			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">UN</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Controle</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qth. Un. Pad.</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Complemento</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Ref. Forn.</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Marca</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qth. Ident.</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Tip. Ident.</font></th>
-			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Tip. Contr. Est.</font></th>
+		<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
+			<table width="2300" border="1px" bordercolor="black" style="margin-top: 5px;" id="table">
+			  <tr>
+			  	<th><input type="checkbox" id="select_all" value=""/></th>
+			    <th>Referência</th>
+			    <th>Produto</th>
+			    <th>Qtd. Conf.</th>
+			    <th>Cód. Barras</th>
+			    <th>Descrição (Produto)</th>
+			    <th>UN</th>
+			    <th>Controle</th>
+			    <th>Qth. Un. Pad.</th>
+			    <th>Complemento</th>
+			    <th>Ref. Forn.</th>
+			    <th>Marca</th>
+			    <th>Qth. Ident.</th>
+			    <th>Tip. Ident.</th>
+			    <th>Tip. Contr. Est.</th>
 			  </tr>
 
 			<?php
@@ -696,7 +696,7 @@
 			?>
 			</table></div>
 			<div>
-				<button type="submit" name="bulk_delete_submit" style="position: absolute; margin-top: -236px; margin-left: 380px;">Apagar Item(ns) Selecionado(s)</button>
+				<button type="submit" name="bulk_delete_submit" style="font-size: 13px; position: absolute; margin-top: -242px; margin-left: 300px;">Apagar Item(ns) Selecionado(s)</button>
 			</div>
 
 		</form>
@@ -705,7 +705,7 @@
 
 
 		<!-- Imagem e Consulta de Produtos -->
-		<div id="Imagem do Produto" style="width: 48%; height: 43%; /*background-color: #D9DAFA;*/ display: inline-block; overflow: hidden; margin: 1%; ">
+		<div id="Imagem do Produto" style="width: 48%; height: 43%; /*background-color: #D9DAFA;*/ display: inline-block; overflow: hidden; margin-left: 1%; ">
 
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 100%; text-align:center;">Informações do Produto</h4>
 
@@ -805,7 +805,7 @@
 
 
 
-		<div id="Itens do Pedido" style="width: 48%; height:43%; /*background-color: red;*/ display: inline-block; float: right;  margin-top: -200px; margin: 1%; overflow: hidden; margin-left: 0;">
+		<div id="Itens do Pedido" style="width: 48%; height:43%; /*background-color: red;*/ display: inline-block; float: right; margin-left: 1%; overflow: hidden; margin-left: 0;">
 
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4><h4 style="display: inline-block; margin-bottom: 0; text-align: center; width: 6%;"><?php
 				$tsql2 = "  SELECT COUNT(1)
@@ -831,8 +831,8 @@
 											  ?></h4>
 
 			<!--<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer; " >Espaço</button> -->
-			<div style="overflow: auto; width: 100%;" >
-			<table width="2000" border="1px" bordercolor="black" style="margin-top: 5px; margin-left: 7px;" id="minhaTabela">
+			<div style="overflow: auto; width: 100%; height: 86%;" >
+			<table width="2000" border="1px" bordercolor="black" style="margin-top: 5px;" id="minhaTabela">
 			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
 			    <!--<th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Referência&nbsp;</font></th>-->
                 <!--<th width="5%" ><font  face="Arial, Helvetica, sans-serif">Produto&nbsp;</font></th>-->
