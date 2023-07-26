@@ -361,30 +361,22 @@
 					<h4 style="margin: 0 !important; ">Itens em Conferência
 					<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 					<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
+					<?php
+						$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
+						$stmt2 = sqlsrv_query( $conn, $tsql2);
+
+						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))
+						{
+							$auxiliar = $row2['contador'];
+						}
+						if($auxiliar > 0){
+							echo '<button id="btnPendencia" class="btnPendencia" onclick="abrirpendencias();">Pendências</button>';
+						}
+					?>
 					</h4>
 				</div>
 				
-			<?php
-
-			$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
-
-			$stmt2 = sqlsrv_query( $conn, $tsql2);
-
-			while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))
-			{
-				$auxiliar = $row2['contador'];
-
-			}
-
-			// echo '<script>window.alert("'.$auxiliar.'")</script>';
-
-			if($auxiliar > 0){
-				echo '<button id="btnPendencia" class="btnPendencia" onclick="abrirpendencias();">Pendências</button>';
-
-			}
-
-
-			?>
+			
 			</div>
 			<div id="popupconf" class="popupconf">
 
@@ -619,23 +611,23 @@
 		
 		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();"/>
 		<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
-			<table width="2300" border="1px" bordercolor="black" style="margin-top: 5px;" id="table">
-			  <tr>
-			  	<th><input type="checkbox" id="select_all" value=""/></th>
-			    <th>Referência</th>
-			    <th>Produto</th>
-			    <th>Qtd. Conf.</th>
-			    <th>Cód. Barras</th>
-			    <th>Descrição (Produto)</th>
-			    <th>UN</th>
-			    <th>Controle</th>
-			    <th>Qth. Un. Pad.</th>
-			    <th>Complemento</th>
-			    <th>Ref. Forn.</th>
-			    <th>Marca</th>
-			    <th>Qth. Ident.</th>
-			    <th>Tip. Ident.</th>
-			    <th>Tip. Contr. Est.</th>
+			<table width="2500" border="1px" bordercolor="black" style="margin-top: 5px;" id="table">
+				<tr><font size="-1" face="Arial, Helvetica, sans-serif" >
+			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th> 
+			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
+			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Produto</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qtd. Conf.</font></th>
+			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Cód. Barras</font></th>
+			    <th width="17%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Descrição (Produto)</font></th>
+			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">UN</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Controle</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qth. Un. Pad.</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Complemento</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Ref. Forn.</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Marca</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qth. Ident.</font></th>
+			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Tip. Ident.</font></th>
+			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Tip. Contr. Est.</font></th>
 			  </tr>
 
 			<?php
