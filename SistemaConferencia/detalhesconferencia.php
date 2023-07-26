@@ -94,7 +94,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Detalhes Conferência - <?php echo $usuconf; echo $linhamarcada;?></title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
@@ -291,7 +290,7 @@
 		</script>
 
 </head>
-<body class="body-detalhes" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+<body style="margin: 0;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
 	<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: fixed;">
 		<table width="100%" id="table">
 			<tr>
@@ -315,7 +314,7 @@
 
     <div style="margin-left: 30px; margin-top: 4.8%; position: fixed; z-index: 99999;">
 
-		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 65px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
+		<a href="listaconferencia.php"><aabr title="Voltar"><img style="width: 35px; float: left; padding-right: 20px" src="images/Seta Voltar.png" /></aabr></a>
         Cód. Barras: <input type="text" name="CODBAR" class="text" id='codigodebarra' required>
 
         Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" size="5" style="text-align: left;">
@@ -353,18 +352,18 @@
 
 
 	<!-- Itens em Conferência-->
-	<div id="container" style="width:100%; height: 80%; position: absolute; margin-top: 65px; margin-bottom: 0; padding-left: 5px; padding-right: 10px;">
+	<div id="container" style="width:100%;height: 80%;position: absolute;margin-top: 65px;margin-bottom: 0;padding-left: 0px;padding-right: 0px;right: 0px;bottom: 0px;top: 0px;left: 0px;">
 
 		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin-left: 1%; margin-top: 50px;">
 
 			<div style="background-color: #ADADC7" class="d-flex justify-content-around">
 				<div>
-					<h4 style="margin: 0 !important; ">Itens em Conferência</h4>
-				</div>
-				<div class="d-flex justify-content-around">
+					<h4 style="margin: 0 !important; ">Itens em Conferência
 					<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 					<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
+					</h4>
 				</div>
+				
 			<?php
 
 			$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
@@ -592,34 +591,32 @@
 
 		</div> <!-- Itens Conferência -->
 
-
-
-
-
 		<!-- Itens Conferidos-->
 
 		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0;;  margin-top: 50px;">
-
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; width: 90%; display: inline-block;">Itens Conferidos</h4><h4 style="width: 6%; color: black; display: inline-block; margin-bottom:0; text-align: center;padding-bottom: 1px; "><?php
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; width: 90%; display: inline-block;">Itens do Pedido
+				<button type="submit" style="margin-left: 10%; font-size: 13px;" name="bulk_delete_submit">Apagar Item(ns) Selecionado(s)</button>
+			</h4>
+					
+			<?php
 				$tsql2 = "  DECLARE @NUNOTA INT = $nunota2
 							DECLARE @NUCONF INT = (SELECT NUCONFATUAL from TGFCAB where NUNOTA = @NUNOTA)
 
 							SELECT COUNT (1)
 							FROM TGFPRO INNER JOIN
-								 TGFCOI2 ON TGFCOI2.CODPROD = TGFPRO.CODPROD
+								TGFCOI2 ON TGFCOI2.CODPROD = TGFPRO.CODPROD
 							WHERE TGFCOI2.NUCONF = @NUCONF
-								 ";
+								";
 
-						$stmt2 = sqlsrv_query( $conn, $tsql2);
+				$stmt2 = sqlsrv_query( $conn, $tsql2);
 
-						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
-						{ $QtdConferidos = $row2[0];
-						}
+				while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
+				{ $QtdConferidos = $row2[0];
+				}
 
-						echo $QtdConferidos;
-											  ?></h4>
-
-
+				echo $QtdConferidos;
+			?>
+		
 		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();"/>
 		<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
 			<table width="2300" border="1px" bordercolor="black" style="margin-top: 5px;" id="table">
@@ -695,21 +692,22 @@
 			}
 			?>
 			</table></div>
-			<div>
-				<button type="submit" name="bulk_delete_submit" style="font-size: 13px; position: absolute; margin-top: -242px; margin-left: 300px;">Apagar Item(ns) Selecionado(s)</button>
-			</div>
+			
 
 		</form>
+
+		
+
 		</div> <!-- Itens Conferidos -->
 
 
 
 		<!-- Imagem e Consulta de Produtos -->
-		<div id="Imagem do Produto" style="width: 48%; height: 43%; /*background-color: #D9DAFA;*/ display: inline-block; overflow: hidden; margin-left: 1%; ">
+		<div id="Imagem do Produto" style="width: 48%; height: 50%; /*background-color: #D9DAFA;*/ display: inline-block; margin-left: 1%; ">
 
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 100%; text-align:center;">Informações do Produto</h4>
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7;padding-top: 2px; width: 100%;">Informações do Produto</h4>
 
-			<div style="width: 50%; height: 100%; line-height: 100%; align-items: center; display: inline-flex; margin-top: 0; padding-top: 0" id="imagemproduto">
+			<div style="width: 50%; height: 50%; line-height: 100%; align-items: center; display: inline-flex; margin-top: 0; padding-top: 0" id="imagemproduto">
 
 					<?php
 
@@ -805,9 +803,10 @@
 
 
 
-		<div id="Itens do Pedido" style="width: 48%; height:43%; /*background-color: red;*/ display: inline-block; float: right; margin-left: 1%; overflow: hidden; margin-left: 0;">
+		<div id="Itens do Pedido" style="width: 48%; height:54%; /*background-color: red;*/ display: inline-block; float: right; margin-left: 1%; overflow: hidden; margin-left: 0;">
 
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-left:15px; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4><h4 style="display: inline-block; margin-bottom: 0; text-align: center; width: 6%;"><?php
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4>
+			<?php
 				$tsql2 = "  SELECT COUNT(1)
 							FROM TGFCAB CAB INNER JOIN
 									TGFITE ITE ON ITE.NUNOTA = CAB.NUNOTA INNER JOIN
@@ -828,7 +827,7 @@
 						}
 
 						echo $QtdPedido;
-											  ?></h4>
+											  ?>
 
 			<!--<button style="margin-left: 20px; margin-top: 5px; cursor: hand; cursor: pointer; " >Espaço</button> -->
 			<div style="overflow: auto; width: 100%; height: 86%;" >

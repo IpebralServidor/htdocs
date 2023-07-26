@@ -61,7 +61,7 @@ tr:active{background-color: yellow !important;}
 	top: 0; bottom: 0; 
 	left: 0; right:0;
 	margin: auto;
-	width: 450px;
+	width: 250px;
 	height: 300px;
 	padding: 15px;
 	border: solid 1px #4c4d4f;
@@ -74,7 +74,7 @@ tr:active{background-color: yellow !important;}
 
 .popupconfdivergencia {
 	width: 450px;
-	height: 650px;
+	height: 250px;
 	padding: 15px;
 	display: none;
 	z-index: 9999;
@@ -86,7 +86,7 @@ tr:active{background-color: yellow !important;}
 	left: 0; right:0;
 	margin: auto;
 	width: 450px;
-	height: 260px;
+	height: 160px;
 	padding: 15px;
 	border: solid 1px #4c4d4f;
 	background: white;
@@ -426,7 +426,7 @@ border-top: solid 5px #e54e43;
 	height: 50%;
 }
 .produtosconferencia table{
-	margin-top: 2%;
+	margin-top: 5px;
 }
 .produtosconferencia th{
 	width: 6.6%;
@@ -483,4 +483,10 @@ border-top: solid 5px #e54e43;
 
 .d-flex{
 	background-color: #ADADC7 !important;
+}
+.btn-apagaritem{
+	font-size: 13px; 
+	position: absolute; 
+	margin-top: -17.7%; 
+	margin-left: 300px;
 }
