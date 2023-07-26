@@ -385,16 +385,24 @@
 					<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 					<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
 					<?php
+
 						$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
+
 						$stmt2 = sqlsrv_query( $conn, $tsql2);
 
 						while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))
 						{
 							$auxiliar = $row2['contador'];
+
 						}
+
+						// echo '<script>window.alert("'.$auxiliar.'")</script>';
+
 						if($auxiliar > 0){
 							echo '<button id="btnPendencia" class="btnPendencia" onclick="abrirpendencias();">Pendências</button>';
+
 						}
+
 					?>
 					</h4>
 				</div>
@@ -634,8 +642,8 @@
 		
 		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();"/>
 		<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
-			<table width="2500" border="1px" bordercolor="black" style="margin-top: 5px;" id="table">
-				<tr><font size="-1" face="Arial, Helvetica, sans-serif" >
+			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 5px;" id="table">
+			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
 			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th> 
 			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
 			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Produto</font></th>

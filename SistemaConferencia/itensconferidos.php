@@ -12,7 +12,7 @@ $nunota2 = $_POST['nunota'];
 <section class="panel col-lg-9">
 
 
-			<table width="2500" border="1px" bordercolor="white" style="margin-top: 5px;" id="table">
+			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 5px;" id="table">
 			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
 			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th> 
 			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
