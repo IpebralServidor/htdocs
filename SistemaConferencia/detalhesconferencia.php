@@ -4,7 +4,7 @@
 	
 	$usuconf = $_SESSION["idUsuario"];
 	$VLR1700 = 0;
-	$VLR1720 = 0;
+	$VLR1720 = 0; 
 	$VLR1780 = 0;
 
 	if(isset($_SESSION["codbarraselecionado"])){
@@ -118,6 +118,29 @@
 			iniciarpausa(status, <?php echo $nunota2 ?>);
 			window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>&codbarra=0';
 		});
+	}
+
+	function deletaprodutos(){
+    		//alert("teste");
+    		
+    		var checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
+
+				if(checkedCheckboxes[0] == null){
+					alert('Selecione pelo menos uma linha para excluir!');
+				}else{
+					var referencia = "";
+
+					for (var i = 0; i < checkedCheckboxes.length; i++) {
+						 
+						var referencia = checkedCheckboxes[i].getAttribute('data-ref');
+						
+						deletaproduto(<?php echo $nunota2; ?>, referencia);
+					}
+
+					alert("Item(s) excluído(s) com sucesso!");
+
+				}
+				
 	}
 		
 </script>
@@ -595,7 +618,7 @@
 
 		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0;;  margin-top: 50px;">
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; width: 90%; display: inline-block;">Itens do Pedido
-				<button type="submit" style="margin-left: 10%; font-size: 13px;" name="bulk_delete_submit">Apagar Item(ns) Selecionado(s)</button>
+				<button type="submit" id="deletaprodutobtn" style="margin-left: 10%; font-size: 13px;" name="deletaprodutobtn">Apagar Item(ns) Selecionado(s)</button>
 			</h4>
 					
 			<?php
@@ -670,7 +693,7 @@
 
 
 				  <tr >
-				  	<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[3]/$nunota2"; ?>]" class="checkbox"/></td>
+				  	<td align="center" width="1%"><input type="checkbox" class="checkbox" data-ref="<?php echo $row2[1]; ?>"/></td>
 				    <td width="4%" ><?php echo $row2[0]; ?>&nbsp;</td>
 				    <td width="5%"><?php echo $row2[1]; ?>&nbsp;</td>
 				    <td width="5%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
@@ -1175,6 +1198,36 @@
             $('#conferir').click(function () {
                 imagemproduto($("#codigodebarra").val())
             });
+
+         function deletaproduto(nunota, codprod)
+            {
+                //O método $.ajax(); é o responsável pela requisição
+                $.ajax
+                        ({
+                            //Configurações
+                            type: 'POST',//Método que está sendo utilizado.
+                            dataType: 'html',//É o tipo de dado que a página vai retornar.
+                            url: 'action.php',//Indica a página que está sendo solicitada.
+                            //função que vai ser executada assim que a requisição for enviada
+                            beforeSend: function () {
+                                // $("#imagemproduto").html("Carregando...");
+                            },
+                            data: {nunota: nunota, codprod: codprod},//Dados para consulta
+                            //função que será executada quando a solicitação for finalizada.
+                            success: function (msg)
+                            {
+                                // $("#imagemproduto").html(msg);
+                                window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>';
+                            }
+                        });
+            }
+
+        
+
+        $('#deletaprodutobtn').click(function () {
+                deletaprodutos();
+        });
+
 
 
         function itensconferidos(nunota)
