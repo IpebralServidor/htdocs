@@ -34,23 +34,9 @@ $referencia = $_POST['REFERENCIA'];
 		<div class="infoprodutodiv">
 			<?php
 				$tsql = "
-							
-					DECLARE @REFERENCIA VARCHAR(100) = '$referencia'
+										
+					SELECT * FROM [sankhya].[AD_FNT_InfoProduto_ConsultaEstoque]('$referencia')
 
-					
-					SELECT DISTINCT PRO.CODPROD,
-							PRO.REFERENCIA,
-							PRO.DESCRPROD,
-							PRO.AD_QTDMAXLOCAL,
-							round(MDV.MEDIA6,2) AS MEDIA
-					FROM TGFPRO PRO inner join
-							TGFBAR BAR ON BAR.CODPROD = PRO.CODPROD LEFT JOIN
-							TGFEST EST ON EST.CODPROD = PRO.CODPROD 
-														and EST.CODPARC = 0 
-														AND est.estoque > 0 LEFT JOIN
-							AD_MEDIAVENDAEMP MDV ON MDV.CODPROD = PRO.CODPROD
-					WHERE bar.CODBARRA like trim(@REFERENCIA)
-						AND MDV.CODEMP = 0
 						 ";
 
 				$stmt = sqlsrv_query( $conn, $tsql); 
@@ -61,6 +47,8 @@ $referencia = $_POST['REFERENCIA'];
 				  $descrprod = $row2[2];
 				  $qtdmaxlocal = $row2[3];
 				  $mediavenda = $row2[4];
+				  $agrupmin = $row2[5];
+				  $precovenda = $row2[6];
 				}
 
 				/*echo '<span class="infoprodutotext">Parc: {$codparcorig}</span><br>';
@@ -72,11 +60,13 @@ $referencia = $_POST['REFERENCIA'];
 
 			?>
 
-			<span class="infoprodutotext"><b>Produto:</b> <?php if(!isset($produto)){ echo '';} else { echo $produto;} ?></span><br>
-			<span class="infoprodutotext"><b>Refência:</b> <?php if(!isset($codreferencia)){ echo '';} else { echo $codreferencia;} ?></span><br>
+			<span class="infoprodutotext"><b>Produto:</b> <?php if(!isset($produto)){ echo '';} else { echo $produto;} ?></span>
+			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Referência:</b> <?php if(!isset($codreferencia)){ echo '';} else { echo $codreferencia;} ?></span><br>
 			<span class="infoprodutotext"><b>Descrição Produto:</b> <?php if(!isset($descrprod)){ echo '';} else { echo $descrprod;} ?></span><br>
-			<span class="infoprodutotext"><b>Qtd. Máx. Local:</b> <?php if(!isset($qtdmaxlocal)){ echo '';} else { echo $qtdmaxlocal;} ?></span><br>
-			<span class="infoprodutotext"><b>Média Venda:</b> <?php if(!isset($mediavenda)){ echo '';} else { echo $mediavenda;} ?></span><br>
+			<span class="infoprodutotext"><b>Qtd. Máx. Local:</b> <?php if(!isset($qtdmaxlocal)){ echo '';} else { echo $qtdmaxlocal;} ?></span>
+			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Méd. V.:</b> <?php if(!isset($mediavenda)){ echo '';} else { echo $mediavenda;} ?></span><br>
+			<span class="infoprodutotext"><b>Agrup. Mín.:</b> <?php if(!isset($agrupmin)){ echo '';} else { echo $agrupmin;} ?></span>
+			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Preço V.: </b>R$ <?php if(!isset($precovenda)){ echo '';} else { echo str_replace('.',',',$precovenda);} ?></span><br>
 		</div>
 	</div> <!-- Fim infoproduto -->
 
