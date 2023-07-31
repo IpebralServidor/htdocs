@@ -455,7 +455,6 @@ border-top: solid 5px #e54e43;
 	margin: auto;
 	width: 400px;
 	height: 400px;
-	padding: 15px;
 	background: white;
 	display: none;
 	z-index: 999;
@@ -478,7 +477,7 @@ border-top: solid 5px #e54e43;
 	position: absolute;
   	top: 30%;
   	left: 50%;
-  	transform: translate(-50%, -50%);;
+  	transform: translate(-50%, -50%);
 }
 
 .d-flex{
@@ -490,3 +489,37 @@ border-top: solid 5px #e54e43;
 	margin-top: -17.7%; 
 	margin-left: 300px;
 }
+.conferentes{
+	display: list-item;    
+	list-style-type: none;
+	width: 90%;
+	height: 30px;
+}
+.conferentes:hover{
+	background-color:#FFFF95 !important;cursor: pointer !important
+}
+.conferentes-title{
+	background-color: #2d4a57;
+	height: 50px;
+	text-align: center;
+	color: white;
+	font-size: large;
+}
+.conferentes-title h6{
+	left: 50%;
+	position: absolute;
+	top: 36%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+.input-busca{
+	margin-left: 3%;
+}
+.input-busca input{
+	width: 100%;
+	height: 40px;
+}
+.popupconferentes h4{
+	margin-top: 3%;
+}
+

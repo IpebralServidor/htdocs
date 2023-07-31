@@ -2,6 +2,7 @@
 	include "../conexaophp.php";
 	require_once 'App/auth.php';
 	
+	
 	$usuconf = $_SESSION["idUsuario"];
 	$VLR1700 = 0;
 	$VLR1720 = 0; 
@@ -19,6 +20,17 @@
 	// if($codbarra == 0){
 	// 	$codbarra = '';
 	// }
+	$tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
+	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
+	$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
+
+
+	$tsqlTimer = "SELECT (SUM(DATEDIFF(sECOND, ISNULL(DTFIM,gETDATE()),DTINIC)) *-1) FROM AD_TGFAPONTAMENTOATIVIDADE WHERE NUNOTA = $nunota2";
+	$stmtTimer = sqlsrv_query( $conn, $tsqlTimer);
+	$rowTimer = sqlsrv_fetch_array( $stmtTimer, SQLSRV_FETCH_NUMERIC);
+
+	$_SESSION['time']= $rowTimer[0];
+
 	$tsql2 = "  SELECT NUMNOTA,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODVEND) + ' - ' + APELIDO,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODPARC) + ' - ' + TRIM(RAZAOSOCIAL),
@@ -95,6 +107,7 @@
 	<title>Detalhes Conferência - <?php echo $usuconf; echo $linhamarcada;?></title>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
 	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
@@ -104,21 +117,54 @@
 
 
 	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }>
+	
+
 </script>
 
 <!-- start-smoth-scrolling -->
 <script type="text/javascript" src="js/move-top.js"></script>
 <script type="text/javascript" src="js/easing.js"></script>
 <script>
-	function pegarstatus(){
-		
-		var btn = document.getElementById('btnStatus');
-		btn.addEventListener('click', function() {
-		var status = this.getAttribute('data-valor');
-			iniciarpausa(status, <?php echo $nunota2 ?>);
-			window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>&codbarra=0';
-		});
-	}
+
+	sessionStorage.setItem('status', '<?php echo $rowStatus[0] ?>');
+
+	$(document).ready(function(){
+
+		if(sessionStorage.getItem('status') == 'P') 
+		{
+			$("#result_shops").load('time.php');
+		}
+
+		var t = window.setInterval(function() 
+		{
+			if(sessionStorage.getItem('status') == 'A') 
+			{
+				$("#result_shops").load('time.php');
+			}
+			
+		}, 1000);
+
+	});
+</script>
+<script>
+
+	function atualizarContador(tempoAtualSegundos) {
+            var horas = Math.floor(tempoAtualSegundos / 3600);
+            var minutos = Math.floor((tempoAtualSegundos % 3600) / 60);
+            var segundos = tempoAtualSegundos % 60;
+            document.getElementById("contador").innerHTML = horas.toString().padStart(2, "0") + ":" + minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
+        }
+
+        function obterTempoAtual() {
+			var tempoAtualSegundos = 178542;
+			atualizarContador(tempoAtualSegundos);
+        }
+
+	// Atualiza o contador a cada segundo
+	setInterval(obterTempoAtual, 1000);
+
+	// Chama a função pela primeira vez para obter o tempo atual
+	obterTempoAtual();
 
 	function deletaprodutos(){
     		//alert("teste");
@@ -142,7 +188,8 @@
 				}
 				
 	}
-		
+
+	
 </script>
 
 	<script type="text/javascript">
@@ -159,9 +206,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<?php
-		$tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
-		$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
-		$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
+		
+		$varStatus = $rowStatus[0];
 
 		$tsql2 = "  select COUNT(*)
 					from TGFITE inner join
@@ -267,8 +313,9 @@
         //     return false;
         // }
 	}
-
+		
 	</script>
+		
 
 		<script type="text/javascript">
 			function abrirpendencias(){
@@ -353,18 +400,23 @@
 				$colorStatus = "green";
 				$valueStatus = "Em andamento";
 				$valueF = "Iniciar pausa";
+				$class ="pause";
+				
 			}else if($rowStatus[0] == "P"){
 				$colorStatus = "yellow";
 				$valueStatus = "Em pausa";
 				$valueF = "Finalizar pausa";
+				$class ="play";
 			}
 		?>
-		<button id="btnStatus" data-valor="<?php echo $rowStatus[0] ?>" onclick="pegarstatus();">
+
+		<button class="<?php echo $class ?>" id="btnStatus">
 			<?php echo $valueF ?>
 		</button>
-			<strong style="margin-left: 50px;">Conferência: </strong> <?php echo $valueStatus; ?>
-			<span style="height: 25px; width: 25px; background-color: <?php echo $colorStatus ?>; border-radius: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-		
+
+		<strong style="margin-left: 50px;">Conferência: </strong> <?php echo $valueStatus; ?>
+		<span style="height: 25px; width: 25px; background-color: <?php echo $colorStatus ?>; border-radius: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<strong id="result_shops" style="margin-left: 50px;"></strong>
 		
         <div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
 
@@ -1010,10 +1062,15 @@
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
+						window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>&codbarra=0';
 					}
 				});
 		}
-
+		$('#btnStatus').click(function () {
+			var nunota = "<?php echo $nunota2; ?>"
+			var status = "<?php echo $varStatus; ?>"
+			iniciarpausa(status, nunota)
+		});
 
         function insereitens(codbarra, quantidade, controle, nunota){
         	 //O método $.ajax(); é o responsável pela requisição
@@ -1074,6 +1131,11 @@
 			});
         }
 		$('#conferir').click(function () {
+			var nunota = "<?php echo $nunota2; ?>"
+			var status = "<?php echo $varStatus; ?>"
+			if(status == "P"){
+				iniciarpausa(status, nunota)
+			}
 			insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
 		});
 

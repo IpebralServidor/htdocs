@@ -58,6 +58,21 @@ else
 	</script>
 
 	<script>
+		function search_conferente() {
+			let input = document.getElementById('searchbar').value
+			input=input.toLowerCase();
+			let x = document.getElementsByClassName('conferentes');
+			
+			for (i = 0; i < x.length; i++) { 
+				if (!x[i].innerHTML.toLowerCase().includes(input)) {
+					x[i].style.display="none";
+				}
+				else {
+					x[i].style.display="list-item";                 
+				}
+			}
+		}
+
 		function abrirconferentes(){
 			document.getElementById('popupconferentes').style.display = 'block';
 
@@ -130,13 +145,17 @@ else
 
 	<div id="popupconferentes" class="popupconferentes">
 		<h4>Lista de conferentes</h4>
+		<div class="input-busca">
+			<input type="text" id="searchbar" onkeyup="search_conferente()" placeholder="Escreva o nome do conferente">
+		</div><br>
 		<div >
 			<table class="table-conferentes">
-				<thead>
-					<tr>
-						<th>Conferentes</th>
-					</tr>
-				</thead>
+				
+				<div class="conferentes-title">
+					<h6>
+						Conferentes
+					</h6>
+				</div><br>
 
 				<?php 
 					$tsql3 = "SELECT CODUSU, NOMEUSU FROM TSIUSU ORDER BY NOMEUSU ";
@@ -146,16 +165,13 @@ else
 					while( $row3 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))
 					{
 				?>
-				<tbody>
-					<tr>
-						<td>
-							<button class="conferente-btn" data-user="<?php echo $row3[0]; ?>">
-								<?php echo $row3[1]; ?>
-							</button>
-						</td>
-					</tr>
-				</tbody>
-				
+				<ul id='list'>
+					<li class='conferentes'>
+						<button style="width: 100%; height: 100%; background-color:rgba(144,  203,  44,  0); cursor: pointer; " class="conferente-btn" data-user="<?php echo $row3[0]; ?>">
+							<?php echo $row3[1]; ?>
+						</button>
+					</li>
+				</ul>
 				<?php
 					}
 				?>
