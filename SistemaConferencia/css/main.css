@@ -52,9 +52,6 @@ tr:active{background-color: yellow !important;}
 	display: none;
 	z-index: 999;
 }
-.bodyCss{
-}
-
 
 .popupconf {
 	position: absolute;
@@ -69,6 +66,7 @@ tr:active{background-color: yellow !important;}
 	display: none;
 	z-index: 9999999;
 	border-radius: 2%;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px ;
 }
 
 
@@ -227,10 +225,11 @@ border-top: solid 5px #e54e43;
 	padding-left: 10px;
 	padding-top: 10px;
 	border-bottom: solid 1px white;
+	background-color: #3a6070;
 	
 }
 .listaconferenciatext p{
-	background-color: #3a6070;
+	
 	padding: 10px;
 	font-weight: 600 !important;
 	font-size: 150% !important;
