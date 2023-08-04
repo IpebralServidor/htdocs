@@ -30,13 +30,14 @@ else
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			// Configurando o evento de clique nas linhas da tabela
-			$('table tr').dblclick(function() {
-				var nota = $(this).find('td').map(function() {
-					return $(this).text();
-				}).get();
-				
-				// Enviar o dado via AJAX para o servidor
+		    // Evento de clique na linha da tabela
+		    $('#ListaConferencia tr').dblclick(function() {
+		      // Obtém o ID da linha clicada
+		      var nota = this.getAttribute('data-nota');;
+
+		      //alert(nota);
+
+		      //Enviar o dado via AJAX para o servidor
 				$.ajax
 				({
 					//Configurações
@@ -54,18 +55,18 @@ else
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
-						var msgArray = msg.split("/");
-
-						if(msgArray[0] == 1780 || msgArray[0] == 1781 || msgArray[0] == 1782){
-							$("#loader").hide();
-							window.location.href='detalhesconferencia.php?nunota=' +msgArray[1] +'&codbarra=0';
-						}else{
+						if(msg.length <= 10){
+							window.location.href='detalhesconferencia.php?nunota=' + msg +'&codbarra=0';
+						} else {
 							alert(msg);
 						}
+						
 					}
 				});
-			});
+
+		    });
 		});
+
 	</script>
 
 </head>
@@ -226,7 +227,7 @@ else
 	</table>
 
 	</div> <!-- ListaConferencia -->
-	<script>
+	<script charset="utf-8">
 		function pegarProximaNota(usuario)
 			{
 				//O método $.ajax(); é o responsável pela requisição

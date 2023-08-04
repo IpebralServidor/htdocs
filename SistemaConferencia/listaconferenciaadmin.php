@@ -73,6 +73,10 @@ else
 			}
 		}
 
+		function abrirconf(){
+			document.getElementById('popupconf').style.display = 'block';
+		}
+
 		function abrirconferentes(){
 			document.getElementById('popupconferentes').style.display = 'block';
 
@@ -114,6 +118,9 @@ else
 		function fecharconferentes(){
 			document.getElementById('popupconferentes').style.display =  'none';
 		}
+		function fecharatribuicao(){
+			document.getElementById('popupconf').style.display =  'none';
+		}
 	</script>
 
 
@@ -143,6 +150,26 @@ else
 		</div>
 	</div>
 
+	<div id="popupconf" class="popupconf">
+		<?php 
+			$tsqlText = "SELECT TEXTO FROM TSIPAR WHERE CHAVE = 'UsuConferencia'";
+
+			$stmtText = sqlsrv_query( $conn, $tsqlText);  
+			$rowText = sqlsrv_fetch_array( $stmtText, SQLSRV_FETCH_NUMERIC );
+			
+		?>
+		<form action="atualizarconferente.php" class="form" method="post">
+			<div class="form-group">
+				<label for="conferentes" class="form-group">Conferentes:</label>
+				<input type="text" class="form-control" name="conferentes" class="text" value="<?php echo $rowText[0]; ?>">
+			</div>
+			<div class="form-group">
+				<input id="atualizar" name="atualizar" class="btn btn-form"  type="submit" value="Atualizar">
+			</div>
+		</form>
+		<button class="fechar" onclick="fecharatribuicao();">X</button>
+	</div>
+
 	<div id="popupconferentes" class="popupconferentes">
 		<h4>Lista de conferentes</h4>
 		<div class="input-busca">
@@ -158,7 +185,10 @@ else
 				</div><br>
 
 				<?php 
-					$tsql3 = "SELECT CODUSU, NOMEUSU FROM TSIUSU ORDER BY NOMEUSU ";
+					$tsql3 = "SELECT CODUSU, NOMEUSU 
+							  FROM TSIUSU 
+							  WHERE CODUSU IN (SELECT ITEM FROM SANKHYA.AD_FN_SPLIT((SELECT TEXTO FROM TSIPAR WHERE CHAVE = 'UsuConferencia'), ','))
+							  ORDER BY NOMEUSU";
 
 					$stmt3 = sqlsrv_query( $conn, $tsql3);  
 					$row_count = sqlsrv_num_rows( $stmt3 ); 
@@ -210,7 +240,30 @@ else
 					<option value= "aguardandorecont">Aguardando Recontagem</option>
 					<option value= "recontemandamento">Recontagem em Andamento</option>
 				</select>
-			</div>		
+			</div>	
+
+			<?php 
+				$tsqlEmpresa = "SELECT CODEMP FROM TSIUSU WHERE CODUSU = $usuconf"; 
+				$stmtEmpresa = sqlsrv_query( $conn, $tsqlEmpresa);  
+				$rowEmpresa = sqlsrv_fetch_array( $stmtEmpresa, SQLSRV_FETCH_NUMERIC);
+				
+				$codEmpresaUsu1 = "";
+				$codEmpresaUsu7 = "";
+
+				if($rowEmpresa[0] == 1){
+					$codEmpresaUsu1 = "selected";
+				}else{
+					$codEmpresaUsu7 = "selected";
+				}
+			?>
+
+			<div class="form-group">
+				<label for="empresa">Empresa:</label>
+				<select name="empresa" class="form-control">
+					<option value= "1" <?php echo $codEmpresaUsu1 ?> >Ipebral(matriz) - 1</option>
+					<option value= "7" <?php echo $codEmpresaUsu7 ?> >Uberlândia - 7</option>
+				</select>
+			</div>			
 			<div class="form-group">
 				<label for="parceiro">Parceiro:</label>
 				<input type="text" class="form-control" name="parceiro" class="text">
@@ -243,7 +296,9 @@ else
 
 			$status = $_POST["status"];
 
-			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf) ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
+			$empresa = $_POST["empresa"];
+
+			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf, $empresa) ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
 
 			}
 
@@ -257,6 +312,13 @@ else
 		<p class="text-center col">
 			Lista de Conferência ADMINISTRADOR
 			<button class="btn btn-admin btn-form col"  onclick="abrirconferentes();" >Atribuir nota</button>
+
+			<button style="width: 40px !important; height: 36px !important; margin-right: 10px;" class="btn btn-admin btn-form col"  onclick="abrirconf();" >
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+				<path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+				<path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+				</svg>
+			</button>
 		</p>
 		
 		
