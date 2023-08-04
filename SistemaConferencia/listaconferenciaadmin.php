@@ -240,30 +240,7 @@ else
 					<option value= "aguardandorecont">Aguardando Recontagem</option>
 					<option value= "recontemandamento">Recontagem em Andamento</option>
 				</select>
-			</div>	
-
-			<?php 
-				$tsqlEmpresa = "SELECT CODEMP FROM TSIUSU WHERE CODUSU = $usuconf"; 
-				$stmtEmpresa = sqlsrv_query( $conn, $tsqlEmpresa);  
-				$rowEmpresa = sqlsrv_fetch_array( $stmtEmpresa, SQLSRV_FETCH_NUMERIC);
-				
-				$codEmpresaUsu1 = "";
-				$codEmpresaUsu7 = "";
-
-				if($rowEmpresa[0] == 1){
-					$codEmpresaUsu1 = "selected";
-				}else{
-					$codEmpresaUsu7 = "selected";
-				}
-			?>
-
-			<div class="form-group">
-				<label for="empresa">Empresa:</label>
-				<select name="empresa" class="form-control">
-					<option value= "1" <?php echo $codEmpresaUsu1 ?> >Ipebral(matriz) - 1</option>
-					<option value= "7" <?php echo $codEmpresaUsu7 ?> >Uberlândia - 7</option>
-				</select>
-			</div>			
+			</div>		
 			<div class="form-group">
 				<label for="parceiro">Parceiro:</label>
 				<input type="text" class="form-control" name="parceiro" class="text">
@@ -296,9 +273,7 @@ else
 
 			$status = $_POST["status"];
 
-			$empresa = $_POST["empresa"];
-
-			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf, $empresa) ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
+			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf) ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
 
 			}
 
