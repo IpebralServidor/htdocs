@@ -209,7 +209,7 @@ else
 			<button class="fechar" onclick="fecharconferentes();">X</button>
 		</div>
 	</div>
-
+			
 	<div id="Filtro" class="filtro">
 		<div class="img-voltar">
 			<a href="../menu.php">
@@ -222,7 +222,7 @@ else
 			</a>
 		</div>
 		<form action="listaconferenciaadmin.php" class="form" method="post">
-			<div class="form-group">
+			<div>
 				<label for="numnota" class="form-group">Número da Nota:</label>
 				<input type="text" class="form-control" name="NUMNOTA" class="text">
 			</div>
@@ -230,15 +230,16 @@ else
 				<label for="nunota">Número Único:</label>
 				<input type="text" class="form-control" name="nunota" class="text">
 			</div>	
-			<div class="form-group">
+			<div>
 				<label for="status">Status:</label>
 				<select name="status" class="form-control">
 					<option value= "todos">Todos</option>
 					<option value= "todosnaoconfirmadas">Todos + 172X NÃO confirmadas</option>
 					<option value= "aguardandoconf">Aguardando Conferência</option>
-					<option value= "emandamento">Em Andamento</option>
+					<option value= "emandamento">Conferência em Andamento</option>
 					<option value= "aguardandorecont">Aguardando Recontagem</option>
 					<option value= "recontemandamento">Recontagem em Andamento</option>
+					<option value= "emseparacao">Separação em andamento</option>
 				</select>
 			</div>	
 
@@ -257,21 +258,32 @@ else
 				}
 			?>
 
-			<div class="form-group">
+			<div>
 				<label for="empresa">Empresa:</label>
 				<select name="empresa" class="form-control">
 					<option value= "1" <?php echo $codEmpresaUsu1 ?> >Ipebral(matriz) - 1</option>
 					<option value= "7" <?php echo $codEmpresaUsu7 ?> >Uberlândia - 7</option>
 				</select>
 			</div>			
-			<div class="form-group">
+			<div style="margin-bottom: 7%;">
 				<label for="parceiro">Parceiro:</label>
 				<input type="text" class="form-control" name="parceiro" class="text">
 			</div>				
-			<div class="form-group">
+			<div>
 				<input id="aplicar" name="aplicar" class="btn btn-form"  type="submit" value="Aplicar">
 			</div>
 		</form>
+		<div class='my-legend'>
+			<div class='legend-title'>Legenda:</div>
+			<div class='legend-scale'>
+				<ul class='legend-labels'>
+					<li><span style='background:#8fffb1;'></span>Separação concluída</li>
+					<li><span style='background:#FFFF95;'></span>Separação em andamento</li>
+					<li><span style='background:#ff9595;'></span>Separação não iniciada</li>
+					<li><span style='background:#9c95ff;'></span>Separação em pausa</li>
+				</ul>
+			</div>
+		</div>
 		
 		<?php 
 
@@ -306,8 +318,11 @@ else
 			$row_count = sqlsrv_num_rows( $stmt2 ); 
 
 		?>
-
+		
 	</div> <!-- Filtro -->
+
+	
+	
 	<div class="listaconferenciatext">
 		<p class="text-center col">
 			Lista de Conferência ADMINISTRADOR
@@ -324,7 +339,6 @@ else
 		
 	</div>
 	<div id="ListaConferencia" class="listaconferencia">
-
 		<table width="4000">
 			<thead>			
 				<tr style="color: white;">
@@ -370,26 +384,26 @@ else
 				?>
 				<tr style="background-color:<?php echo $color ?>">
 					
-					<td style="width: 0.1%;">
+					<td style="width: 0.1% !important">
 						<input type="checkbox" class="checkbox" data-nota="<?php echo $row2[0]; ?>"/>
 					</td> 
-					<td style="width: 30px;"><?php echo $row2[14]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[15]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[0]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[1]; ?></td>
-					<td style="width: 30px;"><?php echo utf8_encode($row2[16]); ?></td>
-					<td style="width: 30px;"><?php echo $row2[2]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[3]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[4]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[6]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[7]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[8]; ?></td>
-					<td style="width: 30px;"><?php echo utf8_encode($row2[9]); ?></td>
-					<td style="width: 30px;"><?php echo $row2[10]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[11]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[12]; ?></td>
-					<td style="width: 30px;"><?php echo $row2[13]; ?></td>
-					<td ></td>
+					<td style="width: 0.1% !important"><?php echo $row2[14]; ?></td>
+					<td style="width: 0.1% !important"><?php echo $row2[15]; ?></td>
+					<td style="width: 0.1% !important"><?php echo $row2[0]; ?></td>
+					<td><?php echo $row2[1]; ?></td>
+					<td><?php echo utf8_encode($row2[16]); ?></td>
+					<td><?php echo $row2[2]; ?></td>
+					<td><?php echo $row2[3]; ?></td>
+					<td><?php echo $row2[4]; ?></td>
+					<td><?php echo $row2[6]; ?></td>
+					<td><?php echo $row2[7]; ?></td>
+					<td><?php echo $row2[8]; ?></td>
+					<td><?php echo utf8_encode($row2[9]); ?></td>
+					<td><?php echo $row2[10]; ?></td>
+					<td><?php echo $row2[11]; ?></td>
+					<td><?php echo $row2[12]; ?></td>
+					<td style="width: 0.1% !important"><?php echo $row2[13]; ?></td>
+					<td style="width: 60% !important;"></td>
 				</tr> 
 			</tbody>
 

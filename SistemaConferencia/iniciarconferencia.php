@@ -3,11 +3,11 @@
 session_start();
 include "../conexaophp.php";
 
-function exceptions_error_handler($severity, $message, $filename, $lineno) {
-    throw new ErrorException($message, 0, $severity, $filename, $lineno);
-}
+// function exceptions_error_handler($severity, $message, $filename, $lineno) {
+//     throw new ErrorException($message, 0, $severity, $filename, $lineno);
+// }
 
-set_error_handler('SQL-50001');
+// set_error_handler('SQL-50001');
 
 if (isset($_POST['nota'])) {
 

@@ -26,7 +26,6 @@ if($linhas > 0){
 }else{
     $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '' ";
 }
-var_dump($tsql4);
 $stmt4 = sqlsrv_query( $conn, $tsql4);
 $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);
 

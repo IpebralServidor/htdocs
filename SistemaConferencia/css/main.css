@@ -204,7 +204,7 @@ border-top: solid 5px #e54e43;
 .filtro{
 	text-align: center;
 	width:15%; 
-	margin-top: 3%;
+	margin-top: 1%;
 	margin-left: 2%;
 	border-radius: 10px;
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
@@ -216,6 +216,7 @@ border-top: solid 5px #e54e43;
 .listaconferenciatext{
 	display: inline-block; 
 	width: 80%; 
+	margin-top: 1%;
 	float: right; 
 	margin-left: 0; 
 	overflow: auto; 
@@ -243,13 +244,10 @@ border-top: solid 5px #e54e43;
 	float: right; 
 	height: 85%; 
 	margin-left: 0; 
-	overflow: auto; 
+	overflow-y: auto; 
 	margin-right: 1%; 
 	margin-bottom: 0;
 	background-color: white !important;
-	padding-right: 10px;
-	padding-left: 10px;
-	
 }
 .listaconferencia tr{
 	cursor: hand; 
@@ -257,14 +255,14 @@ border-top: solid 5px #e54e43;
 	height: 50px !important;
 	text-align: center;
 }
+.listaconferencia th{
+	position: sticky;
+    top: 0;
+}
 .listaconferencia td{
-	height: 50px !important;
 }
 .listaconferencia tr:hover{
 	background-color: rgb(231, 228, 20) !important;
-}
-.listaconferencia tabel td{
-	max-width: 0.1% !important;
 }
 .listaconferencia thead{
 	background-color: #3a6070;
@@ -294,7 +292,7 @@ border-top: solid 5px #e54e43;
 }
 .img-voltar{
 	padding: 0 !important; 
-	margin-bottom: 20%;
+	margin-bottom: 7%;
 	
 }
 .img-voltar img{
@@ -525,3 +523,53 @@ border-top: solid 5px #e54e43;
 	margin-top: 3%;
 }
 
+.legenda{
+	text-align: center;
+	margin-left: 2%;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+	padding: 15px;
+	background-color: white;
+	overflow: auto !important;
+}
+
+
+
+.my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    font-size: 70%;
+    list-style: none;
+	text-align: left;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }

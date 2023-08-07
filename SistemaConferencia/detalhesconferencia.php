@@ -627,9 +627,9 @@
 			<div id="popupconfdivcorte" class="popupconfdivcorte">
 				<h4 style="text-align: center; margin-top: 3%;">Conferência finalizada como divergente!</h4>
 				<!--<button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto;" onclick="" >Realizar recontagem</button>-->
-				<form method="post" style="width: 100%;">
+				<!-- <form method="post" style="width: 100%;">
 					<input style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" type="submit" name="btn-recontagem" value="Realizar Recontagem">
-				</form>
+				</form> -->
 				<div style="width: 100%;">
                     <button style="cursor: hand; cursor: pointer; display: block; width: 80%; margin-left: auto; margin-right: auto; margin-top: 3%;" name="btn-corte" onclick="fecharconfdivcorte(); abrirconf();">Cortar Itens Divergentes</button>
 				</div>

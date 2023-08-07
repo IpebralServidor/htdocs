@@ -276,16 +276,6 @@
 	</head>
 	<body class="body-detalhes" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
 		<div>
-			<table class="table table-valores" id="table">
-				<tr>
-					<th scope="col">1700: R$ <?php echo $VLR1700 ?></th>
-					<th scope="col">1720: R$ <?php echo $VLR1720 ?></th>
-					<th scope="col">1780: R$ <?php echo $VLR1780 ?></th>
-				</tr>
-			</table>
-		</div>
-		<div>
-
 			<?php
 				if($rowStatus[0] == "A"){
 					$colorStatus = "green";
@@ -297,29 +287,41 @@
 					$valueF = "Finalizar pausa";
 				}
 			?>
-
+			<table class="table table-valores" id="table">
+				<tr>
+					<th scope="col">1700: R$ <?php echo $VLR1700 ?></th>
+					<th scope="col">1720: R$ <?php echo $VLR1720 ?></th>
+					<th scope="col">1780: R$ <?php echo $VLR1780 ?></th>
+					<th>
+						<strong>Status da conferência:</strong><?php echo $valueStatus; ?>
+						<span style="background-color: <?php echo $colorStatus ?>; border-radius: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					</th>
+				</tr>
+			</table>
+		</div>
+		<div>
 			<table class="table table-bordered table-infos" id="table">
 				<thead>
 					<tr>
-						<th scope="col">Nro. Nota: <?php echo $NUMNOTA ?></th>
-						<th scope="col">Vendedor: <?php echo $VENDEDOR ?></th>
-						<th scope="col">Nro. Único: <?php echo $nunota2; ?></th>
-						<th scope="col">Parceiro: <?php echo $PARCEIRO; ?></th>
-						<th>
-							<strong>Status da conferência:</strong><?php echo $valueStatus; ?>
-							<span style="background-color: <?php echo $colorStatus ?>; border-radius: 50%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-						</th>
+						<th style="background-color: white !important; color: black" scope="col">Nro. Nota: <?php echo $NUMNOTA ?></th>
+						<th style="background-color: white !important; color: black" scope="col">Vendedor: <?php echo $VENDEDOR ?></th>
+						<th style="background-color: white !important; color: black" scope="col">Nro. Único: <?php echo $nunota2; ?></th>
+						<th style="background-color: white !important; color: black" scope="col">Parceiro: <?php echo $PARCEIRO; ?></th>
 					</tr>
 				</thead>	
 			</table>
 		</div>
 
 		<div>
-			<a href="listaconferencia.php">
+			<a href="listaconferencia.php" class="btn btn-voltar width: 40px !important;">
 				<aabr title="Voltar">
-					<img src="images/Seta Voltar.png" width="50px" />
+					<button class="btn btn-back">
+						<img src="images/216446_arrow_left_icon.png" style="width: 40px; height: 40px">
+					</button>
+					<!-- <img src="images/216446_arrow_left_icon.png" /> -->
 				</aabr>
 			</a>
+				
 			Cód. Barras: <input type="text" name="CODBAR" id='codigodebarra' required>
 			Quantidade: <input type="text" name="QUANTIDADE" id="quantidade">
 			Controle: <input type="text" name="CONTROLE" id="controle">
