@@ -1099,6 +1099,9 @@
 						alert(msg);
 						document.getElementById("quantidade").focus()
 						document.getElementById("quantidade").select();
+					} else if (msg == "Produto com controle divergente, favor conferir!"){
+						alert(msg);
+						document.getElementById("controle").focus();
 					} else if (msg == "Produto nao existe na nota!"){
 						alert(msg);
 						document.getElementById("quantidade").value = "";
