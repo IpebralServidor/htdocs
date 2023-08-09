@@ -253,9 +253,11 @@ else
 			?>
 
 			<div>
+				<label for="empresas">Empresas:</label>
 				<select name="empresa" class="form-control">
 					<?php  while($rowEmpresa1 = sqlsrv_fetch_array( $stmtEmpresa1, SQLSRV_FETCH_NUMERIC)){ ?>
-						<option value="<?= $rowEmpresa1[0] ?>" <?php if($rowEmpresa[0] == $rowEmpresa1[0]){ echo "selected "; } ?>> <?= $rowEmpresa1[1] ?> </option>
+						
+						<option name="empresas" value="<?= $rowEmpresa1[0] ?>" <?php if($rowEmpresa[0] == $rowEmpresa1[0]){ echo "selected "; } ?>> <?= $rowEmpresa1[1] ?> </option>
 					<?php } ?>
 				</select>
 			</div>				
