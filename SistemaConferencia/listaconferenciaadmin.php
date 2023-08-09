@@ -247,24 +247,18 @@ else
 				$tsqlEmpresa = "SELECT CODEMP FROM TSIUSU WHERE CODUSU = $usuconf"; 
 				$stmtEmpresa = sqlsrv_query( $conn, $tsqlEmpresa);  
 				$rowEmpresa = sqlsrv_fetch_array( $stmtEmpresa, SQLSRV_FETCH_NUMERIC);
-				
-				$codEmpresaUsu1 = "";
-				$codEmpresaUsu7 = "";
 
-				if($rowEmpresa[0] == 1){
-					$codEmpresaUsu1 = "selected";
-				}else{
-					$codEmpresaUsu7 = "selected";
-				}
+				$tsqlEmpresa1 = "SELECT DISTINCT CODEMP, NOMEFANTASIA FROM TSIEMP UNION SELECT 0, 'Todas as empresas'"; 
+				$stmtEmpresa1 = sqlsrv_query( $conn, $tsqlEmpresa1);  
 			?>
 
 			<div>
-				<label for="empresa">Empresa:</label>
 				<select name="empresa" class="form-control">
-					<option value= "1" <?php echo $codEmpresaUsu1 ?> >Ipebral(matriz) - 1</option>
-					<option value= "7" <?php echo $codEmpresaUsu7 ?> >Uberlândia - 7</option>
+					<?php  while($rowEmpresa1 = sqlsrv_fetch_array( $stmtEmpresa1, SQLSRV_FETCH_NUMERIC)){ ?>
+						<option value="<?= $rowEmpresa1[0] ?>" <?php if($rowEmpresa[0] == $rowEmpresa1[0]){ echo "selected "; } ?>> <?= $rowEmpresa1[1] ?> </option>
+					<?php } ?>
 				</select>
-			</div>			
+			</div>				
 			<div style="margin-bottom: 7%;">
 				<label for="parceiro">Parceiro:</label>
 				<input type="text" class="form-control" name="parceiro" class="text">
