@@ -223,20 +223,17 @@ else
 		</div>
 		<form action="listaconferenciaadmin.php" class="form" method="post">
 			<div>
-				<label for="numnota" class="form-group">Número da Nota:</label>
-				<input type="text" class="form-control" name="NUMNOTA" class="text">
+				<input type="text" class="form-control" name="NUMNOTA" class="text" placeholder="Número da Nota:">
 			</div>
 			<div>
-				<label for="nunota">Número Único:</label>
-				<input type="text" class="form-control" name="nunota" class="text">
+				<input type="text" class="form-control" name="nunota" class="text" placeholder="Número Único:">
 			</div>	
 			<div>
-				<label for="status">Status:</label>
 				<select name="status" class="form-control">
-					<option value= "todos">Todos</option>
+					<option value= "todos">Todas as notas</option>
 					<option value= "todosnaoconfirmadas">Todos + 172X NÃO confirmadas</option>
 					<option value= "aguardandoconf">Aguardando Conferência</option>
-					<option value= "emandamento">Conferência em Andamento</option>
+					<option value= "emandamento">Conferência em andamento</option>
 					<option value= "aguardandorecont">Aguardando Recontagem</option>
 					<option value= "recontemandamento">Recontagem em Andamento</option>
 					<option value= "emseparacao">Separação em andamento</option>
@@ -253,17 +250,22 @@ else
 			?>
 
 			<div>
-				<label for="empresas">Empresas:</label>
 				<select name="empresa" class="form-control">
 					<?php  while($rowEmpresa1 = sqlsrv_fetch_array( $stmtEmpresa1, SQLSRV_FETCH_NUMERIC)){ ?>
-						
-						<option name="empresas" value="<?= $rowEmpresa1[0] ?>" <?php if($rowEmpresa[0] == $rowEmpresa1[0]){ echo "selected "; } ?>> <?= $rowEmpresa1[1] ?> </option>
+						<option name="empresas" value="<?= $rowEmpresa1[0] ?>" <?php if($rowEmpresa[0] == $rowEmpresa1[0]){ echo "selected "; } ?> > 
+							<?= $rowEmpresa1[1] ?> 
+						</option>
 					<?php } ?>
 				</select>
+			</div>
+			
+			<div>
+				<input type="text" onfocus="(this.type='date')" class="form-control" name="dtinicio" placeholder="Data de início" >
+				<input type="text" onfocus="(this.type='date')" class="form-control" name="dtfim" placeholder="Data de fim" >
 			</div>				
+			
 			<div style="margin-bottom: 7%;">
-				<label for="parceiro">Parceiro:</label>
-				<input type="text" class="form-control" name="parceiro" class="text">
+				<input type="text" class="form-control" name="parceiro" class="text" placeholder="Parceiro:">
 			</div>				
 			<div>
 				<input id="aplicar" name="aplicar" class="btn btn-form"  type="submit" value="Aplicar">
@@ -306,7 +308,11 @@ else
 
 			$empresa = $_POST["empresa"];
 
-			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf, $empresa) ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
+			$dtinicio = str_replace("-","", $_POST["dtinicio"]);
+
+			$dtfim = str_replace("-","",$_POST["dtfim"]);
+
+			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf, $empresa, '$dtinicio', '$dtfim') ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
 
 			}
 
