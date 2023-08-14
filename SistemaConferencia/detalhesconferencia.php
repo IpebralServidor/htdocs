@@ -31,7 +31,7 @@
 
 	$_SESSION['time']= $rowTimer[0];
 
-	$tsql2 = "  SELECT NUMNOTA,
+	$tsql2 = "  SELECT NUMNOTA,			
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODVEND) + ' - ' + APELIDO,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODPARC) + ' - ' + TRIM(RAZAOSOCIAL),
                        TGFCAB.OBSERVACAO
@@ -47,8 +47,7 @@
 	{ $NUMNOTA = $row2[0];
 	  $VENDEDOR = $row2[1];
 	  $PARCEIRO = $row2[2];
-	  $OBSERVACAO = $row2[3];
-
+	  $OBSERVACAO = $row2[3];	  
 	}
 
 	$tsql3 = "  DECLARE @NUNOTA INT = {$nunota2}
@@ -95,6 +94,7 @@
 		$VLR1700 = $row2[0];
 		$VLR1720 = $row2[1];
 		$VLR1780 = $row2[2];
+		$SEPARADOR = $row2[3];
 	}
 
 ?>
@@ -336,6 +336,12 @@
 			function fecharconf(){
                 document.getElementById('popupconf').style.display =  'none';
 			}
+			function abrirObs(){
+				document.getElementById('popupObservacao').style.display = 'block';
+			}
+			function fecharObs(){
+                document.getElementById('popupObservacao').style.display =  'none';
+			}
 			function abrirconfdivergencia(){
 				document.getElementById('popupconfdivergencia').style.display =  'block';
 			}
@@ -364,9 +370,10 @@
 	<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: fixed;">
 		<table width="100%" id="table">
 			<tr>
-				<th width="33.3%">1700: R$ <?php echo $VLR1700 ?></th>
-				<th width="33.3%">1720: R$ <?php echo $VLR1720 ?></th>
-				<th width="33.3%">1780: R$ <?php echo $VLR1780 ?></th>
+				<th width="25%">1700: R$ <?php echo $VLR1700 ?></th>
+				<th width="25%">1720: R$ <?php echo $VLR1720 ?></th>
+				<th width="25%">1780: R$ <?php echo $VLR1780 ?></th>
+				<th width="25%">Separador: <?php echo $SEPARADOR ?></th>
 			</tr>
 		</table>
 	</div>
@@ -477,6 +484,13 @@
 
                     <button class="fechar" onclick="fecharconf();">X</button>
 
+				</div>
+			</div>
+
+			<div id="popupObservacao" class="popupconf" style="height: 180px !important">
+				<div style="margin-top: -10px; text-align: center;width: 100%">
+                    <br>Observação: <textarea id="observacao" cols="20" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;" disabled><?php echo $OBSERVACAO; ?></textarea>
+					<button class="fechar" onclick="fecharObs();">X</button>
 				</div>
 			</div>
 
@@ -669,8 +683,14 @@
 		<!-- Itens Conferidos-->
 
 		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0;;  margin-top: 50px;">
-			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; width: 90%; display: inline-block;">Itens do Pedido
+			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; width: 90%; display: inline-block;">Itens conferidos
 				<button type="submit" id="deletaprodutobtn" style="margin-left: 10%; font-size: 13px;" name="deletaprodutobtn">Apagar Item(ns) Selecionado(s)</button>
+
+				<?php 
+					if($OBSERVACAO != ""){
+						echo "<button style='margin-left: 2%; font-size: 13px;' class='btnPendencia' onclick='abrirObs();'>Observação</button>";
+					}
+				?>
 			</h4>
 					
 			<?php
@@ -692,83 +712,37 @@
 				echo $QtdConferidos;
 			?>
 		
-		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();"/>
-		<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
-			<table width="2500" border="1px"    bordercolor="white" style="margin-top: 5px;" id="table">
-			  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
-			  	<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value=""/></th> 
-			    <th width="4%" ><font  face="Arial, Helvetica, sans-serif">Referência</font></th>
-			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Produto</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qtd. Conf.</font></th>
-			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Cód. Barras</font></th>
-			    <th width="17%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Descrição (Produto)</font></th>
-			    <th width="5%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">UN</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Controle</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qth. Un. Pad.</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Complemento</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Ref. Forn.</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Marca</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Qth. Ident.</font></th>
-			    <th width="5%" align="center"><font  face="Arial, Helvetica, sans-serif">Tip. Ident.</font></th>
-			    <th width="10%" style="text-align: center;"><font  face="Arial, Helvetica, sans-serif">Tip. Contr. Est.</font></th>
-			  </tr>
+		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();" />
+			<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
+				<?php
+					$tsql2 = "SELECT * FROM [sankhya].[AD_FNT_ITENS_CONFERIDOS_CONFERENCIA]($nunota2)";
+					$stmt2 = sqlsrv_query( $conn, $tsql2);
+				?>
+				
+				<table width="2000" border="1px"   bordercolor="white" style="margin-top: 5px;" id="table">
+					<?php $fields = sqlsrv_field_metadata($stmt2);
+					echo "<tr style='text-align: center; border: 1px solid black'>";
+					echo "<th></th>";
+						foreach ($fields as $field) {
+							echo "<th>" . utf8_encode($field["Name"]) . "</th>";
+						}
+					echo "</tr>";
 
-			<?php
-				$tsql2 = "  DECLARE @NUNOTA INT = {$nunota2}
-							DECLARE @NUCONF INT = (SELECT NUCONFATUAL from TGFCAB where NUNOTA = @NUNOTA)
+					// Dados da tabela
+					while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
 
-							SELECT REFERENCIA,
-								   TGFPRO.CODPROD,
-								   TGFCOI2.QTDCONF,
-								   TGFCOI2.CODBARRA,
-								   DESCRPROD,
-								   TGFPRO.CODVOL,
-								   CONTROLE,
-								   TGFCOI2.QTDCONFVOLPAD,
-								   NULL AS COMPLEMENTO,
-								   REFFORN,
-								   MARCA,
-								   QTDIDENTIF,
-								   TIPOIDENTIF,
-								   TIPCONTEST
-							FROM TGFPRO INNER JOIN
-								 TGFCOI2 ON TGFCOI2.CODPROD = TGFPRO.CODPROD
-							WHERE TGFCOI2.NUCONF = @NUCONF
-							ORDER BY SEQCONF DESC
-						 ";
-
-				$stmt2 = sqlsrv_query( $conn, $tsql2);
-
-				while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
-				{ $NUCONF = $row2[0];
-			?>
-
-
-				  <tr >
-				  	<td align="center" width="1%"><input type="checkbox" class="checkbox" data-ref="<?php echo $row2[1]; ?>"/></td>
-				    <td width="4%" ><?php echo $row2[0]; ?>&nbsp;</td>
-				    <td width="5%"><?php echo $row2[1]; ?>&nbsp;</td>
-				    <td width="5%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
-				    <td width="10%" align="center"><?php echo $row2[3]; ?></td>
-				    <td width="17%" align="center"><?php echo $row2[4]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[5]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[6]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[7]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[8]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[9]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[10]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[11]; ?></td>
-				    <td width="5%" align="center"><?php echo $row2[12]; ?></td>
-				    <td width="10%" align="center"><?php echo $row2[13]; ?></td>
-				  </tr>
-
-
-			<?php
-			}
-			?>
-			</table></div>
-			
-
+						echo "<tr>"; ?>
+						<td align='center' width='1%'>
+							<input type='checkbox' class='checkbox' data-ref='<?php echo $row2[1]; ?>'/> 
+						</td>
+						
+						<?php	foreach ($row2 as $value) {
+								echo "<td>" . $value . "</td>";
+							}
+						echo "</tr>";
+					} ?>
+				</table>
+			</div>
 		</form>
 
 		
@@ -1099,9 +1073,6 @@
 						alert(msg);
 						document.getElementById("quantidade").focus()
 						document.getElementById("quantidade").select();
-					} else if (msg == "Produto com controle divergente, favor conferir!"){
-						alert(msg);
-						document.getElementById("controle").focus();
 					} else if (msg == "Produto nao existe na nota!"){
 						alert(msg);
 						document.getElementById("quantidade").value = "";

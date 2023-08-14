@@ -88,26 +88,22 @@ else
 		</div>
 		<form action="listaconferencia.php" class="form" method="post">
 			<div class="form-group">
-				<label for="numnota" class="form-group">Número da Nota:</label>
-				<input type="text" class="form-control" name="NUMNOTA" class="text">
+				<input type="text" class="form-control" name="NUMNOTA" class="text" placeholder="Número da Nota:">
 			</div>
 			<div>
-				<label for="nunota">Número Único:</label>
-				<input type="text" class="form-control" name="nunota" class="text">
+				<input type="text" class="form-control" name="nunota" class="text" placeholder="Número Único:">
 			</div>	
 			<div class="form-group">
-				<label for="status">Status:</label>
 				<select name="status" class="form-control">
-					<option value= "todos">Todos</option>
+					<option value= "todos">Todas as notas</option>
 					<option value= "aguardandoconf">Aguardando Conferência</option>
-					<option value= "emandamento">Em Andamento</option>
+					<option value= "emandamento">Conferência em andamento</option>
 					<option value= "aguardandorecont">Aguardando Recontagem</option>
 					<option value= "recontemandamento">Recontagem em Andamento</option>
 				</select>
 			</div>		
 			<div class="form-group">
-				<label for="parceiro">Parceiro:</label>
-				<input type="text" class="form-control" name="parceiro" class="text">
+				<input type="text" class="form-control" name="parceiro" class="text" placeholder="Parceiro:">
 			</div>	
 			
 			<div class="form-group">
@@ -115,6 +111,17 @@ else
 			</div>
 
 		</form>
+		<div class='my-legend'>
+			<div class='legend-title'>Legenda:</div>
+			<div class='legend-scale'>
+				<ul class='legend-labels'>
+					<li><span style='background:#8fffb1;'></span>Separação concluída</li>
+					<li><span style='background:#FFFF95;'></span>Separação em andamento</li>
+					<li><span style='background:#ff9595;'></span>Separação não iniciada</li>
+					<li><span style='background:#9c95ff;'></span>Separação em pausa</li>
+				</ul>
+			</div>
+		</div>
 		
 		<?php 
 

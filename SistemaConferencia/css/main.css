@@ -61,12 +61,11 @@ tr:active{background-color: yellow !important;}
 	width: 250px;
 	height: 300px;
 	padding: 15px;
-	border: solid 1px #4c4d4f;
 	background: white;
 	display: none;
 	z-index: 9999999;
-	border-radius: 2%;
-	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px ;
+	border-radius: 35px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 
@@ -573,3 +572,8 @@ border-top: solid 5px #e54e43;
   .my-legend a {
     color: #777;
     }
+.form-control{
+	align-items:start !important;
+	height: 2.5rem !important;
+	margin-bottom: 0.5rem !important;
+}
