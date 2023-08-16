@@ -345,22 +345,19 @@ else
 			<thead>			
 				<tr style="color: white;">
 					<th ><input type="checkbox" name="select-all" id="select_all" value=""/></font></th>
-					<th>Nome (Conferente)</th>
-					<th>Cod conferente</th>
+					<th>Conferente</th>
 					<th>Nro. Único</th>
 					<th>Tipo Operação</th>
 					<th>Status Separação</th>
 					<th>Status Conferência</th>
-					<th>Parceiro</th>
 					<th>Dt. do Movimento</th>
 					<th>Nro. Nota</th>
 					<th>Empresa</th>
-					<th>Nome Fantasia (Empresa)</th>
+					<th>Parceiro</th>
 					<th>Descrição (Tipo de Operação)</th>
 					<th>Ordem de Carga</th>
 					<th>Sequência da Carga</th>
 					<th>Qtd. Volumes</th>
-					<th>Cód. Conferente</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -374,13 +371,13 @@ else
 				<?php
 					if($row2[1] == 1780 || $row2[1] == 1781 || $row2[1] == 1782){
 						$color = "white";
-					}else if(utf8_encode($row2[16]) == 'Separação em andamento'){
+					}else if(utf8_encode($row2[15]) == 'Separação em andamento'){
 						$color = "#FFFF95;";	
-					}else if(utf8_encode($row2[16]) == 'Separação não iniciada'){
+					}else if(utf8_encode($row2[15]) == 'Separação não iniciada'){
 						$color = "#ff9595;";
-					}else if(utf8_encode($row2[16]) == 'Separação em pausa'){
+					}else if(utf8_encode($row2[15]) == 'Separação em pausa'){
 						$color = "#9c95ff;";
-					}else if(utf8_encode($row2[16]) == 'Separação concluída'){
+					}else if(utf8_encode($row2[15]) == 'Separação concluída'){
 						$color = "#8fffb1";
 					}
 				?>
@@ -389,22 +386,19 @@ else
 					<td style="width: 0.1% !important">
 						<input type="checkbox" class="checkbox" data-nota="<?php echo $row2[0]; ?>"/>
 					</td> 
-					<td style="width: 0.1% !important"><?php echo $row2[14]; ?></td>
-					<td style="width: 0.1% !important"><?php echo $row2[15]; ?></td>
+					<td style="width: 0.1% !important"><?php echo $row2[14] .' - '.$row2[13]; ?></td>
 					<td style="width: 0.1% !important"><?php echo $row2[0]; ?></td>
 					<td><?php echo $row2[1]; ?></td>
-					<td><?php echo utf8_encode($row2[16]); ?></td>
+					<td><?php echo utf8_encode($row2[15]); ?></td>
 					<td><?php echo $row2[2]; ?></td>
-					<td><?php echo $row2[3]; ?></td>
 					<td><?php echo $row2[4]; ?></td>
 					<td><?php echo $row2[6]; ?></td>
 					<td><?php echo $row2[7]; ?></td>
-					<td><?php echo $row2[8]; ?></td>
+					<td><?php echo $row2[3]. ' - ' .$row2[8]; ?></td>
 					<td><?php echo utf8_encode($row2[9]); ?></td>
 					<td><?php echo $row2[10]; ?></td>
 					<td><?php echo $row2[11]; ?></td>
-					<td><?php echo $row2[12]; ?></td>
-					<td style="width: 0.1% !important"><?php echo $row2[13]; ?></td>
+					<td style="width: 0.1% !important"><?php echo $row2[12]; ?></td>
 					<td style="width: 60% !important;"></td>
 				</tr> 
 			</tbody>

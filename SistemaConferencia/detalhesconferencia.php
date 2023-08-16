@@ -477,9 +477,22 @@
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;">
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;">
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;">
-                    <br>Valor frete: <input type="text" name="frete" id="frete" class="text" style="margin-top: 5px;" value="<?php echo $VLRFRETE; ?>">
+          <br>Valor frete: <input type="text" name="frete" id="frete" class="text" style="margin-top: 5px;" value="<?php echo $VLRFRETE; ?>"><br>
+					
+					
+					<br>Motivo da divergência:<br>
+					<select name="mtvdivergencia" id="mtvdivergencia" class="form-control" <?php if($QtdDivergencias == 0) { echo 'disabled'; }?>>
+						<?php if($QtdDivergencias > 0) { ?>
+							<option value="Pendência incluída">Pendência incluída</option>
+							<option value="Corte de item divergent">Corte de item divergente</option>
+							<option value="Desconto por item na nota">Desconto por item na nota</option>
+						<?php } else { ?>
+							<option value="">Não possui divergência</option>
+						<?php } ?>
+					</select>
+					
 					<br>Observação: <textarea id="observacao" cols="20" rows="20" name="observacao" class="text" style="margin-top: 5px; height: 100px;"><?php echo $OBSERVACAO; ?></textarea>
-
+					
 
 					<br><input name="confirmar" id="confirmar" type="submit" value="Confirmar" style="cursor: hand; cursor: pointer; margin-top: 2%;">
 
@@ -1119,7 +1132,7 @@
 
        
 
-        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao, frete)
+        function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao, frete, mtvdivergencia)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -1132,7 +1145,7 @@
                 beforeSend: function () {
                     //$("#itensconferidos").html("Carregando...");
                 },
-                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao, frete: frete},//Dados para consulta
+                data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao, frete: frete, mtvdivergencia: mtvdivergencia},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -1148,7 +1161,7 @@
 
 
         $('#confirmar').click(function () {
-            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#frete").val())
+            finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#frete").val(), $("#mtvdivergencia").val())
         });
 
 

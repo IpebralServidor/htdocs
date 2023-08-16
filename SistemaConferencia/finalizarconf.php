@@ -14,6 +14,13 @@ $pesobruto = $_POST['pesobruto'];
 $nunota = $_POST['nunota'];
 $observacao = $_POST['observacao'];
 $frete = $_POST['frete'];
+
+if($_POST['mtvdivergencia'] == null){
+    $_POST['mtvdivergencia'] = '';
+}
+
+$mtvdivergencia = $_POST['mtvdivergencia'];
+
 //;$observacao = ' ';
 $usuconf = $_SESSION["idUsuario"];
 
@@ -23,7 +30,7 @@ $row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC);
 $linhas = $row2[0];
 
 if($linhas > 0){
-    $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', $frete ";
+    $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', $frete, '$mtvdivergencia' ";
 }else{
     $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '', $frete ";
 }
