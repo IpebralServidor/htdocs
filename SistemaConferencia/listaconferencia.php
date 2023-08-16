@@ -165,17 +165,18 @@ else
 		<table width="4000">
 		<thead>
 			<tr style="color: white;">
-				<th>Nro. Único</th>
-				<th>Nome (Conferente)</th>
-				<th>Cod conferente</th>
-				<th>Tipo Operação</th>
-				<th>Status Separação</th>
-				<th>Status Conferência</th>
 				<th>Parceiro</th>
 				<th>Dt. do Movimento</th>
+				<th>Nro. Único</th>
+				<th>Nome (Conferente)</th>
+				<th>TOP</th>
+				<th>Valor Nota</th>
+				<th>Status Separação</th>
+				<th>Status Conferência</th>
 				<th>Nro. Nota</th>
 				<th>Empresa</th>
 				<th>Nome Fantasia (Empresa)</th>
+				<th>Cod conferente</th>
 				<th>Descrição (Tipo de Operação)</th>
 				<th>Ordem de Carga</th>
 				<th>Sequência da Carga</th>
@@ -186,49 +187,50 @@ else
 		</thead>
 
 		<?php
-			while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
-			{ $NUCONF = $row2[0];
+			while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))  
+			{ $NUCONF = $row2['NUNOTA'];
 		?>
 
 		<tbody>
 			<?php
-				if($row2[1] == 1780 || $row2[1] == 1781 || $row2[1] == 1782){
+				if($row2['CODTIPOPER'] == 1780 || $row2['CODTIPOPER'] == 1781 || $row2['CODTIPOPER'] == 1782){
 					$color = "white";
-				}else if(utf8_encode($row2[16]) == 'Separação em andamento'){
+				}else if(utf8_encode($row2['STATUSSEP']) == 'Separação em andamento'){
 					$color = "#FFFF95;";	
-				}else if(utf8_encode($row2[16]) == 'Separação não iniciada'){
+				}else if(utf8_encode($row2['STATUSSEP']) == 'Separação não iniciada'){
 					$color = "#ff9595;";
-				}else if(utf8_encode($row2[16]) == 'Separação em pausa'){
+				}else if(utf8_encode($row2['STATUSSEP']) == 'Separação em pausa'){
 					$color = "#9c95ff;";
 				}
-				else if(utf8_encode($row2[16]) == 'Separação concluída'){
+				else if(utf8_encode($row2['STATUSSEP']) == 'Separação concluída'){
 					$color = "#8fffb1";
 				}
 			?>
-			<tr style="background-color:<?php echo $color ?>" id="linhaSelecionada" data-nota="<?php echo $row2[0] ?>">
-				<td style="width: 30px;"><?php echo $row2[0]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[14]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[15]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[1]; ?></td>
-				<td style="width: 30px;"><?php echo utf8_encode($row2[16]); ?></td>
-				<td style="width: 30px;"><?php echo $row2[2]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[3]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[4]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[6]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[7]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[8]; ?></td>
-				<td style="width: 30px;"><?php echo utf8_encode($row2[9]); ?></td>
-				<td style="width: 30px;"><?php echo $row2[10]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[11]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[12]; ?></td>
-				<td style="width: 30px;"><?php echo $row2[13]; ?></td>
+			<tr style="background-color:<?php echo $color ?>" id="linhaSelecionada" data-nota="<?php echo $row2['NUNOTA'] ?>">
+				<td style="width: 30px;"><?php echo $row2['CODPARC']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['DTMOV']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['NUNOTA']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['NOMEUSU']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['CODTIPOPER']; ?></td>
+				<td style="width: 30px;"><?php echo str_replace('.',',',$row2['VLRNOTA']); ?></td>
+				<td style="width: 30px;"><?php echo utf8_encode($row2['STATUSSEP']); ?></td>
+				<td style="width: 30px;"><?php echo $row2['STATUSCONF']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['NUMNOTA']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['CODEMP']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['NOMEPARC']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['CODFUNC']; ?></td>
+				<td style="width: 30px;"><?php echo utf8_encode($row2['DESCROPER']); ?></td>
+				<td style="width: 30px;"><?php echo $row2['ORDEMCARGA']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['SEQCARGA']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['QTDVOL']; ?></td>
+				<td style="width: 30px;"><?php echo $row2['CODUSUCONF']; ?></td>
 				<td></td>
 			</tr> 
 		</tbody>
 
 		
 		<?php
-		$notaRetorno = $row2[0];
+		$notaRetorno = $row2['NUNOTA'];
 		}
 		?>
 	</table>
