@@ -211,14 +211,7 @@
 		
 		$varStatus = $rowStatus[0];
 
-		$tsql2 = "  select COUNT(*)
-					from TGFITE inner join
-							TGFCAB ON TGFCAB.NUNOTA = TGFITE.NUNOTA FULL OUTER JOIN
-							TGFCOI2 on TGFCOI2.NUCONF = TGFCAB.NUCONFATUAL
-								AND TGFCOI2.CODPROD = TGFITE.CODPROD INNER JOIN
-							TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
-					where TGFITE.NUNOTA = '{$nunota2}'
-						and (TGFCOI2.QTDCONF <> TGFITE.QTDNEG or TGFCOI2.QTDCONF is null)
+		$tsql2 = "  select count(*) from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2)
 				";
 
 		$stmt2 = sqlsrv_query( $conn, $tsql2);
@@ -301,7 +294,7 @@
 	function confirmar_conf() {
 		//var result = confirm("Tem certeza que deseja confirmar essa conferência?");
         //if(result){
-        	if(<?php echo $QtdDivergencias ?> == 0 && <?php echo $QtdDivCorte ?> == 0){
+        	if(<?php echo $QtdDivergencias ?> == 0){
 	        	abrirconf();
 	            return true;
         	} else if (<?php echo $QtdDivCorte ?> > 0){
@@ -483,7 +476,7 @@
 					<br>Motivo da divergência:<br>
 					<select name="mtvdivergencia" id="mtvdivergencia" class="form-control" <?php if($QtdDivergencias == 0) { echo 'disabled'; }?>>
 						<?php if($QtdDivergencias > 0) { ?>
-							<option value="Pendência incluída">Pendência incluída</option>
+							<option value="Pendencia incluida">Pendência incluída</option>
 							<option value="Corte de item divergent">Corte de item divergente</option>
 							<option value="Desconto por item na nota">Desconto por item na nota</option>
 						<?php } else { ?>
