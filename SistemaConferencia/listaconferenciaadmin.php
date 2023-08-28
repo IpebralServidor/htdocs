@@ -348,6 +348,7 @@ else
 					<th>Conferente</th>
 					<th>Nro. Único</th>
 					<th>Tipo Operação</th>
+					<th>Separador</th>
 					<th>Status Separação</th>
 					<th>Status Conferência</th>
 					<th>Dt. do Movimento</th>
@@ -389,6 +390,7 @@ else
 					<td style="width: 0.1% !important"><?php echo $row2[14] .' - '.$row2[13]; ?></td>
 					<td style="width: 0.1% !important"><?php echo $row2[0]; ?></td>
 					<td><?php echo $row2[1]; ?></td>
+					<td><?php echo $row2[17]; ?></td>
 					<td><?php echo utf8_encode($row2[15]); ?></td>
 					<td><?php echo $row2[2]; ?></td>
 					<td><?php echo $row2[4]; ?></td>
