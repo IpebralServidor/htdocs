@@ -1,8 +1,7 @@
 <?php
 	include "../conexaophp.php";
 	require_once 'App/auth.php';
-	
-	
+
 	$usuconf = $_SESSION["idUsuario"];
 	$VLR1700 = 0;
 	$VLR1720 = 0; 
@@ -20,6 +19,12 @@
 	// if($codbarra == 0){
 	// 	$codbarra = '';
 	// }
+	$tsqlPendente = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
+	$stmtPendente = sqlsrv_query( $conn, $tsqlPendente);
+	$rowPendente = sqlsrv_fetch_array($stmtPendente, SQLSRV_FETCH_NUMERIC);
+	$QtdPendente = $rowPendente[0];
+
+
 	$tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
 	$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
@@ -35,7 +40,9 @@
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODVEND) + ' - ' + APELIDO,
 					   CONVERT(VARCHAR(MAX),TGFCAB.CODPARC) + ' - ' + TRIM(RAZAOSOCIAL),
                        TGFCAB.OBSERVACAO,
-					   TGFCAB.VLRFRETE
+					   TGFCAB.VLRFRETE,
+					   TGFCAB.CODEMP,
+					   TGFCAB.AD_SEPARADOR
 				FROM TGFCAB INNER JOIN
 					 TGFPAR ON TGFPAR.CODPARC = TGFCAB.CODPARC INNER JOIN
 					 TGFVEN ON TGFVEN.CODVEND = TGFCAB.CODVEND
@@ -49,7 +56,9 @@
 	  $VENDEDOR = $row2[1];
 	  $PARCEIRO = $row2[2];
 	  $OBSERVACAO = $row2[3];	  
-	  $VLRFRETE = $row2[4];	  
+	  $VLRFRETE = $row2[4];	 
+	  $codemp = $row2[5]; 
+	  $adseparador = $row2[6]; 
 	}
 
 	$tsql3 = "  DECLARE @NUNOTA INT = {$nunota2}
@@ -211,10 +220,10 @@
 		
 		$varStatus = $rowStatus[0];
 
-		$tsql2 = "  select count(*) from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2)
-				";
+		$tsql2 = "select count(*) from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2)";
 
 		$stmt2 = sqlsrv_query( $conn, $tsql2);
+
 
 		while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
 		{ $QtdDivergencias = $row2[0];
@@ -240,6 +249,7 @@
 	?>
 
 	<script type="text/javascript">
+		
 		$(document).ready(function(){
 	    $('#select_all').on('click',function(){
 	        if(this.checked){
@@ -294,11 +304,11 @@
 	function confirmar_conf() {
 		//var result = confirm("Tem certeza que deseja confirmar essa conferência?");
         //if(result){
-        	if(<?php echo $QtdDivergencias ?> == 0){
-	        	abrirconf();
+        	if(<?php echo $QtdDivCorte ?> > 0 || <?php echo $QtdPendente ?> > 0){
+	        	abrirconfdivcorte();
 	            return true;
-        	} else if (<?php echo $QtdDivCorte ?> > 0){
-				abrirconfdivcorte();
+        	} else if (<?php echo $QtdDivergencias ?> == 0){ 
+				abrirconf();
 				return true;
 			} else {
         		abrirconfdivergencia();
@@ -358,10 +368,75 @@
 			function fecharErroQtd(){
 				document.getElementById('ErroQtdMaior').style.display =  'none';
 			}
+
+			function abrirconferentes(){
+
+				document.getElementById('popupconferentes').style.display = 'block';
+
+				var btns = document.getElementsByClassName('conferente-btn');
+
+				for (var i = 0; i < btns.length; i++) {
+					btns[i].addEventListener('click', function() {
+
+						var nunota = "<?php echo $nunota2; ?>"
+
+						var user = this.getAttribute('data-user');
+
+						atribuirseparador(user, nunota);
+					});
+				}
+			}
+
+			function fecharconferentes(){
+				document.getElementById('popupconferentes').style.display =  'none';
+			}
+
+			
 		</script>
 
 </head>
-<body style="margin: 0;" onload="scrollToRow(<?php echo $linhamarcada; ?>)">
+<body style="margin: 0;" onload="<?php if($adseparador == null && $codemp == 7) { ?> abrirconferentes(); <?php } ?> scrollToRow(<?php echo $linhamarcada; ?>)">
+
+	<div id="popupconferentes" class="popupconferentes">
+		<h4>Lista de conferentes</h4>
+		<div class="input-busca">
+			<input type="text" id="searchbar" onkeyup="search_conferente()" placeholder="Escreva o nome do conferente">
+		</div><br>
+		<div >
+			<table class="table-conferentes">
+				
+				<div class="conferentes-title">
+					<h6>
+						Conferentes
+					</h6>
+				</div><br>
+
+				<?php 
+					$tsql3 = "SELECT CODUSU, NOMEUSU 
+							  FROM TSIUSU 
+							  WHERE CODUSU IN (SELECT ITEM FROM SANKHYA.AD_FN_SPLIT((SELECT TEXTO FROM TSIPAR WHERE CHAVE = 'UsuSeparacao7'), ','))
+							  ORDER BY NOMEUSU";
+
+					$stmt3 = sqlsrv_query( $conn, $tsql3);  
+					$row_count = sqlsrv_num_rows( $stmt3 ); 
+					while( $row3 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))
+					{
+				?>
+				<ul id='list'>
+					<li class='conferentes'>
+						<button style="width: 100%; height: 100%; background-color:rgba(144,  203,  44,  0); cursor: pointer; " id="conferente-btn" class="conferente-btn" data-user="<?php echo $row3[0]; ?>">
+							<?php echo $row3[1]; ?>
+						</button>
+					</li>
+				</ul>
+				<?php
+					}
+				?>
+			</table>
+			<button class="fechar" onclick="fecharconferentes();">X</button>
+		</div>
+	</div>
+
 	<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: fixed;">
 		<table width="100%" id="table">
 			<tr>
@@ -470,14 +545,14 @@
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="" style="margin-top: 5px;">
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;">
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;">
-          <br>Valor frete: <input type="text" name="frete" id="frete" class="text" style="margin-top: 5px;" value="<?php echo $VLRFRETE; ?>"><br>
+                    <br>Valor frete: <input type="text" name="frete" id="frete" class="text" style="margin-top: 5px;" value="<?php echo $VLRFRETE; ?>"><br>
 					
 					
 					<br>Motivo da divergência:<br>
-					<select name="mtvdivergencia" id="mtvdivergencia" class="form-control" <?php if($QtdDivergencias == 0) { echo 'disabled'; }?>>
-						<?php if($QtdDivergencias > 0) { ?>
+					<select name="mtvdivergencia" id="mtvdivergencia" class="form-control" <?php if($QtdDivergencias == 0 && $QtdPendente == 0) { echo 'disabled'; }?>>
+						<?php if($QtdDivergencias > 0 || $QtdPendente > 0) { ?>
 							<option value="Pendencia incluida">Pendência incluída</option>
-							<option value="Corte de item divergent">Corte de item divergente</option>
+							<option value="Corte de item divergente">Corte de item divergente</option>
 							<option value="Desconto por item na nota">Desconto por item na nota</option>
 						<?php } else { ?>
 							<option value="">Não possui divergência</option>
@@ -1152,11 +1227,36 @@
 			});
         }
 
-
-        $('#confirmar').click(function () {
+		$('#confirmar').click(function () {
             finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#frete").val(), $("#mtvdivergencia").val())
         });
+		
 
+		function atribuirseparador(separador, nunota)
+			{
+				//O método $.ajax(); é o responsável pela requisição
+				$.ajax
+				({
+					//Configurações
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'atribuirseparador.php',//Indica a página que está sendo solicitada.
+					//função que vai ser executada assim que a requisição for enviada
+					beforeSend: function () {
+						// $("#loader").show();
+					},
+					data: {separador: separador, nunota: nunota},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>&codbarra=0';
+					}
+				});
+		}
+
+
+        
+		
 
 
 
