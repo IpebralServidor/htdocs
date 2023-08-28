@@ -359,6 +359,7 @@ else
 					<th>Ordem de Carga</th>
 					<th>Sequência da Carga</th>
 					<th>Qtd. Volumes</th>
+					<th>Razão social</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -401,6 +402,7 @@ else
 					<td><?php echo $row2[10]; ?></td>
 					<td><?php echo $row2[11]; ?></td>
 					<td style="width: 0.1% !important"><?php echo $row2[12]; ?></td>
+					<td><?php echo $row2[16]; ?></td>
 					<td style="width: 60% !important;"></td>
 				</tr> 
 			</tbody>
