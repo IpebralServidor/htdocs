@@ -4,6 +4,7 @@ session_start(); //Iniciando a sessão
 
 $nunotaorig = $_POST["nunota"]; 
 $toporigem   = $_POST["codtipoper"];
+$_SESSION["toporigem"] = $toporigem;
 $usuconf = $_SESSION["idUsuario"];
 
 
