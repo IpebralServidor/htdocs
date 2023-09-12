@@ -2,6 +2,11 @@ body, html {
 	height: 100%;
 	width: 100%;
 	margin: 0;
+	overflow: hidden;
+}
+
+button {
+	border-radius: 5px;
 }
 
 .container {
@@ -33,6 +38,66 @@ input {
 	margin-top: 2%;
 }
 
+.popupObservacao {
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 86%;
+	height: 90%;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 10;
+	border-radius: 10px;
+	text-align: center;
+}
+
+.fechar{
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 0;
+	background-color: red;
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.abrirObservacao {
+	float: right;
+	margin-top: 5%;
+	margin-right: 5%;
+/*	background-color: #C1E2E3;*/
+	font-size: 15px;
+}
+
+
+
+table {
+	border-collapse: collapse;
+}
+
+table th {
+	text-align: center;
+	background-color: #3a6070;
+	color: #FFF;
+	/*padding: 4px 30px 4px 8px;*/
+}
+
+table td {
+	border: 1px solid #e3e3e3;
+	padding: 4px 8px;
+	text-align: center;
+}
+
+table tr:nth-child(odd) td {
+	background-color: #e7edf0;
+}
 
 /*.container {
 	width: 100%;

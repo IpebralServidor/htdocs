@@ -2,32 +2,29 @@
 include "../conexaophp.php";
 session_start(); //Iniciando a sessão
 
-$nunotaorig = $_SESSION["nunotaorig"]; 
-$toporigem   = $_SESSION["toporigem"];
+$nunotaorig = $_POST["nunota"]; 
+$toporigem   = $_POST["codtipoper"];
+$_SESSION["toporigem"] = $toporigem;
 $usuconf = $_SESSION["idUsuario"];
 
 
 
+$tsql = " exec AD_STP_INICIAPROCESSOESTOQUECD5 $nunotaorig, '$toporigem', $usuconf";
 
-				$tsql = "
+//var_dump($tsql);
 
-				DECLARE @VINCULONF INT,
-	    	 		    @ULTCOD INT,
-	    	 		    @NUNOTA INT = $nunotaorig,              
-       				    @TOP int = $toporigem,
-       				    @CODUSU INT = $usuconf
+$stmt = sqlsrv_query($conn, $tsql);
 
-				
-				exec AD_STP_INICIAPROCESSOESTOQUECD5 @NUNOTA, @TOP, @CODUSU
-				
-		 			";
+if ($stmt){
+	while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC))
+		{$nunota = $row[0];
+		}  
 
-			 	$stmt = sqlsrv_query($conn, $tsql);
+	$_SESSION["nunotaorig"] = $nunota;
 
-echo $ULTCOD;
+	echo $nunota;
+}
 
-
-header('Location: insereestoque.php');
 
 
 ?>
