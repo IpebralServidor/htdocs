@@ -41,32 +41,25 @@ $referencia = $_POST['REFERENCIA'];
 
 				$stmt = sqlsrv_query( $conn, $tsql); 
 
-				while( $row2 = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC))  
-				{ $produto = $row2[0];
-				  $codreferencia = $row2[1];
-				  $descrprod = $row2[2];
-				  $qtdmaxlocal = $row2[3];
-				  $mediavenda = $row2[4];
-				  $agrupmin = $row2[5];
-				  $precovenda = $row2[6];
+				while( $row2 = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC))  
+				{ $produto = $row2['CODPROD'];
+				  $codreferencia = $row2['REFERENCIA'];
+				  $descrprod = $row2['DESCRPROD'];
+				  $qtdmaxlocal = $row2['AD_QTDMAXLOCAL'];
+				  $mediavenda = $row2['MEDIA'];
+				  $agrupmin = $row2['AGRUPMIN'];
+				  $precovenda = $row2['PRECOVENDA'];
 				}
-
-				/*echo '<span class="infoprodutotext">Parc: {$codparcorig}</span><br>';
-				echo '<span class="infoprodutotext">Nome Parc:</span><br>';
-				echo '<span class="infoprodutotext">TOP Origem:</span><br>';
-				echo '<span class="infoprodutotext">Núm. Ún. Orig.:</span><br>';
-				echo '<span class="infoprodutotext">TOP Destino:</span><br>';
-				echo '<span class="infoprodutotext">Núm. Ún. Dest.:</span><br>';*/
 
 			?>
 
 			<span class="infoprodutotext"><b>Produto:</b> <?php if(!isset($produto)){ echo '';} else { echo $produto;} ?></span>
 			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Referência:</b> <?php if(!isset($codreferencia)){ echo '';} else { echo $codreferencia;} ?></span><br>
-			<span class="infoprodutotext"><b>Descrição Produto:</b> <?php if(!isset($descrprod)){ echo '';} else { echo $descrprod;} ?></span><br>
-			<span class="infoprodutotext"><b>Qtd. Máx. Local:</b> <?php if(!isset($qtdmaxlocal)){ echo '';} else { echo $qtdmaxlocal;} ?></span>
-			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Méd. V.:</b> <?php if(!isset($mediavenda)){ echo '';} else { echo $mediavenda;} ?></span><br>
-			<span class="infoprodutotext"><b>Agrup. Mín.:</b> <?php if(!isset($agrupmin)){ echo '';} else { echo $agrupmin;} ?></span>
-			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Preço V.: </b>R$ <?php if(!isset($precovenda)){ echo '';} else { echo str_replace('.',',',$precovenda);} ?></span><br>
+			<span class="infoprodutotext"><b>Descrição:</b> <?php if(!isset($descrprod)){ echo '';} else { echo $descrprod;} ?></span><br>
+			<!-- <span class="infoprodutotext"><b>Qtd. Máx. Local:</b> <?php if(!isset($qtdmaxlocal)){ echo '';} else { echo $qtdmaxlocal;} ?></span> -->
+			<span class="infoprodutotext"><b>Méd. V.:</b> <?php if(!isset($mediavenda)){ echo '';} else { echo $mediavenda;} ?></span>
+			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Agrup. Mín.:</b> <?php if(!isset($agrupmin)){ echo '';} else { echo $agrupmin;} ?></span><br>
+			<span class="infoprodutotext"><b>Preço V.: </b>R$ <?php if(!isset($precovenda)){ echo '';} else { echo str_replace('.',',',$precovenda);} ?></span><br>
 		</div>
 	</div> <!-- Fim infoproduto -->
 
@@ -113,48 +106,29 @@ $referencia = $_POST['REFERENCIA'];
 			<div style=" width: 97%; height: 43%; position: absolute; overflow: auto; margin-top: 5px;">
 					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
 						  <tr> 
-						    <th width="20%" align="center">Empresa</th>
+						    <th width="20%" align="center">Emp.</th>
 						    <th width="30%" align="center">Cód. Local</th>
 						    <th width="25%" style="text-align: center;">Estoque</th>
-						    <th width="25%" align="center">Padrão?</th>
+						    <th width="25%" align="center">Pad./Máx.</th>
 						  </tr>
 
 
 						  <?php 
 							$tsql2 = "  
-								DECLARE @REFERENCIA VARCHAR(100) = '$referencia'
-		
-								SELECT CODEMP,
-									   SUBSTRING(CAST(EST.codlocal as VARCHAR(7)),1,1) + '-'
-									    +SUBSTRING(CAST(EST.codlocal as VARCHAR(7)),2,2) + '.'
-								        +SUBSTRING(CAST(EST.codlocal as VARCHAR(7)),4,2) + '.'
-								        +SUBSTRING(CAST(EST.codlocal as VARCHAR(7)),6,2) AS CODLOCAL,
-								       REPLACE(CONVERT(VARCHAR(MAX),ROUND(EST.ESTOQUE -EST.RESERVADO,4)),'.',',') AS ESTOQUE,
-									   CASE WHEN EST.CODLOCAL = PRO.AD_CODLOCAL
-									        THEN 'X'
-											ELSE ''
-									   END  AS PADRAO
-								FROM TGFPRO PRO INNER JOIN
-								     TGFEST EST ON EST.CODPROD = PRO.CODPROD INNER JOIN
-									 TGFBAR BAR ON BAR.CODPROD = EST.CODPROD
-								WHERE est.estoque > 0
-								  AND BAR.CODBARRA = TRIM(@REFERENCIA)
-								  AND EST.CODPARC = 0 
-								ORDER BY CODEMP,PRO.REFERENCIA,EST.CODLOCAL     
-
-										"; 
+								SELECT * FROM [sankhya].[AD_FNT_TabelaEstoque_ConsultaEstoque]('$referencia')
+									 "; 
 
 							$stmt2 = sqlsrv_query( $conn, $tsql2);  
 
-							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
-							{ $NUCONF = $row2[0];
+							while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))  
+							{ 
 						?>
 
 							  <tr style="cursor: hand; cursor: pointer;">
-							    <td width="20%" align="center"><?php echo $row2[0]; ?>&nbsp;</td>
-							    <td width="30%" align="center"><?php echo $row2[1]; ?>&nbsp;</td>
-							    <td width="25%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
-							    <td width="25%" align="center"><?php echo $row2[3]; ?></td>
+							    <td width="15%" align="center"><?php echo $row2['CODEMP']; ?>&nbsp;</td>
+							    <td width="30%" align="center"><?php echo $row2['CODLOCAL']; ?>&nbsp;</td>
+							    <td width="25%" align="center"><?php echo $row2['ESTOQUE']; ?>&nbsp;</td>
+							    <td width="30%" align="center"><?php echo $row2['PADRAO_QTDMAX']; ?></td>
 							  </tr>
 							 
 
