@@ -470,8 +470,7 @@
 
         <button name="conferir" id="conferir" type="submit" value="" style="margin-left: 30px;">Conferir</button>
 
-		<?php
-			
+		<?php			
 
 			if($rowStatus[0] == "A"){
 				$colorStatus = "green";
@@ -982,52 +981,7 @@
 
 						<!-- Pesquisa o Número da Nota no Banco para que sejam retornados os itens -->
 			<?php
-				$tsql2 = "  SELECT /*PRO.REFERENCIA,*/
-								   /*ITE.CODPROD,*/
-								   /*BAR.CODBARRA,*/
-								   /*ITE.QTDNEG,*/
-								   PRO.DESCRPROD,
-								   CAB.NUNOTA,
-								   ITE.SEQUENCIA,
-								   ITE.CODVOL,
-								   VOL.DESCRVOL,
-								   ITE.CONTROLE,
-								   ITE.AD_DESCMAX,
-								   ITE.AD_MOTIVOCORTE,
-								   ITE.AD_DIF_ICMSST,
-								   ITE.AD_EXCECAOTAB,
-								   ITE.AD_CODPROPAR,
-								   ITE.AD_VINCULONF,
-								   ITE.AD_VINCULO_SEQ,
-								   ITE.AD_MOTIVOVINCULONF,
-								   PRO.REFFORN,
-								   PRO.MARCA,
-								   PRO.DECQTD,
-								   PRO.AD_MANUFATUR,
-								   PRO.AD_CODLOCSEC,
-								   PRO.AD_CNPJ,
-								   PRO.AD_EMBALAGEM,
-								   PRO.AD_CODLOCAL,
-								   PRO.AD_PROMO_FAST,
-								   PRO.AD_NROCAIXA,
-								   PRO.AD_CODLOCAL3,
-								   PRO.AD_CODLOCAL4,
-								   PRO.AD_CODLOCALPADEMP1,
-								   PRO.AD_CODLOCALPADEMP1,
-								   --PRO.AD_CODLOCALEMP1,
-								   --PRO.AD_CODLOCALEMP7,
-								   PRO.AD_DTPRIMEIRAENTRADA,
-								   PRO.AD_SAZONAL
-							FROM TGFCAB CAB INNER JOIN
-								 TGFITE ITE ON ITE.NUNOTA = CAB.NUNOTA INNER JOIN
-								 TGFPRO PRO ON PRO.CODPROD = ITE.CODPROD LEFT JOIN
-									 TGFBAR BAR ON BAR.CODPROD = PRO.CODPROD 
-											   AND BAR.DHALTER = (SELECT MAX(TGFBAR.DHALTER) FROM TGFBAR WHERE TGFBAR.CODPROD = BAR.CODPROD) INNER JOIN
-								 TGFVOL VOL ON VOL.CODVOL = ITE.CODVOL --INNER JOIN
-								 --TGFCON2 CONF ON CONF.NUCONF = CAB.NUCONFATUAL
-							WHERE CAB.NUNOTA = {$nunota2}
-							ORDER BY SEQUENCIA
-							";
+				$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_ITENS_PEDIDO]($nunota2)";
 
 				$stmt2 = sqlsrv_query( $conn, $tsql2);
 
