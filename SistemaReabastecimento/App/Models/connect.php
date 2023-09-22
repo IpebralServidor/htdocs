@@ -10,7 +10,7 @@
 	var $serverName = "10.0.0.228"; 
 	var $uid = "sankhya";   
 	var $pwd = "tecsis";  
-	var $databaseName = "SANKHYA_TESTE"; 
+	var $databaseName = "SANKHYA_PROD"; 
 	var $SQL;
 	var $teste;
 	var $cont;
