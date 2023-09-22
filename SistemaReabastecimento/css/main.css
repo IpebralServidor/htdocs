@@ -1,0 +1,697 @@
+table {
+	border-collapse: collapse;
+}
+
+table th {
+	text-align: center;
+	background-color: #3a6070;
+	color: #FFF;
+	/*padding: 4px 30px 4px 8px;*/
+}
+
+table td {
+	border: 1px solid #e3e3e3;
+	padding: 4px 8px	;
+}
+table tr:nth-child(odd) td {
+}
+
+tr{transition:all .25s ease-in-out}
+tr:hover{background-color:#FFFF95;cursor: pointer !important}
+tr:active{background-color: yellow !important;}
+
+/**Cor quando selecionado**/
+#minhaTabela tr.selecionado td{
+  background-color: yellow;
+}
+
+.popupdivergencias{
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 800px;
+	height: 400px;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 999;
+}
+
+.popuppendencias{
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 800px;
+	height: 400px;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 999;
+}
+
+.popupconf {
+	position: absolute;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 250px;
+	height: 350px;
+	padding: 15px;
+	background: white;
+	display: none;
+	z-index: 9999999;
+	border-radius: 35px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+
+.popupconfdivergencia {
+	width: 450px;
+	height: 250px;
+	padding: 15px;
+	display: none;
+	z-index: 9999;
+}
+
+.popupconfdivcorte {
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 450px;
+	height: 160px;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 10;
+}
+
+/*------------------------------------------------------------------*/
+/*---------Inserindo Fortamação para Consulta de Produtos-----------*/
+
+
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed);
+
+
+.nav_tabs{
+	width: 600px;
+	/*height: 400px;*/
+	margin: 0px auto;
+	background-color: #fff;
+	position: relative;
+	margin-left: -40px;
+}
+
+.nav_tabs ul{
+	list-style: none;
+}
+
+.nav_tabs ul li{
+	float: left;
+}
+
+.tab_label{
+	display: block;
+	width: 60px;
+	background-color: #363b48;
+	padding: 5px;
+	font-size: 15px;
+	color:#fff;
+	cursor: pointer;
+	text-align: center;
+}
+
+
+.nav_tabs .rd_tab { 
+	display:none;
+	position: absolute;
+}
+
+.nav_tabs .rd_tab:checked ~ label { 
+	background-color: #e54e43;
+color:#fff;}
+
+.tab-content{
+border-top: solid 5px #e54e43;
+	background-color: #fff;
+	display: none;
+	position: absolute;
+	height: 200px;
+	width: 59%;
+	left: 40px;	
+	overflow: auto;
+}
+
+.rd_tab:checked ~ .tab-content{
+	display: block;
+}
+.tab-content h2{
+	/*padding: 10px;*/
+	color: #87d3b7;
+}
+.tab-content article{
+	/*padding: 10px;*/
+	color: #555;
+}
+
+
+/*-------Fim Inserindo Fortamação para Consulta de Produtos---------*/
+/*------------------------------------------------------------------*/
+
+
+.ErroQtdMaior{
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 86%;
+	height: 90%;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 10;
+	border-radius: 10px;
+}
+
+.fechar{
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	border: 0;
+	background-color: red;
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.btnPendencia {
+	cursor: hand; cursor: pointer; 
+	color: white;
+  	background-color: #e54e43 !important;
+  	border: solid #e54e43 1px !important;
+	font-size: 13px;
+}
+.btnWidth{
+	width: 200px !important;
+	margin-top: 1.5rem;
+}
+.filtro{
+	text-align: center;
+	width:15%; 
+	margin-top: 1%;
+	margin-left: 2%;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+	padding: 15px;
+	background-color: white;
+	overflow: auto !important;
+	float: left;
+}
+.listaconferenciatext{
+	display: inline-block; 
+	width: 80%; 
+	margin-top: 1%;
+	float: right; 
+	margin-left: 0; 
+	overflow: auto; 
+	margin-right: 1%; 
+	margin-bottom: 0;
+	padding-right: 17px;
+	padding-left: 10px;
+	padding-top: 10px;
+	border-bottom: solid 1px white;
+	background-color: #3a6070;
+	
+}
+.listaconferenciatext p{
+	
+	padding: 10px;
+	font-weight: 600 !important;
+	font-size: 150% !important;
+	text-decoration: underline;
+	color: white;
+	margin: 0 !important;
+}
+.listaconferencia{
+	display: inline-block; 
+	width: 80%; 
+	float: right; 
+	height: 85%; 
+	margin-left: 0; 
+	overflow-y: auto; 
+	margin-right: 1%; 
+	margin-bottom: 0;
+	background-color: white !important;
+}
+.listaconferencia tr{
+	cursor: hand; 
+	cursor: pointer; 
+	height: 50px !important;
+	text-align: center;
+}
+.listaconferencia th{
+	position: sticky;
+    top: 0;
+}
+.listaconferencia td{
+}
+.listaconferencia tr:hover{
+	background-color: rgb(231, 228, 20) !important;
+}
+.listaconferencia thead{
+	background-color: #3a6070;
+	text-align: center;
+}
+
+.listaconferencia p{
+	font-size: 24px;
+	background-color: #3a6070;
+	color: white;
+	font-weight: 550;
+	margin: 0;
+	width: 101%;
+	text-decoration: underline;
+	border-bottom: solid 1px white;
+	padding: 10px;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.btn{
+	width: 100% !important;
+}
+.background-lista{
+	background-color: #eeeeee71;
+	width: 100%; 
+	height: 100%; 
+	overflow: auto !important;
+}
+.img-voltar{
+	padding: 0 !important; 
+	margin-bottom: 7%;
+	
+}
+.img-voltar img{
+	width: 35px;
+	float: left;
+	background-color: #2d4a57;
+	border-radius: 100%;
+}
+.img-voltar a{
+	border: none !important;
+	margin-bottom: 20px !important;
+	text-decoration: none !important;
+	color: #363b48;
+}
+.img-voltar p{
+	float: right;
+	max-height: 5px;
+	padding-top: 3.5%;
+	color: white;
+}
+.btn-back{
+	background-color: #3a6070 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #2d4a57, 0px 10px 5px #999;
+	transition: all 0.2s !important;
+}
+.btn-back:hover{
+	transform: scale(1.03) !important;
+}
+.btn-form{
+	background-color: #3a6070 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #2d4a57, 0px 10px 5px #999;
+	color: white;
+	transition: all 0.2s !important;
+}
+.btn-form:hover{
+	transform: scale(1.03) !important;
+}
+.body-detalhes{
+	overflow: auto;
+}
+.table-valores{
+	background-color: #3a6070;
+	color: white;
+	text-align: center;
+	margin: 0;
+}
+.tabel-valores thead{
+	border: none !important;
+}
+.table-valores th{
+	border-bottom: none !important;
+	border-top: none !important;
+	border-left: solid 1px white !important;
+	border-right: solid 1px white;
+	font-weight: 400 !important;
+}
+.table-infos{
+	text-align: center !important;
+	background-color: white !important;
+}
+.table-infos th{
+	font-weight: 400 !important;
+}
+.img-voltar-detalhes{
+	padding: 0 !important;
+	margin-left: 1.7%; 	
+	padding-top: 1.5% !important;
+	margin-right: 9% !important;
+	max-width: 4.4%;
+	float: left;
+}
+.img-voltar-detalhes img{
+	width: 35px;
+	float: left;
+	background-color: #2d4a57;
+	border-radius: 100%;
+}
+.img-voltar-detalhes a{
+	border: none !important;
+	margin-bottom: 20px !important;
+	text-decoration: none !important;
+	color: #363b48;
+}
+.btn-detalhes{
+	padding: 0 !important;
+	margin-left: 1.5%; 	
+	padding-top: 2.5% !important;
+	margin-right: 2% !important;
+	float: left;
+}
+.conferencia{
+	width: 40%; 
+	height:50%;  
+	overflow: hidden; 
+	margin-left: 1%;
+	padding: 10px;
+	float: left;
+}
+.btn-form-pendencia{
+	background-color: #ee0909 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #970909, 0px 10px 5px #999;
+	color: white;
+	transition: all 0.2s !important;
+}
+.btn-form-pendencia:hover{
+	transform: scale(1.03) !important;
+}
+.itensconferencia{
+	width: 48%;
+	height: 48%;
+	margin-left: 1%;
+	float: left;
+	border: solid 1px rgb(197, 197, 197);
+	padding: 10px;
+	overflow: auto;
+}
+.itensconferencia tr{
+	cursor: pointer; 
+	height: 50px;
+	text-align: center;
+}
+.itensconferencia thead{
+	background-color: #3a6070;
+	text-align: center;
+}
+.produtosconferencia{
+	width: 1300;
+	height: 50%;
+}
+.produtosconferencia table{
+	margin-top: 5px;
+}
+.produtosconferencia th{
+	width: 6.6%;
+	font-weight: 400;
+	border: 1px solid white;
+}
+.btnconferencia{
+	margin-top: 2%;
+}
+.btn-admin{
+	float: right !important;
+	width: 200px !important;
+	background-color: white !important;
+	color: #2d4a57 !important;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	transition: all 0.2s !important;
+}
+.table-conferentes{
+	
+	width: 100%;
+}
+.popupconferentes{
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 400px;
+	height: 400px;
+	background: white;
+	display: none;
+	z-index: 999;
+	overflow: auto;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px ;
+}
+.popupconferentes h4{
+	text-align: center;
+}
+#loader{
+	position: fixed;
+	z-index: 99999;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	background: 50% 50% no-repeat rgb(15 10 10/50%);
+}
+#loader img{
+	position: absolute;
+  	top: 30%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+}
+
+.d-flex{
+	background-color: #ADADC7 !important;
+}
+.btn-apagaritem{
+	font-size: 13px; 
+	position: absolute; 
+	margin-top: -17.7%; 
+	margin-left: 300px;
+}
+.conferentes{
+	display: list-item;    
+	list-style-type: none;
+	width: 90%;
+	height: 30px;
+}
+.conferentes:hover{
+	background-color:#FFFF95 !important;cursor: pointer !important
+}
+.conferentes-title{
+	background-color: #2d4a57;
+	height: 50px;
+	text-align: center;
+	color: white;
+	font-size: large;
+}
+.conferentes-title h6{
+	left: 50%;
+	position: absolute;
+	top: 36%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+.input-busca{
+	margin-left: 3%;
+}
+.input-busca input{
+	width: 100%;
+	height: 40px;
+}
+.popupconferentes h4{
+	margin-top: 3%;
+}
+
+.legenda{
+	text-align: center;
+	margin-left: 2%;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+	padding: 15px;
+	background-color: white;
+	overflow: auto !important;
+}
+
+
+
+.my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    font-size: 70%;
+    list-style: none;
+	text-align: left;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+.form-control{
+	align-items:start !important;
+	height: 2.5rem !important;
+	margin-bottom: 0.5rem !important;
+}
+
+.body{
+	font-family: 'Poppins', sans-serif;
+	font-family: 'Roboto', sans-serif;
+	margin: 0 !important;
+}
+.header-body{
+	background-color: white !important;
+	border-radius: 10px;
+	padding: 1rem;
+	margin: 1rem;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.header-body-left input{
+	max-width: 80% !important;
+	color: #86B7FE !important;
+}
+	.header-body-left h6{
+		font-size: 0.8rem;
+	}
+	.header-body-right h6{
+		font-size: 0.8rem;
+	}
+
+.title{
+	padding: 0.5rem 0rem 0.5rem 1rem;
+	box-shadow: 0 0.5px 1px rgba(0,0,0,.29);
+	color: #2d4a57;
+	width: 100% !important;
+	background-color: white !important;
+}
+	.title h3{
+		margin: 0 !important;
+		font-size: 120%;
+	}
+
+.image{
+	background-color: white !important;
+}
+
+.btn-proximo-abast{
+	margin-top: 2rem !important;
+}
+.bg{
+	background-color: #3a6070 !important;
+}
+.bg a{
+	color: white !important;
+	border: none;
+}
+
+.footer{
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	color: rgb(0, 0, 0);
+	text-align: end;
+	padding: 1rem;
+}
+.table{
+	background-color: white !important;
+	margin: 0 !important;
+	padding-bottom: 0.5rem;
+}
+.table table{
+	width: 100% !important;
+}
+.content{
+	margin: 1rem;;
+}
+.btn-reabastecimento{
+	width: 3.8rem;
+	margin-bottom: 0.5rem;
+}
+.statusReabastecimento{
+	color: white;
+	border: none;
+	font-size: 13px !important;
+}
+.btn-form-prox-local{
+	background-color: #e54e43 !important;
+	border: none !important;
+	box-shadow: 0px 5px 0px 0px #e54e43, 0px 10px 5px #999;
+	color: white;
+	transition: all 0.2s !important;
+}
+.btnOutroLocal{
+	background-color: #0d6efd !important; 
+	border-color: #0d6efd !important;
+}
+.d-flex{
+	background-color: white !important;
+}
+.input-h6{
+	width: 10rem !important;
+}
+.timer{
+	display: flex;
+	background-color: white !important;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 8px;
+}
+.timer-color{
+	border-radius: 50px;
+	width: 24px;
+}
+.timer h6{
+	margin: 0 !important;
+	padding-left: 5px;
+	padding-right: 5px;
+}
