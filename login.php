@@ -11,81 +11,51 @@
 			echo "<script>alert('Usuário Inexistente!');</script>";
 		}
 	}
-
-	
 ?>
 
 <!DOCTYPE html>
 <html>
-<head>
+	<head>
 		<meta charset="utf-8">
 		<link href="css/login.css" rel='stylesheet' type='text/css' />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!--<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>-->
-		<!--webfonts-->
-		<!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text.css'/>-->
-		<!--//webfonts-->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<title>Login</title>
-</head>
- 
-<body>
-	<div class="main">
-		<form method="post" action="App/session.php">
-    		<h1><span>Login</span> <lable> Ipebral </lable> </h1>
-  			<div class="inset">
-	  			<p>
-	    		 <label for="email">USUÁRIO</label>
-   	 			<input type="text" name="username" class="text" autocomplete="off" required>
-				</p>
-  				<p>
-				    <label for="password">SENHA</label>
-				    <input type="password" name="password" class="text" required>
-  				</p>
-				  <!--<p>
-				    <input type="checkbox" name="remember" id="remember">
-				    <label for="remember">Remember me for 14 days</label>
-				  </p>-->
- 			 </div>
+	</head>
+	
+	<body>
+		<div class="screen">
+			<div class="left">
+				<img src="images/carro.png" alt="">
+			</div>
+			<div class="right">
+				<img src="images/logo ipebral.png" alt="" width="120px">
+				
+				<div class="title">
+					<h4>Acesse sua conta</h4>
+				</div>
 
- 	 
-			  <p class="p-container">
-			    <!--<span><a href="#">Esqueceu a Senha?</a></span>-->
-			    <input type="submit" value="Login" name="submit" id="sub">
-			  </p>
-		</form>
-	</div>  
-</body>
+				<form method="post" action="App/session.php">
+					<div class="form-group">
+						<label for="exampleInputEmail1">Usuário</label>
+						<input type="text" name="username" class="form-control" id="exampleInputEmail1">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Senha</label>
+						<input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+					</div>
+					
+					<button type="submit" value="Login" name="submit" class="btn btn-primary form-control">Entrar</button>
+				</form>
+			</div>
+		</div>
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	</body>
 </html>
 
-
 <?php
-
-		$stmt ="";
-
-
-		/*
-		if (isset($_POST['submit'])) {
-			$un=$_POST['username'];
-			$pw=$_POST['password'];
-			$sltsenha="select senha from teste_leandro where usuario='".$un."'";
-			$sqls=sqlsrv_query($conn, $sltsenha);
-			//$row=sqlsrv_num_rows($sqls);
-
-			//echo $row;
-
-			if($row=sqlsrv_fetch_array($sqls, SQLSRV_FETCH_NUMERIC)){
-				if ($pw==$row[0]) {
-					header("location:listaconferencia.php");
-					exit();
-				}
-				else
-					echo "<script>alert('Senha Inválida!');</script>";
-			}
-			else 
-				echo "<script>alert('Usuário Inválido!');</script>";
-				//echo $sqls;
-				//echo $row[0];
-				//echo $pw;
-		}*/
-
+	$stmt ="";
 ?>
