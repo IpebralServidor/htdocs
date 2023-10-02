@@ -43,7 +43,8 @@ include 'nav.php';
 			
 			<a href="./SistemaConferencia/listaconferencia.php"><button class="botao1">CONFERÊNCIA</button></a>
 			<a href="./SistemaEstoque"><button class="botao1">COLETOR</button></a>
-			<a href="./ConsultaEstoque"><button>CONSULTA EST.</button></a>
+			<a href="./ConsultaEstoque"><button  class="botao1">CONSULTA EST.</button></a>
+			<a href="./SistemaReabastecimento"><button>REABASTECIMENTO.</button></a>
 		</div>
 	</div>
 
