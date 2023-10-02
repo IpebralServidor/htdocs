@@ -12,7 +12,16 @@ if(isset($_POST["aplicar"])){
     $tsqlCheckin = "EXEC [sankhya].[AD_STP_CHECKIN_PHP] $codusu, $request";
     $stmtCheckin = sqlsrv_query( $conn, $tsqlCheckin);
 
-    header('Location: reabastecimento.php?nunota=' .$request);
+    $tsqlTipoNota = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($request)";
+    $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
+    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);
+
+    if(utf8_encode($rowTipoNota['TIPO_NOTA']) == "Abastecimento"){
+        header('Location: menuseparacao.php?nunota=' .$request);
+    }else{
+        header('Location: reabastecimento.php?nunota=' .$request);
+    }
+
 }
 
 ?>

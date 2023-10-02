@@ -6,7 +6,7 @@
 	$serverName = "10.0.0.228"; 
 	$uid = "sankhya";   
 	$pwd = "tecsis";  
-	$databaseName = "SANKHYA_PROD"; 
+	$databaseName = "SANKHYA_TESTE"; 
 
 	$connectionInfo = array( "UID"=>$uid,                            
 	                         "PWD"=>$pwd,                            
