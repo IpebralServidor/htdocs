@@ -11,9 +11,10 @@
     $endereco = $_POST["endereco"];
 
     $tsqlReabastecimento = "EXEC [sankhya].[AD_STP_PROCESSO_REABASTECIMENTO] $nunota2, $qtdneg, $codusu, $sequencia, '$referencia', '$endereco'";
-    $stmtReabastecimento = sqlsrv_query( $conn, $tsqlReabastecimento);
-    $rowReabastecimento = sqlsrv_fetch_array($stmtReabastecimento, SQLSRV_FETCH_NUMERIC);
+    var_dump($tsqlReabastecimento);
+    // $stmtReabastecimento = sqlsrv_query( $conn, $tsqlReabastecimento);
+    // $rowReabastecimento = sqlsrv_fetch_array($stmtReabastecimento, SQLSRV_FETCH_NUMERIC);
 
-    echo $rowReabastecimento[0];
+    // echo $rowReabastecimento[0];
 
 ?>

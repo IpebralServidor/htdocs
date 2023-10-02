@@ -229,7 +229,7 @@
                     <div class="input-h6">
                         <h6>Endereço:</h6> 
                     </div>
-                    <input type="number" name="endereco" id="endereco" class="form-control" placeholder="<?php echo $rowTransferencia['CODLOCALORIG']; ?>"> 
+                    <input type="number" name="endereco" id="endereco" class="form-control" placeholder=""> 
                     
                 </div>
 
@@ -237,40 +237,43 @@
                     <div class="input-h6">
                         <h6>Referência:</h6> 
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="<?php echo $rowTransferencia['REFERENCIA']; ?>"> 
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder=""> 
                 </div>
             
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
                         <h6>Quantidade:</h6>
                     </div>
-                    <input type="number" name="qtdneg" id="qtdneg" class="form-control" required placeholder=" <?php echo $rowTransferencia['QTDNEG']; ?>">
+                    <input type="number" name="qtdneg" id="qtdneg" class="form-control" required placeholder="">
                 </div> 
 
-                <h6>Agp. min: <?php echo $rowTransferencia['AGRUPMIN']; ?></h6>     
+                <h6>Agp. min: <span id="agrupmin"><span></h6>     
                 
                 <div class="d-flex justify-content-start">
-                    <h6 id="qtdLocal">Qtd Local: <?php echo $rowTransferencia['QTDLOCAL']; ?>&nbsp / &nbsp</h6>
+                    <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                     <h6 id="informacaoAtualizada">0</h6> 
                 </div>
                 
-                <h6>Max. loc. padrão: <?php echo $rowTransferencia['AD_QTDMAXLOCAL']; ?></h6>
-                <h6>Est. loc. padrão: <?php echo $rowTransferencia['ESTOQUE']; ?></h6>
-                <h6>Med. venda: <?php echo $rowTransferencia['MEDIA']; ?></h6>
+                <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span></h6>
+                <h6>Est. loc. padrão: <span id="estlocalpadrao"></span></h6>
+                <h6>Med. venda: <span id="mediavenda"></span></h6>
+
+                <!-- <span id="sequencia"></span> -->
+                <input type="text" id="sequencia" value="" style="display: none;">
                
             </div>
 
         </div>
 
-        <div class="image d-flex justify-content-center">
+        <div class="image d-flex justify-content-center" id="imagemproduto">
             <?php
                 $referencia = $rowTransferencia['REFERENCIA'];
 
-                if($referencia!=''){
-                    $tsql2 = "SELECT [sankhya].[AD_FN_IMAGEM_PRODUTO_PHP] ('$referencia')";
-                } else {
+                //if($referencia!=''){
+                  //  $tsql2 = "SELECT [sankhya].[AD_FN_IMAGEM_PRODUTO_PHP] ('$referencia')";
+                //} else {
                     $tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
-                }
+                //}
 
                 $stmt2 = sqlsrv_query( $conn, $tsql2);
 
@@ -426,7 +429,7 @@
             });
         }
         $('#proximo').click(function () {
-            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, <?php echo $sequencia; ?>, $("#referencia").val(), $("#endereco").val())
+            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
         });
 
         function iniciarpausa(status, nota)
@@ -579,6 +582,80 @@
             });
         }
         
+    </script>
+
+    <script type="text/javascript">
+
+            document.getElementById("qtdneg").addEventListener("focus", function() {
+
+            imagemproduto($("#referencia").val());
+            retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
+
+                    //document.getElementById("localorigem").textContent = "teste";
+             },{ once: true });
+
+         function retornainfoprodutos(nunota, referencia)
+        {
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'retornainfoproduto.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: {nunota: nunota, referencia: referencia},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+
+
+                     var retorno = msg.split("/");
+                     alert(retorno[8]);
+                     document.getElementById("qtdneg").placeholder = retorno[2];
+                     document.getElementById("endereco").placeholder = retorno[1];
+                     document.getElementById("agrupmin").textContent = retorno[3];
+                     document.getElementById("qtdlocal").textContent = retorno[4];
+                     document.getElementById("maxlocalpadrao").textContent = retorno[5];
+                     document.getElementById("estlocalpadrao").textContent = retorno[6];
+                     document.getElementById("mediavenda").textContent = retorno[7];
+                     document.getElementById("sequencia").value = retorno[8];
+
+                    // document.getElementById("descrprod").textContent = retorno[2];
+                    
+                }
+            });
+        }
+
+         function imagemproduto(referencia)
+        {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+                    ({
+                        //Configurações
+                        type: 'POST',//Método que está sendo utilizado.
+                        dataType: 'html',//É o tipo de dado que a página vai retornar.
+                        url: 'imagemproduto.php',//Indica a página que está sendo solicitada.
+                        //função que vai ser executada assim que a requisição for enviada
+                        beforeSend: function () {
+                          //  $("#imagemproduto").html("Carregando...");
+                        },
+                        data: {referencia: referencia},//Dados para consulta
+                        //função que será executada quando a solicitação for finalizada.
+                        success: function (msg)
+                        {
+                            $("#imagemproduto").html(msg);
+                            //alert(msg);
+                        }
+                    });
+        }
+
+
     </script>
 </body>
 </html>
