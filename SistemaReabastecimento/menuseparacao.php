@@ -6,8 +6,6 @@ require_once '../App/auth.php';
 $_SESSION['semFila'] = 'N';
 $nunota2 = $_REQUEST["nunota"];
 
-var_dump($_SESSION['semFila']);
-
 ?>
 
 <!DOCTYPE html>
@@ -72,10 +70,10 @@ var_dump($_SESSION['semFila']);
         });
     }
     $('#aplicar').click(function () {
-        abrirNota(<?php echo $nunota2;?>, 'N')
+        abrirNota(<?php echo $nunota2;?>, 'S')
     });
     $('#aplicar-sem-fila').click(function () {
-        abrirNota(<?php echo $nunota2; ?>, 'S')
+        abrirNota(<?php echo $nunota2; ?>, 'N')
     });
     
 </script>

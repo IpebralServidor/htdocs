@@ -21,7 +21,7 @@ if($stmt2){
 
 	while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))  
 	{ 
-		echo '<img src="data:image/jpeg;base64,'.base64_encode($row2[0]).'"/>';
+		echo '<img style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="data:image/jpeg;base64,'.base64_encode($row2[0]).'"/>';
 		//$imageData = $row2["image"];
 	}
 } 

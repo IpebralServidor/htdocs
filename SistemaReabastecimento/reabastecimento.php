@@ -7,16 +7,24 @@
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
 
-    $tsqlTransferencia = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota2)";
-    $stmtTransferencia = sqlsrv_query( $conn, $tsqlTransferencia);
-    $rowTransferencia = sqlsrv_fetch_array( $stmtTransferencia, SQLSRV_FETCH_ASSOC);
-    $sequencia = $rowTransferencia['SEQUENCIA'];
-    $referencia = $rowTransferencia['REFERENCIA'];
-    $codprod = $rowTransferencia['CODPROD'];
-
-    if($sequencia == ''){
-        header("location: verificarprodutos.php?nunota=".$nunota2);
+    if(isset($_REQUEST["fila"])){
+        $fila = $_REQUEST["fila"];
     }
+
+    // if($sequencia == ''){
+    //     header("location: verificarprodutos.php?nunota=".$nunota2);
+    // }
+
+    $tsqlTipoNota = "   SELECT TOP 1
+                            CASE
+                                WHEN AD_VINCULO_SEQ IS NULL THEN 'Separação'
+                                ELSE 'Abastecimento'
+                            END AS TIPO_NOTA
+                        FROM TGFITE
+                        WHERE NUNOTA = $nunota2";
+    $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
+    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);
+    $tipoNota = $rowTipoNota['TIPO_NOTA'];
 
     $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
@@ -49,10 +57,6 @@
         $class ="play";
     }
 
-    if($rowTransferencia['QTDLOCAL'] == ''){
-        $rowTransferencia['QTDLOCAL'] = 0;
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +73,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
-<body class="body">
+<body class="body" 
+    <?php if($tipoNota == "Separação" || $fila == "S"){ ?> 
+        onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N');" 
+    <?php }?>>
+
     <div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
     </div>
@@ -85,7 +93,7 @@
                 </div>
                 <div class="modal-body">
                     <?php echo 'Observação da nota: ' .utf8_encode($rowNota['OBSERVACAO']) ?><br><br>
-                    <?php echo 'Observação do item: ' .utf8_encode($rowTransferencia['OBSERVACAO']) ?>
+                    <?php echo 'Observação do item: '?> <span id="observacao"></span>
                 </div>
             </div>
         </div>
@@ -144,9 +152,10 @@
                         <th>Ref.</th>
                         <th>Local</th>
                         <th>Qtde</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <?php if($tipoNota == 'Separação'){ ?>
+                            <th></th>
+                            <th></th>
+                        <?php } ?>
                     </tr>
 
                     <?php 
@@ -157,16 +166,17 @@
                         <td><?php echo $row2['REFERENCIA'] ?></td>
                         <td><?php echo $row2['CODLOCALPAD'] ?></td>
                         <td><?php echo $row2['QTDNEG'] ?></td>
-                        <td>
-                            <a id="botaoAbrirPopUp" data-id="<?php echo $row2['SEQUENCIA'] ?>">
-                                <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidade">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                    </svg>
-                                </button>
-                            </a>
-                        </td>
-                        <td>
+                        <?php if($tipoNota == 'Separação'){ ?>
+                            <td>
+                                <a class="botaoAbrirPopUp" data-id="<?php echo $row2['SEQUENCIA'] ?>">
+                                    <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidade">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                        </svg>
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
                             <a class='botao-abastecer' data-id="<?php echo $row2['SEQUENCIA'];?>">
                                 <button class="btnPendencia">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
@@ -175,6 +185,7 @@
                                 </button>
                             </a>
                         </td>
+                        <?php } ?>
                     </tr>
                     <?php
                         }
@@ -194,7 +205,7 @@
             </nav>
 
             <?php 
-                if(utf8_encode($rowTransferencia['TIPO_NOTA']) == "Separação"){
+                if($tipoNota == "Separação"){
                     $corTipoNota = "#9c95ff;";
                 }else{
                     $corTipoNota = "#ff9595;";
@@ -212,7 +223,7 @@
 
             <div class="d-flex justify-content-end">
                 <button class="statusReabastecimento" style=" background-color: <?php echo $corTipoNota; ?> !important;">
-                    <?php echo utf8_encode($rowTransferencia['TIPO_NOTA']); ?>
+                    <?php echo $tipoNota; ?>
                 </button>
             </div>
             
@@ -260,6 +271,9 @@
 
                 <!-- <span id="sequencia"></span> -->
                 <input type="text" id="sequencia" value="" style="display: none;">
+                <input type="text" id="qtdlocalInput" value="" style="display: none;">
+                <input type="text" id="codprod" value="" style="display: none;">
+                <input type="text" id="observacao" value="" style="display: none;">
                
             </div>
 
@@ -267,7 +281,7 @@
 
         <div class="image d-flex justify-content-center" id="imagemproduto">
             <?php
-                $referencia = $rowTransferencia['REFERENCIA'];
+               // $referencia = $rowTransferencia['REFERENCIA'];
 
                 //if($referencia!=''){
                   //  $tsql2 = "SELECT [sankhya].[AD_FN_IMAGEM_PRODUTO_PHP] ('$referencia')";
@@ -285,7 +299,7 @@
                         echo '<img style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="data:image/jpeg;base64,'.base64_encode($row2[0]).'"/>';
                     }
                 } 
-            ?> 
+            ?>  
         </div>
 
         <div class="btn-proximo-abast">
@@ -297,9 +311,11 @@
         <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal">
             Observação
         </button>
-        <button class="btnWidth btnPendencia btnOutroLocal" data-toggle="modal" data-target="#otroLocalModal">
-            Procurar em outro local
-        </button>
+        <?php if($tipoNota == 'Separação'){ ?>
+            <button class="btnWidth btnPendencia btnOutroLocal" data-toggle="modal" data-target="#otroLocalModal">
+                Procurar em outro local
+            </button>
+        <?php } ?>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -335,35 +351,37 @@
         // Obtém referências para os elementos HTML
         var inputTexto = document.getElementById('qtdneg');
         var informacaoAtualizada = document.getElementById('informacaoAtualizada');
-        var qtdLocal = <?php echo $rowTransferencia['QTDLOCAL']; ?>;
+        var qtdLocal = document.getElementById('qtdlocalInput');
+        
 
         // Adiciona um ouvinte de evento 'input' ao campo de entrada
         inputTexto.addEventListener('input', function() {
+            var qtd = qtdLocal.value;
             // Obtém o valor atual do campo de entrada
             var texto = inputTexto.value;
-            var num = qtdLocal - texto;
+            var num = qtd - texto;
             // Atualiza a informação em tempo real
             informacaoAtualizada.textContent = ' ' +num.toFixed(2)
         });
-
+    </script>
+    <script>
         // Obtém o botão "Abrir Pop-up" e o pop-up
-        var botaoAbrirPopUp = document.getElementById("botaoAbrirPopUp");
-        var meuPopUp = document.getElementById("editarQuantidade");
-
-        // Obtém o botão dentro do pop-up
-        var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEditarQuantidade");
-        
         document.addEventListener('DOMContentLoaded', function() {
-            // Adiciona um ouvinte de evento ao botão "Abrir Pop-up"
-            botaoAbrirPopUp.addEventListener("click", function() {
-                // Obtém o valor do atributo data-id do botão clicado
-                var dataId = this.getAttribute("data-id");
+            var botoesAbrirPopUp = document.querySelectorAll(".botaoAbrirPopUp");
+            var meuPopUp = document.getElementById("editarQuantidade");
+            var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEditarQuantidade");
 
-                // Define o valor em um atributo personalizado do botão dentro do pop-up
-                botaoDentroDoPopUp.setAttribute("data-id-pop-up", dataId);
+            // Adicione um ouvinte de eventos para cada botão
+            botoesAbrirPopUp.forEach(function(botao) {
+                botao.addEventListener("click", function() {
+                    // Obtém o valor do atributo data-id do botão clicado
+                    var dataId = this.getAttribute('data-id');
+                    // Define o valor em um atributo personalizado do botão dentro do pop-up
+                    botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
 
-                // Abre o pop-up (você pode implementar sua própria lógica de exibição do pop-up)
-                meuPopUp.style.display = "block";
+                    // Abre o pop-up
+                    meuPopUp.style.display = "block";
+                });
             });
         });
 
@@ -394,11 +412,13 @@
                 });
             });
         });
-
+    </script>
+    <script>
         function abrirObs(){
             document.getElementById('popupObservacao').style.display = 'block';
         }
-
+    </script>
+    <script>
         function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -431,7 +451,8 @@
         $('#proximo').click(function () {
             proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
         });
-
+    </script>
+    <script>
         function iniciarpausa(status, nota)
 		{
 			//O método $.ajax(); é o responsável pela requisição
@@ -458,10 +479,8 @@
 			var status = "<?php echo $varStatus; ?>"
 			iniciarpausa(status, nunota)
 		});
-
-
-        
-
+    </script>
+    <script>
         function  alterarQuantidade(nunota, sequencia, quantidade)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -490,7 +509,8 @@
                 }
             });
         }
-
+    </script>
+    <script>
         function  abastecerGondola(nunota, sequencia)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -519,8 +539,8 @@
                 }
             });
         }
-
-        
+    </script>
+    <script>
         function procurarOutroLocal(qtdneg, nunota, sequencia, codprod)
         {
             var selectedOption = $("input[name='fav_language']:checked").val();
@@ -549,10 +569,10 @@
             });
         }
         $('#btnOutroLocal').click(function () {
-            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $sequencia; ?>, <?php echo $codprod; ?>)
+            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val())
         });
-
-        
+    </script>
+    <script>
         function  deletarProduto(nunota, sequencia)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -581,20 +601,22 @@
                 }
             });
         }
-        
     </script>
 
     <script type="text/javascript">
+
+        <?php if($tipoNota == "Abastecimento" && $fila == 'N') { ?>
 
             document.getElementById("qtdneg").addEventListener("focus", function() {
 
             imagemproduto($("#referencia").val());
             retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
-
                     //document.getElementById("localorigem").textContent = "teste";
-             },{ once: true });
+                },{ once: true });
+        
+        <?php } ?>
 
-         function retornainfoprodutos(nunota, referencia)
+        function retornainfoprodutos(nunota, referencia)
         {
             $.ajax
             ({
@@ -609,30 +631,36 @@
                 complete: function(){
                     $("#loader").hide();
                 },
-                data: {nunota: nunota, referencia: referencia},//Dados para consulta
+                data: { referencia: referencia, nunota: nunota},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
+                    var retorno = msg.split("/");
 
+                    if(retorno[8] == 0){
+                        window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
+                    }
 
-                     var retorno = msg.split("/");
-                     alert(retorno[8]);
-                     document.getElementById("qtdneg").placeholder = retorno[2];
-                     document.getElementById("endereco").placeholder = retorno[1];
-                     document.getElementById("agrupmin").textContent = retorno[3];
-                     document.getElementById("qtdlocal").textContent = retorno[4];
-                     document.getElementById("maxlocalpadrao").textContent = retorno[5];
-                     document.getElementById("estlocalpadrao").textContent = retorno[6];
-                     document.getElementById("mediavenda").textContent = retorno[7];
-                     document.getElementById("sequencia").value = retorno[8];
-
-                    // document.getElementById("descrprod").textContent = retorno[2];
+                    document.getElementById("qtdneg").placeholder = retorno[2];
+                    document.getElementById("endereco").placeholder = retorno[1];
+                    document.getElementById("agrupmin").textContent = retorno[3];
+                    document.getElementById("qtdlocal").textContent = retorno[4];
+                    document.getElementById("qtdlocalInput").value = retorno[4];
+                    document.getElementById("maxlocalpadrao").textContent = retorno[5];
+                    document.getElementById("estlocalpadrao").textContent = retorno[6];
+                    document.getElementById("mediavenda").textContent = retorno[7];
+                    document.getElementById("sequencia").value = retorno[8];
+                    document.getElementById("referencia").placeholder = retorno[0];
+                    document.getElementById("observacao").placeholder = retorno[9];
+                    document.getElementById("codprod").value = retorno[10];
+                    imagemproduto(retorno[0]);
                     
                 }
             });
         }
-
-         function imagemproduto(referencia)
+    </script>
+    <script>
+        function imagemproduto(referencia)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -654,8 +682,6 @@
                         }
                     });
         }
-
-
     </script>
 </body>
 </html>
