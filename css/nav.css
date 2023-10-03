@@ -6,9 +6,7 @@
 		background: #f7f7f7;
 	}
 
-	.bk-azul-claro{
-        background:#e1f1fb;
-    }
+
 
     .bk-azul-escuro{
         background:#101B21;
@@ -100,10 +98,7 @@
 	    padding: 20px 35px 35px 35px; 
 	    margin: 50px auto 0 auto;
 	    background: #f7f7f7;
-	    border: 2px outset #f7f7f7;
-	    -webkit-box-shadow: 0px 0px 400px black;
-    	-moz-box-shadow: 0px 0px 400px black;
-    	box-shadow: 0px 0px 400px black;
+    	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	}
 
 		#div-login {  height: 250px; display: none; }
