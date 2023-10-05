@@ -10,17 +10,16 @@
     if(isset($_REQUEST["fila"])){
         $fila = $_REQUEST["fila"];
     }
-
     // if($sequencia == ''){
     //     header("location: verificarprodutos.php?nunota=".$nunota2);
     // }
 
     $tsqlTipoNota = "   SELECT TOP 1
                             CASE
-                                WHEN AD_VINCULO_SEQ IS NULL THEN 'Separação'
+                                WHEN AD_VINCULONF IS NULL THEN 'Separação'
                                 ELSE 'Abastecimento'
                             END AS TIPO_NOTA
-                        FROM TGFITE
+                        FROM TGFCAB
                         WHERE NUNOTA = $nunota2";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);
@@ -75,7 +74,11 @@
 </head>
 <body class="body" 
     <?php if($tipoNota == "Separação" || $fila == "S"){ ?> 
-        onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N');" 
+        <?php if($rowStatus[0] == "P"){ ?>
+            onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), iniciarpausa('P', <?php echo $nunota2; ?>);"
+        <?php } else{ ?>
+            onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N')" 
+        <?php } ?> 
     <?php }?>>
 
     <div id="loader" style="display: none;">
@@ -213,12 +216,11 @@
             ?>
 
             <div class="timer">
-                <span class="timer-color" style="background-color: <?php echo $colorStatus ?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <h6 id="result_shops"></h6> 
-            
-                <button class="<?php echo $class ?> btnPendencia btnOutroLocal" id="btnStatus">
-                    <?php echo $valueF ?>
-                </button>
+                <span class="timer-color" id="timer-color">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                <div id="timer"> 00:00:00 </div>&nbsp;&nbsp;
+                <button id="startButton" style="display: none;">Iniciar</button>
+                <button id="pauseButton" class="pause btnPendencia btnOutroLocal">Pausar</button>
+                <button id="resumeButton" class="play btnPendencia btnOutroLocal" style="display: none;">Continuar</button>
             </div>
 
             <div class="d-flex justify-content-end">
@@ -326,28 +328,68 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        sessionStorage.setItem('status', '<?php echo $rowStatus[0] ?>');
+        var timerInterval;
+        var startTime = 0;
+        var elapsedTime = 0;
+        var isRunning = false;
 
-        $(document).ready(function(){
+        function updateTimer() {
+            timerInterval = setInterval(function() {
+                if (!isRunning) return;
 
-            if(sessionStorage.getItem('status') == 'P') 
-            {
-                $("#result_shops").load('time.php');
-            }
+                elapsedTime = Math.floor((Date.now() / 1000) - startTime);
+                var fixedTime = <?php echo isset($_SESSION['time']) ? $_SESSION['time'] : 0; ?>;
+                var totalElapsedTime = fixedTime + elapsedTime;
 
-            var t = window.setInterval(function() 
-            {
-                if(sessionStorage.getItem('status') == 'A') 
-                {
-                    $("#result_shops").load('time.php');
-                }
-                
+                var hours = Math.floor(totalElapsedTime / 3600);
+                var minutes = Math.floor((totalElapsedTime % 3600) / 60);
+                var seconds = totalElapsedTime % 60;
+
+                var formattedTime = 
+                    ("0" + hours).slice(-2) + ":" + 
+                    ("0" + minutes).slice(-2) + ":" + 
+                    ("0" + seconds).slice(-2);
+
+                document.getElementById("timer").innerHTML = formattedTime;
             }, 1000);
+        }
 
+        document.getElementById("startButton").addEventListener("click", function() {
+            if (!isRunning) {
+                startTime = Math.floor(Date.now() / 1000) - elapsedTime;
+                updateTimer();
+                isRunning = true;
+                document.getElementById("timer-color").style.backgroundColor = "green";
+                // iniciarpausa('P', <?php echo $nunota2; ?>)
+                
+            }
         });
+
+        document.getElementById("pauseButton").addEventListener("click", function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            document.getElementById("resumeButton").style.display = "block";
+            document.getElementById("pauseButton").style.display = "none";
+            document.getElementById("timer-color").style.backgroundColor = "yellow";
+            iniciarpausa('A', <?php echo $nunota2; ?>)
+        });
+
+        document.getElementById("resumeButton").addEventListener("click", function() {
+            if (!isRunning) {
+                startTime = Math.floor(Date.now() / 1000) - elapsedTime;
+                updateTimer();
+                isRunning = true;
+                document.getElementById("resumeButton").style.display = "none";
+                document.getElementById("pauseButton").style.display = "block";
+                document.getElementById("timer-color").style.backgroundColor = "green";
+                iniciarpausa('P', <?php echo $nunota2; ?>)
+            }
+        });
+
+        
+        document.getElementById("startButton").click();
     </script>
     <script>
-
         // Obtém referências para os elementos HTML
         var inputTexto = document.getElementById('qtdneg');
         var informacaoAtualizada = document.getElementById('informacaoAtualizada');
@@ -470,7 +512,7 @@
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
-						location.reload();
+						// location.reload();
 					}
 				});
 		}

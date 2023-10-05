@@ -1,51 +1,72 @@
 <?php
-session_start();
-if(isset($_SESSION['time']))
-{
-		 $hh=intval($_SESSION['time']/3600);
-		 $mm=intval($_SESSION['time']/60);
-		 $ss=intval($_SESSION['time']);
-		 
-		 $diff=$_SESSION['time'];
-		 
-		if($hh < 10){
-			$hh = '0' .floor($diff / 3600) . ' : ' ;
-		}else{
-			$hh = floor($diff / 3600) . ' : ' ;
-		}
-
-		
-		$diff = $diff % 3600;
-
-		if(floor($diff / 60) < 10){
-			$mm = '0' .floor($diff / 60) . ' : ' ;
-		}else{
-			$mm = floor($diff / 60) . ' : ' ;
-		}
-
-		$diff = $diff % 60;
-
-		if(floor($diff) < 10){
-			$ss = '0' .floor($diff) ;
-		}else{
-			$ss = floor($diff);
-		}
-
-		 
-		
-		echo $hh;
-		 echo $mm;
-		 echo $ss;
-		 
-		$_SESSION['time']=$_SESSION['time']+1;
-}
+$_SESSION['tempo_fixo'] = 316; 
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timer</title>
+</head>
+<body>
+    <h1>Timer</h1>
+    <div id="timer">00:00:00</div>
+    <button id="startButton" style="display: none;">Iniciar</button>
+    <button id="pauseButton">Pausar</button>
+    <button id="resumeButton">Continuar</button>
 
+    <script>
+        var timerInterval;
+        var startTime = 0;
+        var elapsedTime = 0;
+        var isRunning = false;
 
+        function updateTimer() {
+            timerInterval = setInterval(function() {
+                if (!isRunning) return;
 
+                elapsedTime = Math.floor((Date.now() / 1000) - startTime);
+                var fixedTime = <?php echo isset($_SESSION['tempo_fixo']) ? $_SESSION['tempo_fixo'] : 0; ?>;
+                var totalElapsedTime = fixedTime + elapsedTime;
 
+                var hours = Math.floor(totalElapsedTime / 3600);
+                var minutes = Math.floor((totalElapsedTime % 3600) / 60);
+                var seconds = totalElapsedTime % 60;
 
+                var formattedTime = 
+                    ("0" + hours).slice(-2) + ":" + 
+                    ("0" + minutes).slice(-2) + ":" + 
+                    ("0" + seconds).slice(-2);
 
+                document.getElementById("timer").innerHTML = formattedTime;
+            }, 1000);
+        }
 
+        document.getElementById("startButton").addEventListener("click", function() {
+            if (!isRunning) {
+                startTime = Math.floor(Date.now() / 1000) - elapsedTime;
+                updateTimer();
+                isRunning = true;
+            }
+        });
 
+        document.getElementById("pauseButton").addEventListener("click", function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+        });
 
+        document.getElementById("resumeButton").addEventListener("click", function() {
+            if (!isRunning) {
+                startTime = Math.floor(Date.now() / 1000) - elapsedTime;
+                updateTimer();
+                isRunning = true;
+            }
+        });
+
+        // Inicialize o contador quando a página for carregada
+        window.onload = function() {
+            updateTimer();
+            // Inicie o timer automaticamente
+            document.getElementById("startButton").click();
+        };
+    </script>
+</body>
+</html>
