@@ -4,25 +4,19 @@
 
     $corTipoNota = '';
 
+    
+
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
 
-    if(isset($_REQUEST["fila"])){
-        $fila = $_REQUEST["fila"];
-    }
-    // if($sequencia == ''){
-    //     header("location: verificarprodutos.php?nunota=".$nunota2);
-    // }
-
-    $tsqlTipoNota = "   SELECT ISNULL((SELECT TOP 1 'S' AS TIPO_NOTA
-                        FROM TGFCAB
-                        WHERE NUNOTA = $nunota2 
-                        AND CONVERT(VARCHAR(1000),TGFCAB.Observacao) LIKE '%Esta é uma nota para SEPARAÇÃO%'),'A')";
+    $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
     $tipoNota = $rowTipoNota[0];
 
-    var_dump($tipoNota);
+    if(isset($_REQUEST["fila"])){
+        $fila = $_REQUEST["fila"];
+    }
 
 
     $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
@@ -514,7 +508,7 @@
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
-						// location.reload();
+						// alert(msg);
 					}
 				});
 		}
