@@ -14,13 +14,10 @@
     //     header("location: verificarprodutos.php?nunota=".$nunota2);
     // }
 
-    $tsqlTipoNota = "   SELECT TOP 1
-                            CASE
-                                WHEN AD_VINCULONF IS NULL THEN 'Separação'
-                                ELSE 'Abastecimento'
-                            END AS TIPO_NOTA
+    $tsqlTipoNota = "   SELECT ISNULL((SELECT TOP 1 'S' AS TIPO_NOTA
                         FROM TGFCAB
-                        WHERE NUNOTA = $nunota2";
+                        WHERE NUNOTA = @NUNOTA 
+                        AND CONVERT(VARCHAR(1000),TGFCAB.Observacao) LIKE '%Esta é uma nota para SEPARAÇÃO%'),'A'))";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);
     $tipoNota = $rowTipoNota['TIPO_NOTA'];
