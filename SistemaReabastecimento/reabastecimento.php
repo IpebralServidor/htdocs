@@ -16,11 +16,14 @@
 
     $tsqlTipoNota = "   SELECT ISNULL((SELECT TOP 1 'S' AS TIPO_NOTA
                         FROM TGFCAB
-                        WHERE NUNOTA = @NUNOTA 
-                        AND CONVERT(VARCHAR(1000),TGFCAB.Observacao) LIKE '%Esta é uma nota para SEPARAÇÃO%'),'A'))";
+                        WHERE NUNOTA = $nunota2 
+                        AND CONVERT(VARCHAR(1000),TGFCAB.Observacao) LIKE '%Esta é uma nota para SEPARAÇÃO%'),'A')";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
-    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);
-    $tipoNota = $rowTipoNota['TIPO_NOTA'];
+    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
+    $tipoNota = $rowTipoNota[0];
+
+    var_dump($tipoNota);
+
 
     $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
@@ -70,7 +73,7 @@
 
 </head>
 <body class="body" 
-    <?php if($tipoNota == "Separação" || $fila == "S"){ ?> 
+    <?php if($tipoNota == "S" || $fila == "S"){ ?> 
         <?php if($rowStatus[0] == "P"){ ?>
             onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), iniciarpausa('P', <?php echo $nunota2; ?>);"
         <?php } else{ ?>
@@ -152,7 +155,7 @@
                         <th>Ref.</th>
                         <th>Local</th>
                         <th>Qtde</th>
-                        <?php if($tipoNota == 'Separação'){ ?>
+                        <?php if($tipoNota == 'S'){ ?>
                             <th></th>
                             <th></th>
                         <?php } ?>
@@ -166,7 +169,7 @@
                         <td><?php echo $row2['REFERENCIA'] ?></td>
                         <td><?php echo $row2['CODLOCALPAD'] ?></td>
                         <td><?php echo $row2['QTDNEG'] ?></td>
-                        <?php if($tipoNota == 'Separação'){ ?>
+                        <?php if($tipoNota == 'S'){ ?>
                             <td>
                                 <a class="botaoAbrirPopUp" data-id="<?php echo $row2['SEQUENCIA'] ?>">
                                     <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidade">
@@ -205,9 +208,11 @@
             </nav>
 
             <?php 
-                if($tipoNota == "Separação"){
+                if($tipoNota == "S"){
+                    $tituloNota = "Separação";
                     $corTipoNota = "#9c95ff;";
                 }else{
+                    $tituloNota = "Abastecimento";
                     $corTipoNota = "#ff9595;";
                 }
             ?>
@@ -222,7 +227,7 @@
 
             <div class="d-flex justify-content-end">
                 <button class="statusReabastecimento" style=" background-color: <?php echo $corTipoNota; ?> !important;">
-                    <?php echo $tipoNota; ?>
+                    <?php echo $tituloNota; ?>
                 </button>
             </div>
             
@@ -310,7 +315,7 @@
         <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal">
             Observação
         </button>
-        <?php if($tipoNota == 'Separação'){ ?>
+        <?php if($tipoNota == 'S'){ ?>
             <button class="btnWidth btnPendencia btnOutroLocal" data-toggle="modal" data-target="#otroLocalModal">
                 Procurar em outro local
             </button>
@@ -644,7 +649,7 @@
 
     <script type="text/javascript">
 
-        <?php if($tipoNota == "Abastecimento" && $fila == 'N') { ?>
+        <?php if($tipoNota == "A" && $fila == 'N') { ?>
 
             document.getElementById("qtdneg").addEventListener("focus", function() {
 

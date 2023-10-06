@@ -9,7 +9,7 @@
 	if($referencia == "N"){
 		$tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota)";
 	}else{
-		$tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_PORREFERENCIA_REABASTECIMENTO] ($nunota, '$referencia')";
+		$tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_POR_REFERENCIA_REABASTECIMENTO] ($nunota, '$referencia')";
 	}
 
 	$stmt = sqlsrv_query( $conn, $tsql);

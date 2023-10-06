@@ -19,7 +19,7 @@ if(isset($_POST["aplicar"])){
     if(utf8_encode($rowTipoNota['TIPO_NOTA']) == "Abastecimento"){
         header('Location: menuseparacao.php?nunota=' .$request);
     }else{
-        header('Location: reabastecimento.php?nunota=' .$request);
+        header('Location: reabastecimento.php?nunota=' .$request .'&fila=S');
     }
 
 }
