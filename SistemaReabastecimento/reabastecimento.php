@@ -675,6 +675,11 @@
                 {
                     var retorno = msg.split("/");
 
+                    if(retorno[4] == 0){
+                        alert('A quantidade no local está zerada, procure em outro local!');
+                        document.getElementById("proximo").style.display = "none";
+                    }
+
                     if(retorno[8] == 0){
                         window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
                     }
