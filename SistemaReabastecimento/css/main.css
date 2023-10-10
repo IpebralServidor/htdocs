@@ -695,3 +695,23 @@ border-top: solid 5px #e54e43;
 	padding-left: 5px;
 	padding-right: 5px;
 }
+.infos{
+	max-width: 100%;
+	max-height: 80%;
+	display: flex;
+}
+.fornecedores h6{
+}
+.informacoes{
+	width: 60%;
+}
+.fornecedores{
+	margin-left: 3px;
+	padding: 5px;
+	box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+	border-radius: 7px;
+	width: 40%;
+	word-break:break-all;
+	max-height: 110px !important;
+	overflow: auto;
+}
