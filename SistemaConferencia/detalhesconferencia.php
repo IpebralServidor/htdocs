@@ -200,6 +200,29 @@
 				
 	}
 
+	function inserirpendencias(){
+    		//alert("teste");
+    		
+    		var checkedCheckboxes = document.querySelectorAll('.checkbox:checked');
+
+				if(checkedCheckboxes[0] == null){
+					alert('Selecione pelo menos uma linha para inserir!');
+				}else{
+					var referencia = "";
+
+					for (var i = 0; i < checkedCheckboxes.length; i++) {
+						 
+						var referencia = checkedCheckboxes[i].getAttribute('data-codbarra');
+						//alert(referencia);
+						inserependencia(<?php echo $nunota2; ?>, referencia);
+					}
+
+					alert("Item(s) inseridos(s) com sucesso!");
+					window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>';
+
+				}
+				
+	}
 	
 </script>
 
@@ -634,7 +657,8 @@
 
 			<div id="popuppendencias" class="popuppendencias">
 				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com Pendências</h4>
-				<form style="background-color: red; margin: 0" name="bulk_action_form" action="inserependencia.php" method="post" onSubmit="return insere_pendencia();">
+				<!-- Formulário para inserir as pendências -->
+				<div style="background-color: red; margin: 0">
 					<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
 						<table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="table">
 								<tr>
@@ -659,7 +683,7 @@
 
 									<tr style="cursor: hand; cursor: pointer;">
 									<tr>
-										<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox"/></td>
+										<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox"  data-codbarra="<?php echo $row2[0]; ?>" /></td>
 										<td width="20.0%" ><?php echo $row2[0]; ?></td>
 										<td width="20.0%"><?php echo $row2[1]; ?></td>
 										<td width="20.0%" align="center"><?php echo $row2[2]; ?></td>
@@ -673,8 +697,9 @@
 
 						</table>
 					</div>    
-                    <button type="submit" style="cursor: hand; cursor: pointer;  float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 4%; margin-top: 10px; position: absolute;">Inserir item</button>
-                    </form>
+					<!-- Fim formulário para inserir as pendências -->
+                    <button type="submit" style="cursor: hand; cursor: pointer;  float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 4%; margin-top: 10px; position: absolute;" id="inserePendenciaBtn">Inserir item</button>
+                    </div>
 				<button class="fechar" onclick="fecharconfdivpendencia();">X</button>
 			</div>
 			
@@ -1207,6 +1232,35 @@
 					}
 				});
 		}
+
+
+		function inserependencia(nunota, codigobarra)
+		{
+				//O método $.ajax(); é o responsável pela requisição
+				$.ajax
+				({
+					//Configurações
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'inserependencia.php',//Indica a página que está sendo solicitada.
+					//função que vai ser executada assim que a requisição for enviada
+					beforeSend: function () {
+						$("#loader").show();
+					},
+					data: {nunota: nunota, codigobarra: codigobarra},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						//window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2?>&codbarra=0';
+						//alert(msg);
+						$("#loader").show();
+					}
+				});
+		}
+
+		$('#inserePendenciaBtn').click(function () {
+                inserirpendencias();
+        });
 
 
         

@@ -1,20 +1,19 @@
 <?php
 include "../conexaophp.php";
 
-$linhas = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+$nunota = $_POST['nunota'];
+$codbarra = $_POST['codigobarra'];
 
-foreach ($linhas['id'] as $id => $linha) {
-    $nunota = substr($id, stripos($id, "/") + 1);
-    $codbarra = substr($id, 0, stripos($id, "/"));
+//echo $nunota." ".$codbarra;
+
+$tsql = "EXEC [sankhya].[AD_STP_INSERIR_PENDENCIA] $nunota, '$codbarra'";
+//var_dump($tsql);
+
+$stmt = sqlsrv_query($conn, $tsql); 
 
 
-    $tsql = "EXEC [sankhya].[AD_STP_INSERIR_PENDENCIA] $nunota, '$codbarra'";
 
-    $stmt = sqlsrv_query($conn, $tsql);
-
-}
-
-echo "<script> alert('Item(ns) inseridos.'); </script>";
-echo "<script> window.location.href='detalhesconferencia.php?nunota=$nunota' </script>";
+// echo "<script> alert('Item(ns) inseridos.'); </script>";
+// echo "<script> window.location.href='detalhesconferencia.php?nunota=$nunota' </script>";
 
 ?>
