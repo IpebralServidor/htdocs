@@ -27,7 +27,9 @@
 				.$row["MEDIA"].'/'
 				.$row["SEQUENCIA"].'/'
 				.$row["OBSERVACAO"].'/'
-				.$row["CODPROD"];
+				.$row["CODPROD"].'/'
+				.$row["FORNECEDORES"].'/'
+				.$row["CODEMP"];
 			}  
 		
 		

@@ -141,6 +141,52 @@
         </div>
     </div>
 
+    <div class="modal fade" id="buscarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Buscar usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-wrap">
+                    <label for="qtd">Usuário: </label>
+                    <input type="number" id="usu" name="usu" value="" style="width: 50px; margin-right: 10px;">
+                    <button class="buscar-usuario">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                    <input type="number" id="nomeusu" name="nomeusu" value="" style="width: 140px; margin-left: 10px;" disabled>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="botao-entregar btn btn-primary" id="btnEntregar">Entregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editarQuantidadeMaxLocPad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar quantidade máxima local padrão</h5>
+                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="qtdMaxLocPad">Quantidade: </label>
+                    <input type="number" id="qtdMaxLocPad" name="qtdMaxLocPad" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnAlterarQtdMaxLocPad">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="bg">
         <div class="collapse" id="navbarToggleExternalContent">
             <div class="table d-flex justify-content-center">
@@ -175,7 +221,7 @@
                             </td>
                             <td>
                             <a class='botao-abastecer' data-id="<?php echo $row2['SEQUENCIA'];?>">
-                                <button class="btnPendencia">
+                                <button class="btnPendencia" data-toggle="modal" data-target="#buscarUsuario">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
                                         <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
                                     </svg>
@@ -265,7 +311,16 @@
                             <h6 id="informacaoAtualizada">0</h6> 
                         </div>
 
-                        <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span></h6>
+                        <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>
+                            <?php if ($tipoNota == 'A') { ?>
+                                <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidadeMaxLocPad" style="border-radius: 13%">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                </button>
+                            <?php } ?>
+                        </h6>
+
                         <h6>Est. loc. padrão: <span id="estlocalpadrao"></span></h6>
                         <h6>Med. venda: <span id="mediavenda"></span></h6>
                     </div>
@@ -275,11 +330,12 @@
                     </div>
                 </div>
 
-                <!-- <span id="sequencia"></span> -->
                 <input type="text" id="sequencia" value="" style="display: none;">
                 <input type="text" id="qtdlocalInput" value="" style="display: none;">
                 <input type="text" id="codprod" value="" style="display: none;">
                 <input type="text" id="observacao" value="" style="display: none;">
+                <input type="text" id="codemp" value="" style="display: none;">
+                <input type="text" id="enderecoMaxLoc" value="" style="display: none;">
                
             </div>
 
@@ -437,20 +493,6 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            var botoesExcluir = document.querySelectorAll('.botao-abastecer');
-            
-            botoesExcluir.forEach(function(botao) {
-                botao.addEventListener('click', function() {
-                    var sequencia = botao.getAttribute('data-id');
-                    
-                    if (confirm('Tem certeza que deseja abastecer a gondola?')) {
-                        abastecerGondola(<?php echo $nunota2; ?>, sequencia);
-                    }
-                });
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
             var botaoEditar = document.querySelectorAll('.botao-editar');
             var inputTexto = document.getElementById("qtd");
             
@@ -463,6 +505,54 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var botoesAbrirPopUp = document.querySelectorAll(".botao-abastecer");
+            var meuPopUp = document.getElementById("buscarUsuario");
+            var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEntregar");
+
+            // Adicione um ouvinte de eventos para cada botão
+            botoesAbrirPopUp.forEach(function(botao) {
+                botao.addEventListener("click", function() {
+                    // Obtém o valor do atributo data-id do botão clicado
+                    var dataId = this.getAttribute('data-id');
+                    // Define o valor em um atributo personalizado do botão dentro do pop-up
+                    botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
+
+                    // Abre o pop-up
+                    meuPopUp.style.display = "block";
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var botaoEditar = document.querySelectorAll('.botao-entregar');
+            var codUsu = document.getElementById('usu');
+
+            botaoEditar.forEach(function(botao) {
+                botao.addEventListener('click', function() {
+                    var sequencia = botao.getAttribute('data-id-pop-up');
+                    var codusu = codUsu.value;
+                    
+                    abastecerGondola(<?php echo $nunota2; ?>, sequencia, codusu);
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var botaoBuscar = document.querySelectorAll('.buscar-usuario');
+            var inputTexto = document.getElementById("usu");
+
+            botaoBuscar.forEach(function(botao) {
+                botao.addEventListener('click', function() {
+                    var valorTexto = inputTexto.value;
+                    
+                    buscarUsuario(valorTexto);
+                });
+            });
+        });
+
+        
     </script>
     <script>
         function abrirObs(){
@@ -532,6 +622,39 @@
 		});
     </script>
     <script>
+        function  buscarUsuario(codusu)
+        {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'buscarusuario.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: {codusu: codusu},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    var retorno = msg.split("|");
+
+                    // alert(retorno[1]);
+
+                    document.getElementById("nomeusu").placeholder = retorno[1];
+                }
+            });
+        }
+        $('#buscar-usuario').click(function () {
+            buscarUsuario($("#codusuinput").val())
+        });
+    </script>
+    <script>
         function  alterarQuantidade(nunota, sequencia, quantidade)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -562,7 +685,7 @@
         }
     </script>
     <script>
-        function  abastecerGondola(nunota, sequencia)
+        function  abastecerGondola(nunota, sequencia, codusu)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -578,7 +701,7 @@
                 complete: function(){
                     $("#loader").hide();
                 },
-                data: {nunota: nunota, sequencia: sequencia},//Dados para consulta
+                data: {nunota: nunota, sequencia: sequencia, codusu: codusu},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -688,17 +811,20 @@
                 {
                     var retorno = msg.split("/");
 
-                    if(retorno[4] == 0){
-                        alert('A quantidade no local está zerada, procure em outro local!');
-                        document.getElementById("proximo").style.display = "none";
-                    }
-
                     if(retorno[8] == 0){
                         window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
                     }
+
+                    <?php if($tipoNota == 'S') { ?>
+                        if(retorno[4] == 0){
+                        alert('A quantidade no local está zerada, procure em outro local!');
+                        document.getElementById("proximo").style.display = "none";
+                    }
+                    <?php }?>
                 
                     document.getElementById("qtdneg").placeholder = retorno[2];
                     document.getElementById("endereco").placeholder = retorno[1];
+                    document.getElementById("enderecoMaxLoc").value = retorno[1];
                     document.getElementById("referencia").placeholder = retorno[0];
                     document.getElementById("observacao").placeholder = retorno[9];
                     document.getElementById("agrupmin").textContent = retorno[3];
@@ -707,6 +833,7 @@
                     document.getElementById("maxlocalpadrao").textContent = retorno[5];
                     document.getElementById("estlocalpadrao").textContent = retorno[6];
                     document.getElementById("mediavenda").textContent = retorno[7];
+                    document.getElementById("codemp").value = retorno[12];
                     document.getElementById("codprod").value = retorno[10];
                     document.getElementById("qtdlocalInput").value = retorno[4];
                     document.getElementById("sequencia").value = retorno[8];
@@ -716,6 +843,36 @@
                 }
             });
         }
+    </script>
+    <script>
+        function  alterarQtdMaxLocPad(qtd, locpad, codemp, codprod)
+        {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'alterarqtdmaxlocalpad.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: {qtd: qtd, locpad: locpad, codemp: codemp, codprod: codprod},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (retorno)
+                {
+                    document.getElementById("maxlocalpadrao").textContent = retorno;
+                    $("#close").click()
+                }
+            });
+        }
+        $('#btnAlterarQtdMaxLocPad').click(function () {
+            alterarQtdMaxLocPad($("#qtdMaxLocPad").val(), $("#enderecoMaxLoc").val(),$("#codemp").val(), $("#codprod").val())
+        });
     </script>
     <script>
         function imagemproduto(referencia)
