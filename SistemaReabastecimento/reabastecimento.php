@@ -7,6 +7,14 @@
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
 
+    $tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota2)";
+    $stmt = sqlsrv_query( $conn, $tsql);
+    $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC);
+
+    if($row["SEQUENCIA"] == 0){
+        header("Location: verificarprodutos.php?nunota=".$nunota2);
+    }
+
     $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
