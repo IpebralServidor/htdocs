@@ -3,10 +3,11 @@
     require_once '../App/auth.php';
 
     $nunota2 = $_POST["nunota"];
+    $codusu = $_SESSION["idUsuario"];
 
 
     //MUDAR NOME DAS CHAMADAS
-    $tsqlAlterarQtd = "EXEC [sankhya].[AD_STP_CONFIRMAR_NOTA_REABASTECIMENTO] $nunota2";
+    $tsqlAlterarQtd = "EXEC [sankhya].[AD_STP_CONFIRMAR_NOTA_REABASTECIMENTO] $nunota2, $codusu";
     $stmtAlterarQtd = sqlsrv_query($conn, $tsqlAlterarQtd);
     $rowAlterarQtd = sqlsrv_fetch_array($stmtAlterarQtd, SQLSRV_FETCH_NUMERIC);
 

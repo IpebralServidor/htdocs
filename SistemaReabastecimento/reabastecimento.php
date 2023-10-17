@@ -4,8 +4,6 @@
 
     $corTipoNota = '';
 
-    
-
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
 
@@ -96,26 +94,36 @@
         </div>
     </div>
 
-    <div class="modal fade" id="otroLocalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal para ocorrência-->
+
+    <div class="modal fade" id="ocorrenciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Qual o motivo para procurar em outro local?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="mensagemModal"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
-                    <input type="radio" id="nao_encontrado" name="fav_language" value="produto não foi encontrado">
+                    <input type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
                     <label for="nao_encontrado">Produto não foi encontrado</label><br>
                     
-                    <input type="radio" id="nao_existe" name="fav_language" value="produto não existe">
+                    <input type="radio" id="nao_existe" name="fav_language" value="produto nao existe">
                     <label for="nao_existe">Produto não existe</label><br>
+
+                    <input type="radio" id="agp_divergente" name="fav_language" value="agrupamento divergente">
+                    <label for="agp_divergente">Agrupamento divergente</label><br>
+
+                    <label for="outros">Outros: </label>
+                    <input type="text" id="outros" name="outros" value="">
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnOutroLocal">Aplicar</button>
+                    <button type="button" class="btn btn-primary" id="btnAplicarOcorrencia">Aplicar</button>
+                    <button type="button" class="btn btn-primary" id="btnAplicarOutroLocal" style="display: none;">Aplicar outro</button>
+                    <button type="button" class="btn btn-primary" id="btnAplicarProximo" style="display: none;">Aplicar proximo</button>
                 </div>
             </div>
         </div>
@@ -374,10 +382,16 @@
             Observação
         </button>
         <?php if($tipoNota == 'S'){ ?>
-            <button class="btnWidth btnPendencia btnOutroLocal" data-toggle="modal" data-target="#otroLocalModal">
-                Procurar em outro local
+            <button id="btnOutroLocal" class="btnWidth btnPendencia btnOutroLocal" data-toggle="modal" data-target="#ocorrenciaModal">
+                Outro local
             </button>
         <?php } ?>
+        <button id="btnOcorrencia" class="btnWidth btnPendencia " data-toggle="modal" data-target="#ocorrenciaModal">
+            Ocorrência
+        </button>
+        <button id="btnProximo" class="btnWidth btnPendencia " data-toggle="modal" data-target="#ocorrenciaModal" style="display: none;">
+            Proximo
+        </button>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -387,6 +401,30 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $('#btnProximo').click(function () {
+                document.getElementById("mensagemModal").textContent = "Quantidade digitada diferente da solicitada.";
+                document.getElementById("btnAplicarOutroLocal").style.display = "none";
+                document.getElementById("btnAplicarProximo").style.display = "block";
+                document.getElementById("btnAplicarOcorrencia").style.display = "none";
+            });
+        $('#btnOcorrencia').click(function () {
+            document.getElementById("mensagemModal").textContent = "Selecione uma das opções abaixo.";
+            document.getElementById("btnAplicarOutroLocal").style.display = "none";
+            document.getElementById("btnAplicarProximo").style.display = "none";
+            document.getElementById("btnAplicarOcorrencia").style.display = "block";
+        });
+        $('#btnOutroLocal').click(function () {
+            document.getElementById("mensagemModal").textContent = "Qual motivo para buscar de outro local?";
+            document.getElementById("btnAplicarOutroLocal").style.display = "block";
+            document.getElementById("btnAplicarOcorrencia").style.display = "none";
+            document.getElementById("btnAplicarProximo").style.display = "none";
+        });
+        $('#btnAplicarProximo').click(function () {
+            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val());
+            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
+        });
+    </script>
     <script>
         var timerInterval;
         var startTime = 0;
@@ -562,7 +600,7 @@
     <script>
         function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco)
         {
-            //O método $.ajax(); é o responsável pela requisição
+            // O método $.ajax(); é o responsável pela requisição
             $.ajax
             ({
                 //Configurações
@@ -590,8 +628,50 @@
             });
         }
         $('#proximo').click(function () {
-            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
+
+            var qtdDigitada = $("#qtdneg").val();
+            var qtdRetornada = document.getElementById("qtdneg").placeholder;
+
+            if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
+                $('#btnProximo').click();
+            }else{
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
+            }
+           
         });
+    </script>
+    <script>
+        function registrarOcorrencia(nunota, sequencia)
+		{
+            var selectedOption = $("input[name='fav_language']:checked").val();
+            var observacao = document.getElementById("outros").value;
+
+            if(selectedOption == undefined){
+                selectedOption = '';
+            }
+
+            var ocorrencia = selectedOption +' ' +observacao
+
+            $.ajax
+				({
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'registrarocorrencia.php',//Indica a página que está sendo solicitada.
+					data: {nunota: nunota, sequencia: sequencia, ocorrencia: ocorrencia},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						if(msg == 'Concluido'){
+                            alert('Ocorrência registrada com sucesso!');
+                        }
+					}
+				});
+
+		}
+		$('#btnAplicarOcorrencia').click(function () {
+			registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val());
+            location.reload();
+		});
     </script>
     <script>
         function iniciarpausa(status, nota)
@@ -622,7 +702,7 @@
 		});
     </script>
     <script>
-        function  buscarUsuario(codusu)
+        function buscarUsuario(codusu)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -655,7 +735,7 @@
         });
     </script>
     <script>
-        function  alterarQuantidade(nunota, sequencia, quantidade)
+        function alterarQuantidade(nunota, sequencia, quantidade)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -685,7 +765,7 @@
         }
     </script>
     <script>
-        function  abastecerGondola(nunota, sequencia, codusu)
+        function abastecerGondola(nunota, sequencia, codusu)
         {
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -717,8 +797,6 @@
     <script>
         function procurarOutroLocal(qtdneg, nunota, sequencia, codprod)
         {
-            var selectedOption = $("input[name='fav_language']:checked").val();
-
             //O método $.ajax(); é o responsável pela requisição
             $.ajax
             ({
@@ -733,7 +811,7 @@
                 complete: function(){
                     $("#loader").hide();
                 },
-                data: {qtdneg: qtdneg, option: selectedOption, nunota: nunota, sequencia: sequencia, codprod: codprod},//Dados para consulta
+                data: {qtdneg: qtdneg, nunota: nunota, sequencia: sequencia, codprod: codprod},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -742,7 +820,8 @@
                 }
             });
         }
-        $('#btnOutroLocal').click(function () {
+        $('#btnAplicarOutroLocal').click(function () {
+            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val());
             procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val())
         });
     </script>
@@ -813,33 +892,32 @@
 
                     if(retorno[8] == 0){
                         window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
-                    }
-
-                    <?php if($tipoNota == 'S') { ?>
-                        if(retorno[4] == 0){
-                        alert('A quantidade no local está zerada, procure em outro local!');
-                        document.getElementById("proximo").style.display = "none";
-                    }
-                    <?php }?>
-                
-                    document.getElementById("qtdneg").placeholder = retorno[2];
-                    document.getElementById("endereco").placeholder = retorno[1];
-                    document.getElementById("enderecoMaxLoc").value = retorno[1];
-                    document.getElementById("referencia").placeholder = retorno[0];
-                    document.getElementById("observacao").placeholder = retorno[9];
-                    document.getElementById("agrupmin").textContent = retorno[3];
-                    document.getElementById("qtdlocal").textContent = retorno[4];
-                    document.getElementById("fornecedores").textContent = retorno[11];
-                    document.getElementById("maxlocalpadrao").textContent = retorno[5];
-                    document.getElementById("estlocalpadrao").textContent = retorno[6];
-                    document.getElementById("mediavenda").textContent = retorno[7];
-                    document.getElementById("codemp").value = retorno[12];
-                    document.getElementById("codprod").value = retorno[10];
-                    document.getElementById("qtdlocalInput").value = retorno[4];
-                    document.getElementById("sequencia").value = retorno[8];
+                    }else{
+                        <?php if($tipoNota == 'S') { ?>
+                            if(retorno[4] == 0){
+                            alert('A quantidade no local está zerada, procure em outro local!');
+                            document.getElementById("proximo").style.display = "none";
+                        }
+                        <?php }?>
                     
-                    imagemproduto(retorno[0]);
-                    
+                        document.getElementById("qtdneg").placeholder = retorno[2];
+                        document.getElementById("endereco").placeholder = retorno[1];
+                        document.getElementById("enderecoMaxLoc").value = retorno[1];
+                        document.getElementById("referencia").placeholder = retorno[0];
+                        document.getElementById("observacao").placeholder = retorno[9];
+                        document.getElementById("agrupmin").textContent = retorno[3];
+                        document.getElementById("qtdlocal").textContent = retorno[4];
+                        document.getElementById("fornecedores").textContent = retorno[11];
+                        document.getElementById("maxlocalpadrao").textContent = retorno[5];
+                        document.getElementById("estlocalpadrao").textContent = retorno[6];
+                        document.getElementById("mediavenda").textContent = retorno[7];
+                        document.getElementById("codemp").value = retorno[12];
+                        document.getElementById("codprod").value = retorno[10];
+                        document.getElementById("qtdlocalInput").value = retorno[4];
+                        document.getElementById("sequencia").value = retorno[8];
+                        
+                        imagemproduto(retorno[0]);
+                    }
                 }
             });
         }
