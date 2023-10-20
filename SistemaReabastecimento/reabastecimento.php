@@ -24,7 +24,6 @@
         $fila = $_REQUEST["fila"];
     }
 
-
     $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
 	$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
@@ -41,7 +40,6 @@
 
     $tsql2 = "SELECT * FROM [sankhya].[AD_FNT_PRODUTO_SEPARADO_REABASTECIMENTO] ($nunota2) ORDER BY CODLOCALORIG DESC, SEQUENCIA DESC"; 
     $stmt2 = sqlsrv_query( $conn, $tsql2);  
-
 
     if($rowStatus[0] == "A"){
         $colorStatus = "green";
