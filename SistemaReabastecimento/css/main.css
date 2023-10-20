@@ -715,3 +715,9 @@ border-top: solid 5px #e54e43;
 	max-height: 110px !important;
 	overflow: auto;
 }
+.input-ocorrencia{
+	margin-bottom: 55px;
+}
+.modal-body label{
+	font-size: 20px;
+}

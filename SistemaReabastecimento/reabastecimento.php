@@ -115,16 +115,22 @@
                 </div>
                 <div class="modal-body">
 
-                    <input type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <label for="nao_encontrado">Quantidade a mais</label><br>
+                    
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <label for="nao_encontrado">Quantidade a menos</label><br>
+
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
                     <label for="nao_encontrado">Produto não foi encontrado</label><br>
                     
-                    <input type="radio" id="nao_existe" name="fav_language" value="produto nao existe">
+                    <input class="input-ocorrencia" type="radio" id="nao_existe" name="fav_language" value="produto nao existe">
                     <label for="nao_existe">Produto não existe</label><br>
 
-                    <input type="radio" id="agp_divergente" name="fav_language" value="agrupamento divergente">
+                    <input class="input-ocorrencia" type="radio" id="agp_divergente" name="fav_language" value="agrupamento divergente">
                     <label for="agp_divergente">Agrupamento divergente</label><br>
 
-                    <label for="outros">Outros: </label>
+                    <label class="input-ocorrencia" for="outros">Outros: </label>
                     <input type="text" id="outros" name="outros" value="">
                     
                 </div>

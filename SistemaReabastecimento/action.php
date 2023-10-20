@@ -16,6 +16,7 @@ if(isset($_POST["aplicar"])){
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);
 
+
     if(utf8_encode($rowTipoNota['TIPO_NOTA']) == "Abastecimento"){
         header('Location: menuseparacao.php?nunota=' .$request);
     }else{
