@@ -433,7 +433,7 @@
             document.getElementById("btnAplicarProximo").style.display = "none";
         });
         $('#btnAplicarProximo').click(function () {
-            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val());
+            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
             proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
         });
     </script>
@@ -839,7 +839,7 @@
             });
         }
         $('#btnAplicarOutroLocal').click(function () {
-            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val());
+            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
             procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val())
         });
     </script>
