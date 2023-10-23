@@ -7,6 +7,14 @@
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
 
+    $tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota2)";
+    $stmt = sqlsrv_query( $conn, $tsql);
+    $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC);
+
+    if($row["SEQUENCIA"] == 0){
+        header("Location: verificarprodutos.php?nunota=".$nunota2);
+    }
+
     $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
@@ -15,7 +23,6 @@
     if(isset($_REQUEST["fila"])){
         $fila = $_REQUEST["fila"];
     }
-
 
     $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
@@ -33,7 +40,6 @@
 
     $tsql2 = "SELECT * FROM [sankhya].[AD_FNT_PRODUTO_SEPARADO_REABASTECIMENTO] ($nunota2) ORDER BY CODLOCALORIG DESC, SEQUENCIA DESC"; 
     $stmt2 = sqlsrv_query( $conn, $tsql2);  
-
 
     if($rowStatus[0] == "A"){
         $colorStatus = "green";
@@ -107,16 +113,22 @@
                 </div>
                 <div class="modal-body">
 
-                    <input type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <label for="nao_encontrado">Quantidade a mais</label><br>
+                    
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <label for="nao_encontrado">Quantidade a menos</label><br>
+
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
                     <label for="nao_encontrado">Produto não foi encontrado</label><br>
                     
-                    <input type="radio" id="nao_existe" name="fav_language" value="produto nao existe">
+                    <input class="input-ocorrencia" type="radio" id="nao_existe" name="fav_language" value="produto nao existe">
                     <label for="nao_existe">Produto não existe</label><br>
 
-                    <input type="radio" id="agp_divergente" name="fav_language" value="agrupamento divergente">
+                    <input class="input-ocorrencia" type="radio" id="agp_divergente" name="fav_language" value="agrupamento divergente">
                     <label for="agp_divergente">Agrupamento divergente</label><br>
 
-                    <label for="outros">Outros: </label>
+                    <label class="input-ocorrencia" for="outros">Outros: </label>
                     <input type="text" id="outros" name="outros" value="">
                     
                 </div>
