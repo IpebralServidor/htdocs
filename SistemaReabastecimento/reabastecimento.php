@@ -113,19 +113,19 @@
                 </div>
                 <div class="modal-body">
 
-                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
-                    <label for="nao_encontrado">Quantidade a mais</label><br>
+                    <input class="input-ocorrencia" type="radio" id="qtd_mais" name="fav_language" value="Quantidade informada a mais">
+                    <label for="qtd_mais">Quantidade a mais</label><br>
                     
-                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
-                    <label for="nao_encontrado">Quantidade a menos</label><br>
+                    <input class="input-ocorrencia" type="radio" id="qtd_menos" name="fav_language" value="Quantidade informada a menos">
+                    <label for="qtd_menos">Quantidade a menos</label><br>
 
-                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="produto nao foi encontrado">
+                    <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="Produto nao foi encontrado">
                     <label for="nao_encontrado">Produto não foi encontrado</label><br>
                     
-                    <input class="input-ocorrencia" type="radio" id="nao_existe" name="fav_language" value="produto nao existe">
+                    <input class="input-ocorrencia" type="radio" id="nao_existe" name="fav_language" value="Produto nao existe">
                     <label for="nao_existe">Produto não existe</label><br>
 
-                    <input class="input-ocorrencia" type="radio" id="agp_divergente" name="fav_language" value="agrupamento divergente">
+                    <input class="input-ocorrencia" type="radio" id="agp_divergente" name="fav_language" value="Agrupamento divergente">
                     <label for="agp_divergente">Agrupamento divergente</label><br>
 
                     <label class="input-ocorrencia" for="outros">Outros: </label>
@@ -655,6 +655,8 @@
     <script>
         function registrarOcorrencia(nunota, sequencia, qtdneg)
 		{
+            
+
             var selectedOption = $("input[name='fav_language']:checked").val();
             var observacao = document.getElementById("outros").value;
 
@@ -663,6 +665,10 @@
             }
 
             var ocorrencia = selectedOption +' ' +observacao
+
+            if(qtdneg == ''){
+                qtdneg = 0;
+            }
 
             $.ajax
 				({

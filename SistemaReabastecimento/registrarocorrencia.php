@@ -12,4 +12,5 @@ $stmtRegistraOcorrencia = sqlsrv_query( $conn, $tsqlRegistraOcorrencia);
 $rowRegistraOcorrencia= sqlsrv_fetch_array( $stmtRegistraOcorrencia, SQLSRV_FETCH_NUMERIC);
 
 echo $rowRegistraOcorrencia[0];
+
 ?>
