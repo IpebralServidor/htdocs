@@ -653,7 +653,7 @@
         });
     </script>
     <script>
-        function registrarOcorrencia(nunota, sequencia)
+        function registrarOcorrencia(nunota, sequencia, qtdneg)
 		{
             var selectedOption = $("input[name='fav_language']:checked").val();
             var observacao = document.getElementById("outros").value;
@@ -669,19 +669,19 @@
 					type: 'POST',//Método que está sendo utilizado.
 					dataType: 'html',//É o tipo de dado que a página vai retornar.
 					url: 'registrarocorrencia.php',//Indica a página que está sendo solicitada.
-					data: {nunota: nunota, sequencia: sequencia, ocorrencia: ocorrencia},//Dados para consulta
+					data: {nunota: nunota, sequencia: sequencia, ocorrencia: ocorrencia, qtdneg: qtdneg},//Dados para consulta
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
-						if(msg == 'Concluido'){
-                            alert('Ocorrência registrada com sucesso!');
-                        }
+						// if(msg == 'Concluido'){
+                        //     alert('Ocorrência registrada com sucesso!');
+                        // }
 					}
 				});
 
 		}
 		$('#btnAplicarOcorrencia').click(function () {
-			registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val());
+			registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
             location.reload();
 		});
     </script>
