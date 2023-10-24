@@ -25,9 +25,6 @@ require_once '../App/auth.php';
 </head>
 <body>
 
-   
-
-
     <div class="container">
         <div class="content">
         <div class="img-voltar btn-reabastecimento">

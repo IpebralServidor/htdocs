@@ -107,7 +107,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><span id="mensagemModal"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -216,7 +216,7 @@
                         <th>Local</th>
                         <th>Qtde</th>
                         <?php if($tipoNota == 'S'){ ?>
-                            <th></th>
+                            <!-- <th></th> -->
                             <th></th>
                         <?php } ?>
                     </tr>
@@ -230,7 +230,7 @@
                         <td><?php echo $row2['CODLOCALPAD'] ?></td>
                         <td><?php echo $row2['QTDNEG'] ?></td>
                         <?php if($tipoNota == 'S'){ ?>
-                            <td>
+                            <!-- <td>
                                 <a class="botaoAbrirPopUp" data-id="<?php echo $row2['SEQUENCIA'] ?>">
                                     <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidade">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -238,7 +238,7 @@
                                         </svg>
                                     </button>
                                 </a>
-                            </td>
+                            </td> -->
                             <td>
                             <a class='botao-abastecer' data-id="<?php echo $row2['SEQUENCIA'];?>">
                                 <button class="btnPendencia" data-toggle="modal" data-target="#buscarUsuario">
@@ -433,8 +433,18 @@
             document.getElementById("btnAplicarProximo").style.display = "none";
         });
         $('#btnAplicarProximo').click(function () {
-            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
+
+            var selectedOption = $("input[name='fav_language']:checked").val();
+            var observacao = document.getElementById("outros").value;
+
+            if(selectedOption == undefined){
+                selectedOption = '';
+            }
+
+            var ocorrencia = selectedOption +' ' +observacao
+
+            //registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
+            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(), ocorrencia)
         });
     </script>
     <script>
@@ -610,7 +620,7 @@
         }
     </script>
     <script>
-        function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco)
+        function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco, ocorrencia)
         {
             // O método $.ajax(); é o responsável pela requisição
             $.ajax
@@ -626,7 +636,7 @@
                 complete: function(){
                     $("#loader").hide();
                 },
-                data: {qtdneg: qtdneg, nunota: nunota, codusu: codusu, sequencia: sequencia, referencia: referencia, endereco: endereco},//Dados para consulta
+                data: {qtdneg: qtdneg, nunota: nunota, codusu: codusu, sequencia: sequencia, referencia: referencia, endereco: endereco, ocorrencia: ocorrencia},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -647,7 +657,7 @@
             if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
                 $('#btnProximo').click();
             }else{
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val())
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(),'')
             }
            
         });
@@ -656,7 +666,6 @@
         function registrarOcorrencia(nunota, sequencia, qtdneg)
 		{
             
-
             var selectedOption = $("input[name='fav_language']:checked").val();
             var observacao = document.getElementById("outros").value;
 
@@ -687,8 +696,19 @@
 
 		}
 		$('#btnAplicarOcorrencia').click(function () {
-			registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            location.reload();
+
+            let endereco = document.getElementById("endereco").value;
+            let referencia = document.getElementById("referencia").value;
+            let qtdneg = document.getElementById("qtdneg").value;
+            
+            if(!endereco || !referencia || !qtdneg){
+                alert('Preencha todos os campos antes de registrar uma ocorrência!');
+            }else{
+                registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
+                alert('Ocorrência inserida com sucesso!')
+                $('#close').click();
+            }
+			
 		});
     </script>
     <script>
@@ -813,34 +833,9 @@
         }
     </script>
     <script>
-        function procurarOutroLocal(qtdneg, nunota, sequencia, codprod)
-        {
-            //O método $.ajax(); é o responsável pela requisição
-            $.ajax
-            ({
-                //Configurações
-                type: 'POST',//Método que está sendo utilizado.
-                dataType: 'html',//É o tipo de dado que a página vai retornar.
-                url: 'procuraroutrolocal.php',//Indica a página que está sendo solicitada.
-                //função que vai ser executada assim que a requisição for enviada
-                beforeSend: function () {
-                    $("#loader").show();
-                },
-                complete: function(){
-                    $("#loader").hide();
-                },
-                data: {qtdneg: qtdneg, nunota: nunota, sequencia: sequencia, codprod: codprod},//Dados para consulta
-                //função que será executada quando a solicitação for finalizada.
-                success: function (msg)
-                {
-                    alert(msg);
-                    location.reload();
-                }
-            });
-        }
         $('#btnAplicarOutroLocal').click(function () {
-            registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val())
+            // registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
+            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
         });
     </script>
     <script>
@@ -992,6 +987,40 @@
                             //alert(msg);
                         }
                     });
+        }
+        function procurarOutroLocal(qtdneg, nunota, sequencia, codprod, codusu)
+        {
+            var selectedOption = $("input[name='fav_language']:checked").val();
+            var observacao = document.getElementById("outros").value;
+
+            if(selectedOption == undefined){
+                selectedOption = '';
+            }
+
+            var ocorrencia = selectedOption +' ' +observacao
+
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'procuraroutrolocal.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: {qtdneg: qtdneg, nunota: nunota, sequencia: sequencia, codprod: codprod, codusu: codusu, ocorrencia: ocorrencia},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    alert(msg);
+                    location.reload();
+                }
+            });
         }
     </script>
 </body>

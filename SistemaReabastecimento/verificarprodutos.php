@@ -92,7 +92,7 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
                         <th>Ref.</th>
                         <th>Local</th>
                         <th>Qtde</th>
-                        <th></th>
+                        <!-- <th></th> -->
                         <th></th>
                     </tr>
 
@@ -104,7 +104,7 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
                         <td><?php echo $row2['REFERENCIA'] ?></td>
                         <td><?php echo $row2['CODLOCALPAD'] ?></td>
                         <td><?php echo $row2['QTDNEG'] ?></td>
-                        <td>
+                        <!-- <td>
                             <a class="botaoAbrirPopUp" data-id="<?php echo $row2['SEQUENCIA'] ?>">
                                 <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidade">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -112,7 +112,7 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
                                     </svg>
                                 </button>
                             </a>
-                        </td>
+                        </td> -->
                         <td>
                             <a class='botao-abastecer' data-id="<?php echo $row2['SEQUENCIA'];?>">
                                 <button class="btnPendencia" data-toggle="modal" data-target="#buscarUsuario">

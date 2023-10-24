@@ -9,8 +9,9 @@
     $sequencia = $_POST["sequencia"];
     $referencia = $_POST["referencia"];
     $endereco = $_POST["endereco"];
+    $ocorrencia = $_POST["ocorrencia"];
 
-    $tsqlReabastecimento = "EXEC [sankhya].[AD_STP_PROCESSO_REABASTECIMENTO] $nunota2, $qtdneg, $codusu, $sequencia, '$referencia', '$endereco'";
+    $tsqlReabastecimento = "EXEC [sankhya].[AD_STP_PROCESSO_REABASTECIMENTO] $nunota2, $qtdneg, $codusu, $sequencia, '$referencia', '$endereco', '$ocorrencia'";
     $stmtReabastecimento = sqlsrv_query( $conn, $tsqlReabastecimento);
     $rowReabastecimento = sqlsrv_fetch_array($stmtReabastecimento, SQLSRV_FETCH_NUMERIC);
 
