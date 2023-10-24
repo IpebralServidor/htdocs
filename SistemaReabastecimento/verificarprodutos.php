@@ -160,8 +160,13 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
                     //função que será executada quando a solicitação for finalizada.
                     success: function (msg)
                     {
-                        alert(msg);
-                        window.location.href="index.php";
+                        if(msg == 'Concluido'){
+                            alert(msg);
+                            window.location.href="index.php";
+                        }else{
+                            alert(msg);
+                        }
+                        
                     }
                 });
             }
