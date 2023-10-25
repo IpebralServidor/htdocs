@@ -199,6 +199,7 @@ border-top: solid 5px #e54e43;
   	background-color: #e54e43 !important;
   	border: solid #e54e43 1px !important;
 	font-size: 13px;
+	margin-left: 5px;
 }
 .btnWidth{
 	width: 200px !important;
@@ -720,4 +721,32 @@ border-top: solid 5px #e54e43;
 }
 .modal-body label{
 	font-size: 20px;
+}
+.obsMovimentacoes{
+	color: red;
+	margin-right: 5px;
+	cursor: pointer;
+}
+.close{
+	width: 30px;
+	height: 30px;
+	/* border: none !important; */
+	border-radius: 50px;
+}
+.navbar-toggler{
+	transition: all 0.45s !important;
+}
+.rotated {
+	transform: rotate(180deg);
+}
+.movTable{
+	width: 100%;
+}
+.movTable th{
+	background-color: white !important;
+	color: black;
+	font-weight: 300;
+	border: solid 0.5px gray;
+	padding: 2px;
+	text-align: center !important;
 }

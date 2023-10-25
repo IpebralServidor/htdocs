@@ -66,7 +66,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@500&display=swap" rel="stylesheet">
-    <link href="css/main.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=2">
+    <!-- <link href="css/main.css" rel='stylesheet' type='text/css' /> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
@@ -83,18 +84,38 @@
         <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
     </div>
 
+    <!-- Modal para observações-->
+
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Observação</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <?php echo 'Observação da nota: ' .utf8_encode($rowNota['OBSERVACAO']) ?><br><br>
                     <?php echo 'Observação do item: '?> <span id="observacao"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para movimentações da nota após a sua criação-->
+
+    <div class="modal fade" id="movimentacoesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Movimentações</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="movimentacoes"></div>
                 </div>
             </div>
         </div>
@@ -114,16 +135,13 @@
                 <div class="modal-body">
 
                     <input class="input-ocorrencia" type="radio" id="qtd_mais" name="fav_language" value="Quantidade informada a mais">
-                    <label for="qtd_mais">Quantidade a mais</label><br>
+                    <label for="qtd_mais">Quantidade a mais no local</label><br>
                     
                     <input class="input-ocorrencia" type="radio" id="qtd_menos" name="fav_language" value="Quantidade informada a menos">
-                    <label for="qtd_menos">Quantidade a menos</label><br>
+                    <label for="qtd_menos">Quantidade a menos no local</label><br>
 
                     <input class="input-ocorrencia" type="radio" id="nao_encontrado" name="fav_language" value="Produto nao foi encontrado">
                     <label for="nao_encontrado">Produto não foi encontrado</label><br>
-                    
-                    <input class="input-ocorrencia" type="radio" id="nao_existe" name="fav_language" value="Produto nao existe">
-                    <label for="nao_existe">Produto não existe</label><br>
 
                     <input class="input-ocorrencia" type="radio" id="agp_divergente" name="fav_language" value="Agrupamento divergente">
                     <label for="agp_divergente">Agrupamento divergente</label><br>
@@ -259,7 +277,7 @@
         
         <div class="d-flex justify-content-between" style="background-color: #3a6070 !important;">
             <nav class="bg navbar">
-                <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square" viewBox="0 0 16 16">
                         <path d="M3.626 6.832A.5.5 0 0 1 4 6h8a.5.5 0 0 1 .374.832l-4 4.5a.5.5 0 0 1-.748 0l-4-4.5z"/>
                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2z"/>
@@ -327,6 +345,7 @@
                         <h6>Agp. min: <span id="agrupmin"><span></h6>     
                         
                         <div class="d-flex justify-content-start">
+                            <span class="obsMovimentacoes" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal">*</span>
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6> 
                         </div>
@@ -414,6 +433,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+
+        $(document).ready(function() {
+            $("#navbar-toggler").click(function() {
+                $(this).toggleClass("rotated");
+            });
+        });
+
+        $('#obsMovimentacoes').click(function(){
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'movimentacoes.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                data: {nunota: '<?php echo $nunota2; ?>', sequencia: $("#sequencia").val()},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    document.getElementById('movimentacoes').innerHTML = msg;
+                }
+            });
+        });
+        
         $('#btnProximo').click(function () {
                 document.getElementById("mensagemModal").textContent = "Quantidade digitada diferente da solicitada.";
                 document.getElementById("btnAplicarOutroLocal").style.display = "none";
