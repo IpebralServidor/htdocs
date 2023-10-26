@@ -74,9 +74,12 @@
 <body class="body" 
     <?php if($tipoNota == "S" || $fila == "S"){ ?> 
         <?php if($rowStatus[0] == "P"){ ?>
-            onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), iniciarpausa('P', <?php echo $nunota2; ?>);"
+            onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), 
+            iniciarpausa('P', <?php echo $nunota2; ?>),
+            retornaMovimentacoes()"
         <?php } else{ ?>
-            onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N')" 
+            onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
+            retornaMovimentacoes()" 
         <?php } ?> 
     <?php }?>>
 
@@ -115,7 +118,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="movimentacoes"></div>
+                    <table class='movTable'>
+                        <tr>
+                            <th>Nota</th>
+                            <th>TOP</th>
+                            <th>Emp</th>
+                            <th>Data</th>
+                            <th>Qtd</th>
+                        </tr>
+                        <tr>
+                            <th id="notaMovimentacao"></th>
+                            <th id="topMovimentacao"></th>
+                            <th id="empMovimentacao"></th>
+                            <th id="dataMovimentacao"></th>
+                            <th id="qtdMovimentacao"></th>
+                        </tr>
+                        
+                    </table>
                 </div>
             </div>
         </div>
@@ -345,7 +364,7 @@
                         <h6>Agp. min: <span id="agrupmin"><span></h6>     
                         
                         <div class="d-flex justify-content-start">
-                            <span class="obsMovimentacoes" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal">*</span>
+                            <span class="obsMovimentacoes" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()">*</span>
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6> 
                         </div>
@@ -440,7 +459,7 @@
             });
         });
 
-        $('#obsMovimentacoes').click(function(){
+        function retornaMovimentacoes(){
             $.ajax
             ({
                 //Configurações
@@ -448,15 +467,24 @@
                 dataType: 'html',//É o tipo de dado que a página vai retornar.
                 url: 'movimentacoes.php',//Indica a página que está sendo solicitada.
                 //função que vai ser executada assim que a requisição for enviada
-                data: {nunota: '<?php echo $nunota2; ?>', sequencia: $("#sequencia").val()},//Dados para consulta
+                data: {nunota: '<?php echo $nunota2; ?>', sequencia: '<?php echo $row["SEQUENCIA"]; ?>'},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    document.getElementById('movimentacoes').innerHTML = msg;
+                    var movimentacoes = msg.split('|');
+
+                    if(msg == ''){
+                        document.getElementById('obsMovimentacoes').style.display = "none";
+                    }else{
+                        document.getElementById('notaMovimentacao').innerHTML = movimentacoes[0];
+                        document.getElementById('topMovimentacao').innerHTML = movimentacoes[1];
+                        document.getElementById('empMovimentacao').innerHTML = movimentacoes[2];
+                        document.getElementById('dataMovimentacao').innerHTML = movimentacoes[3];
+                        document.getElementById('qtdMovimentacao').innerHTML = movimentacoes[4];
+                    }
                 }
             });
-        });
-        
+        }        
         $('#btnProximo').click(function () {
                 document.getElementById("mensagemModal").textContent = "Quantidade digitada diferente da solicitada.";
                 document.getElementById("btnAplicarOutroLocal").style.display = "none";
