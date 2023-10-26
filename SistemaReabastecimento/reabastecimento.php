@@ -366,7 +366,9 @@
                         <div class="d-flex justify-content-start">
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6> 
-                            <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
+                            <?php if($tipoNota == 'S') {?>
+                                <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
+                            <?php }?>
                         </div>
 
                         <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>
@@ -945,11 +947,11 @@
         <?php if($tipoNota == "A" && $fila == 'N') { ?>
 
             document.getElementById("qtdneg").addEventListener("focus", function() {
-
-            imagemproduto($("#referencia").val());
+            
             retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
                     //document.getElementById("localorigem").textContent = "teste";
                 },{ once: true });
+            imagemproduto($("#referencia").val());
         
         <?php } ?>
 
@@ -974,33 +976,43 @@
                 {
                     var retorno = msg.split("/");
 
-                    if(retorno[8] == 0){
-                        window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
-                    }else{
-                        <?php if($tipoNota == 'S') { ?>
-                            if(retorno[4] == 0){
-                            alert('A quantidade no local está zerada, procure em outro local!');
-                            document.getElementById("proximo").style.display = "none";
-                        }
+                    if(msg == ' '){
+                        <?php if($tipoNota == 'A') { ?>
+                            alert('Este item não foi separado!');
+                        <?php } else {?>
+                            alert('Ocorreu um erro favor contatar a T.I');
                         <?php }?>
-                    
-                        document.getElementById("qtdneg").placeholder = retorno[2];
-                        document.getElementById("endereco").placeholder = retorno[1];
-                        document.getElementById("enderecoMaxLoc").value = retorno[1];
-                        document.getElementById("referencia").placeholder = retorno[0];
-                        document.getElementById("observacao").placeholder = retorno[9];
-                        document.getElementById("agrupmin").textContent = retorno[3];
-                        document.getElementById("qtdlocal").textContent = retorno[4];
-                        document.getElementById("fornecedores").textContent = retorno[11];
-                        document.getElementById("maxlocalpadrao").textContent = retorno[5];
-                        document.getElementById("estlocalpadrao").textContent = retorno[6];
-                        document.getElementById("mediavenda").textContent = retorno[7];
-                        document.getElementById("codemp").value = retorno[12];
-                        document.getElementById("codprod").value = retorno[10];
-                        document.getElementById("qtdlocalInput").value = retorno[4];
-                        document.getElementById("sequencia").value = retorno[8];
                         
-                        imagemproduto(retorno[0]);
+                    }else{
+
+                        if(retorno[8] == 0){
+                            window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
+                        }else{
+                            <?php if($tipoNota == 'S') { ?>
+                                if(retorno[4] == 0){
+                                alert('A quantidade no local está zerada, procure em outro local!');
+                                document.getElementById("proximo").style.display = "none";
+                            }
+                            <?php }?>
+                        
+                            document.getElementById("qtdneg").placeholder = retorno[2];
+                            document.getElementById("endereco").placeholder = retorno[1];
+                            document.getElementById("enderecoMaxLoc").value = retorno[1];
+                            document.getElementById("referencia").placeholder = retorno[0];
+                            document.getElementById("observacao").placeholder = retorno[9];
+                            document.getElementById("agrupmin").textContent = retorno[3];
+                            document.getElementById("qtdlocal").textContent = retorno[4];
+                            document.getElementById("fornecedores").textContent = retorno[11];
+                            document.getElementById("maxlocalpadrao").textContent = retorno[5];
+                            document.getElementById("estlocalpadrao").textContent = retorno[6];
+                            document.getElementById("mediavenda").textContent = retorno[7];
+                            document.getElementById("codemp").value = retorno[12];
+                            document.getElementById("codprod").value = retorno[10];
+                            document.getElementById("qtdlocalInput").value = retorno[4];
+                            document.getElementById("sequencia").value = retorno[8];
+                            
+                            imagemproduto(retorno[0]);
+                        }
                     }
                 }
             });
