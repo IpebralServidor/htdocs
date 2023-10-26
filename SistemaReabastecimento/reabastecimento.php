@@ -364,9 +364,9 @@
                         <h6>Agp. min: <span id="agrupmin"><span></h6>     
                         
                         <div class="d-flex justify-content-start">
-                            <span class="obsMovimentacoes" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()">*</span>
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6> 
+                            <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
                         </div>
 
                         <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>

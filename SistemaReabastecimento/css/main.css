@@ -750,3 +750,10 @@ border-top: solid 5px #e54e43;
 	padding: 2px;
 	text-align: center !important;
 }
+.movimentacoesFlag{
+	border-radius: 50px;
+	width: 17px;
+	height: 17px;
+	background-color: red;
+	margin-left: 10px;
+}
