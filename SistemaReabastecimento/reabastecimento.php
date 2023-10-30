@@ -990,7 +990,11 @@
                         }else{
                             <?php if($tipoNota == 'S') { ?>
                                 if(retorno[4] == 0){
-                                alert('A quantidade no local está zerada, procure em outro local!');
+                                    
+                                document.getElementById("outros").value = 'Produto transferido';
+
+                                procurarOutroLocal(0, <?php echo $nunota2; ?>, retorno[8], retorno[10], '<?php echo $codusu; ?>')
+
                                 document.getElementById("proximo").style.display = "none";
                             }
                             <?php }?>
@@ -1100,7 +1104,6 @@
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    alert(msg);
                     location.reload();
                 }
             });
