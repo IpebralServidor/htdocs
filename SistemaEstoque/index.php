@@ -137,12 +137,12 @@ require_once '../App/auth.php';
 					success: function (msg)
 					{
 						//alert(msg);
-						abrirNota(msg);
-						// if(msg.length <= 10){
+						if(msg.length <= 10){
+							abrirNota(msg);
 						// 	window.location.href='insereestoque.php?nunota=' + msg;
-						// } else {
-						// 	alert(msg);
-						// }
+						} else {
+						   alert(msg);
+						}
 
 						//document.getElementById("localorigem").textContent = "teste";
 						// document.getElementById("quantidade").value = "";
