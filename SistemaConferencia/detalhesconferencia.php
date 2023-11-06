@@ -2,6 +2,8 @@
 	include "../conexaophp.php";
 	require_once 'App/auth.php';
 
+	$codparc = 0;
+
 	$usuconf = $_SESSION["idUsuario"];
 	$VLR1700 = 0;
 	$VLR1720 = 0; 
@@ -42,7 +44,8 @@
                        TGFCAB.OBSERVACAO,
 					   TGFCAB.VLRFRETE,
 					   TGFCAB.CODEMP,
-					   TGFCAB.AD_SEPARADOR
+					   TGFCAB.AD_SEPARADOR,
+					   TGFCAB.CODPARC
 				FROM TGFCAB INNER JOIN
 					 TGFPAR ON TGFPAR.CODPARC = TGFCAB.CODPARC INNER JOIN
 					 TGFVEN ON TGFVEN.CODVEND = TGFCAB.CODVEND
@@ -59,6 +62,7 @@
 	  $VLRFRETE = $row2[4];	 
 	  $codemp = $row2[5]; 
 	  $adseparador = $row2[6]; 
+	  $codparc = $row2[7]; 
 	}
 
 	$tsql3 = "  DECLARE @NUNOTA INT = {$nunota2}
@@ -1196,6 +1200,8 @@
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
+					complemento();
+					
                     if(!msg.includes("Finalizado com sucesso")){
                         alert(msg);
                     }else{
@@ -1209,6 +1215,46 @@
 		$('#confirmar').click(function () {
             finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#frete").val(), $("#mtvdivergencia").val())
         });
+
+		function complemento(){
+			 //O método $.ajax(); é o responsável pela requisição
+			 $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'complemento.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    //$("#itensconferidos").html("Carregando...");
+                },
+                data: {nunota: <?php echo $nunota2; ?>, codparc: '<?php echo $codparc; ?>'},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    if(msg != ''){
+						// var userInput = requiredFunction(msg);
+
+						// if(userInput == null){
+							teste(msg)
+						// }
+					}
+                }
+			});
+		}
+		function teste(msg){
+			requiredFunction(msg);
+		}
+
+		function requiredFunction(msg) {
+
+			var answer = prompt(msg +'\n' +'' +'\n' +'Digite seu nome para continuar');
+				if (answer == "" || answer === null) {
+					teste(msg);
+				}else{
+					window.location.href='./listaconferencia.php';
+				}
+		}
 		
 
 		function atribuirseparador(separador, nunota)
