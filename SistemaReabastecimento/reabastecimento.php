@@ -83,7 +83,9 @@
             produtos(<?php echo $nunota2; ?>),
             retornaMovimentacoes()" 
         <?php } ?> 
-    <?php }?>>
+    <?php } else {?>
+        onload="produtos(<?php echo $nunota2; ?>)"
+    <?php } ?>>
 
     <div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
@@ -310,17 +312,17 @@
 
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
-                        <h6>Referência:</h6> 
-                    </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder=""> 
-                </div>
-
-                <div class="d-flex justify-content-center align-items-center">
-                    <div class="input-h6">
                         <h6>Endereço:</h6> 
                     </div>
                     <input type="number" name="endereco" id="endereco" class="form-control" placeholder=""> 
                     
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="input-h6">
+                        <h6>Referência:</h6> 
+                    </div>
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder=""> 
                 </div>
             
                 <div class="d-flex justify-content-center align-items-center">
@@ -713,6 +715,7 @@
             var teste = document.getElementById('chkInp');
 
             if('<?php echo $tipoNota; ?>' == 'A'){
+                
                 if(teste.checked == true){
                     document.getElementById('titleBoxH6').textContent = 'Produtos não guardados'
                     teste = 'S'
@@ -723,7 +726,6 @@
             }else{
                 teste = 'N'
             }
-            
 
             //teste.checked
             //O método $.ajax(); é o responsável pela requisição
