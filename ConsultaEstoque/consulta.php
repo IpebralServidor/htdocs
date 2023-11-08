@@ -49,6 +49,7 @@ $referencia = $_POST['REFERENCIA'];
 				  $mediavenda = $row2['MEDIA'];
 				  $agrupmin = $row2['AGRUPMIN'];
 				  $precovenda = $row2['PRECOVENDA'];
+				  $fornecedores = $row2['OBSETIQUETA'];
 				}
 
 			?>
@@ -60,6 +61,7 @@ $referencia = $_POST['REFERENCIA'];
 			<span class="infoprodutotext"><b>Méd. V.:</b> <?php if(!isset($mediavenda)){ echo '';} else { echo $mediavenda;} ?></span>
 			<span class="infoprodutotext"><b>&nbsp;&nbsp;&nbsp;Agrup. Mín.:</b> <?php if(!isset($agrupmin)){ echo '';} else { echo $agrupmin;} ?></span><br>
 			<span class="infoprodutotext"><b>Preço V.: </b>R$ <?php if(!isset($precovenda)){ echo '';} else { echo str_replace('.',',',$precovenda);} ?></span><br>
+			<span class="infoprodutotext"><b>Ref. Forne.: </b> <?php if(!isset($fornecedores)){ echo '';} else { echo str_replace('.',',',$fornecedores);} ?></span><br>
 		</div>
 	</div> <!-- Fim infoproduto -->
 

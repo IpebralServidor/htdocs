@@ -10,7 +10,6 @@ body, html {
 	width: 100%;
 	margin: 0;
 	background-color: #FFFFFD;
-	//position: absolute;
 	display: block;
 }
 
@@ -27,18 +26,15 @@ body, html {
 	display: flex;
 	background-color: #F3FFFF;
 	width: 90%;
-	height: 22%;
-	//margin: 0;
+	height: 27%;
 	justify-content: center;
 	align-items: center;
-	//text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
 
 .infoprodutodiv {
 	width: 100%;
-	//background-color: yellow;
 	height: 70%;
 	margin-left: 2%;
 	line-height: 135%;
@@ -48,7 +44,6 @@ body, html {
 .foto {
 	width: 70%;
 	height: 20%;
-	//background-color: yellow;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 2%;
