@@ -17,7 +17,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link href="css/login.css" rel='stylesheet' type='text/css' />
+		<link href="css/login.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<title>Login</title>
@@ -45,7 +45,7 @@
 						<input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
 					</div>
 					
-					<button type="submit" value="Login" name="submit" class="btn btn-primary form-control">Entrar</button>
+					<button type="submit" value="Login" name="submit" class="btn btn-primary btn-form form-control">Entrar</button>
 				</form>
 			</div>
 		</div>
