@@ -25,16 +25,12 @@ include "../conexaophp.php";
 	<title>Consulta Estoque</title>
 </head>
 <body>
+	<div class="img-voltar">
+		<a href="./">
+			<img src="images/216446_arrow_left_icon.png" />
+		</a>
+	</div>
 	<div class="container">
-
-		<div class="menu">
-			<div class="img-voltar">
-				<a href="./">
-					<img src="images/216446_arrow_left_icon.png" />
-				</a>
-			</div>
-		</div>
-
 		<div class="header-body">
 			<?php
 				$tsql = "SELECT * FROM [sankhya].[AD_FNT_InfoProduto_ConsultaEstoque]('$referencia')";
