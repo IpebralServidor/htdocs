@@ -13,7 +13,7 @@ $nunota2 = $_REQUEST["nunota"];
 <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/main.css" rel='stylesheet' type='text/css' />
+    <link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -26,7 +26,7 @@ $nunota2 = $_REQUEST["nunota"];
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<!-- <body>
     <div class="container">
         <div class="content">
             <div class="img-voltar btn-reabastecimento">
@@ -42,6 +42,22 @@ $nunota2 = $_REQUEST["nunota"];
             </div>
         </div>  
     </div>   
+</body> -->
+<body>
+	<div>
+		<div class="img-voltar">
+			<a href="index.php">
+				<img src="images/216446_arrow_left_icon.png" />
+			</a>
+		</div>
+		<div class="screen">
+			<form action="action.php" method="post" class="margin-top35" style="width: 80%;">
+                <button type="submit" id="aplicar" name="aplicar" class="btn btn-primary btn-form">Pegar da fila</button><br><br>
+                <button type="submit" id="aplicar-sem-fila" name="aplicar-sem-fila" class="btn btn-primary btn-form">Pegar sem fila</button><br><br>
+            
+			</form>
+		</div>
+	</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

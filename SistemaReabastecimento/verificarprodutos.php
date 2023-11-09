@@ -14,7 +14,7 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/main.css" rel='stylesheet' type='text/css' />
+    <link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,8 +86,8 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
 
             <button type="submit" name="confirmar" id="confirmar" class="btn btn-primary btn-form">Confirmar nota</button><br><br>
 
-            <div class="table d-flex justify-content-center">
-                <table>
+            <div class="d-flex justify-content-center">
+                <table class="table">
                     <tr> 
                         <th>Ref.</th>
                         <th>Local</th>
@@ -159,7 +159,6 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
                     //função que será executada quando a solicitação for finalizada.
                     success: function (msg)
                     {
-                        
                     }
                 });
             }

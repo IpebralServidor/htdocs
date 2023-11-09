@@ -66,8 +66,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/main.css?v=2">
-    <link href="css/main.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=<?= time() ?>">
+    <link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
@@ -282,7 +282,7 @@
                                 if($tipoNota == "S"){ 
                                     echo'<td>
                                             <a class="botao-abastecer" data-id="'.$rowProdutos['SEQUENCIA'] .'">
-                                                <button class="btnPendencia" data-toggle="modal" data-target="#buscarUsuario">
+                                                <button class="btnPendencia" style="border-radius: 10%;" data-toggle="modal" data-target="#buscarUsuario">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
                                                         <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
                                                     </svg>
