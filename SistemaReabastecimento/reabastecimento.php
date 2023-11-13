@@ -941,8 +941,14 @@
     </script>
     <script>
         $('#btnAplicarOutroLocal').click(function () {
-            // registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
+            if($("#qtdneg").val() != ""){
+                if(confirm('Você está levando ' +$("#qtdneg").val() +' produtos.  \n' 
+                +'Deseja procurar ' +(document.getElementById("qtdneg").placeholder - $("#qtdneg").val()) +' em outro local?')){
+                    procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
+                }
+            }else{
+                procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
+            }
         });
     </script>
     <script>

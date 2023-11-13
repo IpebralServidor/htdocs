@@ -7,7 +7,7 @@
 
 
     //MUDAR NOME DAS CHAMADAS
-    $tsqlAtividade = "EXEC [sankhya].[AD_STP_CHECKOUT_PHP] $codusu ,$nunota";
+    $tsqlAtividade = "EXEC [sankhya].[AD_STP_CHECKOUT_PHP] $codusu ,$nunota2";
     $stmtAtividade = sqlsrv_query($conn, $tsqlAtividade);
     $rowAtividade = sqlsrv_fetch_array($stmtAtividade, SQLSRV_FETCH_NUMERIC);
 
