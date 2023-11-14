@@ -125,9 +125,7 @@
 	<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
 	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
-	<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
-
+	<link href="css/style.css?v=<?= time() ?>" rel="stylesheet" type="text/css" media="all"/>
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
 
