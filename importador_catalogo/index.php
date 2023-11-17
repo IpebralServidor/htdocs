@@ -76,53 +76,53 @@
 			} elseif ($qtd_produto === 0 ) {
 				echo "Erro: Não foi encontrado produtos neste pedido.";
 			} else {
-		    	// $serverName = "SERVER-BD"; 
-				// $uid = "sankhya";   
-				// $pwd = "tecsis";  
-				// $databaseName = "SANKHYA_PROD"; 
+		    	$serverName = "SERVER-BD"; 
+				$uid = "sankhya";   
+				$pwd = "tecsis";  
+				$databaseName = "SANKHYA_PROD"; 
 
-				// $connectionInfo = array( "UID"=>$uid,                            
-				//                          "PWD"=>$pwd,                            
-				//                          "Database"=>$databaseName); 
+				$connectionInfo = array( "UID"=>$uid,                            
+				                         "PWD"=>$pwd,                            
+				                         "Database"=>$databaseName); 
 
-				// /* Conexao com SQL Server usando autenticacao. */  
-				// $conn = sqlsrv_connect( $serverName, $connectionInfo);  
+				/* Conexao com SQL Server usando autenticacao. */  
+				$conn = sqlsrv_connect( $serverName, $connectionInfo);  
 
-				// //Verifica se a conexao foi estabelecida com sucesso
-				// if( $conn ) {
-				//     echo "";
-				// 	//   echo "Conexão estabelecida.<br/>";
-				// } else {
-				// 	echo "Não foi possível conectar ao SQL Server"."<br/>";
-				//     die( print_r( sqlsrv_errors(), true));
-				// }
+				//Verifica se a conexao foi estabelecida com sucesso
+				if( $conn ) {
+				    echo "";
+					//   echo "Conexão estabelecida.<br/>";
+				} else {
+					echo "Não foi possível conectar ao SQL Server"."<br/>";
+				    die( print_r( sqlsrv_errors(), true));
+				}
 
 				$insere_1700 = "EXEC AD_STP_INSERETGFCAB_CATALOGO 1700, " . $empresa . ", 9," . "'" . $pedido . " - " .$mensagem . "', ?";
 
 				$NUNOTA_1700 = 0;
 
-				// $params = array( array(&$NUNOTA_1700, SQLSRV_PARAM_OUT) );
-				// $stmt_cab = sqlsrv_query( $conn, $insere_1700, $params);  
+				$params = array( array(&$NUNOTA_1700, SQLSRV_PARAM_OUT) );
+				$stmt_cab = sqlsrv_query( $conn, $insere_1700, $params);  
 				
-				// if( $stmt_cab === false ) {  
-				//     echo "Erro na execução da procedure cab.\n";  
-				//     die( print_r( sqlsrv_errors(), true));  
-				// } 
+				if( $stmt_cab === false ) {  
+				    echo "Erro na execução da procedure cab.\n";  
+				    die( print_r( sqlsrv_errors(), true));  
+				} 
 				
-				// foreach ($produtos as $produto) {
-				// 	$insere_item_1700 = "EXEC AD_STP_INSERETGFITE_CATALOGO " . strval($NUNOTA_1700) . ", '" . $produto[0] . "', 0," . $produto[1] . ", 0" ;
-				// 	$stmt_ite = sqlsrv_query( $conn, $insere_item_1700);
-				// 	if( $stmt_cab === false ) {  
-				// 	    echo "Erro na execução da procedure ite.\n";  
-				// 	    die( print_r( sqlsrv_errors(), true));  
-				// 	} 
-				// }
+				foreach ($produtos as $produto) {
+					$insere_item_1700 = "EXEC AD_STP_INSERETGFITE_CATALOGO " . strval($NUNOTA_1700) . ", '" . $produto[0] . "', 0," . $produto[1] . ", 0" ;
+					$stmt_ite = sqlsrv_query( $conn, $insere_item_1700);
+					if( $stmt_cab === false ) {  
+					    echo "Erro na execução da procedure ite.\n";  
+					    die( print_r( sqlsrv_errors(), true));  
+					} 
+				}
 
-				// echo "1700 criada número único: " . $NUNOTA_1700;
+				echo "1700 criada número único: " . $NUNOTA_1700;
 
-				// sqlsrv_free_stmt($stmt_cab);  
-				// sqlsrv_free_stmt($stmt_ite);  
-				// sqlsrv_close($conn);
+				sqlsrv_free_stmt($stmt_cab);  
+				sqlsrv_free_stmt($stmt_ite);  
+				sqlsrv_close($conn);
 			}			
 		}
 	?>

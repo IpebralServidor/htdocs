@@ -1,0 +1,25 @@
+/* 
+    Document   : popup
+    Created on : 10/06/2012, 14:18:26
+    Author     : Administrador
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#header {
+    
+    background-color: #4682B4;
+    width: 100%;
+    height: 80px;
+}
+
+
+#content{ 
+    
+    width: 90%;
+    margin: 0 auto;
+    
+    padding-top: 20px;
+    
+}
+

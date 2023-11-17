@@ -1,0 +1,186 @@
+@charset "utf-8";
+/* CSS Document */
+
+.tabela{
+
+background:#fff;
+
+width:300px;
+
+padding:0px;
+
+border:1px solid #f0f0f0;
+
+float:left;
+
+margin-right:20px;
+margin-left: 20px;
+
+}
+
+.td{
+
+background: #f8f8f8;
+
+width:30px;
+
+height:30px;
+
+text-align:center;
+
+
+
+}
+
+.hj{
+
+border:#000 solid 2px;
+
+width:20px;
+
+height:20px;
+
+text-align:center;
+
+
+}
+
+.dom{
+
+background:#000;
+color:#FFF;
+width:20px;
+
+height:40px;
+
+text-align:center;
+
+}
+
+.evt{
+
+background:#0F0;
+
+width:40px;
+
+height:40px;
+
+text-align:center;
+
+}
+
+.mes{
+
+background:#000;
+color:#FFF;
+
+width:auto;
+
+height:20px;
+
+text-align:center;
+
+}
+
+.show{
+
+background:#202020;
+
+width:300px;
+
+height:20px;
+
+text-align:left;
+
+font-size:12px;
+
+font-weight:bold;
+
+color:#CCFF00;
+
+padding-left:5px;
+
+}
+
+.linha{
+
+background:#404040;
+
+width:300px;
+
+height:40px;
+
+text-align:left;
+
+font-size:12px;
+
+color:#f0f0f0;
+
+padding:1px 1px 1px 10px;
+
+}
+
+.sem{
+
+background: #ECE6D9;
+
+width:auto;
+
+height:20px;
+
+text-align:center;
+
+font-size:12px;
+
+
+
+}
+
+#mostrames{
+
+color:#FFF;
+width:300px;
+
+padding:5px;
+
+}
+
+ td,th {
+
+    font-family: Verdana;
+
+    font-size: 11px;
+
+    color: #000000;
+
+}
+
+a:link {
+
+    color: #FFF;
+
+    text-decoration: none;
+
+}
+
+a:visited {
+
+    text-decoration: none;
+
+    color: #FFF;
+
+}
+
+a:hover {
+
+    text-decoration: underline;
+
+    color:#000;
+
+}
+
+a:active {
+
+    text-decoration: none;
+
+}
