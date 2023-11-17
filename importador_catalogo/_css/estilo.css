@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+body{
+	font-family: "Roboto Condensed", sans-serif;
+	background-color: #f4f5f8;
+}
+
+div#interface {
+	background-color: #FFFFFF;
+	margin: 1px;
+	padding: 0px;
+}
+
+div#formulario{
+	margin: 10px;
+}
+
+header#cabecalho h1 {
+	font-size: 25pt;
+	text-align:center;
+	color: #ec1c24;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .6);
+	padding: 60px;
+}
+
+figure.foto-legenda {
+	position: relative;
+	float: left;
+	border: 8px solid white;
+}
+
+textarea {
+  resize: none;
+  width: 800px;
+  height: 250px;
+}    
+    
