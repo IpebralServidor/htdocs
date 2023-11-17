@@ -66,8 +66,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/main.css?v=2">
-    <!-- <link href="css/main.css" rel='stylesheet' type='text/css' /> -->
+    <link rel="stylesheet" type="text/css" href="css/main.css?v=<?= time() ?>">
+    <link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
@@ -76,12 +76,16 @@
         <?php if($rowStatus[0] == "P"){ ?>
             onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), 
             iniciarpausa('P', <?php echo $nunota2; ?>),
+            produtos(<?php echo $nunota2; ?>),
             retornaMovimentacoes()"
         <?php } else{ ?>
             onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
+            produtos(<?php echo $nunota2; ?>),
             retornaMovimentacoes()" 
         <?php } ?> 
-    <?php }?>>
+    <?php } else {?>
+        onload="produtos(<?php echo $nunota2; ?>)"
+    <?php } ?>>
 
     <div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
@@ -119,21 +123,18 @@
                 </div>
                 <div class="modal-body">
                     <table class='movTable'>
-                        <tr>
-                            <th>Nota</th>
-                            <th>TOP</th>
-                            <th>Emp</th>
-                            <th>Data</th>
-                            <th>Qtd</th>
-                        </tr>
-                        <tr>
-                            <th id="notaMovimentacao"></th>
-                            <th id="topMovimentacao"></th>
-                            <th id="empMovimentacao"></th>
-                            <th id="dataMovimentacao"></th>
-                            <th id="qtdMovimentacao"></th>
-                        </tr>
-                        
+                        <thead>
+                            <tr>
+                                <th>Nota</th>
+                                <th>TOP</th>
+                                <th>Emp</th>
+                                <th>Data</th>
+                                <th>Qtd</th>
+                            </tr>
+                        </thead>
+                        <tbody id="movId">
+                               
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -173,26 +174,6 @@
                     <button type="button" class="btn btn-primary" id="btnAplicarOcorrencia">Aplicar</button>
                     <button type="button" class="btn btn-primary" id="btnAplicarOutroLocal" style="display: none;">Aplicar outro</button>
                     <button type="button" class="btn btn-primary" id="btnAplicarProximo" style="display: none;">Aplicar proximo</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="editarQuantidade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar quantidade</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label for="qtd">Quantidade: </label>
-                    <input type="number" id="qtd" name="qtd" value="">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="botao-editar btn btn-primary" id="btnEditarQuantidade">Editar</button>
                 </div>
             </div>
         </div>
@@ -246,51 +227,93 @@
 
     <div class="bg">
         <div class="collapse" id="navbarToggleExternalContent">
-            <div class="table d-flex justify-content-center">
-                <table>
-                    <tr> 
-                        <th>Ref.</th>
-                        <th>Local</th>
-                        <th>Qtde</th>
-                        <?php if($tipoNota == 'S'){ ?>
-                            <!-- <th></th> -->
-                            <th></th>
-                        <?php } ?>
-                    </tr>
+ 
 
-                    <?php 
-                        while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC))  
-                            { 
-                    ?>
-                    <tr> 
-                        <td><?php echo $row2['REFERENCIA'] ?></td>
-                        <td><?php echo $row2['CODLOCALPAD'] ?></td>
-                        <td><?php echo $row2['QTDNEG'] ?></td>
-                        <?php if($tipoNota == 'S'){ ?>
-                            <!-- <td>
-                                <a class="botaoAbrirPopUp" data-id="<?php echo $row2['SEQUENCIA'] ?>">
-                                    <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidade">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                        </svg>
-                                    </button>
-                                </a>
-                            </td> -->
-                            <td>
-                            <a class='botao-abastecer' data-id="<?php echo $row2['SEQUENCIA'];?>">
-                                <button class="btnPendencia" data-toggle="modal" data-target="#buscarUsuario">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
-                                        <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
-                                    </svg>
-                                </button>
-                            </a>
-                        </td>
-                        <?php } ?>
-                    </tr>
-                    <?php
-                        }
-                    ?>
-                </table>
+            <?php if($tipoNota == 'A'){?>
+                <div class="background">
+                    <div class="switchBox">
+                        <div class="tabSwitch">
+                            <input type="checkbox" class="checkbox" id="chkInp" onchange="produtos(<?php echo $nunota2; ?>)">
+
+                            <label for="chkInp" class="label">
+                                <div class="ball" id="ball"></div>
+                            </label>
+                        </div>
+
+                        <div class="titleBox">
+                            <h6 id="titleBoxH6">Produtos separados</h6>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <div class="table d-flex justify-content-center">
+                
+                <?php if($tipoNota == 'S'){ ?>
+
+                    <table>
+                        <thead>
+                            <tr> 
+                                <th>Ref.</th>
+                                <th>Local</th>
+                                <th>Qtde</th>
+                                <?php if($tipoNota == 'S'){ ?>
+                                    <th></th>
+                                <?php } ?>
+                            </tr>
+                        </thead>
+                        <tbody class="movTable">
+                
+                        <?php 
+
+                            $tsqlProdutos = "   SELECT * 
+                                                FROM [sankhya].[AD_FNT_PRODUTO_SEPARADO_REABASTECIMENTO] ($nunota2) 
+                                                ORDER BY CODLOCALORIG DESC, SEQUENCIA DESC";
+
+                            $stmtProdutos = sqlsrv_query( $conn, $tsqlProdutos);
+
+                            while( $rowProdutos = sqlsrv_fetch_array($stmtProdutos, SQLSRV_FETCH_ASSOC))
+                            {
+                                echo '<tr>';
+                                echo '<td>'.$rowProdutos['REFERENCIA'] .'</td>';
+                                echo '<td>'.$rowProdutos['CODLOCALPAD'] .'</td>';
+                                echo '<td>'.$rowProdutos['QTDNEG'] .'</td>';
+                                
+                                if($tipoNota == "S"){ 
+                                    echo'<td>
+                                            <a class="botao-abastecer" data-id="'.$rowProdutos['SEQUENCIA'] .'">
+                                                <button class="btnPendencia" style="border-radius: 10%;" data-toggle="modal" data-target="#buscarUsuario">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                                                        <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                                                    </svg>
+                                                </button>
+                                            </a>
+                                        </td>';
+                                }
+                                echo '</tr>';
+                            }
+                        ?>
+                            
+                        </tbody>
+                    </table>
+
+                <?php } else { ?>
+                    <table >
+                        <thead>
+                            <tr> 
+                                <th>Ref.</th>
+                                <th>Local</th>
+                                <th>Qtde</th>
+                                <?php if($tipoNota == 'S'){ ?>
+                                    <th></th>
+                                <?php } ?>
+                            </tr>
+                        </thead>
+                        <tbody class="movTable" id="prodId">
+                            
+                        </tbody>
+                    </table>
+                <?php } ?>
             </div>
         </div>
         
@@ -366,9 +389,9 @@
                         <div class="d-flex justify-content-start">
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6> 
-                            <?php if($tipoNota == 'S') {?>
+                            <!-- <?php if($tipoNota == 'S') {?> -->
                                 <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
-                            <?php }?>
+                            <!-- <?php }?> -->
                         </div>
 
                         <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>
@@ -478,11 +501,12 @@
                     if(msg == ''){
                         document.getElementById('obsMovimentacoes').style.display = "none";
                     }else{
-                        document.getElementById('notaMovimentacao').innerHTML = movimentacoes[0];
-                        document.getElementById('topMovimentacao').innerHTML = movimentacoes[1];
-                        document.getElementById('empMovimentacao').innerHTML = movimentacoes[2];
-                        document.getElementById('dataMovimentacao').innerHTML = movimentacoes[3];
-                        document.getElementById('qtdMovimentacao').innerHTML = movimentacoes[4];
+                        // document.getElementById('notaMovimentacao').innerHTML = movimentacoes[0];
+                        // document.getElementById('topMovimentacao').innerHTML = movimentacoes[1];
+                        // document.getElementById('empMovimentacao').innerHTML = movimentacoes[2];
+                        // document.getElementById('dataMovimentacao').innerHTML = movimentacoes[3];
+                        // document.getElementById('qtdMovimentacao').innerHTML = movimentacoes[4];
+                        document.getElementById('movId').innerHTML = movimentacoes[0];
                     }
                 }
             });
@@ -605,50 +629,19 @@
         });
     </script>
     <script>
-        // Obtém o botão "Abrir Pop-up" e o pop-up
-        document.addEventListener('DOMContentLoaded', function() {
-            var botoesAbrirPopUp = document.querySelectorAll(".botaoAbrirPopUp");
-            var meuPopUp = document.getElementById("editarQuantidade");
-            var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEditarQuantidade");
-
-            // Adicione um ouvinte de eventos para cada botão
-            botoesAbrirPopUp.forEach(function(botao) {
-                botao.addEventListener("click", function() {
-                    // Obtém o valor do atributo data-id do botão clicado
-                    var dataId = this.getAttribute('data-id');
-                    // Define o valor em um atributo personalizado do botão dentro do pop-up
-                    botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
-
-                    // Abre o pop-up
-                    meuPopUp.style.display = "block";
-                });
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var botaoEditar = document.querySelectorAll('.botao-editar');
-            var inputTexto = document.getElementById("qtd");
-            
-            botaoEditar.forEach(function(botao) {
-                botao.addEventListener('click', function() {
-                    var sequencia = botao.getAttribute('data-id-pop-up');
-                    var valorTexto = inputTexto.value;
-                    
-                    alterarQuantidade(<?php echo $nunota2; ?>, sequencia, valorTexto);
-                });
-            });
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
             var botoesAbrirPopUp = document.querySelectorAll(".botao-abastecer");
             var meuPopUp = document.getElementById("buscarUsuario");
             var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEntregar");
+           
 
             // Adicione um ouvinte de eventos para cada botão
             botoesAbrirPopUp.forEach(function(botao) {
                 botao.addEventListener("click", function() {
+
                     // Obtém o valor do atributo data-id do botão clicado
                     var dataId = this.getAttribute('data-id');
+
                     // Define o valor em um atributo personalizado do botão dentro do pop-up
                     botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
 
@@ -734,6 +727,47 @@
             }
            
         });
+    </script>
+    <script>
+        function produtos(nota)
+		{
+            var teste = document.getElementById('chkInp');
+
+            if('<?php echo $tipoNota; ?>' == 'A'){
+                
+                if(teste.checked == true){
+                    document.getElementById('titleBoxH6').textContent = 'Produtos não guardados'
+                    teste = 'S'
+                }else{
+                    document.getElementById('titleBoxH6').textContent = 'Produtos guardados'
+                    teste = 'N'
+                }
+            }else{
+                teste = 'N'
+            }
+
+            //teste.checked
+            //O método $.ajax(); é o responsável pela requisição
+			$.ajax
+				({
+					//Configurações
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'produtos.php',//Indica a página que está sendo solicitada.
+					//função que vai ser executada assim que a requisição for enviada
+					beforeSend: function () {
+						$("#iniciarpausa").html("Carregando...");
+					},
+					data: {nunota: nota, tipoProduto: teste, tipoNota: '<?php echo $tipoNota; ?>'},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						var produtos = msg.split('|');
+
+                        document.getElementById('prodId').innerHTML = produtos[0];
+					}
+				});
+		}
     </script>
     <script>
         function registrarOcorrencia(nunota, sequencia, qtdneg)
@@ -907,8 +941,14 @@
     </script>
     <script>
         $('#btnAplicarOutroLocal').click(function () {
-            // registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
+            if($("#qtdneg").val() != ""){
+                if(confirm('Você está levando ' +$("#qtdneg").val() +' produtos.  \n' 
+                +'Deseja procurar ' +(document.getElementById("qtdneg").placeholder - $("#qtdneg").val()) +' em outro local?')){
+                    procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
+                }
+            }else{
+                procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
+            }
         });
     </script>
     <script>

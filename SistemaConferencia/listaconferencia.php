@@ -25,7 +25,7 @@ else
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Lista Conferência - <?php echo $usuconf; ?></title>
 
-	<link href="css/main.css" rel='stylesheet' type='text/css' />
+	<link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script>
@@ -78,12 +78,7 @@ else
 	<div id="Filtro" class="filtro">
 		<div class="img-voltar">
 			<a href="../menu.php">
-				<aabr title="Voltar para Menu">
-					<button class="btn btn-back">
-						<img src="images/216446_arrow_left_icon.png">
-						<p>Voltar ao menu</p>
-					</button>
-				</aabr>
+				<img src="images/216446_arrow_left_icon.png">
 			</a>
 		</div>
 		<form action="listaconferencia.php" class="form" method="post">

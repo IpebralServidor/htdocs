@@ -14,14 +14,14 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/main.css" rel='stylesheet' type='text/css' />
+    <link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
 	<title>Estoque CD3</title>
 </head>
-<body>
+<body onload=" encerrarAtividade(<?php echo $nunota2; ?>) ">
 
     <div class="modal fade" id="editarQuantidade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -86,8 +86,8 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
 
             <button type="submit" name="confirmar" id="confirmar" class="btn btn-primary btn-form">Confirmar nota</button><br><br>
 
-            <div class="table d-flex justify-content-center">
-                <table>
+            <div class="d-flex justify-content-center">
+                <table class="table">
                     <tr> 
                         <th>Ref.</th>
                         <th>Local</th>
@@ -138,7 +138,32 @@ $stmt2 = sqlsrv_query( $conn, $tsql2);
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-   <script>
+    <script>
+        function encerrarAtividade (nunota)
+            {
+                //O método $.ajax(); é o responsável pela requisição
+                $.ajax
+                ({
+                    //Configurações
+                    type: 'POST',//Método que está sendo utilizado.
+                    dataType: 'html',//É o tipo de dado que a página vai retornar.
+                    url: 'encerraratividade.php',//Indica a página que está sendo solicitada.
+                    //função que vai ser executada assim que a requisição for enviada
+                    beforeSend: function () {
+                        $("#loader").show();
+                    },
+                    complete: function(){
+                        $("#loader").hide();
+                    },
+                    data: {nunota: nunota},//Dados para consulta
+                    //função que será executada quando a solicitação for finalizada.
+                    success: function (msg)
+                    {
+                    }
+                });
+            }
+    </script>
+    <script>
     
         function confrimarNota (nunota)
             {

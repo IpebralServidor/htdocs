@@ -11,11 +11,13 @@
     
     while( $rowMovimentacoes = sqlsrv_fetch_array($stmtMovimentacoes, SQLSRV_FETCH_ASSOC))
     { 
-        echo 
-        $rowMovimentacoes['NUNOTA'] ."|"
-        .$rowMovimentacoes['CODTIPOPER'] ."|"
-        .$rowMovimentacoes['CODEMP'] ."|"
-        .date_format($rowMovimentacoes['DTNEG'], "d/m/Y") ."|"
-        .$rowMovimentacoes['QTDNEG']."|";
+        echo    
+            '<tr>'.
+                    '<th>'.$rowMovimentacoes['NUNOTA'] .'</th>'.
+                    '<th>'.$rowMovimentacoes['CODTIPOPER'] .'</th>'.
+                    '<th>'.$rowMovimentacoes['CODEMP'] .'</th>'.
+                    '<th>'.date_format($rowMovimentacoes['DTNEG'], "d/m/Y")  .'</th>'.
+                    '<th>'.$rowMovimentacoes['QTDNEG'] .'</th>'.
+            '</tr>';
     }
 ?>

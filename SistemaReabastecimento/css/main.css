@@ -1,11 +1,13 @@
 table {
 	border-collapse: collapse;
+	transition: transfrom 0.2s linear;
 }
 
 table th {
 	text-align: center;
 	background-color: #3a6070;
 	color: #FFF;
+	font-weight: 400 !important;
 	/*padding: 4px 30px 4px 8px;*/
 }
 
@@ -200,10 +202,11 @@ border-top: solid 5px #e54e43;
   	border: solid #e54e43 1px !important;
 	font-size: 13px;
 	margin-left: 5px;
+	border-radius: 50px;
 }
 .btnWidth{
 	width: 200px !important;
-	margin-top: 1.5rem;
+	margin-top: 1rem;
 }
 .filtro{
 	text-align: center;
@@ -294,43 +297,33 @@ border-top: solid 5px #e54e43;
 	height: 100%; 
 	overflow: auto !important;
 }
+.screen{
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+.margin-top35{
+	margin-top: 35px;
+}
+.margin-top10{
+	margin-top: 10px;
+}
 .img-voltar{
-	padding: 0 !important; 
-	margin-bottom: 7%;
-	
+	padding: 10px;
 }
 .img-voltar img{
 	width: 35px;
-	float: left;
 	background-color: #2d4a57;
 	border-radius: 100%;
-}
-.img-voltar a{
-	border: none !important;
-	margin-bottom: 20px !important;
-	text-decoration: none !important;
-	color: #363b48;
-}
-.img-voltar p{
-	float: right;
-	max-height: 5px;
-	padding-top: 3.5%;
-	color: white;
-}
-.btn-back{
-	background-color: #3a6070 !important;
-	border: none !important;
-	box-shadow: 0px 5px 0px 0px #2d4a57, 0px 10px 5px #999;
-	transition: all 0.2s !important;
-}
-.btn-back:hover{
-	transform: scale(1.03) !important;
 }
 .btn-form{
 	background-color: #3a6070 !important;
 	border: none !important;
-	box-shadow: 0px 5px 0px 0px #2d4a57, 0px 10px 5px #999;
 	color: white;
+	height: 40px;
+	border-radius: 50px !important;
 	transition: all 0.2s !important;
 }
 .btn-form:hover{
@@ -353,11 +346,12 @@ border-top: solid 5px #e54e43;
 	border-top: none !important;
 	border-left: solid 1px white !important;
 	border-right: solid 1px white;
-	font-weight: 400 !important;
+	/* font-weight: 400 !important; */
 }
 .table-infos{
 	text-align: center !important;
 	background-color: white !important;
+	width: 100%;
 }
 .table-infos th{
 	font-weight: 400 !important;
@@ -581,6 +575,8 @@ border-top: solid 5px #e54e43;
 	align-items:start !important;
 	height: 2.5rem !important;
 	margin-bottom: 0.5rem !important;
+	/* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px !important; */
+	border-radius: 50px !important;
 }
 
 .body{
@@ -593,7 +589,7 @@ border-top: solid 5px #e54e43;
 	border-radius: 10px;
 	padding: 1rem;
 	margin: 1rem;
-	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px !important;
 }
 .header-body-left input{
 	max-width: 80% !important;
@@ -649,13 +645,6 @@ border-top: solid 5px #e54e43;
 .table table{
 	width: 100% !important;
 }
-.content{
-	margin: 1rem;;
-}
-.btn-reabastecimento{
-	width: 3.8rem;
-	margin-bottom: 0.5rem;
-}
 .statusReabastecimento{
 	color: white;
 	border: none;
@@ -671,6 +660,7 @@ border-top: solid 5px #e54e43;
 .btnOutroLocal{
 	background-color: #0d6efd !important; 
 	border-color: #0d6efd !important;
+	border-radius: 50px;
 }
 .d-flex{
 	background-color: white !important;
@@ -685,7 +675,7 @@ border-top: solid 5px #e54e43;
 	justify-content: space-between;
 	padding: 10px;
 	margin: 5px;
-	border-radius: 8px;
+	border-radius: 50px;
 }
 .timer-color{
 	border-radius: 50px;
@@ -697,14 +687,8 @@ border-top: solid 5px #e54e43;
 	padding-right: 5px;
 }
 .infos{
-	max-width: 100%;
-	max-height: 80%;
 	display: flex;
-}
-.fornecedores h6{
-}
-.informacoes{
-	width: 60%;
+	justify-content: space-between;
 }
 .fornecedores{
 	margin-left: 3px;
@@ -741,14 +725,15 @@ border-top: solid 5px #e54e43;
 }
 .movTable{
 	width: 100%;
+	text-align: center;
+	transition: transfrom 0.2s linear;
 }
-.movTable th{
+.movTable td{
 	background-color: white !important;
 	color: black;
 	font-weight: 300;
-	border: solid 0.5px gray;
-	padding: 2px;
 	text-align: center !important;
+	width: 25%;
 }
 .movimentacoesFlag{
 	border-radius: 50px;
@@ -756,4 +741,106 @@ border-top: solid 5px #e54e43;
 	height: 17px;
 	background-color: red;
 	margin-left: 10px;
+}
+.label{
+    height: 26px;
+    width: 50px;
+    background-color: green;
+    display: flex;
+    border-radius: 50px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 5px;
+}
+.ball{
+    height: 22px;
+    width: 22px;
+    background-color: white;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+	transition: transform 0.2s linear;
+}
+.checkbox{
+	opacity: 0;
+	position: absolute;
+}
+.checkbox:checked + .label .ball{
+	transform: translateX(24px);
+}
+.checkbox:checked + .label{
+	background-color: red;
+}
+.tabSwitch{
+	/* background-color: #0d6efd; */
+}
+.titleBox{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+	.titleBox h6{
+		margin: 0;
+	}
+.switchBox{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	background-color: white;
+	border-radius: 50px;
+}
+.background{
+	background-color: #3a6070 !important;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.tr-th th{
+	width: 30px;
+}
+.menu{
+	width: 100%;
+	padding: 10px 0px 0px 15px;
+}
+.overflow{
+	margin-top: 15px;
+	max-height: 200px;
+	overflow: auto;
+}
+.border-top-right-radius{
+	border-top-right-radius: 10px !important;
+}
+.border-top-left-radius{
+	border-top-left-radius: 10px !important;
+}
+.table th{
+	background-color: #2d4a57 !important;
+	color: white !important;
+}
+.position-sticky{
+	top: 0;
+	position: sticky;
+}
+.table-infos td{
+	background-color: white !important;
+	height: 20% !important;
+	overflow: auto;
+	border: none;
+}
+.infos-2{
+	/* background-color: blue; */
+	border-left: solid 1px gray;
+	padding-left: 10px;
+	width: 52%;
+}
+.informacoes{
+	width: 50%;
+	/* background-color: red; */
+}
+.label-input{
+	/* font-weight: 600; */
 }
