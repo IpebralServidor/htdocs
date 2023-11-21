@@ -1,3 +1,6 @@
+body{
+	height: 100vh;
+}
 table {
 	border-collapse: collapse;
 	transition: transfrom 0.2s linear;
@@ -808,7 +811,6 @@ border-top: solid 5px #e54e43;
 }
 .overflow{
 	margin-top: 15px;
-	max-height: 200px;
 	overflow: auto;
 }
 .border-top-right-radius{
@@ -843,4 +845,9 @@ border-top: solid 5px #e54e43;
 }
 .label-input{
 	/* font-weight: 600; */
+}
+.container{
+	height: 93% !important;
+    display: flex;
+    flex-direction: column;
 }
