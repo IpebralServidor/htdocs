@@ -1246,13 +1246,45 @@
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-                    if(msg != ''){
-						// var userInput = requiredFunction(msg);
+					var stringSemLetras = '';
 
-						// if(userInput == null){
-							teste(msg, primeiro)
-						// }
+					for (var i = 0; i < msg.length; i++) {
+						var caractere = msg.charAt(i);
+
+						if ((caractere >= '0' && caractere <= '9') || caractere === '|') {
+							stringSemLetras += caractere;
+						}
 					}
+
+					//se a stringSemLetras for vazia eu sei que a mensagem é 
+					//'Existe um Complemento para esse pedido. Atualize a Tela!' 
+					//pois não existe nenhum número nela
+					
+					$.ajax
+					({
+						async: false,
+						type: 'POST',//Método que está sendo utilizado.
+						dataType: 'html',//É o tipo de dado que a página vai retornar.
+						url: 'varsessao.php?timestamp=' + new Date().getTime(),//Indica a página que está sendo solicitada.
+						beforeSend: function () {
+						},
+						data: {string: stringSemLetras},
+						success: function (nmrSession)
+						{
+
+							if(msg != '' && nmrSession == 'S'){
+								//verifica se o retorno da função complemento é diferente de vazio, se for vazio não tem nenhum complemento
+								teste(msg, primeiro)
+							}
+						}
+					}); 
+
+					// if(msg != ''){
+						
+					// 	//verifica se o retorno da função complemento é diferente de vazio, se for vazio não tem nenhum complemento
+					// 	teste(msg, primeiro)
+					// }
+					
                 }
 			});
 		}

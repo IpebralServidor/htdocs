@@ -4,6 +4,7 @@
 
 	$usuconf = $_SESSION["idUsuario"];
 	$_SESSION["codbarraselecionado"] = 0;
+	$_SESSION["nmrComplemento"] = "";
 	$_SESSION["funcao"] = false;
 
 ?>
