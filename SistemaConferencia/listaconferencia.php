@@ -4,19 +4,8 @@
 
 	$usuconf = $_SESSION["idUsuario"];
 	$_SESSION["codbarraselecionado"] = 0;
-//Verifica se retornou resultado
+	$_SESSION["funcao"] = false;
 
-/*if ( $stmt2 ) 
-{  
-    //echo "A query foi executada com sucesso..<br>\n";  
-	echo "";
-
-}   
-else   
-{  
-     //echo "Houve erro na execução da query.\n";  
-     //die( print_r( sqlsrv_errors(), true));  
-} */ 
 ?>
 
 <html>
@@ -119,7 +108,6 @@ else
 		</div>
 		
 		<?php 
-
 			$tsql2 = "";
 
 			if(isset($_POST["aplicar"])){
@@ -225,12 +213,12 @@ else
 
 		
 		<?php
-		$notaRetorno = $row2['NUNOTA'];
-		}
+				$notaRetorno = $row2['NUNOTA'];
+			}
 		?>
 	</table>
 
-	</div> <!-- ListaConferencia -->
+	</div> 
 	<script charset="utf-8">
 		function pegarProximaNota(usuario)
 			{

@@ -3,8 +3,8 @@
 	require_once 'App/auth.php';
 
 	$codparc = 0;
-
 	$usuconf = $_SESSION["idUsuario"];
+	$funcaoJaExecutada = $_SESSION["funcao"];
 	$VLR1700 = 0;
 	$VLR1720 = 0; 
 	$VLR1780 = 0;
@@ -238,7 +238,7 @@
 	</script>
 
 
-	<link href="css/main.css" rel='stylesheet' type='text/css' />
+	<link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<?php
@@ -420,8 +420,12 @@
 		</script>
 
 </head>
-<body style="margin: 0;" onload="<?php if($adseparador == null && $codemp == 7) { ?> abrirconferentes(); <?php } ?> scrollToRow(<?php echo $linhamarcada; ?>)">
+<body style="margin: 0;" onload="executarUmaVez(); <?php if($adseparador == null && $codemp == 7) { ?> abrirconferentes(); <?php } ?> scrollToRow(<?php echo $linhamarcada; ?>)">
 
+	<div id="loader" style="display: none;">
+		<img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
+	</div>
+	
 	<div id="popupconferentes" class="popupconferentes">
 		<h4>Lista de conferentes</h4>
 		<div class="input-busca">
@@ -1047,6 +1051,15 @@
 
         var index,
             table = document.getElementById("table");
+		
+		function 
+		executarUmaVez() {
+			if ('<?php echo $funcaoJaExecutada ?>' == false) {
+				complemento('sim');
+
+				<?php $_SESSION["funcao"] = true; ?>
+			}
+		}
 
 
 
@@ -1192,13 +1205,16 @@
                 url: 'finalizarconf.php',//Indica a página que está sendo solicitada.
                 //função que vai ser executada assim que a requisição for enviada
                 beforeSend: function () {
-                    //$("#itensconferidos").html("Carregando...");
-                },
+					$("#loader").show();
+				},
+				complete: function(){
+					$("#loader").hide();
+				},
                 data: {nunota: nunota, usuconf: usuconf, pesobruto: pesobruto, qtdvol: qtdvol, volume: volume, observacao: observacao, frete: frete, mtvdivergencia: mtvdivergencia},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
-					complemento();
+					complemento('nao');
 					
                     if(!msg.includes("Finalizado com sucesso")){
                         alert(msg);
@@ -1214,7 +1230,7 @@
             finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#frete").val(), $("#mtvdivergencia").val())
         });
 
-		function complemento(){
+		function complemento(primeiro){
 			 //O método $.ajax(); é o responsável pela requisição
 			 $.ajax
             ({
@@ -1234,23 +1250,25 @@
 						// var userInput = requiredFunction(msg);
 
 						// if(userInput == null){
-							teste(msg)
+							teste(msg, primeiro)
 						// }
 					}
                 }
 			});
 		}
-		function teste(msg){
-			requiredFunction(msg);
+		function teste(msg, primeiro){
+			requiredFunction(msg, primeiro);
 		}
 
-		function requiredFunction(msg) {
+		function requiredFunction(msg, primeiro) {
 
 			var answer = prompt(msg +'\n' +'' +'\n' +'Digite seu nome para continuar');
 				if (answer == "" || answer === null) {
 					teste(msg);
 				}else{
-					window.location.href='./listaconferencia.php';
+					if(primeiro != 'sim'){
+						window.location.href='./listaconferencia.php';
+					}
 				}
 		}
 		

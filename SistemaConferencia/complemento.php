@@ -15,6 +15,4 @@ if(empty($row[0])) {
 }else{
     echo $row[0];
 }
-
-
 ?>
