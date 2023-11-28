@@ -941,14 +941,8 @@
     </script>
     <script>
         $('#btnAplicarOutroLocal').click(function () {
-            if($("#qtdneg").val() != ""){
-                if(confirm('Você está levando ' +$("#qtdneg").val() +' produtos.  \n' 
-                +'Deseja procurar ' +(document.getElementById("qtdneg").placeholder - $("#qtdneg").val()) +' em outro local?')){
-                    procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
-                }
-            }else{
-                procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
-            }
+            // registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
+            procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
         });
     </script>
     <script>
@@ -1029,7 +1023,7 @@
                             window.location.href= "verificarprodutos.php?nunota="+<?php echo $nunota2 ?>;
                         }else{
                             <?php if($tipoNota == 'S') { ?>
-                                if(retorno[4] == 0){
+                                if(retorno[4] == 0 || retorno[2] == 0){
                                     
                                 document.getElementById("outros").value = 'Produto transferido';
 
