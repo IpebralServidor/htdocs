@@ -29,6 +29,8 @@ include 'nav.php';
 			<?php 
 				$codusu = $_SESSION["idUsuario"];
 
+				$a = array(100, 2, 3274);
+
 				$tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA
 							FROM TSIUSU 
 							WHERE CODUSU = $codusu";
@@ -38,6 +40,9 @@ include 'nav.php';
 				
 				if($row_countAdmin[0] == 'A'){
 					echo "<a href='./SistemaConferencia/listaconferenciaadmin.php'><button class='botao1'>CONFERÊNCIA <br> ADMIN</button></a>";
+				}
+				if(in_array($codusu, $a, true)){
+					echo "<a href='./Manutencao'><button class='botao1'>MANUTENÇÃO</button></a>";
 				}
 			?>
 			

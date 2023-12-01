@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;600&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="img-voltar">
+                <a href="index.php">
+                    <img src="images/216446_arrow_left_icon.png" />
+                </a>
+            </div>
+            <div>
+                <!-- <span>Disparar mensagem de TICKETS</span> -->
+            </div>
+        </div>
+        <div class="content">
+            <div class="contetn-div">
+                <div class="card">  
+                    <div class="title">
+                        <span>Validar o SPS</span>
+                    </div> 
+                    <span>Conferir impressoras no SPS</span>
+                    <span class="bold400">Abrir o servidor 10.0.0.227 no Conexão Remota do windowns</span><br>
+                    <span class="bold400">Usuário: root</span>
+                    <span class="bold400">Senha: R0dr1gu3$</span><br>
+                    <span>1º - Abrir o Terminal Service (Emulador de Terminal).
+                        Abrir os diretórios e executar os comandos:
+                        cd ..
+                        cd etc
+                        cd sps_sankhya/
+                        cd bin (Se precisar conferir usar o comando: ls)
+                        ./sps-service stop (Comando que para o serviço)
+                        ./sps-service start (Comando que abre novamente o serviço) - Apertar o Enter novamente depois de rodar este comando
+                    </span>
+                </div>
+
+
+                <div class="card">  
+                    <div class="title">
+                        <span>Servidor de Aplicação 221</span>
+                    </div>  
+                    <span>Ativar serviços nos servidores Linux: (abrir o PUTTY)</span><br>
+                    <span class="bold400">IP: 10.0.0.221 port-22</span><br>
+                    <span class="bold400">Usuário: mgeweb</span>
+                    <span class="bold400">Senha: mgeweb</span><br>
+                    <span>Comandos para executar os serviços do Sankhya W:</span>
+                    <div class="order-table">
+                        <ol>
+                            <li class="bold400">killprod</li>
+                            <li class="bold400">jb_startprod (Inicia a Base de Produção)</li>
+                            <li class="bold400">jb_startteste (Inicia a Base de Teste)</li>
+                        </ol>
+                    </div>
+                    <span>Iniciação do SAN-NFE</span>
+                    <div class="order-table">
+                        <ol>
+                            <li class="bold400">cd /home/mgeweb/SanNFe</li>
+                            <li class="bold400">jb_startteste (Inicia a Base de Teste)</li>
+                        </ol>
+                    </div>
+                </div>
+
+
+                <div class="card"> 
+                    <div class="title">
+                        <span>Servidor de Banco de Dados</span>
+                    </div>   
+                    <span>Corrigir eventuais erros de travamento e lentidão em tempo real, sem necessidade de reiniciar os servidores.</span><br>
+                    <span class="bold400">Abrir o executar do Windows (Win + R) e abrir o <b>mstsc</b></span><br>
+                    <span class="bold400">IP: 10.0.0.228</span>
+                    <span class="bold400">Usuário: Administrador</span>
+                    <span class="bold400">Senha: 1p3br@l</span><br>
+                    <span>Abra o SQL Management Studio</span><br>
+                    <span>Usuário:sa</span>
+                    <span>Senha:1p3br@l</span>
+                    <div class="order-table">
+                        <ol>
+                            <li class="bold400">Monitor de atividades - Processos</li>
+                            <li class="bold400">Clique na aba Tempo de Espera e ordene pelo maior tempo</li>
+                            <li class="bold400"> Selecione Detalhes</li>
+                            <li class="bold400">Você pode Eliminar Processo</li>
+                            <li class="bold400">Status normal de funcionamento é quando o tempo de espera e zerado ou com
+                                um número inferior a 300.000 ms ( 5 Minutos )</li>
+                        </ol>
+                    </div>
+                </div>
+
+
+                <div class="card">   
+                    <div class="title">
+                        <span>PFsense</span>
+                    </div>  
+                    <span>Clique no link para abrir o PFsense</span>
+                    <span>
+                        <a href="http://10.0.0.1/" target="_blank">IP: 10.0.0.1/</a>
+                    </span><br>
+                    <span class="bold400">Usuário: admin</span>
+                    <span class="bold400">Senha: G3r#2oi5</span>
+                </div>
+
+
+                <div class="card">   
+                    <div class="title">
+                        <span>Painel Solar Instalação 2018</span>
+                    </div>  
+                    <span>Clique no link para abrir o Site do Painel Solar</span>
+                    <span>
+                        <a href="https://www.solax-portal.com/" target="_blank">Site do Painel Solar Instalação 2018</a>
+                    </span><br>
+                    <span class="bold400">Usuário: Ipebral</span>
+                    <span class="bold400">Senha: ipebral01</span>
+                </div>
+
+
+                <div class="card">   
+                    <div class="title">
+                        <span>Landix</span>
+                    </div> 
+                    <span>Clique no link para abrir o LANDIX</span>
+                    <span>
+                        <a href="https://login.microsoftonline.com/74461f92-cea4-4504-a440-6182b291dd83/oauth2/authorize?client%5Fid=00000003%2D0000%2D0ff1%2Dce00%2D000000000000&response%5Fmode=form%5Fpost&response%5Ftype=code%20id%5Ftoken&resource=00000003%2D0000%2D0ff1%2Dce00%2D000000000000&scope=openid&nonce=D0343E0BF6BEE39B6CEF95B1E874AC948B53EDAB345E18D5%2DB6BC2D46EF9D49C0E82D81FD6D4AEDE1C3400D0EEEC5C3FD4DE5F9E68533973A&redirect%5Furi=https%3A%2F%2Flandixsistemas%2Esharepoint%2Ecom%2F%5Fforms%2Fdefault%2Easpx&state=OD0w&claims=%7B%22id%5Ftoken%22%3A%7B%22xms%5Fcc%22%3A%7B%22values%22%3A%5B%22CP1%22%5D%7D%7D%7D&wsucxt=1&cobrandid=11bd8083%2D87e0%2D41b5%2Dbb78%2D0bc43c8a8e8a&client%2Drequest%2Did=22c372a0%2D20a9%2D2000%2Dd0ee%2Dbb3ba415bf9c&sso_reload=true" target="_blank">
+                            Landix
+                        </a>
+                    </span><br>
+                    <span class="bold400">Usuário: Insira o Usuario</span>
+                    <span class="bold400">Senha: Insira a Senha</span>
+                </div>
+
+
+                <div class="card">   
+                    <div class="title">
+                        <span>CUPS</span>
+                    </div> 
+                    <span>Conferir impressoras pelo CUPS</span>
+                    <span>
+                        <a href="http://10.0.0.227:631/" target="_blank">
+                            10.0.0.227: 631
+                        </a>
+                    </span><br>
+                    <span class="bold400">Usuário: root</span>
+                    <span class="bold400">Senha: R0dr1gu3$</span>
+                </div>
+
+
+                <div class="card">  
+                    <div class="title">
+                        <span>Servidor de Aplicação 227</span>
+                    </div>  
+                    <span>Ativar serviços nos servidores Linux: (abrir o PUTTY)</span>
+                    <span>IP: 10.0.0.227 port-22</span><br>
+                    <span class="bold400">Usuário: root</span>
+                    <span class="bold400">Senha: R0dr1gu3$</span><br>
+                    <span>Comandos para executar os serviços do Tomcat, que habilita serviço BARBECUE:</span>
+                    <div class="order-table">
+                        <ol>
+                            <li class="bold400">cd /opt/install/tomcat6/bin</li>
+                            <li class="bold400">sh catalina.sh start</li>
+                        </ol>
+                    </div>
+                    <span>Inicializando o serviço Servidor de impressão SPS do Sankhya</span>
+                    <div class="order-table">
+                        <ol>
+                            <li class="bold400">cd /etc/sps_sankhya</li>
+                            <li class="bold400">/sps-service start</li>
+                        </ol>
+                    </div>
+                </div>
+
+
+                <div class="card">  
+                    <div class="title">
+                        <span>PUTTY</span>
+                    </div>  
+                    <span>Conectando com o PUTTY para acessar servidores Linux para gerador de etiquetas e servidor de impressão</span><br>
+                    <span class="bold400">Abra o PUTTY em seu computador:</span><br>
+                    <span class="bold400">IP: 10.0.0.227</span>
+                    <span class="bold400">Usuário: root</span>
+                    <span>
+                        Link para download
+                        <a href="https://www.putty.org/" target="_blank">
+                            PUTTY
+                        </a>
+                    </span>
+                </div>
+
+
+                <div class="card">  
+                    <div class="title">
+                        <span>Servidor 223</span>
+                    </div>  
+                    <span class="bold400">Usuário: root</span>
+                    <span class="bold400">Senha: 1p3br@l</span>
+                </div>
+
+                <div class="card">  
+                    <div class="title">
+                        <span>Painel Solar Instação 2022</span>
+                    </div>  
+                    <span>
+                        <a href="https://www.soliscloud.com/#/homepage">
+                            Site do Painel Solar Instalação 2022
+                        </a>
+                    </span><br>
+                    <span class="bold400">Usuário: projetos@ipebral.com.br</span>
+                    <span class="bold400">Senha: 123456</span>
+                </div>
+
+                <div class="card">  
+                    <div class="title">
+                        <span>WMW</span>
+                    </div> 
+                    <span>Clique no link para abrir o WMW</span> 
+                    <span>
+                        <a href="http://10.0.0.239:7070/wmwvendas/login.faces">
+                            WMW
+                        </a>
+                    </span><br>
+                    <span class="bold400">Usuário: admadson</span>
+                    <span class="bold400">Senha: 1pbr@l</span><br>
+                    <span>*Se não abrir esta tela de login, o sistema está off</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
