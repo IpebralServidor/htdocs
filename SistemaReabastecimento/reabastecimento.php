@@ -7,6 +7,10 @@
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
 
+    $tsqlNotaVinculo = "SELECT DISTINCT AD_VINCULONF FROM TGFITE WHERE NUNOTA = $nunota2";
+    $stmtNotaVinculo = sqlsrv_query( $conn, $tsqlNotaVinculo);
+    $rowNotaVinculo = sqlsrv_fetch_array( $stmtNotaVinculo, SQLSRV_FETCH_NUMERIC);
+
     $tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota2)";
     $stmt = sqlsrv_query( $conn, $tsql);
     $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC);
@@ -41,18 +45,11 @@
     $tsql2 = "SELECT * FROM [sankhya].[AD_FNT_PRODUTO_SEPARADO_REABASTECIMENTO] ($nunota2) ORDER BY CODLOCALORIG DESC, SEQUENCIA DESC"; 
     $stmt2 = sqlsrv_query( $conn, $tsql2);  
 
-    if($rowStatus[0] == "A"){
-        $colorStatus = "green";
-        $valueStatus = "Em andamento";
-        $valueF = "Pausar";
-        $class ="pause";
-        
-    }else if($rowStatus[0] == "P"){
-        $colorStatus = "yellow";
-        $valueStatus = "Em pausa";
-        $valueF = "Despausar";
-        $class ="play";
-    }
+    $tsqlEhTransf = "   SELECT AD_PEDIDOECOMMERCE 
+                        FROM TGFCAB 
+                        WHERE NUNOTA = $nunota2";
+    $stmtEhTransf = sqlsrv_query( $conn, $tsqlEhTransf);
+    $rowEhTransf = sqlsrv_fetch_array( $stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
 ?>
 
@@ -179,6 +176,27 @@
         </div>
     </div>
 
+    <!-- Modal para entregar tudo -->
+    <div class="modal fade" id="entregaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja entregar todas as mercadorias?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnEntregarTudo">Sim</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="buscarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -257,6 +275,11 @@
                                 <th>Ref.</th>
                                 <th>Local</th>
                                 <th>Qtde</th>
+                                <?php if($rowEhTransf[0]  != 'TRANSFAPP') {?>
+                                    <th>
+                                        <button class="btnEntregaTudo" data-toggle="modal" data-target="#entregaModal">Entregar </button>
+                                    </th>
+                                <?php }?>
                                 <?php if($tipoNota == 'S'){ ?>
                                     <th></th>
                                 <?php } ?>
@@ -355,10 +378,18 @@
     </div>
 
     <div class="container">
-
+        <div class="notas-vinculadas">
+            <div>
+                <span>Nota atual: <?php echo $nunota2?></span> 
+            </div>
+            <div>
+                <span>Nota vinculada: <?php echo $rowNotaVinculo[0]?></span> 
+            </div>
+        </div>
         <div class="header-body">
 
             <div class="header-body-left">
+                
 
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
@@ -720,7 +751,9 @@
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").placeholder;
 
-            if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
+            if((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP'){
+                alert('Esta nota não é possível passar quantidade a mais!')
+            }else if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
                 $('#btnProximo').click();
             }else{
                 proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(),'')
@@ -938,6 +971,41 @@
                 }
             });
         }
+    </script>
+    <script>
+        function abastecerTudo(nunota)
+        {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'abastecertudo.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: {nunota: nunota},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    if(msg == 'Concluido'){
+                        location.reload();
+                    }else{
+                        alert(msg);
+                    }                 
+                }
+            });
+        }
+    </script>
+    <script>
+        $('#btnEntregarTudo').click(function () {
+            abastecerTudo('<?php echo $nunota2; ?>')
+        });
     </script>
     <script>
         $('#btnAplicarOutroLocal').click(function () {

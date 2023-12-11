@@ -1278,13 +1278,6 @@
 							}
 						}
 					}); 
-
-					// if(msg != ''){
-						
-					// 	//verifica se o retorno da função complemento é diferente de vazio, se for vazio não tem nenhum complemento
-					// 	teste(msg, primeiro)
-					// }
-					
                 }
 			});
 		}

@@ -24,6 +24,32 @@ require_once '../App/auth.php';
 	<title>Estoque CD3</title>
 </head>
 <body>
+	<div id="loader" style="display: none;">
+        <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
+    </div>
+
+	<!-- pop up LOGIN e CADASTRO -->
+	<div class="popup" id="popConfirmar">
+		<div class="overlay"></div>
+			<div class="content">
+				<div style="padding: 20px; width: 100%;">
+					<div class="close-btn" onclick="abrir()">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+							<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+						</svg>
+					</div>
+					
+					<div class="div-form">
+						<div id="form_confirmar" class="form">
+							<span>Esta é uma nota de separação, deseja criar uma nota de abastecimento para ela?</span><br>							
+							<button name="confirmar" id="btn-confirmar" onclick="Confirmar()">Confirmar</button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 	<div>
 		<div class="img-voltar">
 			<a href="../menu.php">
@@ -31,15 +57,103 @@ require_once '../App/auth.php';
 			</a>
 		</div>
 		<div class="screen">
-			<form action="action.php" method="post" class="margin-top35" style="width: 80%;">
+			<div class="margin-top35" style="width: 80%;">
 				<div class="form-group">
 					<label for="referencia" class="label-input">Número da nota:</label>
-                    <input type="number" class="form-control margin-top10" id="numeroNota" name="numeroNota" required>
+                    <input type="number" class="form-control margin-top10" id="numeroNota" name="numeroNota">
 				</div>
 
-				<button type="submit" name="aplicar" class="btn btn-primary btn-form margin-top35">Pesquisar</button>
-			</form>
+				<button onclick="abrir()" name="aplicar" class="btn btn-primary btn-form margin-top35">Pesquisar</button>
+			</div>
 		</div>
 	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script>
+		var input = document.getElementById('numeroNota')
+
+		function abrir() {
+			if(input.value != ""){
+
+				$.ajax
+				({
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'buscarcodtipoper.php',//Indica a página que está sendo solicitada.
+					async: false,
+					beforeSend: function () {
+						$("#loader").show();
+					},
+					complete: function(){
+						$("#loader").hide();
+					},
+					data: {numeroNota: input.value},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						if(msg.substring(0,2) == 13){
+							$.ajax
+							({
+								type: 'POST',//Método que está sendo utilizado.
+								dataType: 'html',//É o tipo de dado que a página vai retornar.
+								url: 'buscarvinculo.php',//Indica a página que está sendo solicitada.
+								async: false,
+								beforeSend: function () {
+									$("#loader").show();
+								},
+								complete: function(){
+									$("#loader").hide();
+								},
+								data: {numeroNota: input.value},//Dados para consulta
+								//função que será executada quando a solicitação for finalizada.
+								success: function (msg)
+								{
+									if(msg == 0){
+										document.getElementById('popConfirmar').classList.toggle("active");
+									}else {
+										Confirmar()
+									}
+								}
+							});
+						}else{
+							alert('Esta nota não é uma transferência')
+						}
+					}
+				});
+				
+				
+			}else{
+				alert('Preencha uma nota válida!')
+			}
+		}
+
+		function Confirmar()
+        {
+			// if(substr($rowEhTransf[0], 0, -2) == "13"){
+				$.ajax
+				({
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'action.php',//Indica a página que está sendo solicitada.
+					data: {numeroNota: input.value},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+
+						if(msg == "Abastecimento"){
+							window.location.href = 'menuseparacao.php?nunota=' +input.value
+						}else{
+							window.location.href = 'reabastecimento.php?nunota=' +input.value +'&fila=S'
+						}
+					}
+				});
+			// }else{
+				
+			// }
+            
+        }
+	</script>
 </body>
 </html>

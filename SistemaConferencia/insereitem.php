@@ -3,7 +3,7 @@
 include "../conexaophp.php";
 session_start();
 
-$codbarra = $_POST["codbarra"];
+$codbarra = trim($_POST["codbarra"], " ");
 $quantidade = str_replace(',', '.', $_POST["quantidade"]) ;
 $controle = $_POST["controle"];
 $nunota2 = $_POST["nunota"];
