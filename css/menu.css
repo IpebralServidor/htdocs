@@ -345,7 +345,8 @@ a{
 	.div-notes{
 		height: 240px;
 	}
-	.span-options{
-		font-size: 12px;
+	.span-options span{
+		font-size: 12.5px !important;
 	}
+
 }

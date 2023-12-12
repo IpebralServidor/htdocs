@@ -14,6 +14,9 @@ $request = $_POST["numeroNota"];
         $tsqlPrepara = "EXEC [sankhya].[AD_STP_PREPARAR_NOTA_TRANSFERENCIA] $request";
         $stmtPrepara = sqlsrv_query( $conn, $tsqlPrepara);
     }
+    
+    $tsqlCheckin = "EXEC [sankhya].[AD_STP_CHECKIN_PHP] $codusu, $request";
+    $stmtCheckin = sqlsrv_query( $conn, $tsqlCheckin);
 
     $tsqlTipoNota = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($request)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
