@@ -124,7 +124,7 @@
 					<hr class="hr">
 					<div class="div-profile">
 						<?php
-							$tsql2 = " SELECT FOTO FROM TSIUSU WHERE CODUSU = $usuconf";
+							$tsql2 = " SELECT ISNULL(FOTO, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) FROM TSIUSU WHERE CODUSU = $usuconf";
 							$stmt2 = sqlsrv_query( $conn, $tsql2);
 							$row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC);
 
