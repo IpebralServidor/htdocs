@@ -17,16 +17,34 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
-<body class="body">
-    <div class="page">
+<body>
+<div>
+		<div class="img-voltar">
+			<a href="../menu.php">
+				<img src="images/216446_arrow_left_icon.png" />
+			</a>
+		</div>
+		<div class="screen">
+			<form action="consulta.php" method="post" class="margin-top35" style="width: 80%;">
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="label-input">Usuário:</label>
+                    <input type="text" name="username" id="username" class="form-control margin-top10" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Senha:</label>
+                    <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1" placeholder="Senha">
+                </div>
+                
+                <button type="submit" id="enviar" class="btn btn-primary btn-form margin-top35">Entrar</button>
+			</form>
+		</div>
+	</div>
+    <!-- <div>
         <div class="header">
             <div class="img-voltar">
                 <a href="../menu.php">
                     <img src="images/216446_arrow_left_icon.png" />
                 </a>
-            </div>
-            <div>
-                <!-- <span>Disparar mensagem de TICKETS</span> -->
             </div>
         </div>
         <div class="page-form">
@@ -45,7 +63,7 @@
                 </form>
            </div>
         </div>
-    </div>
+    </div> -->
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
