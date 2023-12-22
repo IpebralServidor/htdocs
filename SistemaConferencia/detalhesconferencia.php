@@ -192,8 +192,9 @@
 					for (var i = 0; i < checkedCheckboxes.length; i++) {
 						 
 						var referencia = checkedCheckboxes[i].getAttribute('data-ref');
-						
-						deletaproduto(<?php echo $nunota2; ?>, referencia);
+						var controle = checkedCheckboxes[i].getAttribute('data-parent');
+
+						deletaproduto(<?php echo $nunota2; ?>, referencia, controle);
 					}
 
 					alert("Item(s) excluído(s) com sucesso!");
@@ -847,7 +848,7 @@
 
 						echo "<tr>"; ?>
 						<td align='center' width='1%'>
-							<input type='checkbox' class='checkbox' data-ref='<?php echo $row2[1]; ?>'/> 
+							<input type='checkbox' class='checkbox' data-ref='<?php echo $row2[1]; ?>' data-parent='<?php echo $row2[6]; ?>'/> 
 						</td>
 						
 						<?php	foreach ($row2 as $value) {
@@ -1439,7 +1440,7 @@
                 imagemproduto($("#codigodebarra").val())
             });
 
-         function deletaproduto(nunota, codprod)
+         function deletaproduto(nunota, codprod, controle)
             {
                 //O método $.ajax(); é o responsável pela requisição
                 $.ajax
@@ -1452,7 +1453,7 @@
                             beforeSend: function () {
                                 // $("#imagemproduto").html("Carregando...");
                             },
-                            data: {nunota: nunota, codprod: codprod},//Dados para consulta
+                            data: {nunota: nunota, codprod: codprod, controle: controle},//Dados para consulta
                             //função que será executada quando a solicitação for finalizada.
                             success: function (msg)
                             {
