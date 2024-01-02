@@ -640,13 +640,20 @@ border-top: solid 5px #e54e43;
 	text-align: end;
 	padding: 1rem;
 }
+.overflow{
+	display: flex;
+	/* align-items: center; */
+	justify-content: center;
+	/* overflow: auto; */
+}
 .table{
 	background-color: white !important;
 	margin: 0 !important;
 	padding-bottom: 0.5rem;
+	transform: scale(0.9);
 }
 .table table{
-	width: 100% !important;
+	/* width: 100% !important; */
 }
 .statusReabastecimento{
 	color: white;
@@ -809,10 +816,7 @@ border-top: solid 5px #e54e43;
 	width: 100%;
 	padding: 10px 0px 0px 15px;
 }
-.overflow{
-	margin-top: 15px;
-	overflow: auto;
-}
+
 .border-top-right-radius{
 	border-top-right-radius: 10px !important;
 }

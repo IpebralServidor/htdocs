@@ -10,7 +10,7 @@ include "../conexaophp.php";
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="stylesheet" type="text/css" href="css/consulta.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css?v=<?= time() ?>">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -102,6 +102,7 @@ include "../conexaophp.php";
 					<th class="border-top-left-radius">Emp.</th>
 					<th>Cód. Local</th>
 					<th>Estoque</th>
+					<th>Reservado</th>
 					<th class="border-top-right-radius">Pad./Máx.</th>
 				</tr>
 
@@ -114,7 +115,8 @@ include "../conexaophp.php";
 						<tr>
 							<td><?php echo $row2['CODEMP']; ?></td>
 							<td><?php echo $row2['CODLOCAL']; ?></td>
-							<td><?php echo $row2['ESTOQUE']; ?></td>
+							<td style="width: 20px;"><?php echo $row2['ESTOQUE']; ?></td>
+							<td style="width: 20px;"><?php echo $row2['RESERVADO']; ?></td>
 							<td><?php echo $row2['PADRAO_QTDMAX']; ?></td>
 						</tr>
 				<?php } ?>
