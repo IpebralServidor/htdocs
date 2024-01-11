@@ -5,6 +5,7 @@
 
     $nunota = $_POST["nunota"];
     $tipoProduto = $_POST["tipoProduto"];
+    $tipoNota = $_POST["tipoNota"];
 
     if($tipoProduto == 'S'){
         $tsqlProdutos = "   SELECT * 

@@ -18,9 +18,9 @@ $request = $_POST["numeroNota"];
     $tsqlCheckin = "EXEC [sankhya].[AD_STP_CHECKIN_PHP] $codusu, $request";
     $stmtCheckin = sqlsrv_query( $conn, $tsqlCheckin);
 
-    $tsqlTipoNota = "SELECT AD_GARANTIAVERIFICADA FROM TGFCAB WHERE NUNOTA = ($request)";
+    $tsqlTipoNota = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($request)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
-    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);  
+    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_ASSOC);  
     
-    echo $rowTipoNota[0];
+    echo $rowTipoNota['TIPO_NOTA'];
 ?>

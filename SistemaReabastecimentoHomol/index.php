@@ -137,18 +137,12 @@ require_once '../App/auth.php';
 					type: 'POST',//Método que está sendo utilizado.
 					dataType: 'html',//É o tipo de dado que a página vai retornar.
 					url: 'action.php',//Indica a página que está sendo solicitada.
-					beforeSend: function () {
-                    	$("#loader").show();
-					},
-					complete: function(){
-						$("#loader").hide();
-					},
 					data: {numeroNota: input.value},//Dados para consulta
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
 
-						if(msg == "A"){
+						if(msg == "Abastecimento"){
 							window.location.href = 'menuseparacao.php?nunota=' +input.value
 						}else{
 							window.location.href = 'reabastecimento.php?nunota=' +input.value +'&fila=S'
