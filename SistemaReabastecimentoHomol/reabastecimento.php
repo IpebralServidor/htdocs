@@ -11,13 +11,26 @@
     $stmtNotaVinculo = sqlsrv_query( $conn, $tsqlNotaVinculo);
     $rowNotaVinculo = sqlsrv_fetch_array( $stmtNotaVinculo, SQLSRV_FETCH_NUMERIC);
 
-    $tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota2)";
+    $tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO] ($nunota2)";
     $stmt = sqlsrv_query( $conn, $tsql);
-    $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC);
+    $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC);
 
-    if($row["SEQUENCIA"] == 0){
-        header("Location: verificarprodutos.php?nunota=".$nunota2);
+    $tsqlPdtAtual = "SELECT [sankhya].[AD_FN_PRODUTO_ATUAL_REABASTECIMENTO] ($nunota2, $codusu)";
+    $stmtPdtAtual = sqlsrv_query( $conn, $tsqlPdtAtual);
+    $rowPdtAtual = sqlsrv_fetch_array( $stmtPdtAtual, SQLSRV_FETCH_NUMERIC);
+
+    if($rowPdtAtual[0] == 0){
+        if($row[0] === 0){
+            header("Location: verificarprodutos.php?nunota=".$nunota2 );
+        }else if(empty($row[0])){ 
+            echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";        
+        }else{
+            $tsqlUpdate = "UPDATE TGFITE SET AD_CODUSUBIP = $codusu WHERE NUNOTA = ($nunota2) AND ABS(SEQUENCIA) = $row[0]";
+            $stmtUpdate = sqlsrv_query( $conn, $tsqlUpdate);
+        }
     }
+
+    
 
     $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
@@ -28,7 +41,7 @@
         $fila = $_REQUEST["fila"];
     }
 
-    $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
+    $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2, $codusu)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
 	$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
     $varStatus = $rowStatus[0];
@@ -484,7 +497,7 @@
         
     </div>
     <footer class="footer d-flex justify-content-center">
-        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal">
+        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal" id="btnObservacao">
             Observação
         </button>
         <?php if($tipoNota == 'S'){ ?>
@@ -499,7 +512,6 @@
             Proximo
         </button>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
@@ -509,11 +521,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
 
+        var produtoseq
+
         $(document).ready(function() {
             $("#navbar-toggler").click(function() {
                 $(this).toggleClass("rotated");
             });
         });
+
+        $('#outros').click(function () {
+            var radios = document.getElementsByName('fav_language');
+
+            radios.forEach(function(radio) {
+                radio.checked = false;
+            });
+        })
 
         function retornaMovimentacoes(){
             $.ajax
@@ -523,7 +545,7 @@
                 dataType: 'html',//É o tipo de dado que a página vai retornar.
                 url: 'movimentacoes.php',//Indica a página que está sendo solicitada.
                 //função que vai ser executada assim que a requisição for enviada
-                data: {nunota: '<?php echo $nunota2; ?>', sequencia: '<?php echo $row["SEQUENCIA"]; ?>'},//Dados para consulta
+                data: {nunota: '<?php echo $nunota2; ?>', sequencia: '<?php echo $row[0]; ?>'},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -574,48 +596,41 @@
             //registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
             proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(), ocorrencia)
         });
-    </script>
-    <script>
-        var timerInterval;
-        var startTime = 0;
-        var elapsedTime = 0;
-        var isRunning = false;
 
-        function updateTimer() {
-            timerInterval = setInterval(function() {
-                if (!isRunning) return;
+        document.getElementById("timer-color").style.backgroundColor = "green";
 
-                elapsedTime = Math.floor((Date.now() / 1000) - startTime);
-                var fixedTime = <?php echo isset($_SESSION['time']) ? $_SESSION['time'] : 0; ?>;
-                var totalElapsedTime = fixedTime + elapsedTime;
+        let tempInic = 0;        
+        
+        function calcularTempo() {
+            $.ajax 
+            ({
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'time.php',//Indica a página que está sendo solicitada.
+                data: {codusu: <?php echo $codusu ?>, nunota: <?php echo $nunota2 ?>},//Dados para consulta
+                success: function (msg)
+                {
+                    tempInic = msg 
 
-                var hours = Math.floor(totalElapsedTime / 3600);
-                var minutes = Math.floor((totalElapsedTime % 3600) / 60);
-                var seconds = totalElapsedTime % 60;
+                    let hh = Math.floor(tempInic / 3600);
+                    let mm = Math.floor((tempInic % 3600) / 60);
+                    let ss = tempInic % 60;
 
-                var formattedTime = 
-                    ("0" + hours).slice(-2) + ":" + 
-                    ("0" + minutes).slice(-2) + ":" + 
-                    ("0" + seconds).slice(-2);
+                    if(hh < 10){ hh = '0'+hh }
+                    if(mm < 10){ mm = '0'+mm }
+                    if(ss < 10){ ss = '0'+ss }
 
-                document.getElementById("timer").innerHTML = formattedTime;
-            }, 1000);
+                    let time = (`${hh}: ${mm}: ${ss}`);
+                    tempInic++; // Incrementar o tempo a cada execução
+
+                    document.getElementById("timer").innerHTML = time;
+                }
+            });
         }
 
-        document.getElementById("startButton").addEventListener("click", function() {
-            if (!isRunning) {
-                startTime = Math.floor(Date.now() / 1000) - elapsedTime;
-                updateTimer();
-                isRunning = true;
-                document.getElementById("timer-color").style.backgroundColor = "green";
-                // iniciarpausa('P', <?php echo $nunota2; ?>)
-                
-            }
-        });
+        setInterval(calcularTempo, 1000);
 
         document.getElementById("pauseButton").addEventListener("click", function() {
-            clearInterval(timerInterval);
-            isRunning = false;
             document.getElementById("resumeButton").style.display = "block";
             document.getElementById("pauseButton").style.display = "none";
             document.getElementById("timer-color").style.backgroundColor = "yellow";
@@ -623,26 +638,15 @@
         });
 
         document.getElementById("resumeButton").addEventListener("click", function() {
-            if (!isRunning) {
-                startTime = Math.floor(Date.now() / 1000) - elapsedTime;
-                updateTimer();
-                isRunning = true;
-                document.getElementById("resumeButton").style.display = "none";
-                document.getElementById("pauseButton").style.display = "block";
-                document.getElementById("timer-color").style.backgroundColor = "green";
-                iniciarpausa('P', <?php echo $nunota2; ?>)
-            }
+            document.getElementById("resumeButton").style.display = "none";
+            document.getElementById("pauseButton").style.display = "block";
+            document.getElementById("timer-color").style.backgroundColor = "green";
+            iniciarpausa('P', <?php echo $nunota2; ?>)
         });
 
-        
-        document.getElementById("startButton").click();
-    </script>
-    <script>
-        // Obtém referências para os elementos HTML
         var inputTexto = document.getElementById('qtdneg');
         var informacaoAtualizada = document.getElementById('informacaoAtualizada');
         var qtdLocal = document.getElementById('qtdlocalInput');
-        
 
         // Adiciona um ouvinte de evento 'input' ao campo de entrada
         inputTexto.addEventListener('input', function() {
@@ -658,8 +662,7 @@
             // Atualiza a informação em tempo real
             informacaoAtualizada.textContent = ' ' +num.toFixed(2)
         });
-    </script>
-    <script>
+
         document.addEventListener('DOMContentLoaded', function() {
             var botoesAbrirPopUp = document.querySelectorAll(".botao-abastecer");
             var meuPopUp = document.getElementById("buscarUsuario");
@@ -709,14 +712,10 @@
             });
         });
 
-        
-    </script>
-    <script>
         function abrirObs(){
             document.getElementById('popupObservacao').style.display = 'block';
         }
-    </script>
-    <script>
+
         function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco, ocorrencia)
         {
             // O método $.ajax(); é o responsável pela requisição
@@ -750,59 +749,19 @@
 
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").placeholder;
+            var endereco = document.getElementById("endereco").value;
+            var referencia = document.getElementById("referencia").value;
 
             if((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP'){
                 alert('Esta nota não é possível passar quantidade a mais!')
-            }else if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
+            }else if((qtdDigitada != qtdRetornada) && (endereco) && (referencia) && '<?php echo $tipoNota ?>' == 'S'){
                 $('#btnProximo').click();
             }else{
                 proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(),'')
             }
            
         });
-    </script>
-    <script>
-        function produtos(nota)
-		{
-            var teste = document.getElementById('chkInp');
 
-            if('<?php echo $tipoNota; ?>' == 'A'){
-                
-                if(teste.checked == true){
-                    document.getElementById('titleBoxH6').textContent = 'Produtos não guardados'
-                    teste = 'S'
-                }else{
-                    document.getElementById('titleBoxH6').textContent = 'Produtos guardados'
-                    teste = 'N'
-                }
-            }else{
-                teste = 'N'
-            }
-
-            //teste.checked
-            //O método $.ajax(); é o responsável pela requisição
-			$.ajax
-				({
-					//Configurações
-					type: 'POST',//Método que está sendo utilizado.
-					dataType: 'html',//É o tipo de dado que a página vai retornar.
-					url: 'produtos.php',//Indica a página que está sendo solicitada.
-					//função que vai ser executada assim que a requisição for enviada
-					beforeSend: function () {
-						$("#iniciarpausa").html("Carregando...");
-					},
-					data: {nunota: nota, tipoProduto: teste, tipoNota: '<?php echo $tipoNota; ?>'},//Dados para consulta
-					//função que será executada quando a solicitação for finalizada.
-					success: function (msg)
-					{
-						var produtos = msg.split('|');
-
-                        document.getElementById('prodId').innerHTML = produtos[0];
-					}
-				});
-		}
-    </script>
-    <script>
         function registrarOcorrencia(nunota, sequencia, qtdneg)
 		{
             
@@ -850,8 +809,7 @@
             }
 			
 		});
-    </script>
-    <script>
+
         function iniciarpausa(status, nota)
 		{
 			//O método $.ajax(); é o responsável pela requisição
@@ -878,8 +836,7 @@
 			var status = "<?php echo $varStatus; ?>"
 			iniciarpausa(status, nunota)
 		});
-    </script>
-    <script>
+
         function buscarUsuario(codusu)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -911,8 +868,7 @@
         $('#buscar-usuario').click(function () {
             buscarUsuario($("#codusuinput").val())
         });
-    </script>
-    <script>
+
         function alterarQuantidade(nunota, sequencia, quantidade)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -941,8 +897,7 @@
                 }
             });
         }
-    </script>
-    <script>
+
         function abastecerGondola(nunota, sequencia, codusu)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -971,8 +926,7 @@
                 }
             });
         }
-    </script>
-    <script>
+
         function abastecerTudo(nunota)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -1001,19 +955,16 @@
                 }
             });
         }
-    </script>
-    <script>
+
         $('#btnEntregarTudo').click(function () {
             abastecerTudo('<?php echo $nunota2; ?>')
         });
-    </script>
-    <script>
+
         $('#btnAplicarOutroLocal').click(function () {
             // registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
             procurarOutroLocal($("#qtdneg").val(), <?php echo $nunota2; ?>, $("#sequencia").val(), $("#codprod").val(), '<?php echo $codusu; ?>')
         });
-    </script>
-    <script>
+
         function  deletarProduto(nunota, sequencia)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -1042,9 +993,6 @@
                 }
             });
         }
-    </script>
-
-    <script type="text/javascript">
 
         <?php if($tipoNota == "A" && $fila == 'N') { ?>
 
@@ -1057,6 +1005,35 @@
         
         <?php } ?>
 
+        function  retornaObservacao(nunota, sequencia)
+        {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'retornaobservacao.php',//Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: {nunota: nunota, sequencia: sequencia},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    document.getElementById("observacao").innerText = msg;
+                }
+            });
+        }
+
+        $('#btnObservacao').click(function () {
+            retornaObservacao(<?php echo $nunota2 ?>, document.getElementById("sequencia").value)
+        });
+
         function retornainfoprodutos(nunota, referencia)
         {
             $.ajax
@@ -1065,6 +1042,7 @@
                 type: 'POST',//Método que está sendo utilizado.
                 dataType: 'html',//É o tipo de dado que a página vai retornar.
                 url: 'retornainfoproduto.php',//Indica a página que está sendo solicitada.
+                async: false,
                 //função que vai ser executada assim que a requisição for enviada
                 beforeSend: function () {
                     $("#loader").show();
@@ -1072,7 +1050,7 @@
                 complete: function(){
                     $("#loader").hide();
                 },
-                data: { referencia: referencia, nunota: nunota},//Dados para consulta
+                data: { referencia: referencia, nunota: nunota, codusu: <?php echo $codusu ?>},//Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function (msg)
                 {
@@ -1105,7 +1083,7 @@
                             document.getElementById("endereco").placeholder = retorno[1];
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
                             document.getElementById("referencia").placeholder = retorno[0];
-                            document.getElementById("observacao").placeholder = retorno[9];
+                            
                             document.getElementById("agrupmin").textContent = retorno[3];
                             document.getElementById("qtdlocal").textContent = retorno[4];
                             document.getElementById("fornecedores").textContent = retorno[11];
@@ -1116,6 +1094,8 @@
                             document.getElementById("codprod").value = retorno[10];
                             document.getElementById("qtdlocalInput").value = retorno[4];
                             document.getElementById("sequencia").value = retorno[8];
+
+                            produtoseq = retorno[8]
                             
                             imagemproduto(retorno[0]);
                         }
@@ -1123,8 +1103,49 @@
                 }
             });
         }
-    </script>
-    <script>
+
+        function produtos(nota)
+		{
+            var teste = document.getElementById('chkInp');
+
+            if('<?php echo $tipoNota; ?>' == 'A'){
+                
+                if(teste.checked == true){
+                    document.getElementById('titleBoxH6').textContent = 'Produtos não guardados'
+                    teste = 'S'
+                }else{
+                    document.getElementById('titleBoxH6').textContent = 'Produtos guardados'
+                    teste = 'N'
+                }
+            }else{
+                teste = 'N'
+            }
+            
+                       
+            //teste.checked
+            //O método $.ajax(); é o responsável pela requisição
+			$.ajax
+				({
+                    
+					//Configurações
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'produtos.php',//Indica a página que está sendo solicitada.
+					//função que vai ser executada assim que a requisição for enviada
+					beforeSend: function () {
+						$("#iniciarpausa").html("Carregando...");
+					},
+					data: {nunota: nota, tipoProduto: teste},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						var produtos = msg.split('|');
+
+                        document.getElementById('prodId').innerHTML = produtos[0]
+					}
+				});
+		}
+
         function  alterarQtdMaxLocPad(qtd, locpad, codemp, codprod)
         {
             //O método $.ajax(); é o responsável pela requisição
@@ -1153,8 +1174,7 @@
         $('#btnAlterarQtdMaxLocPad').click(function () {
             alterarQtdMaxLocPad($("#qtdMaxLocPad").val(), $("#enderecoMaxLoc").val(),$("#codemp").val(), $("#codprod").val())
         });
-    </script>
-    <script>
+
         function imagemproduto(referencia)
         {
             //O método $.ajax(); é o responsável pela requisição
