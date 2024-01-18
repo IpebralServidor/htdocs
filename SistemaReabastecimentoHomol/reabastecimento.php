@@ -200,7 +200,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Tem certeza que deseja entregar todas as mercadorias?</p>
+                <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA') {?>
+                    <p>Tem certeza que deseja guardar todas as mercadorias?</p>
+                <?php } else {?>
+                    <p>Tem certeza que deseja separar todas as mercadorias?</p>
+                <?php } ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnEntregarTudo">Sim</button>
@@ -288,9 +292,12 @@
                                 <th>Ref.</th>
                                 <th>Local</th>
                                 <th>Qtde</th>
-                                <?php if($rowEhTransf[0]  != 'TRANSFAPP') {?>
+                                
+                                <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA' || $rowEhTransf[0]  == 'TRANSFPRODSAIDA')  {?>
                                     <th>
-                                        <button class="btnEntregaTudo" data-toggle="modal" data-target="#entregaModal">Entregar </button>
+                                        <button class="btnEntregaTudo btnPendencia" data-toggle="modal" data-target="#entregaModal">
+                                            <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA') { echo "Guardar tudo"; } else { echo "Separar tudo"; } ?> 
+                                        </button>
                                     </th>
                                 <?php }?>
                                 <?php if($tipoNota == 'S'){ ?>
@@ -497,7 +504,7 @@
         
     </div>
     <footer class="footer d-flex justify-content-center">
-        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal" id="btnObservacao">
+        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal">
             Observação
         </button>
         <?php if($tipoNota == 'S'){ ?>
@@ -528,14 +535,6 @@
                 $(this).toggleClass("rotated");
             });
         });
-
-        $('#outros').click(function () {
-            var radios = document.getElementsByName('fav_language');
-
-            radios.forEach(function(radio) {
-                radio.checked = false;
-            });
-        })
 
         function retornaMovimentacoes(){
             $.ajax
@@ -749,18 +748,18 @@
 
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").placeholder;
-            var endereco = document.getElementById("endereco").value;
-            var referencia = document.getElementById("referencia").value;
 
             if((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP'){
                 alert('Esta nota não é possível passar quantidade a mais!')
-            }else if((qtdDigitada != qtdRetornada) && (endereco) && (referencia) && '<?php echo $tipoNota ?>' == 'S'){
+            }else if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
                 $('#btnProximo').click();
             }else{
                 proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(),'')
             }
            
         });
+
+        
 
         function registrarOcorrencia(nunota, sequencia, qtdneg)
 		{
@@ -1005,35 +1004,6 @@
         
         <?php } ?>
 
-        function  retornaObservacao(nunota, sequencia)
-        {
-            //O método $.ajax(); é o responsável pela requisição
-            $.ajax
-            ({
-                //Configurações
-                type: 'POST',//Método que está sendo utilizado.
-                dataType: 'html',//É o tipo de dado que a página vai retornar.
-                url: 'retornaobservacao.php',//Indica a página que está sendo solicitada.
-                //função que vai ser executada assim que a requisição for enviada
-                beforeSend: function () {
-                    $("#loader").show();
-                },
-                complete: function(){
-                    $("#loader").hide();
-                },
-                data: {nunota: nunota, sequencia: sequencia},//Dados para consulta
-                //função que será executada quando a solicitação for finalizada.
-                success: function (msg)
-                {
-                    document.getElementById("observacao").innerText = msg;
-                }
-            });
-        }
-
-        $('#btnObservacao').click(function () {
-            retornaObservacao(<?php echo $nunota2 ?>, document.getElementById("sequencia").value)
-        });
-
         function retornainfoprodutos(nunota, referencia)
         {
             $.ajax
@@ -1083,7 +1053,7 @@
                             document.getElementById("endereco").placeholder = retorno[1];
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
                             document.getElementById("referencia").placeholder = retorno[0];
-                            
+                            document.getElementById("observacao").placeholder = retorno[9];
                             document.getElementById("agrupmin").textContent = retorno[3];
                             document.getElementById("qtdlocal").textContent = retorno[4];
                             document.getElementById("fornecedores").textContent = retorno[11];
