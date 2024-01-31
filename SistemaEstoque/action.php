@@ -24,7 +24,4 @@ if ($stmt){
 
 	echo $nunota;
 }
-
-
-
 ?>

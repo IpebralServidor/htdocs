@@ -6,6 +6,12 @@ $usuconf = $_SESSION["idUsuario"];
 
 $nunotadest = $_GET["nunota"];
 
+$tsql = "SELECT AD_PEDIDOECOMMERCE FROM TGFCAB WHERE NUNOTA = $nunotadest";
+$stmt = sqlsrv_query($conn, $tsql); 
+$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+
+$tipoNota = $row[0];
+
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +95,7 @@ $nunotadest = $_GET["nunota"];
 	<title>Estoque CD3</title>
 
 </head>
-<body>
+<body onload="endereco()">
 
 
 	<!-- Ícone para carregamento de certos botões -->
@@ -135,6 +141,9 @@ $nunotadest = $_GET["nunota"];
 				  $notaorig = $row2['NUNOTAORIGEM'];
 				  $topdest = $row2['CODTIPOPERDESTINO'];
 				  $notadest = $row2['NUNOTADESTINO'];
+				  if($topdest == 1351){
+					$notavinculo =$row2["NUNOTAVINCULO"];
+				  }
 				}
 
 		?>
@@ -143,6 +152,9 @@ $nunotadest = $_GET["nunota"];
                 <td><b>Parc: </b> <br><?php echo $codparcorig; ?></td>
                 <td><b>Nome Parc: </b> <br> <?php echo $nomeparcorig; ?></td>
                 <td><b>TOP Origem: </b> <br> <?php echo $toporig; ?></td>
+				<?php if($topdest == 1351){ ?>
+					<td><b>Núm. Ún. Transf.: </b> <br> <?php echo $notavinculo; ?></td>
+				<?php } ?>
             </tr>
             <tr> 
                 <td><b>Núm. Ún. Orig.: </b> <br> <?php echo $notaorig; ?></td>
@@ -436,6 +448,17 @@ $nunotadest = $_GET["nunota"];
         //     imagemproduto($("#produto").val())
         // });
 
+		function endereco(){
+
+			const endereco = document.getElementById("endereco")
+			const tipoNota = "<?php echo $tipoNota ?>"
+
+			if(tipoNota == "TRANSF_CD5"){
+				endereco.disabled = true
+				endereco.val = "5069900"
+				endereco.placeholder = "5069900"
+			}
+		}
 
 	    function retornainfoprodutos(produto, codparc)
 		{
@@ -506,7 +529,8 @@ $nunotadest = $_GET["nunota"];
 			});
         }
 		$('#confirmar').click(function () {
-			insereitens($("#produto").val(), $("#quantidade").val(), $("#endereco").val(), <?php echo $nunotadest; ?>, $("#checkVariosProdutos").val())
+			var endereco = document.getElementById("endereco")
+			insereitens($("#produto").val(), $("#quantidade").val(), endereco.val, <?php echo $nunotadest; ?>, $("#checkVariosProdutos").val())
 		});
 
 

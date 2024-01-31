@@ -536,6 +536,14 @@
             });
         });
 
+        $('#outros').click(function () {
+            var radios = document.getElementsByName('fav_language');
+
+            radios.forEach(function(radio) {
+                radio.checked = false;
+            });
+        })
+
         function retornaMovimentacoes(){
             $.ajax
             ({

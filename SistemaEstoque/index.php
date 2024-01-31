@@ -10,20 +10,10 @@ require_once '../App/auth.php';
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="css/main.css?v=2">
-
+	<link rel="stylesheet" type="text/css" href="css/main.css?v=<?php time()?>">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
-
 	<title>Estoque CD3</title>
 
 
@@ -51,67 +41,36 @@ require_once '../App/auth.php';
 		<img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
 	</div>
 
-
-		<!-- POP UP para Escolher Notas de Transferência que já tiverem sido criadas-->
 		<div id="popupEscolherNota" class="popupEscolherNota">
 			<button class="fechar" id="fechar" onclick="fecharEscolherNota();">X</button>
-			
-			<div style="width: 95%; height:95%;" id="escolherNota">
+			<div style="width: 95%; height:95%;" id="escolherNota"></div>
+		</div>
 
-
-			</div>
-		</div> <!-- Fim POPUP para Escolher Nota-->
-
-
-		<!-- POP UP para gerar nova nota de Transferência-->
 		<div id="popupCriaNotaTransf" class="popupCriaNotaTransf">
 			<button class="fechar" id="fechar" onclick="fecharCriarNotaTransf();">X</button>
-			
-			<div style="width: 95%; height:95%;" id="criarNota">
+			<div style="width: 95%; height:95%;" id="criarNota"></div>
+		</div> 
 
-
+		<div>
+			<div class="img-voltar">
+				<a href="../menu.php">
+					<img src="images/216446_arrow_left_icon.png" />
+				</a>
 			</div>
-		</div> <!-- Fim POPUP que gera nova transferência-->
 
-
-	<!-- <button class="abrirObservacao" onclick="abrirObservacao();">Abrir Obs.</button> -->
-
-		<div class="container">
-			<div class="conteudo">
-
-					<!-- <div style="display: flex; flex-direction: column;"> -->
-						
-						<!-- Botão de Voltar para o Menu -->
-					    <div class="img-voltar btn-reabastecimento">
-					        <a href="../menu.php" class="btn btn-back">
-					            <aabr title="Voltar para Menu">
-					                <img src="images/216446_arrow_left_icon.png" />
-					            </aabr>
-					        </a>
-				        </div>
-				        <!-- Fim do botão de Voltar para o Menu -->
-
+			<div class="screen">
+				<div class="margin-top35" style="width: 80%;">
+					<div class="form-group">
 						<label for="nunota">Número Único: (Origem)</label>
-						<input type="text" name="NUNOTA" id="nunota" class="form-control">
-					
-		<!-- 				<br>
-						<label for="codtipoper">Loc. Origem: <span id="localorigem"></span> 
-						</label>  -->
+						<input type="number" name="NUNOTA" id="nunota" class="form-control margin-top10">
+						<!-- <input type="text" name="CODTIPOPER" id="codtipoper" class="form-control margin-top10" style="display: none;">		  -->
+					</div>
 
-
-						<br>
-					    <!-- <label for="codtipoper">TOP:</label> Lembrar de comentar tambem a parte do input que esta abaixo-->
-						<input type="text" name="CODTIPOPER" id="codtipoper" class="form-control" style="display: none;">		 
-					
-						<br>
-						<button id="abrirNotabtn" class="btn btn-primary btn-form" value="Abrir">Abrir</button>
-						<br>
-						<button class="btn btn-primary btn-form" id="gerarNovaTransf" value="gerarNovaTransf	">Gerar Nova Transf.</button>
-
-				    <!-- </div> -->
-
-			</div> <!-- Conteudo -->
-		</div> <!-- Container -->
+					<button id="abrirNotabtn" class="btn btn-primary btn-form margin-top35" value="Abrir">Abrir</button>
+					<button class="btn btn-primary btn-form margin-top35" id="gerarNovaTransf" value="gerarNovaTransf	">Gerar Nova Transf.</button>
+				</div>
+			</div>
+		</div> 
 
 
 	<script>
@@ -229,7 +188,6 @@ require_once '../App/auth.php';
 
 	</script>
 	<!-- Fim da função para abrir a nota -->
-
 
 	<!-- Cria a nota de transferência, baseado no botão do CD que foi criado -->
 	<script type="text/javascript">
