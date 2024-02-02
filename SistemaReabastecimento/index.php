@@ -147,9 +147,16 @@ require_once '../App/auth.php';
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
+						let res = msg.split('/')
 
-						if(msg == "A"){
-							window.location.href = 'menuseparacao.php?nunota=' +input.value
+						if(res[0] == "A"){
+							if(res[1] == "TRANSF_NOTA"){
+								window.location.href = 'reabastecimentotransfA.php?nunota=' +input.value +'&fila=N'
+							}else{
+								window.location.href = 'menuseparacao.php?nunota=' +input.value
+							}
+						}else if(res[1] == "TRANSF_CD5"){
+							window.location.href = 'reabastecimento.php?nunota=' +input.value +'&fila=N'
 						}else{
 							window.location.href = 'reabastecimento.php?nunota=' +input.value +'&fila=S'
 						}

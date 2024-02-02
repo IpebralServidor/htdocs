@@ -4,8 +4,12 @@
 
     $corTipoNota = '';
 
+    
+
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
+
+    
 
     $tsqlNotaVinculo = "SELECT DISTINCT AD_VINCULONF FROM TGFITE WHERE NUNOTA = $nunota2";
     $stmtNotaVinculo = sqlsrv_query( $conn, $tsqlNotaVinculo);
@@ -39,6 +43,7 @@
 
     if(isset($_REQUEST["fila"])){
         $fila = $_REQUEST["fila"];
+        $_SESSION["fila"] = $fila;
     }
 
     $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2, $codusu)";
@@ -63,7 +68,6 @@
                         WHERE NUNOTA = $nunota2";
     $stmtEhTransf = sqlsrv_query( $conn, $tsqlEhTransf);
     $rowEhTransf = sqlsrv_fetch_array( $stmtEhTransf, SQLSRV_FETCH_NUMERIC);
-
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +86,7 @@
 
 </head>
 <body class="body" 
-    <?php if($tipoNota == "S" || $fila == "S"){ ?> 
+    <?php if($fila == "S"){ ?> 
         <?php if($rowStatus[0] == "P"){ ?>
             onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), 
             iniciarpausa('P', <?php echo $nunota2; ?>),
@@ -200,7 +204,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Tem certeza que deseja entregar todas as mercadorias?</p>
+                <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA') {?>
+                    <p>Tem certeza que deseja guardar todas as mercadorias?</p>
+                <?php } else {?>
+                    <p>Tem certeza que deseja separar todas as mercadorias?</p>
+                <?php } ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btnEntregarTudo">Sim</button>
@@ -259,8 +267,7 @@
     <div class="bg">
         <div class="collapse" id="navbarToggleExternalContent">
  
-
-            <?php if($tipoNota == 'A'){?>
+            <?php if($tipoNota == 'A'){ ?>
                 <div class="background">
                     <div class="switchBox">
                         <div class="tabSwitch">
@@ -288,9 +295,12 @@
                                 <th>Ref.</th>
                                 <th>Local</th>
                                 <th>Qtde</th>
-                                <?php if($rowEhTransf[0]  != 'TRANSFAPP') {?>
+                                
+                                <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA' || $rowEhTransf[0]  == 'TRANSFPRODSAIDA')  {?>
                                     <th>
-                                        <button class="btnEntregaTudo" data-toggle="modal" data-target="#entregaModal">Entregar </button>
+                                        <button class="btnEntregaTudo btnPendencia" data-toggle="modal" data-target="#entregaModal">
+                                            <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA') { echo "Guardar tudo"; } else { echo "Separar tudo"; } ?> 
+                                        </button>
                                     </th>
                                 <?php }?>
                                 <?php if($tipoNota == 'S'){ ?>
@@ -986,7 +996,7 @@
             });
         }
 
-        <?php if($tipoNota == "A" && $fila == 'N') { ?>
+        <?php if($fila == 'N') { ?>
 
             document.getElementById("qtdneg").addEventListener("focus", function() {
             

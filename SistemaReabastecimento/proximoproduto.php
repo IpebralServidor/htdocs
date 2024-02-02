@@ -10,8 +10,13 @@
     $referencia = $_POST["referencia"];
     $endereco = $_POST["endereco"];
     $ocorrencia = $_POST["ocorrencia"];
+    $fila = $_SESSION["fila"];
 
-    $tsqlReabastecimento = "EXEC [sankhya].[AD_STP_PROCESSO_REABASTECIMENTO] $nunota2, $qtdneg, $codusu, $sequencia, '$referencia', '$endereco', '$ocorrencia'";
+    if(empty($qtdneg)){
+        $qtdneg = 0;
+    }
+
+    $tsqlReabastecimento = "EXEC [sankhya].[AD_STP_PROCESSO_REABASTECIMENTO] $nunota2, $qtdneg, $codusu, $sequencia, '$referencia', '$endereco', '$ocorrencia', '$fila'";
     $stmtReabastecimento = sqlsrv_query( $conn, $tsqlReabastecimento);
     $rowReabastecimento = sqlsrv_fetch_array($stmtReabastecimento, SQLSRV_FETCH_NUMERIC);
 
