@@ -1,0 +1,61 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*----------------------RESET--------------------*/
+
+
+/*----------------------RESET--------------------*/
+
+
+.menu{
+    list-style:none;
+    margin: 0 auto; 
+    margin-top: 79px;
+  
+-webkit-border-radius-top: 4px;
+-moz-border-radius-top: 4px;
+border-radius-top: 4px 4px 0 0;
+   border-right: 1px solid;
+-webkit-border-radius-right: 4px;
+-moz-border-radius-right: 4px;
+border-radius: 4px 4px 0 0;
+   border-left: 1px solid;
+-webkit-border-radius-top: 4px;
+-moz-border-radius-top: 4px;
+border-radius-top: 4px;
+
+width: 35%;
+padding-left: 25px;
+padding-right: 25px;
+margin-left: 35%;
+float: left;
+background-color: #363636;
+color: #696969;
+font-size: 14px;
+
+}
+
+.menu li{position:relative; float:left;
+
+
+}
+
+.menu li a{ color:#FFF; text-decoration:none; padding:4px 8px; display:block;}
+
+.menu li a:hover{background:#CD3333; color:#FFF; -moz-box-shadow:0 3px 8px 0 #CCC; -webkit-box-shadow:0 3px 10px 0 #ccc; text-shadow:0px 0px 5px #fff; }
+
+.menu li ul{position:absolute; top:23px; left:-30px; background-color:#CD3333; color: #FFF; display:none; text-align: center;}
+
+.menu li:hover ul ul{display:none;}
+
+.menu li ul li a {color:#FFF;}
+.menu li:hover ul, .menu li ul li:hover ul, .menu li.over ul, .menu li ul li.over ul{display:block;}
+
+.menu li ul li{display:block; width:135px;}
+
+li.border0{border:0;}
+
+.menu li ul li ul{z-index:900; top:0; left:70px; background:#eaeaea;}
+
+
+

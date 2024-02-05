@@ -11,20 +11,23 @@
 	$rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
 	$a = array(2, 3274, 3266, 42, 7257, 106);
+	$b = array(3274, 3149, 141);
 
 	$tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 	$stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
 	$row_countAdmin = sqlsrv_fetch_array($stmtAdmin, SQLSRV_FETCH_NUMERIC);
 
 	$tsqlNotas = "	SELECT TOP 10 
-						NUNOTA, 
+						TGFCAB.NUNOTA, 
 						TGFCAB.CODPARC, 
 						DTMOV, 
 						TGFPAR.NOMEPARC, 
 						VLRNOTA 
 					FROM TGFCAB INNER JOIN 
+						AD_TGFAPONTAMENTOATIVIDADE ATV ON ATV.NUNOTA = TGFCAB.NUNOTA INNER JOIN
 						TGFPAR ON TGFPAR.CODPARC = TGFCAB.CODPARC
-					WHERE TGFCAB.CODUSU = $usuconf
+					WHERE ATV.CODUSU = $usuconf
+					GROUP BY TGFCAB.NUNOTA, TGFCAB.CODPARC, DTMOV, TGFPAR.NOMEPARC, VLRNOTA 
 					ORDER BY DTMOV DESC ";
 	$stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
@@ -197,6 +200,17 @@
 							<span>Transferências</span>
 						</div>
 					</a>
+
+					<!-- <?php if (in_array($usuconf, $b, true)) { ?>
+						<a href="./SistemaReabastecimentoHomol" class="card">
+							<div class="padding">
+								<div class="icon-card">
+									<i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
+								</div>
+								<span>Transferências Homol</span>
+							</div>
+						</a>
+					<?php } ?> -->
 				</div>
 			</div>
 

@@ -1,6 +1,0 @@
-Rewrite engine On
-RewriteBase /reactapp/
-RewriteRule ^index\.html$ - [L]
-RewriteCond %{REQUEST-FILENAME} !-f
-RewriteCond %{REQUEST-FILENAME} !-d
-RewriteRule . /reactapp/index.html [L]

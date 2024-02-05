@@ -141,9 +141,6 @@ $tipoNota = $row[0];
 				  $notaorig = $row2['NUNOTAORIGEM'];
 				  $topdest = $row2['CODTIPOPERDESTINO'];
 				  $notadest = $row2['NUNOTADESTINO'];
-				  if($topdest == 1351){
-					$notavinculo =$row2["NUNOTAVINCULO"];
-				  }
 				}
 
 		?>
@@ -152,9 +149,6 @@ $tipoNota = $row[0];
                 <td><b>Parc: </b> <br><?php echo $codparcorig; ?></td>
                 <td><b>Nome Parc: </b> <br> <?php echo $nomeparcorig; ?></td>
                 <td><b>TOP Origem: </b> <br> <?php echo $toporig; ?></td>
-				<?php if($topdest == 1351){ ?>
-					<td><b>Núm. Ún. Transf.: </b> <br> <?php echo $notavinculo; ?></td>
-				<?php } ?>
             </tr>
             <tr> 
                 <td><b>Núm. Ún. Orig.: </b> <br> <?php echo $notaorig; ?></td>
@@ -226,7 +220,6 @@ $tipoNota = $row[0];
 					<br>
 					<label>Endereço:</label>
 					<input class="cxtexto" type="text" id="enderecotemp" class="text" value="">
-
 
 					<br><br>
 					<input id="InserirTempITE" class="btn btn-primary btn-form" name="InserirTemp" type="submit" value="Inserir">					 
@@ -529,8 +522,13 @@ $tipoNota = $row[0];
 			});
         }
 		$('#confirmar').click(function () {
-			var endereco = document.getElementById("endereco")
-			insereitens($("#produto").val(), $("#quantidade").val(), endereco.val, <?php echo $nunotadest; ?>, $("#checkVariosProdutos").val())
+			var endereco = document.getElementById("endereco").value
+
+			if("<?php echo $tipoNota ?>" == "TRANSF_CD5"){
+				endereco = document.getElementById("endereco").val
+			}
+
+			insereitens($("#produto").val(), $("#quantidade").val(), endereco, <?php echo $nunotadest; ?>, $("#checkVariosProdutos").val())
 		});
 
 

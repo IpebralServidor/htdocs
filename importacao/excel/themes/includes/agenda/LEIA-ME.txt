@@ -1,0 +1,83 @@
+-----------------------------------
+ARQUIVOS DA AGENDA
+-----------------------------------
+
+1 - TabelaDB.SQL
+	arquivo que contém a tabela do banco de dados chamada 'agenda'
+	Abra o seu Phpmyadmin escolha o banco e clique no link SQL.
+	Copie o conteúdo do deste arquivo e cole-o no campo desta instrução e clique em Executar.
+	Agora seu banco de dados deve conter uma tabela chamada 'agenda'.
+
+2 - sql.php
+	Arquivo que contém a conexão com o banco de dados
+	Se estiver usando um servidor local, apenas atualize os dados 
+	como: $user = usuario do banco, $pass = senha do banco
+	$db = nome do banco.
+	Coloque o no mesmo diretorio com os outros arquivos.
+
+3 - agenda.php
+	Arquivo que lista a agenda na página.
+	Você poder inserir em uma pagina principal através do comando
+	include "agenda.php". Se esse arquivo estiver dentro de uma pasta
+	não esqueça de acertar o path(caminho) para os demais arquivos
+	exemplo: onde tiver inclue "sql.php" deve mudar para
+	include "nome_da_pasta/sql.php";
+	
+
+ÁREA ADMINISTRATIVA DA AGENDA
+
+4 - admin.php
+	Arquivo que contém a inserção dos eventos na agenda.
+	-> É recomendado que se coloque estes arquivos junto do seu
+	painel de controle do site ou então proteja-os com uma senha
+	Pois qualquer pessoa poderia entrar no seu site e fazer alterações
+	em sua agenda, deletar eventos e etc.
+	Não se deve colocar 0 (zeros) nos primeios 9 dias (tanto em dia 
+	quanto em mes) nos menu/list do evento
+	
+5 - atualagenda.php
+	Arquivo que faz atualização dos eventos
+	caso queira mudar uma data, deve ser feito neste arquivo.
+
+6 - deletagenda.php
+	Arquivo que exclui um evento na agenda. Apaga no banco todos
+	os registros daquele evento.
+
+7 - listagenda.php
+	Arquivo que cria uma lista de todos os eventos cadastrados
+	e que também faz o link para atualizaão e exclusão do evento.
+
+
+-----------------------------------
+INSTALAÇÃO DA AGENDA
+-----------------------------------
+
+1 - Descompacte os arquivos da pasta agenda.zip
+2 - Salve os na pasta raiz do seu servidor local ou servidor remoto(raiz do seu site)
+3 - Abra o arquivo (dreamweaver, netbeans, ou bloco de notas) sql.php e atualize com os dados do banco
+4 - Caso use um servidor local, abra o seu navegador e digite o caminho
+http://localhost/agenda.php.
+5 - Caso gere algum erro do tipo "Warning:error", em primeiro plano verifique os dados do banco de dados no arquivo sql.php.
+6 - Se a agenda abrir certa, no mes corrente e o dia atual marcado de amarelo está tudo correto.
+7 - Abra o caminho http://localhost/admin.php e insira um evento no mesmo mes ou outro meses e até msemo mais de um evento no dia para verificar se esta tudo correto.
+8 - Parabéns você instalou a agenda com sucesso!
+
+
+------------------------------------
+OBSERVAÇÃO
+------------------------------------
+
+-> Todos me mandaram e-mails quando a agenda apresentou algum problema.
+Sinta-se livre para me enviar qualquer e-mail(gaspar.teixeira@gmail.com)
+ou assinar o post no Imasters neste endereço: 
+
+http://forum.imasters.uol.com.br/index.php?showtopic=315222
+
+-> Já está disponivel a nova versão da agenda em PHP/MySQL/Ajax neste endereço: 
+
+http://forum.imasters.uol.com.br/index.php?showtopic=323054
+
+Grande abraço à todos!!!
+
+
+Gaspar Teixeira

@@ -648,9 +648,12 @@ border-top: solid 5px #e54e43;
 }
 .table{
 	background-color: white !important;
-	margin: 0 !important;
-	padding-bottom: 0.5rem;
-	transform: scale(0.9);
+	margin: 15px 0px 0px 0px  !important;
+	margin-top: 15px;
+	padding-bottom: 1.5rem;
+	font-size: 13px;
+	/* transform: scale(0.9); */
+	text-align: center;
 }
 .table table{
 	/* width: 100% !important; */

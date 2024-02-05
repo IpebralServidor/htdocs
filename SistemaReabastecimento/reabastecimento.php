@@ -4,12 +4,8 @@
 
     $corTipoNota = '';
 
-    
-
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
-
-    
 
     $tsqlNotaVinculo = "SELECT DISTINCT AD_VINCULONF FROM TGFITE WHERE NUNOTA = $nunota2";
     $stmtNotaVinculo = sqlsrv_query( $conn, $tsqlNotaVinculo);
@@ -26,16 +22,15 @@
     if($rowPdtAtual[0] == 0){
         if($row[0] === 0){
             header("Location: verificarprodutos.php?nunota=".$nunota2 );
-        }else if(empty($row[0])){ 
-            echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";        
+        // }
+        // else if(empty($row[0])){ 
+        //     echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";        
         }else{
             $tsqlUpdate = "UPDATE TGFITE SET AD_CODUSUBIP = $codusu WHERE NUNOTA = ($nunota2) AND ABS(SEQUENCIA) = $row[0]";
             $stmtUpdate = sqlsrv_query( $conn, $tsqlUpdate);
         }
     }
-
     
-
     $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
     $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
@@ -98,7 +93,7 @@
             retornaMovimentacoes()" 
         <?php } ?> 
     <?php } else {?>
-        onload="produtos(<?php echo $nunota2; ?>)"
+        onload="produtos(<?php echo $nunota2; ?>), endereco()"
     <?php } ?>>
 
     <div id="loader" style="display: none;">
@@ -752,12 +747,18 @@
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").placeholder;
 
+            let endereco = document.getElementById("endereco").value
+
+			if("<?php echo $rowEhTransf[0] ?>" == "TRANSF_CD5"){
+				endereco = document.getElementById("endereco").val
+			}
+
             if((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP'){
                 alert('Esta nota não é possível passar quantidade a mais!')
             }else if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
                 $('#btnProximo').click();
             }else{
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(),'')
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), endereco,'')
             }
            
         });
@@ -798,7 +799,12 @@
 		}
 		$('#btnAplicarOcorrencia').click(function () {
 
-            let endereco = document.getElementById("endereco").value;
+            let endereco = document.getElementById("endereco").value
+
+			if("<?php echo $rowEhTransf[0] ?>" == "TRANSF_CD5"){
+				endereco = document.getElementById("endereco").val
+			}
+
             let referencia = document.getElementById("referencia").value;
             let qtdneg = document.getElementById("qtdneg").value;
             
@@ -1006,6 +1012,19 @@
             imagemproduto($("#referencia").val());
         
         <?php } ?>
+        
+        function endereco(){
+
+            const endereco = document.getElementById("endereco")
+            const ehTransf = "<?php echo $rowEhTransf[0] ?>"
+            const tipoNota = "<?php echo $tipoNota[0] ?>"
+
+            if(ehTransf == "TRANSF_CD5" && tipoNota == "S"){
+                endereco.disabled = true
+                endereco.val = "5069900"
+                endereco.placeholder = "5069900"
+            }
+        }
 
         function retornainfoprodutos(nunota, referencia)
         {

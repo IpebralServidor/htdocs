@@ -27,7 +27,7 @@
 	$QtdPendente = $rowPendente[0];
 
 
-	$tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2)";
+	$tsqlStatus = "SELECT [sankhya].[AD_FN_CONFERENCIA_RETORNA_STATUS_DA_NOTA]($nunota2)";
 	$stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
 	$rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
 

@@ -100,9 +100,9 @@ include "../conexaophp.php";
 			<table class="table">
 				<tr class="position-sticky"> 
 					<th class="border-top-left-radius">Emp.</th>
-					<th>Cód. Local</th>
+					<th>Cód. Loc.</th>
 					<th>Estoque</th>
-					<th>Reservado</th>
+					<th>Reserv.</th>
 					<th class="border-top-right-radius">Pad./Máx.</th>
 				</tr>
 
@@ -114,9 +114,9 @@ include "../conexaophp.php";
 					while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_ASSOC)){ ?>
 						<tr>
 							<td><?php echo $row2['CODEMP']; ?></td>
-							<td><?php echo $row2['CODLOCAL']; ?></td>
-							<td style="width: 20px;"><?php echo $row2['ESTOQUE']; ?></td>
-							<td style="width: 20px;"><?php echo $row2['RESERVADO']; ?></td>
+							<td style="width: 50%"><?php echo $row2['CODLOCAL']; ?></td>
+							<td><?php echo $row2['ESTOQUE']; ?></td>
+							<td><?php echo $row2['RESERVADO']; ?></td>
 							<td><?php echo $row2['PADRAO_QTDMAX']; ?></td>
 						</tr>
 				<?php } ?>
