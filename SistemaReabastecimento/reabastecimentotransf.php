@@ -3,32 +3,15 @@
     require_once '../App/auth.php';
 
     $corTipoNota = '';
-    
-    $enderecoInit = $_SESSION['enderecoInit'];
-    $enderecoFim = $_SESSION['enderecoFim'];
-
-    echo $_SESSION['enderecoInit'];
-    echo " / " .$_SESSION['enderecoFim'];
 
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
-
-    $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
-    $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
-    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
-    $_SESSION['tipoNota'] = $rowTipoNota[0];
-    $tipoNota = $rowTipoNota[0];
-
-    if($tipoNota == 'A'){
-        $enderecoInit = 0;
-        $enderecoFim = 0;
-    }
 
     $tsqlNotaVinculo = "SELECT [sankhya].[AD_FN_VINCULO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtNotaVinculo = sqlsrv_query( $conn, $tsqlNotaVinculo);
     $rowNotaVinculo = sqlsrv_fetch_array( $stmtNotaVinculo, SQLSRV_FETCH_NUMERIC);
 
-    $tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO] ($nunota2, $enderecoInit, $enderecoFim)";
+    $tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO] ($nunota2)";
     $stmt = sqlsrv_query( $conn, $tsql);
     $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC);
 
@@ -36,23 +19,22 @@
     $stmtPdtAtual = sqlsrv_query( $conn, $tsqlPdtAtual);
     $rowPdtAtual = sqlsrv_fetch_array( $stmtPdtAtual, SQLSRV_FETCH_NUMERIC);
 
-    $tsqlPdSemFiltro = "SELECT AD_CODUSUBIP FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO_SEM_FILTRO] ($nunota2)";
-    $stmtPdSemFiltro = sqlsrv_query( $conn, $tsqlPdSemFiltro);
-    $rowPdSemFiltro = sqlsrv_fetch_array( $stmtPdSemFiltro, SQLSRV_FETCH_NUMERIC);
-
     if($rowPdtAtual[0] == 0){
-        if(empty($rowPdSemFiltro[0]) && $row[0] != 0){
+        if($row[0] === 0){
+            header("Location: verificarprodutos.php?nunota=".$nunota2 );
+        // }
+        // else if(empty($row[0])){ 
+        //     echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";        
+        }else{
             $tsqlUpdate = "UPDATE TGFITE SET AD_CODUSUBIP = $codusu WHERE NUNOTA = ($nunota2) AND ABS(SEQUENCIA) = $row[0]";
             $stmtUpdate = sqlsrv_query( $conn, $tsqlUpdate);
-        }else{
-            if($row[0] === 0){
-                header("Location: verificarprodutos.php?nunota=".$nunota2 );
-            }
-            else if(empty($row[0])){ 
-                echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";        
-            }
         }
     }
+    
+    $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
+    $stmtTipoNota = sqlsrv_query( $conn, $tsqlTipoNota);
+    $rowTipoNota = sqlsrv_fetch_array( $stmtTipoNota, SQLSRV_FETCH_NUMERIC);
+    $tipoNota = $rowTipoNota[0];
 
     if(isset($_REQUEST["fila"])){
         $fila = $_REQUEST["fila"];
@@ -280,7 +262,7 @@
     <div class="bg">
         <div class="collapse" id="navbarToggleExternalContent">
  
-            
+            <?php if($tipoNota == 'A'){ ?>
                 <div class="background">
                     <div class="switchBox">
                         <div class="tabSwitch">
@@ -296,26 +278,83 @@
                         </div>
                     </div>
                 </div>
-            
+            <?php } ?>
 
             <div class="table d-flex justify-content-center">
                 
-                <table >
-                    <thead>
-                        <tr> 
-                            <th>Seq.</th>
-                            <th>Ref.</th>
-                            <th>Local</th>
-                            <th>Qtde</th>
-                            <?php if($tipoNota == 'S'){ ?>
-                                <th></th>
-                            <?php } ?>
-                        </tr>
-                    </thead>
-                    <tbody class="movTable" id="prodId">
-                        
-                    </tbody>
-                </table>
+                <?php if($tipoNota == 'S'){ ?>
+
+                    <table>
+                        <thead>
+                            <tr> 
+                                <th>Ref.</th>
+                                <th>Local</th>
+                                <th>Qtde</th>
+                                
+                                <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA' || $rowEhTransf[0]  == 'TRANSFPRODSAIDA')  {?>
+                                    <th>
+                                        <button class="btnEntregaTudo btnPendencia" data-toggle="modal" data-target="#entregaModal">
+                                            <?php if($rowEhTransf[0]  == 'TRANSFPRODENTRADA') { echo "Guardar tudo"; } else { echo "Separar tudo"; } ?> 
+                                        </button>
+                                    </th>
+                                <?php }?>
+                                <?php if($tipoNota == 'S'){ ?>
+                                    <th></th>
+                                <?php } ?>
+                            </tr>
+                        </thead>
+                        <tbody class="movTable">
+                
+                        <?php 
+
+                            $tsqlProdutos = "   SELECT * 
+                                                FROM [sankhya].[AD_FNT_PRODUTO_SEPARADO_REABASTECIMENTO] ($nunota2) 
+                                                ORDER BY CODLOCALORIG DESC, SEQUENCIA DESC";
+
+                            $stmtProdutos = sqlsrv_query( $conn, $tsqlProdutos);
+
+                            while( $rowProdutos = sqlsrv_fetch_array($stmtProdutos, SQLSRV_FETCH_ASSOC))
+                            {
+                                echo '<tr>';
+                                echo '<td>'.$rowProdutos['REFERENCIA'] .'</td>';
+                                echo '<td>'.$rowProdutos['CODLOCALPAD'] .'</td>';
+                                echo '<td>'.$rowProdutos['QTDNEG'] .'</td>';
+                                
+                                if($tipoNota == "S"){ 
+                                    echo'<td>
+                                            <a class="botao-abastecer" data-id="'.$rowProdutos['SEQUENCIA'] .'">
+                                                <button class="btnPendencia" style="border-radius: 10%;" data-toggle="modal" data-target="#buscarUsuario">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                                                        <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                                                    </svg>
+                                                </button>
+                                            </a>
+                                        </td>';
+                                }
+                                echo '</tr>';
+                            }
+                        ?>
+                            
+                        </tbody>
+                    </table>
+
+                <?php } else { ?>
+                    <table >
+                        <thead>
+                            <tr> 
+                                <th>Ref.</th>
+                                <th>Local</th>
+                                <th>Qtde</th>
+                                <?php if($tipoNota == 'S'){ ?>
+                                    <th></th>
+                                <?php } ?>
+                            </tr>
+                        </thead>
+                        <tbody class="movTable" id="prodId">
+                            
+                        </tbody>
+                    </table>
+                <?php } ?>
             </div>
         </div>
         
@@ -494,14 +533,6 @@
                 $(this).toggleClass("rotated");
             });
         });
-
-        $('#outros').click(function () {
-            var radios = document.getElementsByName('fav_language');
-
-            radios.forEach(function(radio) {
-                radio.checked = false;
-            });
-        })
 
         function retornaMovimentacoes(){
             $.ajax
@@ -1079,13 +1110,7 @@
                     teste = 'N'
                 }
             }else{
-                if(teste.checked == true){
-                    document.getElementById('titleBoxH6').textContent = 'Produtos não separados'
-                    teste = 'S'
-                }else{
-                    document.getElementById('titleBoxH6').textContent = 'Produtos separados'
-                    teste = 'N'
-                } 
+                teste = 'N'
             }
             
                        

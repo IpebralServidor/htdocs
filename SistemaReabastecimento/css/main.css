@@ -1,3 +1,14 @@
+
+:root{
+	--border-radius-pad: 15px;
+	--padding-pad: 20px;
+	--side-menu-width: 18%;
+	--box-shadow-pad: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+	--icon-color: #65768c;
+	/* --red-pad: #bd2a2a; */
+	--red-pad: #3a6070;
+}
+
 table {
 	border-collapse: collapse;
 	transition: transfrom 0.2s linear;
@@ -864,6 +875,12 @@ border-top: solid 5px #e54e43;
 	color: white;
 }
 
+.content{
+	background-color: white;
+	padding: var(--padding-pad);
+	box-shadow: var(--box-shadow-pad);
+	border-radius: var(--border-radius-pad);
+} 
 .popup .overlay{
 	position: fixed;
 	top: 0;
@@ -943,6 +960,69 @@ border-top: solid 5px #e54e43;
 	font-size: 13px !important;
 	display: flex;
 	justify-content: space-between;
+}
+
+
+.popup .overlay{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vw;
+	background: rgba(0,0,0,0.7);
+	z-index: 1;
+	display: none;
+	height: 100%;
+}
+.popup .content{
+	/* align-items: end; */
+	border-radius: var(--border-radius-pad);
+	position: absolute;
+	top: 50%;	
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0);
+	background: #fff;
+	/* width: 100%; */
+	/* height: auto; */
+	margin: 0;
+	z-index: 2;
+}
+.popup.active .overlay{
+	display: block;
+}
+
+.popup.active .content{
+	transition: all 0.2s linear;
+	transform: translate(-50%, -90%) scale(1);
+}
+.close-btn{
+	width: 30px;
+	height: 30px;
+	border-radius: 50px;
+	background-color: var(--red-pad);
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.close-btn:hover{
+	cursor: pointer;
+}
+.form button{
+	padding: 13px;
+	border: none;
+	border-radius: var(--border-radius-pad);
+	background-color: var(--red-pad);
+	color: white;
+}
+.form button:hover{
+	cursor: pointer;
+}
+.div-form{
+	width: 100%;
+}
+.inside-menu-div{
+	width: 100%;
 }
 @media (max-width: 1000px){
 	.popup.active .content {

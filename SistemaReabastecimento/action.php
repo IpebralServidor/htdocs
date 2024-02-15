@@ -6,7 +6,7 @@ $request = $_POST["numeroNota"];
 
     $codusu = $_SESSION["idUsuario"];
 
-    $tsqlVinculo = "SELECT DISTINCT AD_VINCULONF FROM TGFITE WHERE NUNOTA = $request";
+    $tsqlVinculo = "SELECT [sankhya].[AD_FN_VINCULO_NOTA_REABASTECIMENTO] ($request)";
     $stmtVinculo = sqlsrv_query( $conn, $tsqlVinculo);
     $rowVinculo = sqlsrv_fetch_array( $stmtVinculo, SQLSRV_FETCH_NUMERIC);
 

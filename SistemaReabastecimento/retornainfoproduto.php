@@ -11,6 +11,8 @@
 
 	if($referencia == "N"){
 		$tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota, $codusu)";
+		
+		// , $enderecoInt, $enderecoFim);
 	}else{
 		$tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_POR_REFERENCIA_REABASTECIMENTO] ($nunota, '$referencia')";
 	}

@@ -9,6 +9,8 @@
     $qtdneg = $_POST["qtdneg"];
     $codusu = $_POST["codusu"];
     $ocorrencia = $_POST["ocorrencia"];
+    // $enderecoInt = $_SESSION['enderecoInit'];
+	// $enderecoFim = $_SESSION['enderecoFim'];
 
     if($qtdneg == ''){
         $qtdneg = 0;
