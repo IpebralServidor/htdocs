@@ -96,7 +96,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css?v=<?= time() ?>">
     <link href="css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" >
 </head>
 <body class="body" 
     <?php if($fila == "S"){ ?> 
@@ -117,6 +117,55 @@
     <div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
     </div>
+
+    <!-- Modal para confirmar endereços-->
+
+    <div class="popup" id="popConfEnd">
+		<div class="overlay"></div>
+			<div class="content">
+				<div style="width: 100%;">
+					<div class="close-btn" onclick="abrir()">
+						<i class="fa-solid fa-xmark"></i>	
+						<!-- <i class="fa-solid fa-circle-xmark"></i> -->
+					</div>
+					
+					<div class="div-form">
+						<div id="form_alterasenha" class="form">
+							<label> Digite o endereço novamente:</label>
+							<input type="number" name="end_conf" id="end_conf" required>
+							
+							<button name="ConfEnd" id="btn_confend">Confirmar</button>
+                        </div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+    <!-- Modal para confirmar referencia-->
+
+    <div class="popup" id="popConfRef">
+		<div class="overlay"></div>
+			<div class="content">
+				<div style="width: 100%;">
+					<div class="close-btn" onclick="abrirRef(), clearRef()">
+						<i class="fa-solid fa-xmark"></i>	
+					</div>
+					
+					<div class="div-form">
+						<div id="form_alterasenha" class="form">
+							<label> Digite a referência novamente:</label>
+							<input type="number" name="end_conf" id="ref_conf" required>
+							
+							<button name="ConfRef" id="btn_confref">Confirmar</button>
+                        </div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 
     <!-- Modal para observações-->
 
@@ -374,7 +423,7 @@
                     <div class="input-h6">
                         <h6>Endereço:</h6> 
                     </div>
-                    <input type="number" name="endereco" id="endereco" class="form-control" placeholder=""> 
+                    <input type="number" name="endereco" id="endereco" class="form-control" placeholder="" oninput="iniciarMedicao()" onblur="finalizarMedicao()"> 
                     
                 </div>
 
@@ -382,7 +431,7 @@
                     <div class="input-h6">
                         <h6>Referência:</h6> 
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder=""> 
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()"> 
                 </div>
             
                 <div class="d-flex justify-content-center align-items-center">
@@ -486,6 +535,89 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+        var tempoInicial;
+        var tempoFinal;
+
+        function iniciarMedicao() {
+            tempoInicial = new Date();
+        }
+
+        function finalizarMedicao() {
+            tempoFinal = new Date();
+            var tempoDecorrido = tempoFinal - tempoInicial;
+
+            if(tempoDecorrido > 250){
+                abrirEndereco()
+                document.getElementById('endereco').value = null
+            }
+        }
+
+    </script>
+    <script>
+        var tempoInicial;
+        var tempoFinal;
+
+        function iniciarMedicao2() {
+            tempoInicial = new Date();
+        }
+
+        function finalizarMedicao2() {
+
+            tempoFinal = new Date();
+            var tempoDecorrido = tempoFinal - tempoInicial;
+
+            if(tempoDecorrido > 250){
+                abrirReferencia()
+                document.getElementById('referencia').value = null
+            }
+        }
+
+    </script>
+    <script>
+
+        function clearEnd() {
+			document.getElementById('endereco').value = null;
+		}
+
+        function clearRef() {
+			document.getElementById('referencia').value = null;
+		}
+
+        function abrirEndereco() {
+            var valEndereco = document.getElementById('endereco').value
+
+            if(valEndereco){
+                abrir()
+            }
+		}
+
+        function abrirReferencia() {
+            var valReferencia = document.getElementById('referencia').value
+
+            if(valReferencia){
+                abrirRef()
+            }
+		}
+
+        function abrirRef() {
+			document.getElementById('popConfRef').classList.toggle("active");
+		}
+
+        function abrir() {
+			document.getElementById('popConfEnd').classList.toggle("active");
+		}
+
+        $('#btn_confend').click(function () {
+            var enderecoPopUp = document.getElementById('end_conf').value
+            document.getElementById('endereco').value = enderecoPopUp
+            abrir()
+        })
+
+        $('#btn_confref').click(function () {
+            var referenciaPopUp = document.getElementById('ref_conf').value
+            document.getElementById('referencia').value = referenciaPopUp
+            abrirRef()
+        })
 
         var produtoseq
 
