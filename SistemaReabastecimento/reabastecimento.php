@@ -512,7 +512,7 @@
         
     </div>
     <footer class="footer d-flex justify-content-center">
-        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal">
+        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal" onclick="exibirObservacao()">
             Observação
         </button>
         <?php if($tipoNota == 'S'){ ?>
@@ -574,6 +574,34 @@
 
     </script>
     <script>
+
+        function exibirObservacao(){
+
+            var referencia = document.getElementById("referencia").value
+
+            $.ajax
+            ({
+                //Configurações
+                type: 'POST',//Método que está sendo utilizado.
+                dataType: 'html',//É o tipo de dado que a página vai retornar.
+                url: 'retornainfoproduto.php',//Indica a página que está sendo solicitada.
+                async: false,
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                complete: function(){
+                    $("#loader").hide();
+                },
+                data: { referencia: referencia, nunota: <?php echo $nunota2 ?>, codusu: <?php echo $codusu ?>},//Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function (msg)
+                {
+                    var retorno = msg.split("/");
+
+                    document.getElementById("observacao").textContent = retorno[9];
+                }
+            });
+        }
 
         function clearEnd() {
 			document.getElementById('endereco').value = null;
@@ -1176,7 +1204,7 @@
                             document.getElementById("endereco").placeholder = retorno[1];
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
                             document.getElementById("referencia").placeholder = retorno[0];
-                            document.getElementById("observacao").placeholder = retorno[9];
+                            document.getElementById("observacao").textContent = retorno[9];
                             document.getElementById("agrupmin").textContent = retorno[3];
                             document.getElementById("qtdlocal").textContent = retorno[4];
                             document.getElementById("fornecedores").textContent = retorno[11];
