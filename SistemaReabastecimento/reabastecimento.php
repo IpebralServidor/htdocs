@@ -108,7 +108,7 @@
         <?php } else{ ?>
             onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
             produtos(<?php echo $nunota2; ?>),
-            retornaMovimentacoes()" 
+            retornaMovimentacoes()"
         <?php } ?> 
     <?php } else {?>
         onload="produtos(<?php echo $nunota2; ?>), endereco()"
@@ -156,7 +156,7 @@
 					<div class="div-form">
 						<div id="form_alterasenha" class="form">
 							<label> Digite a referência novamente:</label>
-							<input type="number" name="end_conf" id="ref_conf" required>
+							<input type="text" name="end_conf" id="ref_conf" required>
 							
 							<button name="ConfRef" id="btn_confref">Confirmar</button>
                         </div>
@@ -789,41 +789,21 @@
             informacaoAtualizada.textContent = ' ' +num.toFixed(2)
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var botoesAbrirPopUp = document.querySelectorAll(".botao-abastecer");
-            var meuPopUp = document.getElementById("buscarUsuario");
-            var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEntregar");
+        function atribuirDataBotao(button) {
            
+            var popup = document.getElementById('buscarUsuario');
+            var popupButton = document.getElementById('btnEntregar');
 
-            // Adicione um ouvinte de eventos para cada botão
-            botoesAbrirPopUp.forEach(function(botao) {
-                botao.addEventListener("click", function() {
+            // Copia o atributo do botão da tabela para o botão do pop-up
+            popupButton.setAttribute('data-atributo', button.getAttribute('data-id'));
 
-                    // Obtém o valor do atributo data-id do botão clicado
-                    var dataId = this.getAttribute('data-id');
+            // Adiciona um evento ao botão do pop-up
+            popupButton.onclick = function() {
+                var codusu = document.getElementById('usu');
 
-                    // Define o valor em um atributo personalizado do botão dentro do pop-up
-                    botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
-
-                    // Abre o pop-up
-                    meuPopUp.style.display = "block";
-                });
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var botaoEditar = document.querySelectorAll('.botao-entregar');
-            var codUsu = document.getElementById('usu');
-
-            botaoEditar.forEach(function(botao) {
-                botao.addEventListener('click', function() {
-                    var sequencia = botao.getAttribute('data-id-pop-up');
-                    var codusu = codUsu.value;
-                    
-                    abastecerGondola(<?php echo $nunota2; ?>, sequencia, codusu);
-                });
-            });
-        });
+                abastecerGondola(<?php echo $nunota2; ?>, popupButton.getAttribute('data-atributo'), codusu.value);
+            };
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
             var botaoBuscar = document.querySelectorAll('.buscar-usuario');
@@ -1247,7 +1227,6 @@
                     teste = 'N'
                 } 
             }
-            
                        
             //teste.checked
             //O método $.ajax(); é o responsável pela requisição
@@ -1320,7 +1299,6 @@
                         success: function (msg)
                         {
                             $("#imagemproduto").html(msg);
-                            //alert(msg);
                         }
                     });
         }
