@@ -23,7 +23,7 @@ require_once '../App/auth.php';
 
 	<title>Estoque CD3</title>
 </head>
-<body>
+<body onload="produtos()">
 	<div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="images/soccer-ball-joypixels.gif">
     </div>
@@ -50,6 +50,7 @@ require_once '../App/auth.php';
 			</div>
 		</div>
 	</div>
+
 	<div>
 		<div class="img-voltar">
 			<a href="../menu.php">
@@ -64,6 +65,38 @@ require_once '../App/auth.php';
 				</div>
 
 				<button onclick="abrir()" name="aplicar" class="btn btn-primary btn-form margin-top35">Pesquisar</button>
+			</div>
+			<div class="div-tabela">
+				<div>
+					<div class="switchBox" style="box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;">
+						<div class="tabSwitch">
+							<input type="checkbox" class="checkbox" id="chkInp" onchange="produtos()">
+
+							<label for="chkInp" class="label">
+								<div class="ball" id="ball"></div>
+							</label>
+						</div>
+
+						<div class="titleBox">
+							<p id="titleBoxH6">Notas de separação</p>
+						</div>
+					</div>
+					<div style="margin-top: 10px; display: flex; justify-content: center">
+						<table class="table">
+							<thead>
+								<tr> 
+									<th>Nunota</th>
+									<th>Cod TOP</th>
+									<th>Qtd Itens</th>
+									<th>Data</th>
+								</tr>
+							</thead>
+							<tbody class="movTable" id="prodId">
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -168,6 +201,46 @@ require_once '../App/auth.php';
 			// }
             
         }
+
+		function produtos()
+		{
+			var teste = document.getElementById('chkInp');
+                
+			if(teste.checked == true){
+				document.getElementById('titleBoxH6').textContent = 'Notas de armazenamento'
+				teste = 'S'
+			}else{
+				document.getElementById('titleBoxH6').textContent = 'Notas de separação'
+				teste = 'N'
+			}
+            //teste.checked
+            //O método $.ajax(); é o responsável pela requisição
+			$.ajax
+				({
+                    
+					//Configurações
+					type: 'POST',//Método que está sendo utilizado.
+					dataType: 'html',//É o tipo de dado que a página vai retornar.
+					url: 'notas.php',//Indica a página que está sendo solicitada.
+					//função que vai ser executada assim que a requisição for enviada
+					beforeSend: function () {
+						$("#iniciarpausa").html("Carregando...");
+					},
+					data: {tipoProduto: teste},//Dados para consulta
+					//função que será executada quando a solicitação for finalizada.
+					success: function (msg)
+					{
+						var notas = msg.split('|');
+
+                        document.getElementById('prodId').innerHTML = notas[0]
+					}
+				});
+		}
+		
+		function atribuirDataBotao(button) {
+			document.getElementById("numeroNota").value = (button.getAttribute('data-id'))
+		};
+
 	</script>
 </body>
 </html>
