@@ -11,7 +11,7 @@
 	$rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
 	$a = array(2, 3274, 3266, 42, 7257, 106);
-	$b = array(3274, 3149, 141);
+	$b = array(3274, 2, 3149, 3287, 3276);
 
 	$tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 	$stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
@@ -201,7 +201,7 @@
 						</div>
 					</a>
 
-					<!-- <?php if (in_array($usuconf, $b, true)) { ?>
+					<?php if (in_array($usuconf, $b, true)) { ?>
 						<a href="./SistemaReabastecimentoHomol" class="card">
 							<div class="padding">
 								<div class="icon-card">
@@ -210,7 +210,7 @@
 								<span>Transferências Homol</span>
 							</div>
 						</a>
-					<?php } ?> -->
+					<?php } ?>
 				</div>
 			</div>
 
