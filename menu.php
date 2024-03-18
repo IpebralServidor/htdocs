@@ -185,7 +185,7 @@
 						<a href='./Manutencao' class="card">
 							<div class="padding">
 								<div class="icon-card">
-									<i class="fa-solid fa-gear" style="background-color: #3cd856"></i>
+									<i class="fa-solid fa-gear" style="background-color: #04BFAD"></i>
 								</div>
 								<span>Manutenção</span>
 							</div>
@@ -195,17 +195,26 @@
 					<a href="./SistemaReabastecimento" class="card">
 						<div class="padding">
 							<div class="icon-card">
-								<i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
+								<i class="fa-solid fa-right-left" style="background-color: #fa5a7d"></i>
 							</div>
 							<span>Transferências</span>
 						</div>
 					</a>
 
+                    <a href="./SistemaTransferencias" class="card">
+                        <div class="padding">
+                            <div class="icon-card">
+                                <i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
+                            </div>
+                            <span>Transferências avulsas</span>
+                        </div>
+                    </a>
+
 					<?php if (in_array($usuconf, $b, true)) { ?>
 						<a href="./SistemaReabastecimentoHomol" class="card">
 							<div class="padding">
 								<div class="icon-card">
-									<i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
+									<i class="fa-solid fa-right-left" style="background-color: #3cd856"></i>
 								</div>
 								<span>Transferências Homol</span>
 							</div>

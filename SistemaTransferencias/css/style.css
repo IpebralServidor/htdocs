@@ -1,0 +1,111 @@
+body{
+    margin: 0;
+    border: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background-color: #fafcff;
+}
+:root{
+    --border-radius-pad: 15px;
+    --padding-pad: 20px;
+    --side-menu-width: 18%;
+    --box-shadow-pad: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    --icon-color: #65768c;
+    --color-pad: #3a6070;
+    --bs-border-width: 1px;
+    --bs-border-color: #dee2e6;
+}
+.page{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+header{
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.timer-color{
+    border-radius: 50px;
+    width: 20px;
+    height: 20px;
+    background-color: green;
+}
+.timer{
+    display: flex;
+    background-color: white;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+    font-size: 13px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+.tipoNota{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    width: 150px;
+    background-color: white;
+    margin: 5px;
+    border-radius: 20px;
+    font-size: 13px;
+    background-color: #008561;
+    color: white;
+}
+main{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+.formDiv{
+    width: 70%;
+    margin-top: var(--padding-pad);
+    padding: var(--padding-pad);
+    border-radius: var(--border-radius-pad);
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+.formProdutos{
+    display: flex;
+    flex-direction: column;
+}
+.header-body {
+    width: 85%;
+    background-color: white !important;
+    border-radius: 15px;
+    margin-top: 20px;
+    display: flex;
+    gap: 7%;
+    flex-wrap: wrap;
+    padding: var(--padding-pad);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.div-playPause{
+    padding: 0px 10px 0px 10px;
+    cursor:pointer;
+}
+.div-playPause i{
+    font-size: 17px;
+    line-height: 2;
+}
+.loader{
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: 50% 50% no-repeat rgb(15 10 10/50%);
+}
+.loader img{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
