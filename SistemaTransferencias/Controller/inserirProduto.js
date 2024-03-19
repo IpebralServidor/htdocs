@@ -5,8 +5,9 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
     const inputQuantidade = document.getElementById("endereco")
     const inputEndereco = document.getElementById("quantidade")
     const inputLote = document.getElementById("lote")
-    const alert = document.getElementById("alert")
-    const alertText = document.getElementById("alertText")
+    const inputQtdMaxLocal = document.getElementById("qtdMax")
+    // const alert = document.getElementById("alert")
+    // const alertText = document.getElementById("alertText")
     const gif = document.getElementById("loader")
     const urlParams = new URLSearchParams(window.location.search)
     const nunota = urlParams.get("nunota")
@@ -24,17 +25,21 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
             gif.style.display = "none"
             gif.classList.remove("loader")
         },
-        data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value},
+        data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value, qtdMaxLocal: inputQtdMaxLocal.value},
         success: function (msg)
         {
-            alert.classList.add("d-block")
-            alert.classList.remove("d-none")
-            alertText.textContent = msg
+            if(msg == 'Produto adicionado com sucesso!'){
+                alert(msg)
 
-            inputReferencia.value = ''
-            inputQuantidade.value = ''
-            inputEndereco.value = ''
-            inputLote.value = ''
+                inputReferencia.value = ''
+                inputQuantidade.value = ''
+                inputEndereco.value = ''
+                inputLote.value = ''
+                inputQtdMaxLocal.value = ''
+
+            }else{
+                alert(msg)
+            }
         }
     });
 })

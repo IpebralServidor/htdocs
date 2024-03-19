@@ -55,6 +55,10 @@ $varStatus = $rowStatus[0];
         </header>
 
         <main>
+            <div class="infoNota">
+                <span>Agrupamento mínimo: 20</span>
+                <span>Número da nota: 20</span>
+            </div>
             <div class="header-body">
                 <div style="width: 100%">
                     <div class="mb-3 d-flex justify-content-center align-items-center">
@@ -73,16 +77,10 @@ $varStatus = $rowStatus[0];
                         <label for="lote" class="form-label" style="width: 10rem !important;">Lote:</label>
                         <input type="text" class="form-control" id="lote">
                     </div>
-
-<!--                    <div class="mt-5 w-100 d-flex justify-content-center align-items-center">-->
-<!--                        <button id="alterarMaxLocal" class="btn btn-primary" data-toggle="modal" data-target="#popUp">Alterar Qtd Max Local</button>-->
-<!--                    </div>-->
-
-<!--                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
-<!--                        Launch demo modal-->
-<!--                    </button>-->
-
-
+                    <div class="mb-3 d-flex">
+                        <label for="qtdMax" class="form-label" style="width: 10rem !important;">Qtd Máx Local:</label>
+                        <input type="number" class="form-control" id="qtdMax">
+                    </div>
                 </div>
             </div>
 
@@ -122,6 +120,7 @@ $varStatus = $rowStatus[0];
     <script src="../Controller/botaoTimer.js"></script>
     <script src="../Controller/imagemProduto.js"></script>
     <script src="../Controller/inserirProduto.js"></script>
+    <script src="../Controller/alterarMaxLocal.js"></script>
     <script>
         document.getElementById("body").onload = function() {
             calcularTempo(<?php echo $_GET['nunota']; ?>);

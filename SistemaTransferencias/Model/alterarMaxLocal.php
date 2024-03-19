@@ -1,16 +1,16 @@
 <?php
 
 include "../conexaophp.php";
-require_once '../App/auth.php';
 
-$empresa = $_POST["empresa"];
-$_SESSION['enderecoPad'] = $_POST["endereco"];
-$endereco = $_POST["endereco"];
-$codUsu = $_SESSION['idUsuario'];
+$referencia = $_POST["referencia"];
+$nunota = $_POST["nunota2"];
 
-$tsql = "EXEC AD_STP_CRIAR_NOTA_TRANSFERENCIA $empresa, $codUsu, $endereco";
-$stmt = sqlsrv_query( $conn, $tsql);
-$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+$tsqlSlctLocPad = " SELECT AD_QTDMAXLOCAL FROM TGFPEM 
+                    WHERE CODEMP = (SELECT CODEMP FROM TGFCAB WHERE NUNOTA = $nunota) 
+                      AND CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = '$referencia')";
+$stmtSlctLocPad = sqlsrv_query( $conn, $tsqlSlctLocPad);
+$rowSlctLocPad = sqlsrv_fetch_array($stmtSlctLocPad, SQLSRV_FETCH_NUMERIC);
 
-echo $row[0];
+echo $rowSlctLocPad[0];
+
 ?>

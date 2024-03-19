@@ -1,27 +1,21 @@
-document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
+document.getElementById("referencia").addEventListener("focusout",() =>{
+    const inputQtdMax = document.getElementById("qtdMax")
+    const inputReferencia = document.getElementById("referencia")
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const nunota = urlParams.get("nunota")
+
     $.ajax
     ({
-        type: 'POST',//Método que está sendo utilizado.
-        dataType: 'html',//É o tipo de dado que a página vai retornar.
-        url: '../Model/time.php',//Indica a página que está sendo solicitada.
-        data: {nunota: nunota},//Dados para consulta
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/alterarMaxLocal.php',
+        beforeSend: function () {
+        },
+        data: {referencia: inputReferencia.value, nunota2: nunota},
         success: function (msg)
         {
-            tempInic = msg
-
-            let hh = Math.floor(tempInic / 3600);
-            let mm = Math.floor((tempInic % 3600) / 60);
-            let ss = tempInic % 60;
-
-            if(hh < 10){ hh = '0'+hh }
-            if(mm < 10){ mm = '0'+mm }
-            if(ss < 10){ ss = '0'+ss }
-
-            let time = (`${hh}: ${mm}: ${ss}`);
-            tempInic++; // Incrementar o tempo a cada execução
-
-            document.getElementById("timer").innerHTML = time;
+            inputQtdMax.value = msg
         }
-
     });
 })

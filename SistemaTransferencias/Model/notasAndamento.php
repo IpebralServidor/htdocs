@@ -11,7 +11,7 @@ $tsql = "SELECT
             CODUSU
         FROM TGFCAB 
         WHERE CODTIPOPER = 1300 
-          AND AD_PEDIDOECOMMERCE = 'TRANSF_NOTA'
+          AND AD_PEDIDOECOMMERCE = 'TRANSF_NOTA_TRANSFERENCIAS'
           AND STATUSNOTA = 'A'
         ORDER BY DTNEG DESC";
 $stmt = sqlsrv_query( $conn, $tsql);
