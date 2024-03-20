@@ -1,18 +1,18 @@
+//Crie um evento que ao perder o foco do input de código de produto, execute o código abaixo:
 
-//Crie um evento que ao perder o foco do input de código de produto, execute o código AJAX abaixo:
+const inputProduto = //Implemente uma forma de preencher a variável "inputProduto" com o valor do input de produto
 
-const inputProduto = //Implemente uma forma de preencher a variável "inputProduto" com o valor do input criado
-
-// O método $.ajax(); é o responsável pela requisição
 $.ajax
 ({
     //Configurações
     type: 'POST',
     dataType: 'html',
+    //endereco da procedure PHP
     url: './procedures/imagemProduto.php',
     beforeSend: function () {
     },
-    data: {referencia: inputProduto.value},
+    //nome e valores das variáveis que serão recebidas via POST na procedure PHP
+    data: {referencia: inputProduto},
     //função que será executada quando a solicitação for finalizada.
     success: function (msg)
     {
