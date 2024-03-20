@@ -5,12 +5,12 @@ document.getElementById("botaoTimer").addEventListener("click", ()=>{
     if(botao.classList.contains("fa-pause")){
         botao.classList.remove("fa-pause")
         botao.classList.add("fa-play")
-        farol.style.backgroundColor = "yellow"
+        farol.style.backgroundColor = "#FDE512"
         pausarIniciarContagem('A', botao.getAttribute('data-id'))
     }else{
         botao.classList.add("fa-pause")
         botao.classList.remove("fa-play")
-        farol.style.backgroundColor = "green"
+        farol.style.backgroundColor = "#228B22"
         pausarIniciarContagem('P', botao.getAttribute('data-id'))
     }
 })

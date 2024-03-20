@@ -43,86 +43,97 @@ $varStatus = $rowStatus[0];
         <header>
             <div class="timer">
                 <span class="timer-color" id="timer-color">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
-                <div id="timer"> 00:00:00 </div>&nbsp;&nbsp;
+                <div class="fw-bold" id="timer"> 00:00:00 </div>&nbsp;&nbsp;
                 <div class="div-playPause">
                     <i id="botaoTimer" class="fa-solid fa-pause" data-id="<?php echo $_GET['nunota'] ?>"></i>
                 </div>
             </div>
 
-            <div class="tipoNota">
-                <span>Transferência</span>
+            <div class="tipoNota fw-bold">
+                <span>Nº nota: <?php echo $nunota ?></span>
             </div>
         </header>
 
         <main>
-            <div class="infoNota">
-                <span>Agrupamento mínimo: 20</span>
-                <span>Número da nota: 20</span>
-            </div>
             <div class="header-body">
                 <div style="width: 100%">
-                    <div class="mb-3 d-flex justify-content-center align-items-center">
-                        <label for="endereco" class="form-label" style="width: 10rem !important;">Endereço:</label>
+                    <div class="mb-1">
+                        <label for="endereco" class="form-label">Endereço <span style="color: red">*</span> </label>
                         <input type="number" class="form-control" id="endereco">
                     </div>
-                    <div class="mb-3 d-flex justify-content-center align-items-center">
-                        <label for="endereco" class="form-label" style="width: 10rem !important;">Referência:</label>
+                    <div class="mb-1">
+                        <label for="endereco" class="form-label">Referência <span style="color: red">*</span></label>
                         <input type="text" class="form-control" id="referencia">
                     </div>
-                    <div class="mb-3 d-flex">
-                        <label for="endereco" class="form-label" style="width: 10rem !important;">Quantidade:</label>
-                        <input type="number" class="form-control" id="quantidade">
-                    </div>
-                    <div class="mb-3 d-flex">
-                        <label for="lote" class="form-label" style="width: 10rem !important;">Lote:</label>
+                    <div class="mb-1">
+                        <label for="lote" class="form-label">Lote:</label>
                         <input type="text" class="form-control" id="lote">
                     </div>
-                    <div class="mb-3 d-flex">
-                        <label for="qtdMax" class="form-label" style="width: 10rem !important;">Qtd Máx Local:</label>
-                        <input type="number" class="form-control" id="qtdMax">
+                    <div  class="row">
+                        <div class="mb-1 col-6">
+                            <label for="endereco" class="form-label">Quantidade <span style="color: red">*</span></label>
+                            <input type="number" class="form-control" id="quantidade">
+                        </div>
+                        <div class="mb-1 col-6">
+                            <label for="qtdMax" class="form-label">Qtd Máx Local <span style="color: red">*</span></label>
+                            <input type="number" class="form-control" id="qtdMax">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mt-3 image d-flex justify-content-center" id="imagemproduto">
+                            <?php
+                            $tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
+                            $stmt2 = sqlsrv_query( $conn, $tsql2);
+
+                            if($stmt2){
+                                $row_count = sqlsrv_num_rows( $stmt2 );
+
+                                while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
+                                {
+                                    echo '<img style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="data:image/jpeg;base64,'.base64_encode($row2[0]).'"/>';
+                                }
+                            }
+                            ?>
+                        </div>
+
+                        <div class="col-6 mt-3">
+                            <div class="form-control" style="font-size: 10px !important;">
+                                <div>
+                                    <span class="fw-bold">Est. mín: </span><span id="estMin">0</span>
+                                </div>
+                                <div>
+                                    <span class="fw-bold">Qtd. loc. padrão: </span><span id="qtdEstPad">0</span>
+                                </div>
+<!--                                <div>-->
+<!--                                    <span class="fw-bold">Med. venda: </span><span id="medVend">0</span>-->
+<!--                                </div>-->
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="mt-3 image d-flex justify-content-center" id="imagemproduto">
-                <?php
-                    $tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
-                    $stmt2 = sqlsrv_query( $conn, $tsql2);
 
-                    if($stmt2){
-                        $row_count = sqlsrv_num_rows( $stmt2 );
-
-                        while( $row2 = sqlsrv_fetch_array( $stmt2, SQLSRV_FETCH_NUMERIC))
-                        {
-                            echo '<img style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="data:image/jpeg;base64,'.base64_encode($row2[0]).'"/>';
-                        }
-                    }
-                ?>
             </div>
 
             <div class="mt-5 w-100 d-flex justify-content-center align-items-center">
-                <button id="inserirProdutoBtn" class="btn btn-primary w-75">Próximo</button>
+                <button id="inserirProdutoBtn" class="btn btn-primary w-75">Inserir Produto</button>
             </div>
         </main>
-
-        <footer>
-<!--            <button id="registrarOcorrencia" class="btn btn-primary w-75">Próximo</button>-->
-        </footer>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
     <script src="../Controller/calcularTimer.js"></script>
     <script src="../Controller/botaoTimer.js"></script>
     <script src="../Controller/imagemProduto.js"></script>
     <script src="../Controller/inserirProduto.js"></script>
     <script src="../Controller/alterarMaxLocal.js"></script>
+    <script src="../Controller/buscaInfoProduto.js"></script>
     <script>
         document.getElementById("body").onload = function() {
+
             calcularTempo(<?php echo $_GET['nunota']; ?>);
 
             let statusPausa = "<?php echo $varStatus; ?>"
