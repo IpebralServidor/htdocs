@@ -12,7 +12,7 @@ $tsql = "SELECT
         FROM TGFCAB 
         WHERE CODTIPOPER = 1300 
           AND AD_PEDIDOECOMMERCE = 'TRANSF_NOTA_TRANSFERENCIAS'
-          AND STATUSNOTA = 'A'
+          AND STATUSNOTA <> 'L'
         ORDER BY DTNEG DESC";
 $stmt = sqlsrv_query( $conn, $tsql);
 

@@ -5,6 +5,9 @@ require_once '../App/auth.php';
 $nunota = $_GET['nunota'];
 $codusu = $_SESSION['idUsuario'];
 
+$tsqlCheckin= "EXEC [sankhya].[AD_STP_CHECKIN_PHP] $codusu, $nunota";
+$stmtCheckin = sqlsrv_query( $conn, $tsqlCheckin);
+
 $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota, $codusu)";
 $stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
 $rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
@@ -30,13 +33,27 @@ $varStatus = $rowStatus[0];
         <img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
     </div>
 
-    <?php include '../Components/popUp.php' ?>
+<!--    <div class="alert alert-warning alert-dismissible fade show" role="alert">-->
+<!--        <strong>Holy guacamole!</strong> You should check in on some of those fields below.-->
+<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </div>-->
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none"></button>
-
-    <div class="alert alert-warning alert-dismissible fade d-none show m-3" role="alert" id="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong id="alertText"></strong>
+    <div class="collapse" id="tableCollapse">
+        <div class="card card-body">
+            <table class="table tableProdutos">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Referência</th>
+                        <th scope="col">Local</th>
+                        <th scope="col">Controle</th>
+                        <th scope="col">Qtd.</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaProdutosInseridos"></tbody>
+            </table>
+        </div>
     </div>
 
     <div class="page">
@@ -47,6 +64,12 @@ $varStatus = $rowStatus[0];
                 <div class="div-playPause">
                     <i id="botaoTimer" class="fa-solid fa-pause" data-id="<?php echo $_GET['nunota'] ?>"></i>
                 </div>
+            </div>
+
+            <div id="setaDownDiv" class="setaDown fw-bold" data-toggle="collapse" data-target="#tableCollapse" aria-expanded="false" aria-controls="tableCollapse">
+                <span>
+                    <i id="setaDown" class="fa-solid fa-caret-down"></i>
+                </span>
             </div>
 
             <div class="tipoNota fw-bold">
@@ -120,17 +143,13 @@ $varStatus = $rowStatus[0];
             </div>
         </main>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="../Controller/calcularTimer.js"></script>
     <script src="../Controller/botaoTimer.js"></script>
     <script src="../Controller/imagemProduto.js"></script>
     <script src="../Controller/inserirProduto.js"></script>
     <script src="../Controller/alterarMaxLocal.js"></script>
     <script src="../Controller/buscaInfoProduto.js"></script>
+    <script src="../Controller/onLoadBody.js"></script>
     <script>
         document.getElementById("body").onload = function() {
 
@@ -142,5 +161,10 @@ $varStatus = $rowStatus[0];
             }
         };
     </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script></body>
+
 </body>
 </html>
