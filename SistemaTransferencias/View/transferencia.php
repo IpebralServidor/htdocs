@@ -13,6 +13,15 @@ $stmtStatus = sqlsrv_query( $conn, $tsqlStatus);
 $rowStatus = sqlsrv_fetch_array( $stmtStatus, SQLSRV_FETCH_NUMERIC);
 $varStatus = $rowStatus[0];
 
+$tsqlStatusNota = "SELECT STATUSNOTA FROM TGFCAB WHERE NUNOTA = $nunota";
+$stmtStatusNota = sqlsrv_query( $conn, $tsqlStatusNota);
+$rowStatusNota = sqlsrv_fetch_array( $stmtStatusNota, SQLSRV_FETCH_NUMERIC);
+$varStatusNota = $rowStatusNota[0];
+
+if($varStatusNota == 'L'){
+    header('Location: ../index.html');
+}
+
 ?>
 
 <!doctype html>
@@ -33,12 +42,16 @@ $varStatus = $rowStatus[0];
         <img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
     </div>
 
-<!--    <div class="alert alert-warning alert-dismissible fade show" role="alert">-->
-<!--        <strong>Holy guacamole!</strong> You should check in on some of those fields below.-->
-<!--        <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
-<!--            <span aria-hidden="true">&times;</span>-->
-<!--        </button>-->
-<!--    </div>-->
+    <?php include '../Components/popUp.php'?>
+    <?php include '../Components/confirmarNota.php'?>
+    <?php include '../Components/confirmarEndereco.php'?>
+
+    <div class="alert alert-success fade show d-none" id="alertMessage">
+        <div class="d-flex align-items-start gap-3">
+            <i class="close fa-solid fa-xmark" id="closeIcon"></i>
+            <strong id="msgAlert"></strong>
+        </div>
+    </div>
 
     <div class="collapse" id="tableCollapse">
         <div class="card card-body">
@@ -49,6 +62,8 @@ $varStatus = $rowStatus[0];
                         <th scope="col">Local</th>
                         <th scope="col">Controle</th>
                         <th scope="col">Qtd.</th>
+                        <!--Edson pediu para retirar a função de excluir item no dia 26/03/2024 -->
+                        <!--<th scope="col">Ações</th> -->
                     </tr>
                 </thead>
                 <tbody id="tabelaProdutosInseridos"></tbody>
@@ -122,14 +137,8 @@ $varStatus = $rowStatus[0];
                         <div class="col-6 mt-3">
                             <div class="form-control" style="font-size: 10px !important;">
                                 <div>
-                                    <span class="fw-bold">Est. mín: </span><span id="estMin">0</span>
+                                    <span class="fw-bold">Qtd.local retirada : </span><span id="locRet">0</span>
                                 </div>
-                                <div>
-                                    <span class="fw-bold">Qtd. loc. padrão: </span><span id="qtdEstPad">0</span>
-                                </div>
-<!--                                <div>-->
-<!--                                    <span class="fw-bold">Med. venda: </span><span id="medVend">0</span>-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -139,7 +148,10 @@ $varStatus = $rowStatus[0];
             </div>
 
             <div class="mt-5 w-100 d-flex justify-content-center align-items-center">
-                <button id="inserirProdutoBtn" class="btn btn-primary w-75">Inserir Produto</button>
+                <button id="inserirProdutoBtn" class="btn btn-primary w-75 fw-bold">Inserir Produto</button>
+            </div>
+            <div class="mt-2 w-100 d-flex justify-content-center align-items-center">
+                <button data-toggle="modal" data-target="#modalConfirmaNota" id="inserirProdutoBtn" class="btn btn-primary w-75 fw-bold" style="background-color: red !important; border-color: red !important;">Confirmar nota</button>
             </div>
         </main>
     </div>
@@ -150,6 +162,9 @@ $varStatus = $rowStatus[0];
     <script src="../Controller/alterarMaxLocal.js"></script>
     <script src="../Controller/buscaInfoProduto.js"></script>
     <script src="../Controller/onLoadBody.js"></script>
+    <script src="../Controller/confirmarNota.js"></script>
+    <script src="../Controller/confirmarEndereco.js"></script>
+    <script src="../Controller/padraoJs.js"></script>
     <script>
         document.getElementById("body").onload = function() {
 

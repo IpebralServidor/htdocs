@@ -1,12 +1,10 @@
-document.getElementById("referencia").addEventListener("focusout",() =>{
-    const estMin = document.getElementById("estMin")
-    const qtdEstPad = document.getElementById("qtdEstPad")
-    const medVend = document.getElementById("medVend")
-    const referencia = document.getElementById("referencia")
+const referencia = document.getElementById("referencia")
+const localRet = document.getElementById("locRet")
+const urlParams = new URLSearchParams(window.location.search)
+const nunota = urlParams.get("nunota")
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const nunota = urlParams.get("nunota")
-
+document.getElementById("quantidade").addEventListener("input",() =>{
+    let qtd = document.getElementById("quantidade")
     $.ajax
     ({
         type: 'POST',
@@ -19,9 +17,8 @@ document.getElementById("referencia").addEventListener("focusout",() =>{
         {
             let res = msg.split('|')
 
-            estMin.textContent = res[0]
-            qtdEstPad.textContent = res[1]
-            // medVend.textContent = res[2]
+            let value = parseFloat(res[1]) - qtd.value
+            localRet.textContent = value.toString()
         }
     });
 })

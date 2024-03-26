@@ -9,6 +9,7 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
     // const alert = document.getElementById("alert")
     // const alertText = document.getElementById("alertText")
     const gif = document.getElementById("loader")
+    const msgAlert = document.getElementById("msgAlert")
     const urlParams = new URLSearchParams(window.location.search)
     const nunota = urlParams.get("nunota")
 
@@ -28,8 +29,15 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
         data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value, qtdMaxLocal: inputQtdMaxLocal.value},
         success: function (msg)
         {
+            const alertMessage = document.getElementById("alertMessage")
+
             if(msg == 'Produto adicionado com sucesso!'){
-                alert(msg)
+                alertMessage.classList.remove("d-none")
+                alertMessage.classList.add("d-block")
+
+                alertMessage.classList.remove("alert-danger")
+                alertMessage.classList.add("alert-success")
+                msgAlert.textContent = msg
 
                 inputReferencia.value = ''
                 inputQuantidade.value = ''
@@ -38,7 +46,13 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
                 inputQtdMaxLocal.value = ''
 
             }else{
-                alert(msg)
+                alertMessage.classList.remove("d-none")
+                alertMessage.classList.add("d-block")
+
+                alertMessage.classList.remove("alert-success")
+                alertMessage.classList.add("alert-danger")
+
+                msgAlert.textContent = msg
             }
         }
     });
