@@ -91,7 +91,7 @@ main{
     width: 85%;
     background-color: white !important;
     border-radius: 9px;
-    margin-top: 20px;
+    margin-top: 5px;
     display: flex;
     gap: 7%;
     flex-wrap: wrap;
@@ -139,10 +139,70 @@ main{
 .setaDownDiv{
     transition: all 0.45s !important;
 }
+.card-body{
+    padding: 0px !important;
+}
 .tableProdutos{
+    text-align: center;
+}
+.tableProdutos th{
+    background-color: #2d4a57 !important;
+    color: white;
+}
+.tableProdutos tr{
+    font-size: 14px;
+    font-weight: 600;
+    vertical-align: baseline !important;
 }
 #inserirProdutoBtn{
     background-color: var(--color-pad) !important;
     border-color: var(--color-pad) !important;
     border-radius: 11px !important;
+}
+.alert{
+    box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    font-size: 13px;
+}
+.divDeleteProd{
+    padding: 5px;
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid red;
+    color: white;
+}
+.btnAlterarMaxLocal{
+    background-color: var(--color-pad) !important;
+    border-color: var(--color-pad) !important;
+    width: 50%;
+}
+.closePopUp{
+    background-color: red !important;
+    border-color: red !important;
+    width: 50%;
+}
+.contItens{
+    background-color: white;
+    border-radius: 3px;
+    color: black;
+    padding: 1px;
+}
+.qtdItens{
+    align-self: flex-start;
+    display: flex;
+    background-color: white;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
 }

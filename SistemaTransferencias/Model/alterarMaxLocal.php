@@ -11,6 +11,8 @@ $tsqlSlctLocPad = " SELECT AD_QTDMAXLOCAL FROM TGFPEM
 $stmtSlctLocPad = sqlsrv_query( $conn, $tsqlSlctLocPad);
 $rowSlctLocPad = sqlsrv_fetch_array($stmtSlctLocPad, SQLSRV_FETCH_NUMERIC);
 
+if(isset($rowSlctLocPad[0])){
+    $rowSlctLocPad[0] = 0;
+}
 echo $rowSlctLocPad[0];
-
 ?>
