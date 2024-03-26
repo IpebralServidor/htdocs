@@ -129,26 +129,6 @@ else
 	<div id="loader" style="display: none;">
 		<img style=" width: 150px;" src="images/soccer-ball-joypixels.gif">
 	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				...
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
-			</div>
-			</div>
-		</div>
-	</div>
 
 	<div id="popupconf" class="popupconf">
 		<?php 
@@ -308,7 +288,7 @@ else
 			$dtfim = str_replace("-","",$_POST["dtfim"]);
 
 			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_ADMIN_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf, $empresa, '$dtinicio', '$dtfim') ORDER BY CODTIPOPER, STATUSSEP, NUNOTA";
-
+			
 			}
 
 			$stmt2 = sqlsrv_query( $conn, $tsql2);  
