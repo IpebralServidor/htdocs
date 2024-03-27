@@ -12,6 +12,7 @@
 
 	$a = array(2, 3274, 3266, 42, 7257, 106);
 	$b = array(3274, 2, 3149, 3287, 3276);
+	$c = array(3274, 3134);
 
 	$tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 	$stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
@@ -200,26 +201,16 @@
 							<span>Transferências</span>
 						</div>
 					</a>
-
-                    <a href="./SistemaTransferencias" class="card">
-                        <div class="padding">
-                            <div class="icon-card">
-                                <i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
-                            </div>
-                            <span>Transferências avulsas</span>
-                        </div>
-                    </a>
-
-					<?php if (in_array($usuconf, $b, true)) { ?>
-						<a href="./SistemaReabastecimentoHomol" class="card">
-							<div class="padding">
-								<div class="icon-card">
-									<i class="fa-solid fa-right-left" style="background-color: #3cd856"></i>
-								</div>
-								<span>Transferências Homol</span>
+					
+					<a href="./SistemaTransferencias" class="card">
+						<div class="padding">
+							<div class="icon-card">
+								<i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
 							</div>
-						</a>
-					<?php } ?>
+							<span>Transferências avulsas</span>
+						</div>
+					</a>
+
 				</div>
 			</div>
 

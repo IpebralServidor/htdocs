@@ -7,7 +7,6 @@ $codbarra = $_POST['codigobarra'];
 //echo $nunota." ".$codbarra;
 
 $tsql = "EXEC [sankhya].[AD_STP_INSERIR_PENDENCIA] $nunota, '$codbarra'";
-//var_dump($tsql);
 
 $stmt = sqlsrv_query($conn, $tsql); 
 

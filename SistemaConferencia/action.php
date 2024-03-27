@@ -27,7 +27,5 @@ $controle = $_POST['controle'];
             "; 
     $stmt3 = sqlsrv_query( $conn, $tsql3);
 
-    //echo "Itens excluídos com sucesso!";
-
 
 ?>

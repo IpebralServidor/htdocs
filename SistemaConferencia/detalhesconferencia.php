@@ -255,23 +255,28 @@
 		{ $QtdDivergencias = $row2[0];
 		}
 
-		$tsql3 = "  select COUNT(*)
-					from TGFITE inner join
-							TGFCAB ON TGFCAB.NUNOTA = TGFITE.NUNOTA LEFT JOIN
-							TGFCOI2 on TGFCOI2.NUCONF = TGFCAB.NUCONFATUAL
-								AND TGFCOI2.CODPROD = TGFITE.CODPROD INNER JOIN
-							TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
-					where TGFITE.NUNOTA = '{$nunota2}'
-						and ISNULL(TGFCOI2.QTDCONF,0) <> TGFITE.QTDNEG
+		$tsql3 = " select isnull(COUNT(1), 0)
+		from TGFITE inner join
+				TGFCAB ON TGFCAB.NUNOTA = TGFITE.NUNOTA LEFT JOIN
+				TGFCOI2 on TGFCOI2.NUCONF = TGFCAB.NUCONFATUAL
+					AND TGFCOI2.CODPROD = TGFITE.CODPROD INNER JOIN
+				TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
+		where TGFITE.NUNOTA = '{$nunota2}'
+		group by tgfite.codprod, ISNULL(TGFCOI2.QTDCONF,0)
+			having ISNULL(TGFCOI2.QTDCONF,0) <> sum(TGFITE.QTDNEG)
 				";
 
 		$stmt3 = sqlsrv_query( $conn, $tsql3);
 
 		while( $row2 = sqlsrv_fetch_array( $stmt3, SQLSRV_FETCH_NUMERIC))
-		{ $QtdDivCorte = $row2[0];
+		{ 
+			$QtdDivCorte = $row2[0];
 		}
 
-		//echo '<h4> '.$QtdDivergencias.'</h4>	';
+		if(empty($QtdDivCorte)){
+			$QtdDivCorte = 0;
+		}
+
 	?>
 
 	<script type="text/javascript">
@@ -330,7 +335,7 @@
 	function confirmar_conf() {
 		//var result = confirm("Tem certeza que deseja confirmar essa conferência?");
         //if(result){
-        	if(<?php echo $QtdDivCorte ?> > 0 || <?php echo $QtdPendente ?> > 0){
+        	if(<?php echo $QtdDivCorte; ?> > 0 || <?php echo $QtdPendente ?> > 0){
 	        	abrirconfdivcorte();
 	            return true;
         	} else if (<?php echo $QtdDivergencias ?> == 0){ 
@@ -338,7 +343,7 @@
 				return true;
 			} else {
         		abrirconfdivergencia();
-            return true;
+            	return true;
         	}
         // }else{
         //     return false;
@@ -621,6 +626,7 @@
 				<div style=" width: 98%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
 					<table width="98%" border="1px" style="margin-top: 5px; margin-left: 7px;" id="table">
 						  <tr>
+						  	<th width="10.6%" >Sequencia</th>
 						    <th width="10.6%" >Referência</th>
 						    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 						    <th width="10.6%" align="center">Complemento</th>
@@ -631,7 +637,7 @@
 
 
 						  <?php
-							$tsql2 = "select * from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2)";
+							$tsql2 = "select * from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2) order by SEQCONF DESC";
 
 							$stmt2 = sqlsrv_query( $conn, $tsql2);
 
@@ -642,11 +648,12 @@
 							  <tr style="cursor: hand; cursor: pointer;">
 							   <tr>
 							    <td width="10.6%" ><?php echo $row2[0]; ?>&nbsp;</td>
-							    <td width="36.6%"><?php echo $row2[1]; ?>&nbsp;</td>
-							    <td width="10.6%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
-							    <td width="12.6%" align="center"><?php echo $row2[3]; ?></td>
+							    <td width="10.6%" ><?php echo $row2[1]; ?>&nbsp;</td>
+							    <td width="36.6%"><?php echo $row2[2]; ?>&nbsp;</td>
+							    <td width="10.6%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
 							    <td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
-							    <td width="16.6%" align="center"><?php echo $row2[5]; ?></td>
+							    <td width="12.6%" align="center"><?php echo $row2[5]; ?></td>
+							    <td width="16.6%" align="center"><?php echo $row2[6]; ?></td>
 							  </tr></a>
 
 						<?php
@@ -827,10 +834,10 @@
 				echo $QtdConferidos;
 			?>
 		
-		<form name="bulk_action_form" action="action.php" method="post" onSubmit="return delete_confirm();" />
+		<form name="bulk_action_form" onSubmit="return delete_confirm();" >
 			<div style="overflow: auto; height: 85.5%; width: 109.5%;" id="itensconferidos">
 				<?php
-					$tsql2 = "SELECT * FROM [sankhya].[AD_FNT_ITENS_CONFERIDOS_CONFERENCIA]($nunota2)";
+					$tsql2 = "SELECT * FROM [sankhya].[AD_FNT_ITENS_CONFERIDOS_CONFERENCIA]($nunota2) ORDER BY SEQCONF DESC ";
 					$stmt2 = sqlsrv_query( $conn, $tsql2);
 				?>
 				
@@ -848,7 +855,7 @@
 
 						echo "<tr>"; ?>
 						<td align='center' width='1%'>
-							<input type='checkbox' class='checkbox' data-ref='<?php echo $row2[1]; ?>' data-parent='<?php echo $row2[6]; ?>'/> 
+							<input type='checkbox' class='checkbox' data-ref='<?php echo $row2[2]; ?>' data-parent='<?php echo $row2[7]; ?>'/> 
 						</td>
 						
 						<?php	foreach ($row2 as $value) {
@@ -1013,7 +1020,7 @@
 
 						<!-- Pesquisa o Número da Nota no Banco para que sejam retornados os itens -->
 			<?php
-				$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_ITENS_PEDIDO]($nunota2)";
+				$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_ITENS_PEDIDO]($nunota2) ORDER BY SEQUENCIA";
 
 				$stmt2 = sqlsrv_query( $conn, $tsql2);
 

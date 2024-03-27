@@ -45,7 +45,9 @@
 					//função que será executada quando a solicitação for finalizada.
 					success: function (msg)
 					{
-						if(msg.length <= 10){
+						if(msg == 'errado'){
+							alert('Fature a nota pelo SANKHYA')
+						} else if(msg.length <= 10){
 							window.location.href='detalhesconferencia.php?nunota=' + msg +'&codbarra=0';
 						} else {
 							alert(msg);

@@ -5,7 +5,7 @@ $erro = false;
 $stmt ="";
 
 //Configuracoes do servidor SQL Server 
-$serverName = "SERVER-BD"; 
+$serverName = "10.0.0.229"; 
 $uid = "sankhya";   
 $pwd = "tecsis";  
 $databaseName = "SANKHYA_PROD"; 

@@ -67,6 +67,7 @@ $tipoNota = $row[0];
 		}
 		function abrirInsereEndereco(){
 			document.getElementById('popupInserirEndereco').style.display = 'flex';
+			document.getElementById('enderecotemp').value = ''
 		}
 		function fecharInsereEndereco(){
 			document.getElementById('popupInserirEndereco').style.display =  'none';

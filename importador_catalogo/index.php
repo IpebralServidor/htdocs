@@ -76,7 +76,7 @@
 			} elseif ($qtd_produto === 0 ) {
 				echo "Erro: Não foi encontrado produtos neste pedido.";
 			} else {
-		    	$serverName = "SERVER-BD"; 
+		    	$serverName = "10.0.0.229"; 
 				$uid = "sankhya";   
 				$pwd = "tecsis";  
 				$databaseName = "SANKHYA_PROD"; 
