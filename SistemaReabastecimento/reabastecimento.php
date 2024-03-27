@@ -3,12 +3,6 @@
     require_once '../App/auth.php';
 
     $corTipoNota = '';
-    
-    $enderecoInit = $_SESSION['enderecoInit'];
-    $enderecoFim = $_SESSION['enderecoFim'];
-
-    echo $_SESSION['enderecoInit'];
-    echo " / " .$_SESSION['enderecoFim'];
 
     $nunota2 = $_REQUEST["nunota"];
     $codusu = $_SESSION["idUsuario"];
@@ -22,21 +16,27 @@
     if($tipoNota == 'A'){
         $enderecoInit = 0;
         $enderecoFim = 0;
+    }else{
+        $enderecoInit = $_SESSION['enderecoInit'];
+        $enderecoFim = $_SESSION['enderecoFim'];
     }
+
+    echo $enderecoInit;
+    echo " / " .$enderecoFim;
 
     $tsqlNotaVinculo = "SELECT [sankhya].[AD_FN_VINCULO_NOTA_REABASTECIMENTO] ($nunota2)";
     $stmtNotaVinculo = sqlsrv_query( $conn, $tsqlNotaVinculo);
     $rowNotaVinculo = sqlsrv_fetch_array( $stmtNotaVinculo, SQLSRV_FETCH_NUMERIC);
 
-    $tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO] ($nunota2, $enderecoInit, $enderecoFim)";
+    $tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO_2] ($nunota2, $enderecoInit, $enderecoFim)";
     $stmt = sqlsrv_query( $conn, $tsql);
     $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC);
 
-    $tsqlPdtAtual = "SELECT [sankhya].[AD_FN_PRODUTO_ATUAL_REABASTECIMENTO] ($nunota2, $codusu)";
+    $tsqlPdtAtual = "SELECT [sankhya].[AD_FN_PRODUTO_ATUAL_REABASTECIMENTO_2] ($nunota2, $codusu)";
     $stmtPdtAtual = sqlsrv_query( $conn, $tsqlPdtAtual);
     $rowPdtAtual = sqlsrv_fetch_array( $stmtPdtAtual, SQLSRV_FETCH_NUMERIC);
 
-    $tsqlPdSemFiltro = "SELECT AD_CODUSUBIP FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO_SEM_FILTRO] ($nunota2)";
+    $tsqlPdSemFiltro = "SELECT AD_CODUSUBIP FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO_SEM_FILTRO_2] ($nunota2)";
     $stmtPdSemFiltro = sqlsrv_query( $conn, $tsqlPdSemFiltro);
     $rowPdSemFiltro = sqlsrv_fetch_array( $stmtPdSemFiltro, SQLSRV_FETCH_NUMERIC);
 
