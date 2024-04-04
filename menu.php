@@ -119,7 +119,7 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 						</div>
 					</a>
 
-					<a href="./ConsultaEstoque" class="card">
+					<a href="./ConsultaEstoque/View" class="card">
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-boxes-packing" style="background-color: #3cd856"></i>
