@@ -630,9 +630,10 @@
 						    <th width="10.6%" >Referência</th>
 						    <th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 						    <th width="10.6%" align="center">Complemento</th>
-						    <th width="12.6%" align="center">Controle</th>
+						    <th width="10.6%" align="center">Controle</th>
 						    <th width="12.6%" align="center">Qtd. Conferida</th>
 						    <th width="16.6%" align="center">Qtd. Pedido</th>
+						    <th width="16.6%" align="center">Qtd. Abast 174X</th>
 						  </tr>
 
 
@@ -654,6 +655,7 @@
 							    <td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
 							    <td width="12.6%" align="center"><?php echo $row2[5]; ?></td>
 							    <td width="16.6%" align="center"><?php echo $row2[6]; ?></td>
+							    <td width="16.6%" align="center"><?php echo $row2[7]; ?></td>
 							  </tr></a>
 
 						<?php
