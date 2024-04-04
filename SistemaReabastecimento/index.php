@@ -2,6 +2,9 @@
 include "../conexaophp.php";
 require_once '../App/auth.php';
 
+$_SESSION['enderecoInit'] = 0;
+$_SESSION['enderecoFim'] = 0;
+
 ?>
 
 <!DOCTYPE html>
