@@ -13,13 +13,8 @@
     $_SESSION['tipoNota'] = $rowTipoNota[0];
     $tipoNota = $rowTipoNota[0];
 
-    if($tipoNota == 'A'){
-        $enderecoInit = 0;
-        $enderecoFim = 0;
-    }else{
-        $enderecoInit = $_SESSION['enderecoInit'];
-        $enderecoFim = $_SESSION['enderecoFim'];
-    }
+    $enderecoInit = $_SESSION['enderecoInit'];
+    $enderecoFim = $_SESSION['enderecoFim'];
 
     echo $enderecoInit;
     echo " / " .$enderecoFim;
@@ -41,7 +36,7 @@
     $rowPdSemFiltro = sqlsrv_fetch_array( $stmtPdSemFiltro, SQLSRV_FETCH_NUMERIC);
 
     if($rowPdtAtual[0] == 0){
-        if(empty($rowPdSemFiltro[0]) && $row[0] != 0){
+        if(empty($rowPdSemFiltro[0]) && $row[0] != 0 && $tipoNota != "A"){
             $tsqlUpdate = "UPDATE TGFITE SET AD_CODUSUBIP = $codusu WHERE NUNOTA = ($nunota2) AND ABS(SEQUENCIA) = $row[0]";
             $stmtUpdate = sqlsrv_query( $conn, $tsqlUpdate);
         }else{
@@ -431,7 +426,7 @@
                     <div class="input-h6">
                         <h6>Referência:</h6> 
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()"> 
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()"> <!-- " onblur="finalizarMedicao2()" --> 
                 </div>
             
                 <div class="d-flex justify-content-center align-items-center">
@@ -561,16 +556,16 @@
             tempoInicial = new Date();
         }
 
-        function finalizarMedicao2() {
+        // function finalizarMedicao2() {
 
-            tempoFinal = new Date();
-            var tempoDecorrido = tempoFinal - tempoInicial;
+        //     tempoFinal = new Date();
+        //     var tempoDecorrido = tempoFinal - tempoInicial;
 
-            if(tempoDecorrido > 250){
-                abrirReferencia()
-                document.getElementById('referencia').value = null
-            }
-        }
+        //     if(tempoDecorrido > 250){
+        //         abrirReferencia()
+        //         document.getElementById('referencia').value = null
+        //     }
+        // }
 
     </script>
     <script>
@@ -855,19 +850,14 @@
 
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").placeholder;
-
-            let endereco = document.getElementById("endereco").value
-
-			if("<?php echo $rowEhTransf[0] ?>" == "TRANSF_CD5"){
-				endereco = document.getElementById("endereco").val
-			}
+            var enderecoClick = document.getElementById("endereco").value
 
             if((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP'){
                 alert('Esta nota não é possível passar quantidade a mais!')
             }else if((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S'){
                 $('#btnProximo').click();
             }else{
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), endereco,'')
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick,'')
             }
            
         });
@@ -1130,13 +1120,14 @@
 
             if(ehTransf == "TRANSF_CD5" && tipoNota == "S"){
                 endereco.disabled = true
-                endereco.val = "5069900"
+                endereco.value = "5069900"
                 endereco.placeholder = "5069900"
             }
         }
 
         function retornainfoprodutos(nunota, referencia)
         {
+            
             $.ajax
             ({
                 //Configurações
@@ -1199,6 +1190,15 @@
                             produtoseq = retorno[8]
                             
                             imagemproduto(retorno[0]);
+
+                            tempoFinal = new Date();
+                            var tempoDecorrido = tempoFinal - tempoInicial;
+
+                            if(tempoDecorrido > 1000){
+                                abrirReferencia()
+                                document.getElementById('referencia').value = null
+                                document.getElementById('referencia').placeholder = ''
+                            }
                         }
                     }
                 }
