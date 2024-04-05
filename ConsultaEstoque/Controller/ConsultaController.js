@@ -39,7 +39,6 @@ const atualizarNovoValor = () => {
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
         success: function(msg) {
-            document.getElementById('fecharModal').click();
             location.reload();
         }
     });
