@@ -113,8 +113,7 @@ $referencia = $_POST['REFERENCIA'];
 					<th>
 						Pad./Máx.
 					</th>
-					<th>Controle</th>
-					<th class="border-top-right-radius">Ação</th>
+					<th class="border-top-right-radius">Controle</th>
 				</tr>
 
 				<?php
@@ -129,23 +128,29 @@ $referencia = $_POST['REFERENCIA'];
 						<td style="width: 50%"><?php echo $row2['CODLOCAL']; ?></td>
 						<td><?php echo $row2['ESTOQUE']; ?></td>
 						<td><?php echo $row2['RESERVADO']; ?></td>
-						<td><?php echo $row2['PADRAO_QTDMAX']; ?></td>
-						<td><?php echo $row2['CONTROLE'] ?></td>
 						<td>
-							<?php $pattern = "/X/";
-							$codLocalPad = $row2['CODLOCAL'];
-							$codEmp = $row2['CODEMP'];
-							$qtdMax = $row2['PADRAO_QTDMAX'];
-							if (preg_match($pattern, $row2['PADRAO_QTDMAX']) === 1) {
-								echo  "<span id='editMaxBtn' data-toggle='modal' data-target='#editModal' onclick='openEditModal($rowId)'>";
-								echo "<i class='fa-solid fa-pen-to-square' style='color: #f00511'></i>";
-								echo "</span>";
-							} else {
-								echo '';
-							};
+							<div class="d-flex justify-content-between" style="background-color: transparent !important">
+								<div style="text-align: left">
+									<?php echo $row2['PADRAO_QTDMAX']; ?>
+								</div>
+								<div style="text-align: right">
+									<?php $pattern = "/X/";
+									$codLocalPad = $row2['CODLOCAL'];
+									$codEmp = $row2['CODEMP'];
+									$qtdMax = $row2['PADRAO_QTDMAX'];
+									if (preg_match($pattern, $row2['PADRAO_QTDMAX']) === 1) {
+										echo  "<span id='editMaxBtn' data-toggle='modal' data-target='#editModal' onclick='openEditModal($rowId)'>";
+										echo "<i class='fa-solid fa-pen' style='color: #d80e0e;'></i>";
+										echo "</span>";
+									} else {
+										echo '';
+									};
 
-							?>
+									?>
+								</div>
+							</div>
 						</td>
+						<td><?php echo $row2['CONTROLE'] ?></td>
 					</tr>
 				<?php } ?>
 			</table>
@@ -153,23 +158,21 @@ $referencia = $_POST['REFERENCIA'];
 		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="editModalLabel">Editar quantidade máxima</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<label for="totalAmt">Novo valor:</label>
-						<input id="novoMax" type="number" step="0.01" id="totalAmt" value="">
-					</div>
-					<div class="modal-footer">
-						<button id="fecharModal" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-						<button id="atualizaValorBtn" onclick="atualizarNovoValor();" type="button" class="btn btn-primary">Salvar</button>
+					<div class="p-3">
+						<div class="modal-body fw-bold">
+							Editar valor máximo: <span style="color: red">*</span><span id="prodDelete"></span>
+						</div>
+						<div class="mb-1">
+							<input type="number" class="form-control" id="novoMax" step="0.01" value="">
+						</div>
+						<div class="mt-3">
+							<button id="atualizaValorBtn" onclick="atualizarNovoValor();" type="button" class="btn btn-primary fw-bold w-100" style="background-color: var(--color-pad) !important; border-color: var(--color-pad) !important" data-dismiss="modal">Salvar</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </body>
 

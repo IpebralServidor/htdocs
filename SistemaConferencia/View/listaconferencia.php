@@ -32,15 +32,15 @@ $_SESSION["funcao"] = false;
 				<img src="../images/216446_arrow_left_icon.png">
 			</a>
 		</div>
-		<form action="listaconferencia.php" class="form" method="post">
+		<div>
 			<div class="form-group">
-				<input type="text" class="form-control" name="NUMNOTA" class="text" placeholder="Número da Nota:">
+				<input id="numnotaFiltro" type="text" value="" class="form-control" name="NUMNOTA" class="text" placeholder="Número da Nota:">
 			</div>
 			<div>
-				<input type="text" class="form-control" name="nunota" class="text" placeholder="Número Único:">
+				<input id="nunotaFiltro" type="text" value="" class="form-control" name="nunota" class="text" placeholder="Número Único:">
 			</div>
 			<div class="form-group">
-				<select name="status" class="form-control">
+				<select id="statusFiltro" name="status" class="form-control">
 					<option value="todos">Todas as notas</option>
 					<option value="aguardandoconf">Aguardando Conferência</option>
 					<option value="emandamento">Conferência em andamento</option>
@@ -49,14 +49,12 @@ $_SESSION["funcao"] = false;
 				</select>
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control" name="parceiro" class="text" placeholder="Parceiro:">
+				<input id="parceiroFiltro" type="text" class="form-control" name="parceiro" class="text" placeholder="Parceiro:">
 			</div>
-
 			<div class="form-group">
-				<input id="aplicar" name="aplicar" class="btn btn-form" type="submit" value="Aplicar">
+				<button id="aplicar" name="aplicar" class="btn btn-form" type="submit" onclick="aplicarFiltro();">Aplicar</button>
 			</div>
-
-		</form>
+		</div>
 		<div class='my-legend'>
 			<div class='legend-title'>Legenda:</div>
 			<div class='legend-scale'>
@@ -68,37 +66,6 @@ $_SESSION["funcao"] = false;
 				</ul>
 			</div>
 		</div>
-
-		<?php
-		$tsql2 = "";
-
-		if (isset($_POST["aplicar"])) {
-
-			$nunota =  $_POST["nunota"];
-			if ($nunota == '') {
-				$nunota = -1;
-			}
-
-			$numnota =  $_POST["NUMNOTA"];
-			if ($numnota == '') {
-				$numnota = -1;
-			}
-
-			$parceiro =  $_POST["parceiro"];
-			if ($parceiro == '') {
-				$parceiro = -1;
-			}
-
-			$status = $_POST["status"];
-
-			$tsql2 = " SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_CONFERENCIA]($nunota, $numnota, $parceiro, '$status', $usuconf) ORDER BY NUNOTA DESC";
-		}
-
-		$stmt2 = sqlsrv_query($conn, $tsql2);
-		$row_count = sqlsrv_num_rows($stmt2);
-
-		?>
-
 	</div> <!-- Filtro -->
 	<div class="listaconferenciatext">
 		<p class="text-center">Lista de Conferência
@@ -129,51 +96,9 @@ $_SESSION["funcao"] = false;
 					<th></th>
 				</tr>
 			</thead>
+			<tbody id="listaConferencias">
 
-			<?php
-			while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC)) {
-				$NUCONF = $row2['NUNOTA'];
-			?>
-
-				<tbody>
-					<?php
-					if ($row2['CODTIPOPER'] == 1780 || $row2['CODTIPOPER'] == 1781 || $row2['CODTIPOPER'] == 1782) {
-						$color = "white";
-					} else if (utf8_encode($row2['STATUSSEP']) == 'Separação em andamento') {
-						$color = "#FFFF95;";
-					} else if (utf8_encode($row2['STATUSSEP']) == 'Separação não iniciada') {
-						$color = "#ff9595;";
-					} else if (utf8_encode($row2['STATUSSEP']) == 'Separação em pausa') {
-						$color = "#9c95ff;";
-					} else if (utf8_encode($row2['STATUSSEP']) == 'Separação concluída') {
-						$color = "#8fffb1";
-					}
-					?>
-					<tr style="background-color:<?php echo $color ?>" id="linhaSelecionada" data-nota="<?php echo $row2['NUNOTA'] ?>">
-						<td style="width: 30px;"><?php echo $row2['CODPARC']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['DTMOV']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['NUNOTA']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['NOMEUSU']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['CODTIPOPER']; ?></td>
-						<td style="width: 30px;"><?php echo str_replace('.', ',', $row2['VLRNOTA']); ?></td>
-						<td style="width: 30px;"><?php echo utf8_encode($row2['STATUSSEP']); ?></td>
-						<td style="width: 30px;"><?php echo $row2['STATUSCONF']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['NUMNOTA']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['CODEMP']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['NOMEPARC']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['CODFUNC']; ?></td>
-						<td style="width: 30px;"><?php echo utf8_encode($row2['DESCROPER']); ?></td>
-						<td style="width: 30px;"><?php echo $row2['ORDEMCARGA']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['SEQCARGA']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['QTDVOL']; ?></td>
-						<td style="width: 30px;"><?php echo $row2['CODUSUCONF']; ?></td>
-						<td></td>
-					</tr>
-				</tbody>
-			<?php
-				$notaRetorno = $row2['NUNOTA'];
-			}
-			?>
+			</tbody>
 		</table>
 	</div>
 </body>
