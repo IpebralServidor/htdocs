@@ -121,25 +121,25 @@ require_once '../App/auth.php';
 
 	</div>
 	<div id="ListaConferencia" class="listaconferencia">
-		<table width="4000">
+		<table width="4000" id="tableListaConferencia">
 			<thead>
 				<tr style="color: white;">
 					<th><input type="checkbox" name="select-all" id="select_all" value="" /></th>
-					<th>Conferente</th>
-					<th>Nro. Único</th>
-					<th>Tipo Operação</th>
-					<th>Separador</th>
-					<th>Status Separação</th>
-					<th>Status Conferência</th>
-					<th>Dt. do Movimento</th>
-					<th>Nro. Nota</th>
-					<th>Empresa</th>
-					<th>Parceiro</th>
-					<th>Descrição (Tipo de Operação)</th>
-					<th>Ordem de Carga</th>
-					<th>Sequência da Carga</th>
-					<th>Qtd. Volumes</th>
-					<th>Razão social</th>
+					<th onclick="sortTable(1, 'numStr');">Conferente</th>
+					<th onclick="sortTable(2, 'num');">Nro. Único</th>
+					<th onclick="sortTable(3, 'num');">Tipo Operação</th>
+					<th onclick="sortTable(4, 'str');">Separador</th>
+					<th onclick="sortTable(5, 'str');">Status Separação</th>
+					<th onclick="sortTable(6, 'str');">Status Conferência</th>
+					<th onclick="sortTable(7, 'date');">Dt. do Movimento</th>
+					<th onclick="sortTable(8, 'num');">Nro. Nota</th>
+					<th onclick="sortTable(9, 'num');">Empresa</th>
+					<th onclick="sortTable(10, 'numStr');">Parceiro</th>
+					<th onclick="sortTable(11, 'str');">Descrição (Tipo de Operação)</th>
+					<th onclick="sortTable(12, 'num');">Ordem de Carga</th>
+					<th onclick="sortTable(13, 'num');">Sequência da Carga</th>
+					<th onclick="sortTable(14, 'num');">Qtd. Volumes</th>
+					<th onclick="sortTable(15, 'str');">Razão social</th>
 					<th></th>
 				</tr>
 			</thead>

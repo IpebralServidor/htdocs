@@ -73,26 +73,26 @@ $_SESSION["funcao"] = false;
 		</p>
 	</div>
 	<div id="ListaConferencia" class="listaconferencia">
-		<table width="4000">
+		<table width="4000" id="tableListaConferencia">
 			<thead>
 				<tr style="color: white;">
-					<th>Parceiro</th>
-					<th>Dt. do Movimento</th>
-					<th>Nro. Único</th>
-					<th>Nome (Conferente)</th>
-					<th>TOP</th>
-					<th>Valor Nota</th>
-					<th>Status Separação</th>
-					<th>Status Conferência</th>
-					<th>Nro. Nota</th>
-					<th>Empresa</th>
-					<th>Nome Fantasia (Empresa)</th>
-					<th>Cod conferente</th>
-					<th>Descrição (Tipo de Operação)</th>
-					<th>Ordem de Carga</th>
-					<th>Sequência da Carga</th>
-					<th>Qtd. Volumes</th>
-					<th>Cód. Conferente</th>
+					<th onclick="sortTable(0, 'num');">Parceiro</th>
+					<th onclick="sortTable(1, 'date');">Dt. do Movimento</th>
+					<th onclick="sortTable(2, 'num');">Nro. Único</th>
+					<th onclick="sortTable(3, 'str');">Nome (Conferente)</th>
+					<th onclick="sortTable(4, 'num');">TOP</th>
+					<th onclick="sortTable(5, 'vlr');">Valor Nota</th>
+					<th onclick="sortTable(6, 'str');">Status Separação</th>
+					<th onclick="sortTable(7, 'str');">Status Conferência</th>
+					<th onclick="sortTable(8, 'num');">Nro. Nota</th>
+					<th onclick="sortTable(9, 'num');">Empresa</th>
+					<th onclick="sortTable(10, 'str');">Nome Fantasia (Empresa)</th>
+					<th onclick="sortTable(11, 'num');">Cod conferente</th>
+					<th onclick="sortTable(12, 'str');">Descrição (Tipo de Operação)</th>
+					<th onclick="sortTable(13, 'num');">Ordem de Carga</th>
+					<th onclick="sortTable(14, 'num');">Sequência da Carga</th>
+					<th onclick="sortTable(15, 'num');">Qtd. Volumes</th>
+					<th onclick="sortTable(16, 'num');">Cód. Conferente</th>
 					<th></th>
 				</tr>
 			</thead>
