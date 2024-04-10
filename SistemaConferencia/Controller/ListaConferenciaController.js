@@ -1,5 +1,10 @@
 $(document).ready(function() {
     // Evento de clique na linha da tabela
+    $('#numnotaFiltro, #nunotaFiltro, #statusFiltro, #parceiroFiltro').on('keypress', function(event) {
+        if(event.keyCode === 13) {
+            aplicarFiltro();
+        }
+    });
     aplicarFiltro();
 });
 

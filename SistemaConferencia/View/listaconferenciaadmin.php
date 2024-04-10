@@ -124,7 +124,7 @@ require_once '../App/auth.php';
 		<table width="4000" id="tableListaConferencia">
 			<thead>
 				<tr style="color: white;">
-					<th><input type="checkbox" name="select-all" id="select_all" value="" /></th>
+					<th><input id='confCheckbox' type="checkbox" name="select-all" id="select_all" value="" /></th>
 					<th onclick="sortTable(1, 'numStr');">Conferente</th>
 					<th onclick="sortTable(2, 'num');">Nro. Único</th>
 					<th onclick="sortTable(3, 'num');">Tipo Operação</th>

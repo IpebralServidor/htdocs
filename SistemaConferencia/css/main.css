@@ -763,6 +763,12 @@ border-top: solid 5px #e54e43;
     border-radius: 50%;
 	transition: transform 0.2s linear;
 }
+
+#confCheckbox {
+	width:18px;
+	height:18px;
+}
+
 .checkbox:checked + .label .ball{
 	transform: translateX(24px);
 }
