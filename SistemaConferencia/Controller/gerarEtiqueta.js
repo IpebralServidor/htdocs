@@ -20,7 +20,7 @@ document.getElementById("gerarEtiqueta").addEventListener("click",() =>{
         data: {nunota: numeroNota, arquivo: file},
         success: function (msg)
         {
-            window.open(`http:\\SistemaConferencia\\Etiquetas\\vendor\\geekcom\\phpjasper\\examples\\${numeroNota}\\${file}.pdf`)
+            window.open(`http:\\SistemaConferencia\\Etiquetas\\vendor\\geekcom\\phpjasper\\examples\\nunotas\\${numeroNota}\\${file}.pdf`)
         }
     });
 })

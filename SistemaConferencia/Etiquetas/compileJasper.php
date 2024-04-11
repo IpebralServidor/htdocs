@@ -13,9 +13,9 @@ $jasper = new PHPJasper;
 $jasper->compile($input)->execute();
 
 
-mkdir((__DIR__).'\vendor\geekcom\phpjasper\examples/' .$param , 0777, true);
+mkdir((__DIR__).'\vendor\geekcom\phpjasper\examples\nunotas/' .$param , 0777, true);
 $input = 'C:\xampp\htdocs\SistemaConferencia\Etiquetas\vendor\geekcom\phpjasper\examples\\' .$file .'.jasper';
-$output = __DIR__ . '\vendor\geekcom\phpjasper\examples/'.$param;
+$output = __DIR__ . '\vendor\geekcom\phpjasper\examples\nunotas/'.$param;
 $jdbc_dir = __DIR__ . '\vendor\geekcom\phpjasper\bin\jasperstarter\jdbc';
 
 $options = [
