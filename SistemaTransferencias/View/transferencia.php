@@ -45,6 +45,7 @@ if($varStatusNota == 'L'){
     <?php include '../Components/popUp.php'?>
     <?php include '../Components/confirmarNota.php'?>
     <?php include '../Components/confirmarEndereco.php'?>
+    <?php include '../Components/confirmarReferencia.php'?>
 
     <div class="alert alert-success fade show d-none" id="alertMessage">
         <div class="d-flex align-items-start gap-3">
@@ -164,6 +165,7 @@ if($varStatusNota == 'L'){
     <script src="../Controller/onLoadBody.js"></script>
     <script src="../Controller/confirmarNota.js"></script>
     <script src="../Controller/confirmarEndereco.js"></script>
+    <script src="../Controller/confirmarReferencia.js"></script>
     <script src="../Controller/padraoJs.js"></script>
     <script>
         document.getElementById("body").onload = function() {

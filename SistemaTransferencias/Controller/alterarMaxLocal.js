@@ -1,4 +1,4 @@
-document.getElementById("referencia").addEventListener("focusout",() =>{
+document.getElementById("referencia").addEventListener("change",() =>{
     const inputQtdMax = document.getElementById("qtdMax")
     const inputReferencia = document.getElementById("referencia")
 
