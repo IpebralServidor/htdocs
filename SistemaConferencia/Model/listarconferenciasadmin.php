@@ -33,8 +33,8 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
     $statusSeparacao = utf8_encode($row[15]);
     $descricaoTipoOper = utf8_encode($row[9]);
     $conferenciasList .= "<tr style='background-color:$color'>
-                            <td style='width: 0.1% !important'>
-                                <input id='confCheckbox' type='checkbox' class='checkbox' data-nota='$row[0]' />
+                            <td class='outerCheckbox' style='width: 0.1% !important'>
+                                <input type='checkbox' id='rowCheckbox' class='checkbox' data-nota='$row[0]' />
                             </td>
                             <td style='width: 0.1% !important'>$row[14] - $row[13]</td>
                             <td style='width: 0.1% !important'>$row[0]</td>
