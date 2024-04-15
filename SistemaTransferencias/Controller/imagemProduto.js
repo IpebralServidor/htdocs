@@ -1,5 +1,5 @@
 
-document.getElementById("referencia").addEventListener("focusout",() =>{
+document.getElementById("referencia").addEventListener("change",() =>{
     const inputReferencia = document.getElementById("referencia")
     $.ajax
     ({
