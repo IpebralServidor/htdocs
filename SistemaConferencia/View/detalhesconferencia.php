@@ -209,7 +209,6 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 </head>
 
 <body style="margin: 0;" onload="executarUmaVez(); <?php if ($adseparador == null && $codemp == 7) { ?> abrirconferentes(); <?php } ?> scrollToRow(<?php echo $linhamarcada; ?>)">
-
 	<div id="loader" style="display: none;">
 		<img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
 	</div>
@@ -304,12 +303,13 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 		<div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
 	</div>
 
-	<!-- Itens em Conferência-->
+    <!-- Itens em Conferência-->
 	<div id="container" style="width:100%;height: 80%;position: absolute;margin-top: 65px;margin-bottom: 0;padding-left: 0px;padding-right: 0px;right: 0px;bottom: 0px;top: 0px;left: 0px;">
 		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin-left: 1%; margin-top: 50px;">
 			<div style="background-color: #ADADC7" class="d-flex justify-content-around">
 				<div>
 					<h4 style="margin: 0 !important; ">Itens em Conferência
+						<button style="font-size: 13px;" id="gerarEtiqueta">Imprimir</button>
 						<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 						<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
 						<?php
@@ -680,6 +680,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 		</div> <!-- Itens do Pedido -->
 	</div> <!--container-->
 
+    <script src="../Controller/gerarEtiqueta.js"></script>
 	<script>
 		var index,
 			table = document.getElementById("table");
