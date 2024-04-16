@@ -10,11 +10,9 @@ $(document).ready(function() {
             });
         }
     });
-    $('.checkbox').on('click', function() {
-        if ($('.checkbox:checked').length == $('.checkbox').length) {
-            $('#select_all').prop('checked', true);
-        } else {
-            $('#select_all').prop('checked', false);
+    $('#parceiroFiltro, #numnotaFiltro, #nunotaFiltro, #statusFiltro, #filtroEmpresas, #dtIniFiltro, #dtFimFiltro').on('keypress', function(event) {
+        if(event.keyCode === 13) {
+            aplicarFiltro();
         }
     });
     $.ajax({
@@ -157,6 +155,14 @@ function aplicarFiltro() {
         //função que será executada quando a solicitação for finalizada.
         success: function(listaConferencias) {
             document.getElementById('conferenciasList').innerHTML = listaConferencias;
+            $('.checkbox').on('click', function() {
+                if ($('.checkbox:checked').length == $('.checkbox').length) {
+                    $('#select_all').prop('checked', true);
+                } else {
+                    $('#select_all').prop('checked', false);
+                }
+            });
+            
         }
     });
 }
