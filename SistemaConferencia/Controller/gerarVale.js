@@ -1,14 +1,14 @@
-document.getElementById("gerarEtiqueta").addEventListener("click",() =>{
+document.getElementById("gerarVale").addEventListener("click",() =>{
     const urlParams = new URLSearchParams(window.location.search)
     const numeroNota = urlParams.get("nunota")
     const gif = document.getElementById("loader")
-    const file = 'Cliente volume nota novo'
+    const file = 'Vale_novo'
 
     $.ajax
     ({
         type: 'POST',
         dataType: 'html',
-        url: '../Etiquetas/compileJasperEtiqueta.php',
+        url: '../Etiquetas/compileJasperVale.php',
         beforeSend: function () {
             gif.style.display = "block"
             gif.classList.add("loader")
