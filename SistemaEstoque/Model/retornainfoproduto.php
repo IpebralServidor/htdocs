@@ -1,14 +1,11 @@
 <?php
-include "../conexaophp.php";
+include "../../conexaophp.php";
 session_start(); //Iniciando a sessão
 
+$produto = $_POST["produto"];
+$codparcorig = $_POST["codparc"];
 
-	//echo "teste2";
-
-	$produto = $_POST["produto"];
-	$codparcorig = $_POST["codparc"];
-
-	$tsql = "DECLARE @CODBARRA VARCHAR(100) = '$produto'
+$tsql = "DECLARE @CODBARRA VARCHAR(100) = '$produto'
 
 			SELECT TGFPRO.REFERENCIA,
 				   ISNULL(TGFPAP.CODPROPARC,''),
@@ -20,14 +17,10 @@ session_start(); //Iniciando a sessão
 					   AND TGFPAP.SEQUENCIA = 0
 			WHERE TGFBAR.CODBARRA = @CODBARRA";
 
-	$stmt = sqlsrv_query( $conn, $tsql);
+$stmt = sqlsrv_query($conn, $tsql);
 
-	if ($stmt){
-		while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC))
-			{ 
-				echo $row[0].'/'.$row[1].'/'.$row[2];
-			}  
-		
-		
+if ($stmt) {
+	while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
+		echo $row[0] . '/' . $row[1] . '/' . $row[2];
 	}
-?> 
+}
