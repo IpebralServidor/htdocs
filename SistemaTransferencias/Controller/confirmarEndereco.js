@@ -5,7 +5,7 @@ document.getElementById("endereco").addEventListener("input", () =>{
     tempoInicial = new Date();
 })
 
-document.getElementById("endereco").addEventListener("blur", () =>{
+document.getElementById("endereco").addEventListener("change", () =>{
     tempoFinal = new Date();
     var tempoDecorrido = tempoFinal - tempoInicial;
 
