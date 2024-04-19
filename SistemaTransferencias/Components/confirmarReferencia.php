@@ -8,7 +8,7 @@
                             Digite a referência novamente: <span style="color: red">*</span>
                         </div>
                         <div class="mb-1">
-                            <input type="text" class="form-control" id="novaReferencia">
+                            <input type="number" class="form-control" id="novaReferencia">
                         </div>
                         <div class="mt-3">
                             <button id="btnConfirmarReferencia" class="btn btn-primary fw-bold w-100" style="background-color: var(--color-pad) !important; border-color: var(--color-pad) !important" data-dismiss="modal">Confirmar</button>
