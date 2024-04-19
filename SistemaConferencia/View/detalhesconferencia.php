@@ -27,7 +27,7 @@ $stmtStatus = sqlsrv_query($conn, $tsqlStatus);
 $rowStatus = sqlsrv_fetch_array($stmtStatus, SQLSRV_FETCH_NUMERIC);
 
 
-$tsqlTimer = "SELECT (SUM(DATEDIFF(sECOND, ISNULL(DTFIM,gETDATE()),DTINIC)) *-1) FROM AD_TGFAPONTAMENTOATIVIDADE WHERE NUNOTA = $nunota2";
+$tsqlTimer = "SELECT (SUM(DATEDIFF(sECOND, ISNULL(DTFIM,gETDATE()),DTINIC)) *-1) FROM AD_TGFAPONTAMENTOATIVIDADE WHERE NUNOTA = $nunota2 AND CODUSU = $usuconf";
 $stmtTimer = sqlsrv_query($conn, $tsqlTimer);
 $rowTimer = sqlsrv_fetch_array($stmtTimer, SQLSRV_FETCH_NUMERIC);
 
@@ -309,8 +309,14 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			<div style="background-color: #ADADC7" class="d-flex justify-content-around">
 				<div>
 					<h4 style="margin: 0 !important; ">Itens em Conferência
-                        <button style="font-size: 13px;" id="gerarEtiqueta">Imprimir etiqueta</button>
-                        <button style="font-size: 13px;" id="gerarVale">Imprimir vale</button>
+						<?php if($usuconf == 32){?>
+							<button style="font-size: 13px;" id="gerarEtiqueta">Imprimir</button>
+						<?php }?>
+
+						<?php if($usuconf == 32){?>
+							<button style="font-size: 13px;" id="gerarVale">Imprimir vale</button>
+						<?php }?>
+						
 						<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 						<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
 						<?php
@@ -374,6 +380,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 							<th width="12.6%" align="center">Controle</th>
 							<th width="12.6%" align="center">Qtd. Conferida</th>
 							<th width="16.6%" align="center">Qtd. Pedido</th>
+							<th width="16.6%" align="center">Qtd. Abast</th>
 						</tr>
 						<?php
 						$tsql2 = "select * from [sankhya].[AD_FN_PRODUTOS_DIVERGENTES_CONFERENCIA]($nunota2) order by SEQCONF DESC";
@@ -390,6 +397,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 								<td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
 								<td width="12.6%" align="center"><?php echo $row2[5]; ?></td>
 								<td width="16.6%" align="center"><?php echo $row2[6]; ?></td>
+								<td width="16.6%" align="center"><?php echo $row2[7]; ?></td>
 							</tr></a>
 						<?php
 						}
@@ -683,6 +691,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 
     <script src="../Controller/gerarEtiqueta.js"></script>
     <script src="../Controller/gerarVale.js"></script>
+	
 	<script>
 		var index,
 			table = document.getElementById("table");
@@ -893,6 +902,17 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			requiredFunction(msg, primeiro);
 		}
 
+		function abrirconferentes() {
+    document.getElementById('popupconferentes').style.display = 'block';
+    var btns = document.getElementsByClassName('conferente-btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', function() {
+            var nunota = "<?php echo $nunota2; ?>"
+            var user = this.getAttribute('data-user');
+            atribuirseparador(user, nunota);
+        });
+    }
+}
 		function requiredFunction(msg, primeiro) {
 			var answer = prompt(msg + '\n' + '' + '\n' + 'Digite seu nome para continuar');
 			if (answer == "" || answer === null) {

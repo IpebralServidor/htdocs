@@ -145,7 +145,7 @@
 				<div class="div-card">
 
 					<?php if ($row_countAdmin[0] == 'A') { ?>
-						<a href="./SistemaConferencia/listaconferenciaadmin.php" class="card">
+						<a href="./SistemaConferencia/View/listaconferenciaadmin.php" class="card">
 							<div class="padding">
 								<div class="icon-card">
 									<i class="fa-solid fa-check-to-slot"  style="background-color: #fa5a7d"></i>
@@ -155,7 +155,7 @@
 						</a>
 					<?php } ?>
 
-					<a href="./SistemaConferencia/listaconferencia.php" class="card">
+					<a href="./SistemaConferencia/View/listaconferencia.php" class="card">
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-circle-check" style="background-color: #ff947a"></i>
@@ -164,7 +164,7 @@
 						</div>
 					</a>
 
-					<a href="./ConsultaEstoque" class="card">
+					<a href="./ConsultaEstoque/View/" class="card">
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-boxes-packing" style="background-color: #3cd856"></i>
@@ -173,7 +173,7 @@
 						</div>
 					</a>
 
-					<a href="./SistemaEstoque" class="card">
+					<a href="./SistemaEstoque/View" class="card">
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-truck-ramp-box" style="background-color: #bf83ff"></i>
@@ -193,7 +193,7 @@
 						</a>
 					<?php } ?>
 
-					<a href="./SistemaReabastecimento" class="card">
+					<a href="./SistemaReabastecimento/View" class="card">
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-right-left" style="background-color: #fa5a7d"></i>
