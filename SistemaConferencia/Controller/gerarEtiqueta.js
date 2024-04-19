@@ -8,7 +8,7 @@ document.getElementById("gerarEtiqueta").addEventListener("click",() =>{
     ({
         type: 'POST',
         dataType: 'html',
-        url: '../Etiquetas/compileJasperEtiqueta.php',
+        url: '../Etiquetas/compileJasper.php',
         beforeSend: function () {
             gif.style.display = "block"
             gif.classList.add("loader")
@@ -20,7 +20,7 @@ document.getElementById("gerarEtiqueta").addEventListener("click",() =>{
         data: {nunota: numeroNota, arquivo: file},
         success: function (msg)
         {
-            window.open(`http:\\SistemaConferencia\\Etiquetas\\vendor\\geekcom\\phpjasper\\examples\\nunotas\\${numeroNota}\\${file}.pdf`)
+            alert("Saiu para impressão")
         }
     });
 })
