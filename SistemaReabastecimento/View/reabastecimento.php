@@ -13,13 +13,8 @@ $rowTipoNota = sqlsrv_fetch_array($stmtTipoNota, SQLSRV_FETCH_NUMERIC);
 $_SESSION['tipoNota'] = $rowTipoNota[0];
 $tipoNota = $rowTipoNota[0];
 
-if ($tipoNota == 'A') {
-    $enderecoInit = 0;
-    $enderecoFim = 0;
-} else {
-    $enderecoInit = $_SESSION['enderecoInit'];
-    $enderecoFim = $_SESSION['enderecoFim'];
-}
+$enderecoInit = $_SESSION['enderecoInit'];
+$enderecoFim = $_SESSION['enderecoFim'];
 
 echo $enderecoInit;
 echo " / " . $enderecoFim;
@@ -41,7 +36,7 @@ $stmtPdSemFiltro = sqlsrv_query($conn, $tsqlPdSemFiltro);
 $rowPdSemFiltro = sqlsrv_fetch_array($stmtPdSemFiltro, SQLSRV_FETCH_NUMERIC);
 
 if ($rowPdtAtual[0] == 0) {
-    if (empty($rowPdSemFiltro[0]) && $row[0] != 0) {
+    if (empty($rowPdSemFiltro[0]) && $row[0] != 0 && $tipoNota != "A") {
         $tsqlUpdate = "UPDATE TGFITE SET AD_CODUSUBIP = $codusu WHERE NUNOTA = ($nunota2) AND ABS(SEQUENCIA) = $row[0]";
         $stmtUpdate = sqlsrv_query($conn, $tsqlUpdate);
     } else {
@@ -86,6 +81,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema reabastecimento</title>
@@ -117,6 +113,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             <div style="width: 100%;">
                 <div class="close-btn" onclick="abrir()">
                     <i class="fa-solid fa-xmark"></i>
+                    <!-- <i class="fa-solid fa-circle-xmark"></i> -->
                 </div>
 
                 <div class="div-form">
@@ -128,7 +125,9 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     </div>
                 </div>
             </div>
+
         </div>
+    </div>
     </div>
 
     <!-- Modal para confirmar referencia-->
@@ -140,6 +139,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 <div class="close-btn" onclick="abrirRef(), clearRef()">
                     <i class="fa-solid fa-xmark"></i>
                 </div>
+
                 <div class="div-form">
                     <div id="form_alterasenha" class="form">
                         <label> Digite a referência novamente:</label>
@@ -149,7 +149,9 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     </div>
                 </div>
             </div>
+
         </div>
+    </div>
     </div>
 
     <!-- Modal para observações-->
@@ -313,20 +315,27 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
     <div class="bg">
         <div class="collapse" id="navbarToggleExternalContent">
+
+
             <div class="background">
                 <div class="switchBox">
                     <div class="tabSwitch">
                         <input type="checkbox" class="checkbox" id="chkInp" onchange="produtos(<?php echo $nunota2; ?>)">
+
                         <label for="chkInp" class="label">
                             <div class="ball" id="ball"></div>
                         </label>
                     </div>
+
                     <div class="titleBox">
                         <h6 id="titleBoxH6">Produtos separados</h6>
                     </div>
                 </div>
             </div>
+
+
             <div class="table d-flex justify-content-center">
+
                 <table>
                     <thead>
                         <tr>
@@ -409,7 +418,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     <div class="input-h6">
                         <h6>Referência:</h6>
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()">
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()"> <!-- " onblur="finalizarMedicao2()" -->
                 </div>
 
                 <div class="d-flex justify-content-center align-items-center">
@@ -463,7 +472,13 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
         <div class="image d-flex justify-content-center" id="imagemproduto">
             <?php
+            // $referencia = $rowTransferencia['REFERENCIA'];
+
+            //if($referencia!=''){
+            //  $tsql2 = "SELECT [sankhya].[AD_FN_IMAGEM_PRODUTO_PHP] ('$referencia')";
+            //} else {
             $tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
+            //}
 
             $stmt2 = sqlsrv_query($conn, $tsql2);
 
@@ -531,16 +546,16 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             tempoInicial = new Date();
         }
 
-        function finalizarMedicao2() {
+        // function finalizarMedicao2() {
 
-            tempoFinal = new Date();
-            var tempoDecorrido = tempoFinal - tempoInicial;
+        //     tempoFinal = new Date();
+        //     var tempoDecorrido = tempoFinal - tempoInicial;
 
-            if (tempoDecorrido > 250) {
-                abrirReferencia()
-                document.getElementById('referencia').value = null
-            }
-        }
+        //     if(tempoDecorrido > 250){
+        //         abrirReferencia()
+        //         document.getElementById('referencia').value = null
+        //     }
+        // }
     </script>
     <script>
         function exibirObservacao() {
@@ -647,9 +662,15 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
                     var movimentacoes = msg.split('|');
+
                     if (msg == '') {
                         document.getElementById('obsMovimentacoes').style.display = "none";
                     } else {
+                        // document.getElementById('notaMovimentacao').innerHTML = movimentacoes[0];
+                        // document.getElementById('topMovimentacao').innerHTML = movimentacoes[1];
+                        // document.getElementById('empMovimentacao').innerHTML = movimentacoes[2];
+                        // document.getElementById('dataMovimentacao').innerHTML = movimentacoes[3];
+                        // document.getElementById('qtdMovimentacao').innerHTML = movimentacoes[4];
                         document.getElementById('movId').innerHTML = movimentacoes[0];
                     }
                 }
@@ -832,34 +853,35 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").placeholder;
-
-            let endereco = document.getElementById("endereco").value
-
-            if ("<?php echo $rowEhTransf[0] ?>" == "TRANSF_CD5") {
-                endereco = document.getElementById("endereco").val
-            }
+            var enderecoClick = document.getElementById("endereco").value
 
             if ((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP') {
                 alert('Esta nota não é possível passar quantidade a mais!')
             } else if ((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S') {
                 $('#btnProximo').click();
             } else {
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), endereco, '')
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, '')
             }
 
         });
 
 
+
         function registrarOcorrencia(nunota, sequencia, qtdneg) {
+
             var selectedOption = $("input[name='fav_language']:checked").val();
             var observacao = document.getElementById("outros").value;
+
             if (selectedOption == undefined) {
                 selectedOption = '';
             }
+
             var ocorrencia = selectedOption + ' ' + observacao
+
             if (qtdneg == '') {
                 qtdneg = 0;
             }
+
             $.ajax({
                 type: 'POST', //Método que está sendo utilizado.
                 dataType: 'html', //É o tipo de dado que a página vai retornar.
@@ -872,7 +894,9 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
-
+                    // if(msg == 'Concluido'){
+                    //     alert('Ocorrência registrada com sucesso!');
+                    // }
                 }
             });
 
@@ -915,7 +939,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
-
+                    // alert(msg);
                 }
             });
         }
@@ -945,6 +969,9 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
                     var retorno = msg.split("|");
+
+                    // alert(retorno[1]);
+
                     document.getElementById("nomeusu").placeholder = retorno[1];
                 }
             });
@@ -1082,7 +1109,9 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
         <?php if ($fila == 'N') { ?>
 
             document.getElementById("qtdneg").addEventListener("focus", function() {
+
                 retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
+                //document.getElementById("localorigem").textContent = "teste";
             }, {
                 once: true
             });
@@ -1098,12 +1127,13 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
             if (ehTransf == "TRANSF_CD5" && tipoNota == "S") {
                 endereco.disabled = true
-                endereco.val = "5069900"
+                endereco.value = "5069900"
                 endereco.placeholder = "5069900"
             }
         }
 
         function retornainfoprodutos(nunota, referencia) {
+
             $.ajax({
                 //Configurações
                 type: 'POST', //Método que está sendo utilizado.
@@ -1126,7 +1156,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 success: function(msg) {
                     var retorno = msg.split("/");
 
-                    if (msg == ' ') {
+                    if (msg == '') {
                         <?php if ($tipoNota == 'A') { ?>
                             alert('Este item não foi separado!');
                         <?php } else { ?>
@@ -1168,6 +1198,15 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                             produtoseq = retorno[8]
 
                             imagemproduto(retorno[0]);
+
+                            tempoFinal = new Date();
+                            var tempoDecorrido = tempoFinal - tempoInicial;
+
+                            if (tempoDecorrido > 1000) {
+                                abrirReferencia()
+                                document.getElementById('referencia').value = null
+                                document.getElementById('referencia').placeholder = ''
+                            }
                         }
                     }
                 }
@@ -1196,6 +1235,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 }
             }
 
+            //teste.checked
             //O método $.ajax(); é o responsável pela requisição
             $.ajax({
 

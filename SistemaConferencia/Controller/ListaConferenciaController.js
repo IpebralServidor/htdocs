@@ -97,6 +97,7 @@ const aplicarFiltro = () => {
     });
 }
 
+//Função para ordenamento da tabela ao clicar no cabeçalho
 function sortTable(n, type) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("tableListaConferencia");
@@ -152,6 +153,7 @@ function sortTable(n, type) {
     }
   }
 
+// Converte os tipos para que a função retorne valores que possam ser comparados
 function converteTipo (type, value) {
     switch(type) {
         case 'num':

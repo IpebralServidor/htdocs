@@ -8,7 +8,6 @@ $referencia = $_POST["referencia"];
 $codusu = $_POST["codusu"];
 
 $tsql = "($nunota)";
-
 if ($referencia == "N") {
 	$tsql = "SELECT * FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_REABASTECIMENTO] ($nunota, $codusu)";
 } else {
@@ -17,9 +16,10 @@ if ($referencia == "N") {
 
 $stmt = sqlsrv_query($conn, $tsql);
 
+$returnValue = '';
 if ($stmt) {
 	while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-		echo $row["REFERENCIA"] . '/'
+		$returnValue .= $row["REFERENCIA"] . '/'
 			. $row["CODLOCALORIG"] . '/'
 			. $row["QTDNEG"] . '/'
 			. $row["AGRUPMIN"] . '/'
@@ -33,4 +33,5 @@ if ($stmt) {
 			. $row["FORNECEDORES"] . '/'
 			. $row["CODEMP"];
 	}
+	echo $returnValue;
 }

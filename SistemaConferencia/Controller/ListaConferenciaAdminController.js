@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    // Seleciona todas as checkboxs caso haja um clique na checkbox do cabeçalho
     $('#select_all').on('click', function() {
         if (this.checked) {
             $('.checkbox').each(function() {
@@ -10,6 +11,13 @@ $(document).ready(function() {
             });
         }
     });
+    // Simula um clique na checkbox do cabeçalho caso seja clicado ao redor dela
+    $('#headerCheckbox').on('click', function(event) {
+        if(event.target.id === 'headerCheckbox') {
+            $('#select_all').click();
+        }
+    });
+    
     $('#parceiroFiltro, #numnotaFiltro, #nunotaFiltro, #statusFiltro, #filtroEmpresas, #dtIniFiltro, #dtFimFiltro').on('keypress', function(event) {
         if(event.keyCode === 13) {
             aplicarFiltro();
@@ -155,6 +163,7 @@ function aplicarFiltro() {
         //função que será executada quando a solicitação for finalizada.
         success: function(listaConferencias) {
             document.getElementById('conferenciasList').innerHTML = listaConferencias;
+            // Confere se foi a última checkbox de linha checada para checar também a checkbox do cabeçalho
             $('.checkbox').on('click', function() {
                 if ($('.checkbox:checked').length == $('.checkbox').length) {
                     $('#select_all').prop('checked', true);
@@ -162,11 +171,25 @@ function aplicarFiltro() {
                     $('#select_all').prop('checked', false);
                 }
             });
-            
+            // Checa a checkbox caso tenha sido clicado fora dela
+            $('.outerCheckbox').on('click', function(event) {
+                if($(event.target).attr('class') === 'outerCheckbox') {
+                    let checkbox = $(this).find("input:checkbox");
+                    checkbox.is(':checked') === false ? checkbox.prop("checked", true) : checkbox.prop("checked", false);
+
+                    // Confere se foi a última checkbox de linha checada para checar também a checkbox do cabeçalho
+                    if ($('.checkbox:checked').length == $('.checkbox').length) {
+                        $('#select_all').prop('checked', true);
+                    } else {
+                        $('#select_all').prop('checked', false);
+                    }
+                }
+            });
         }
     });
 }
 
+//Função para ordenamento da tabela ao clicar no cabeçalho
 function sortTable(n, type) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("tableListaConferencia");
@@ -222,6 +245,7 @@ function sortTable(n, type) {
     }
   }
 
+// Converte os tipos para que a função retorne valores que possam ser comparados
 function converteTipo (type, value) {
     switch(type) {
         case 'num':
