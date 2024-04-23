@@ -303,20 +303,24 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 		<div id="insereitem" style="display: inline-block; margin-top: 5px;"></div>
 	</div>
 
-    <!-- Itens em Conferência-->
+	<!-- Itens em Conferência-->
 	<div id="container" style="width:100%;height: 80%;position: absolute;margin-top: 65px;margin-bottom: 0;padding-left: 0px;padding-right: 0px;right: 0px;bottom: 0px;top: 0px;left: 0px;">
 		<div id="ItensConferencia" style="width: 48%; height:48%; display: inline-block; margin-right: 0; overflow: hidden; margin-left: 1%; margin-top: 50px;">
 			<div style="background-color: #ADADC7" class="d-flex justify-content-around">
 				<div>
 					<h4 style="margin: 0 !important; ">Itens em Conferência
-						<?php if($usuconf == 32){?>
-							<button style="font-size: 13px;" id="gerarEtiqueta">Imprimir</button>
-						<?php }?>
+						<?php // if ($usuconf == 32) { 
+						?>
+						<button style="font-size: 13px;" id="gerarEtiqueta" onclick="impressao('etiqueta');">Imprimir etiqueta</button>
+						<?php //} 
+						?>
 
-						<?php if($usuconf == 32){?>
-							<button style="font-size: 13px;" id="gerarVale">Imprimir vale</button>
-						<?php }?>
-						
+						<?php //if ($usuconf == 32) { 
+						?>
+						<button style="font-size: 13px;" id="gerarVale" onclick="impressao('vale');">Imprimir vale</button>
+						<?php //} 
+						?>
+
 						<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 						<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
 						<?php
@@ -689,9 +693,8 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 		</div> <!-- Itens do Pedido -->
 	</div> <!--container-->
 
-    <script src="../Controller/gerarEtiqueta.js"></script>
-    <script src="../Controller/gerarVale.js"></script>
-	
+	<script src="../Controller/impressao.js"></script>
+
 	<script>
 		var index,
 			table = document.getElementById("table");
@@ -903,16 +906,17 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 		}
 
 		function abrirconferentes() {
-    document.getElementById('popupconferentes').style.display = 'block';
-    var btns = document.getElementsByClassName('conferente-btn');
-    for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener('click', function() {
-            var nunota = "<?php echo $nunota2; ?>"
-            var user = this.getAttribute('data-user');
-            atribuirseparador(user, nunota);
-        });
-    }
-}
+			document.getElementById('popupconferentes').style.display = 'block';
+			var btns = document.getElementsByClassName('conferente-btn');
+			for (var i = 0; i < btns.length; i++) {
+				btns[i].addEventListener('click', function() {
+					var nunota = "<?php echo $nunota2; ?>"
+					var user = this.getAttribute('data-user');
+					atribuirseparador(user, nunota);
+				});
+			}
+		}
+
 		function requiredFunction(msg, primeiro) {
 			var answer = prompt(msg + '\n' + '' + '\n' + 'Digite seu nome para continuar');
 			if (answer == "" || answer === null) {
