@@ -24,7 +24,10 @@ const impressao = (tipoImpressao) => {
         data: {nunota: numeroNota, arquivo: file},
         success: function ()
         {
-            window.open(`http:\\SistemaConferencia\\Etiquetas\\nunotas\\${numeroNota}\\${file}.pdf`)
+            if(tipoImpressao === 'etiqueta') {
+                alert('Selecione a impressora: zebra-cd4');
+            }
+            window.open(`http:\\SistemaConferencia\\Etiquetas\\nunotas\\${numeroNota}\\${file}.pdf`);
         }
     });
 }

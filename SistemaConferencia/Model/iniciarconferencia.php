@@ -6,6 +6,7 @@ include "../../conexaophp.php";
 if (isset($_POST['nota'])) {
     $nunota = $_POST['nota'];
     $usuario = $_SESSION['idUsuario'];
+    $_SESSION['localconf'] = $_POST['localconf'];
     try {
         $tsqlGera1780 = "EXEC AD_STP_GERA1780_CONFERENCIA $nunota, $usuario";
         $stmGera1780 = sqlsrv_query($conn, $tsqlGera1780);
