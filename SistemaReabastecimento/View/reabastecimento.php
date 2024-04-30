@@ -13,8 +13,13 @@ $rowTipoNota = sqlsrv_fetch_array($stmtTipoNota, SQLSRV_FETCH_NUMERIC);
 $_SESSION['tipoNota'] = $rowTipoNota[0];
 $tipoNota = $rowTipoNota[0];
 
-$enderecoInit = $_SESSION['enderecoInit'];
-$enderecoFim = $_SESSION['enderecoFim'];
+if ($tipoNota == 'A') {
+    $enderecoInit = 0;
+    $enderecoFim = 0;
+} else {
+    $enderecoInit = $_SESSION['enderecoInit'];
+    $enderecoFim = $_SESSION['enderecoFim'];
+}
 
 echo $enderecoInit;
 echo " / " . $enderecoFim;

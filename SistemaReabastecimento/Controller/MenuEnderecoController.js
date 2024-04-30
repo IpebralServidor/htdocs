@@ -29,7 +29,7 @@ function abrirNota(nunota, fila) {
     $.ajax({
         type: 'POST', //Método que está sendo utilizado.
         dataType: 'html', //É o tipo de dado que a página vai retornar.
-        url: 'armazenarendereco.php', //Indica a página que está sendo solicitada.
+        url: '../View/armazenarendereco.php', //Indica a página que está sendo solicitada.
         data: {
             enderecoInit: enderecoInit,
             enderecoFim: enderecoFim

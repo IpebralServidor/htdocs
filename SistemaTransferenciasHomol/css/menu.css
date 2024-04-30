@@ -1,0 +1,135 @@
+body{
+    margin: 0;
+    border: 0;
+    font-family: 'Roboto', sans-serif;
+}
+:root{
+    --border-radius-pad: 15px;
+    --padding-pad: 20px;
+    --side-menu-width: 18%;
+    --box-shadow-pad: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    --icon-color: #65768c;
+    --color-pad: #3a6070;
+    --bs-border-width: 1px;
+    --bs-border-color: #dee2e6;
+}
+header{
+    padding: var(--padding-pad);
+}
+.img-voltar img{
+    width: 35px;
+    background-color: #2d4a57;
+    border-radius: 100%;
+}
+main{
+    padding: var(--padding-pad);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.form{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+.form input{
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: 50px;
+    background-color: white;
+    height: 40px;
+    text-align: center;
+}
+.form input:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+.form button{
+    background-color: var(--color-pad);
+    border: none;
+    color: white;
+    height: 40px;
+    border-radius: var(--border-radius-pad);
+}
+.form button:hover{
+    cursor: pointer;
+}
+.form select{
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    background-color: white;
+    height: 40px;
+    border-radius: 7px;
+    padding: 5px;
+}
+.form select:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+.div-tabela{
+    margin-top: 30px;
+    width: 80%;
+    height: 200px;
+    padding: 5px;
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+.titleBox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.titleBox p{
+    margin: 0;
+}
+.table{
+    border-collapse: collapse;
+    width: 100%;
+}
+.table th{
+    background-color: var(--color-pad);
+    height: 40px;
+    font-size: 13px;
+    color: white;
+    font-weight: 300;
+}
+.switchBox{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 50px;
+}
+.movTable{
+    overflow: auto;
+    width: 100%;
+    text-align: center;
+    transition: transfrom 0.2s linear;
+}
+.movTable td{
+    background-color: white !important;
+    color: black;
+    font-weight: 300;
+    font-size: 13px;
+    height: 40px;
+    text-align: center !important;
+    width: 25%;
+}
+.loader{
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: 50% 50% no-repeat rgb(15 10 10/50%);
+}
+.loader img{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
