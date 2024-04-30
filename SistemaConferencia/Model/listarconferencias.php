@@ -43,7 +43,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
     $descrOper = utf8_encode($row[9]);
 
     $listaConferencias .= "<tbody>
-            <tr style='background-color:$color' id='linhaSelecionada' data-nota='$row[0]'>
+            <tr style='background-color:$color' id='linhaSelecionada' data-nota='$row[0]' data-localconf='$row[18]'>
                 <td style='width: 30px;'>$row[3] </td>
                 <td style='width: 30px;'>$row[4] </td>
                 <td style='width: 30px;'>$row[0] </td>
