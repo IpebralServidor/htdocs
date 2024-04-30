@@ -65,7 +65,6 @@ const aplicarFiltro = () => {
             $('#listaConferencias tr').dblclick(function() {
                 // Obtém o ID da linha clicada
                 var nota = this.getAttribute('data-nota');
-                var localconf = this.getAttribute('data-localconf');
                 //Enviar o dado via AJAX para o servidor
                 $.ajax({
                     //Configurações
@@ -80,8 +79,7 @@ const aplicarFiltro = () => {
                         $("#loader").hide();
                     },
                     data: {
-                        nota: nota,
-                        localconf: localconf
+                        nota: nota
                     }, //Dados para consulta
                     //função que será executada quando a solicitação for finalizada.
                     success: function(msg) {

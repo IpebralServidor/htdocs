@@ -829,11 +829,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 						alert(msg);
 					} else {
 						alert(msg);
-						<?php if ($_SESSION['localconf'] == 'CONF') { ?>
-							window.location.href = 'impressao.html?nunota=' + nunota;
-						<?php } else { ?>
-							window.location.href = 'listaconferencia.php';
-						<?php } ?>
+						window.location.href = 'impressao.html?nunota=' + nunota;
 					}
 				}
 			});
