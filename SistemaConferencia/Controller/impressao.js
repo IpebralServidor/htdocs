@@ -24,7 +24,7 @@ const impressao = (tipoImpressao) => {
         data: {nunota: numeroNota, arquivo: file},
         success: function ()
         {
-            window.open(`http:\\SistemaConferencia\\Etiquetas\\nunotas\\${numeroNota}\\${file}.pdf`);
+            window.open(`http:\\SistemaConferencia\\Etiquetas\\nunotas\\${numeroNota}\\${file}.pdf`)
         }
     });
 }
