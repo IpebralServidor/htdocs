@@ -210,17 +210,6 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 						</div>
 					</a>
 
-                    <?php if ($usuconf == 3134 || $usuconf == 3274 || $usuconf == 82 || $usuconf == 692) { ?>
-                    <a href="./SistemaTransferenciasHomol" class="card">
-                        <div class="padding">
-                            <div class="icon-card">
-                                <i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
-                            </div>
-                            <span>Transferências avulsas Homol</span>
-                        </div>
-                    </a>
-                    <?php } ?>
-
 				</div>
 			</div>
 

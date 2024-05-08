@@ -31,6 +31,18 @@ $(document).ready(function() {
         }
     });
 
+    // Seta o tipoNota para ser usado no restante do código
+    $.ajax({
+        type: 'GET',
+        dataType: 'html',
+        url: '../Model/buscartiponota.php', 
+        data: {
+            nunota: nunota
+        }, 
+        success: function(returnTipoNota) {
+            tipoNota = returnTipoNota;
+        }
+    });
 });
 
 document.getElementById("quantidade").addEventListener("focus", function() {
@@ -446,25 +458,12 @@ function editarprodutonota(nunota, produto, localdest, quantidade) { //Tipo é p
 // Fim da lógica de Edição dos Produtos
 
 function endereco() {
-    // Seta o tipoNota para ser usado no restante do código
-    $.ajax({
-        type: 'GET',
-        dataType: 'html',
-        url: '../Model/buscartiponota.php', 
-        data: {
-            nunota: nunota
-        }, 
-        success: function(returnTipoNota) {
-            tipoNota = returnTipoNota;
-
-            const endereco = document.getElementById("endereco")
-            if (tipoNota == "TRANSF_CD5") {
-                endereco.disabled = true
-                endereco.val = "5069900"
-                endereco.placeholder = "5069900"
-            }
-        }
-    });
+    const endereco = document.getElementById("endereco")
+    if (tipoNota == "TRANSF_CD5") {
+        endereco.disabled = true
+        endereco.val = "5069900"
+        endereco.placeholder = "5069900"
+    }
 }
 
 $('#confirmar').click(function() {
