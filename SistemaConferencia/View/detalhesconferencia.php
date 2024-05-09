@@ -829,7 +829,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 						alert(msg);
 					} else {
 						alert(msg);
-						window.location.href = '../Etiquetas/impressao.php?nunota=' + nunota;
+						window.location.href = 'impressao.html?nunota=' + nunota;
 					}
 				}
 			});

@@ -1,5 +1,5 @@
 <?php
-echo '   
+    echo '   
         <div class="modal fade" id="modalConfirmaReferencia" tabindex="-1" role="dialog" aria-labelledby="modalConfirmaReferencia" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -22,3 +22,6 @@ echo '
             Launch demo modal
         </button>
     ';
+?>
+
+

@@ -1,6 +1,6 @@
 <?php
 
-include "../../conexaophp.php";
+include "../conexaophp.php";
 
 $referencia = $_POST["referencia"];
 $nunota = $_POST["nunota"];
@@ -14,7 +14,9 @@ $tsqlInfos = "    SELECT ROUND(TGFPEM.ESTMIN,2),
                     WHERE REFERENCIA = '$referencia'
                       AND NUNOTA = $nunota
                     ";
-$stmtInfos = sqlsrv_query($conn, $tsqlInfos);
+$stmtInfos = sqlsrv_query( $conn, $tsqlInfos);
 $rowInfos = sqlsrv_fetch_array($stmtInfos, SQLSRV_FETCH_NUMERIC);
 
-echo $rowInfos[0] . '|' . $rowInfos[1] . '|' . $rowInfos[2];
+echo $rowInfos[0] .'|' .$rowInfos[1] .'|' .$rowInfos[2];
+
+?>
