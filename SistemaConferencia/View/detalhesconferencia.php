@@ -1,6 +1,9 @@
 <?php
 include "../../conexaophp.php";
 require_once '../App/auth.php';
+include 'WebClientPrint.php';
+
+use Neodynamic\SDK\Web\WebClientPrint;
 
 $codparc = 0;
 $usuconf = $_SESSION["idUsuario"];
@@ -119,6 +122,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
+	<script src="../Etiquetas/impressao.js"></script>
 	<script src="../Controller/DetalhesConferenciaController.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 	<link href="../css/style.css?v=<?= time() ?>" rel="stylesheet" type="text/css" media="all" />
@@ -311,6 +315,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 					<h4 style="margin: 0 !important; ">Itens em Conferência
 						<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 						<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
+						<button style="font-size: 13px;" onclick="abrirImpressaoEtiqueta();">Imprimir etiqueta</button>
 						<?php
 						$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
 						$stmt2 = sqlsrv_query($conn, $tsql2);
@@ -450,7 +455,12 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			<!-- Fim
 				POP UP Para Conferência Finalizada com Divergência
 			-->
-
+			<div id="popupetiqueta" class="popupetiqueta">
+				<h4 style="text-align: center; margin-top: 8%;">Imprimir etiquetas: </h4>
+				<input type="number" id="qtdImpressao" value="1" step="1" style="display: block; width: 50%; margin-left: auto; margin-right: auto; margin-top: 3%;"></td>
+				<button style="cursor: hand; cursor: pointer; display: block; width: 50%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="validaNumeroInserido();">Imprimir</button>
+				<button class="fechar" onclick="fecharImpressaoEtiqueta();">X</button>
+			</div>
 			<!--
 				POP UP Para Conferência Finalizada com Divergência (Corte)
 			-->
@@ -1125,6 +1135,28 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			}
 		}
 	</script>
+
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"></script>
+	<?php
+
+	//Get Absolute URL of this page
+	$currentAbsoluteURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
+	$currentAbsoluteURL .= $_SERVER["SERVER_NAME"];
+	if ($_SERVER["SERVER_PORT"] != "80" && $_SERVER["SERVER_PORT"] != "443") {
+		$currentAbsoluteURL .= ":" . $_SERVER["SERVER_PORT"];
+	}
+	$currentAbsoluteURL .= $_SERVER["REQUEST_URI"];
+
+	//WebClientPrinController.php is at the same page level as WebClientPrint.php
+	$webClientPrintControllerAbsoluteURL = substr($currentAbsoluteURL, 0, strrpos($currentAbsoluteURL, '/')) . '/WebClientPrintController.php';
+
+	//DemoPrintFileController.php is at the same page level as WebClientPrint.php
+	$demoPrintFileControllerAbsoluteURL = substr($currentAbsoluteURL, 0, strrpos($currentAbsoluteURL, '/')) . '/DemoPrintFileController.php';
+
+	//Specify the ABSOLUTE URL to the WebClientPrintController.php and to the file that will create the ClientPrintJob object
+	echo WebClientPrint::createScript($webClientPrintControllerAbsoluteURL, $demoPrintFileControllerAbsoluteURL, session_id());
+	?>
 </body>
 
 </html>

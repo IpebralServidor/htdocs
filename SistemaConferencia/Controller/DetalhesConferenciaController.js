@@ -158,6 +158,38 @@ function fecharErroQtd() {
     document.getElementById('ErroQtdMaior').style.display = 'none';
 }
 
+function abrirImpressaoEtiqueta() {
+    document.getElementById('popupetiqueta').style.display = 'block';
+}
+
+function validaNumeroInserido() {
+    let value = document.getElementById('qtdImpressao').value;
+    if(value > 0) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nunota = urlParams.get('nunota');
+        $.ajax({
+            type: 'POST',
+            dataType: 'html',
+            url: '../Model/atualizaqtdvol.php',
+            data: {
+                nunota: nunota,
+                atualizaQtdVol: value
+            },
+            success: function() {
+                fecharImpressaoEtiqueta();
+                impressao('etiqueta');
+            }
+        });
+    } else {
+        alert("Insira um número válido!");
+    }
+}
+
+function fecharImpressaoEtiqueta() {
+    document.getElementById('popupetiqueta').style.display = 'none';
+}
+
+
 function abrirconferentes() {
     document.getElementById('popupconferentes').style.display = 'block';
     var btns = document.getElementsByClassName('conferente-btn');
