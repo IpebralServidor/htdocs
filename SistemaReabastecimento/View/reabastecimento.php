@@ -423,7 +423,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     <div class="input-h6">
                         <h6>Referência:</h6>
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()"> <!-- " onblur="finalizarMedicao2()" -->
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()">
                 </div>
 
                 <div class="d-flex justify-content-center align-items-center">
@@ -551,16 +551,16 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             tempoInicial = new Date();
         }
 
-        // function finalizarMedicao2() {
+        function finalizarMedicao2() {
 
-        //     tempoFinal = new Date();
-        //     var tempoDecorrido = tempoFinal - tempoInicial;
+            tempoFinal = new Date();
+            var tempoDecorrido = tempoFinal - tempoInicial;
 
-        //     if(tempoDecorrido > 250){
-        //         abrirReferencia()
-        //         document.getElementById('referencia').value = null
-        //     }
-        // }
+            if (tempoDecorrido > 250) {
+                abrirReferencia()
+                document.getElementById('referencia').value = null
+            }
+        }
     </script>
     <script>
         function exibirObservacao() {
@@ -619,10 +619,12 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
         function abrirRef() {
             document.getElementById('popConfRef').classList.toggle("active");
+            document.getElementById('ref_conf').focus();
         }
 
         function abrir() {
             document.getElementById('popConfEnd').classList.toggle("active");
+            document.getElementById('end_conf').focus();
         }
 
         $('#btn_confend').click(function() {
