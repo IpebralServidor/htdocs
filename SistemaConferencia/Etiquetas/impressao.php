@@ -5,10 +5,12 @@ include 'WebClientPrint.php';
 include "../../conexaophp.php";
 require_once '../App/auth.php';
 
+
 $nunota = $_REQUEST['nunota'];
 $tsql = "SELECT CODTIPOPER FROM TGFCAB WHERE NUNOTA = $nunota";
 $stmt = sqlsrv_query($conn, $tsql);
 $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+
 
 use Neodynamic\SDK\Web\WebClientPrint;
 ?>
@@ -55,59 +57,7 @@ use Neodynamic\SDK\Web\WebClientPrint;
         </div>
     </div>
 
-    <script>
-        const impressao = (tipoImpressao) => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const numeroNota = urlParams.get("nunota");
-            const gif = document.getElementById("loader");
-            let file;
-            if (tipoImpressao === 'etiqueta') {
-                file = 'Cliente volume nota novo';
-            } else if (tipoImpressao === 'vale') {
-                file = 'Vale_novo';
-            }
-            $.ajax({
-                type: 'POST',
-                dataType: 'html',
-                url: './compileJasper.php',
-                beforeSend: function() {
-                    gif.style.display = "block"
-                    gif.classList.add("loader")
-                },
-                complete: function() {
-                    gif.style.display = "none"
-                    gif.classList.remove("loader")
-                },
-                data: {
-                    nunota: numeroNota,
-                    arquivo: file,
-                    funcao: 'compileJasper'
-                },
-                success: function(msg) {
-                    jsWebClientPrint.print('printerName=' + tipoImpressao + '&filePath=' + './nunotas/' + numeroNota + '/' + file + '.pdf');
-                    $.ajax({
-                        type: 'POST',
-                        dataType: 'html',
-                        url: './compileJasper.php',
-                        beforeSend: function() {
-                            gif.style.display = "block"
-                            gif.classList.add("loader")
-                        },
-                        complete: function() {
-                            gif.style.display = "none"
-                            gif.classList.remove("loader")
-                        },
-                        data: {
-                            funcao: 'fechaJanelaWcpp'
-                        },
-                        success: function(msg) {
-                            console.log(msg);
-                        }
-                    });
-                }
-            });
-        }
-    </script>
+    <script src="./impressao.js"></script>
 
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"></script>

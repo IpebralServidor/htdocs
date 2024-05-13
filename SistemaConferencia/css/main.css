@@ -79,6 +79,19 @@ tr:active{background-color: yellow !important;}
 	z-index: 9999;
 }
 
+.popupetiqueta {
+	position: fixed;
+	top: 0; bottom: 0; 
+	left: 0; right:0;
+	margin: auto;
+	width: 300px;
+	height: 150px;
+	padding: 15px;
+	border: solid 1px #4c4d4f;
+	background: white;
+	display: none;
+	z-index: 9999;
+}
 .popupconfdivcorte {
 	position: fixed;
 	top: 0; bottom: 0; 
