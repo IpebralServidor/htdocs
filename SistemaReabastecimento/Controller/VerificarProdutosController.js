@@ -58,14 +58,13 @@ $(document).ready(function() {
             nunota: nunota
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
-        success: function(tipoTransf) {
+        success: function(tipos) {
+            let tipoTransf = tipos.split("~")[0];
+            let tipoNota = tipos.split("~")[1];
             var tr = document.getElementById('productsTable').tHead.children[0];
-            if(tipoTransf == 'TRANSFPRODSAIDA') {
+            if(tipoTransf == 'TRANSFPROD_ENTRADA' && tipoNota == 'S') {
                 tr.insertCell(3).outerHTML = 
-                "<th> <button class='btnEntregaPegaTudo' data-toggle='modal' data-target='#entregaModal'>Entregar </button></th>";
-            } else if(tipoTransf == 'TRANSFPRODENTRADA') {
-                tr.insertCell(3).outerHTML = 
-                "<th><button class='btnEntregaPegaTudo' data-toggle='modal' data-target='#pegaModal'>Pegar</button></th>";
+                "<th><button class='btnEntregaPegaTudo' data-toggle='modal' data-target='#entregaModal'>Entregar</button></th>";
             } else {
                 tr.insertCell(3).outerHTML = "<th></th>";
             }
@@ -313,6 +312,7 @@ function abastecerTudo(nunota) {
         //função que será executada quando a solicitação for finalizada.
         success: function(msg) {
             if (msg == 'Concluido') {
+                alert(msg);
                 location.reload();
             } else {
                 alert(msg);

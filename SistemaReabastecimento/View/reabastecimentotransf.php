@@ -1017,7 +1017,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
-                    var retorno = msg.split("/");
+                    var retorno = msg.split("~");
 
                     if (msg == ' ') {
                         <?php if ($tipoNota == 'A') { ?>
