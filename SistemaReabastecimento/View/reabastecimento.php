@@ -258,7 +258,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php if ($rowEhTransf[0]  == 'TRANSFPRODENTRADA') { ?>
+                    <?php if ($rowEhTransf[0]  == 'TRANSFPROD_ENTRADA') { ?>
                         <p>Tem certeza que deseja guardar todas as mercadorias?</p>
                     <?php } else { ?>
                         <p>Tem certeza que deseja separar todas as mercadorias?</p>
@@ -389,6 +389,9 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             </div>
 
             <div class="d-flex justify-content-end">
+                <!--<button type="button" class="statusReabastecimento" style="background-color: red" data-toggle="modal" data-target="#entregaModal">
+                    Entregar tudo
+                </button>-->
                 <button class="statusReabastecimento" style=" background-color: <?php echo $corTipoNota; ?> !important;">
                     <?php echo $tituloNota; ?>
                 </button>
@@ -430,11 +433,12 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     <div class="input-h6">
                         <h6>Quantidade:</h6>
                     </div>
-                    <input type="number" name="qtdneg" id="qtdneg" class="form-control" required placeholder="">
+                    <input type="number" name="qtdneg" id="qtdneg" class="form-control" data-qtdRetornada="" required placeholder="">
                 </div>
 
                 <div class="infos">
                     <div class="informacoes">
+                        <h6>Descrição: <span id="descricao"></span></h6>
                         <h6>Agp. min: <span id="agrupmin"><span></h6>
 
                         <div class="d-flex justify-content-start">
@@ -586,7 +590,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
-                    var retorno = msg.split("/");
+                    var retorno = msg.split("~");
 
                     document.getElementById("observacao").textContent = retorno[9];
                 }
@@ -859,7 +863,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
         $('#proximo').click(function() {
 
             var qtdDigitada = $("#qtdneg").val();
-            var qtdRetornada = document.getElementById("qtdneg").placeholder;
+            var qtdRetornada = document.getElementById("qtdneg").getAttribute("data-qtdRetornada");
             var enderecoClick = document.getElementById("endereco").value
 
             if ((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP') {
@@ -1161,7 +1165,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
-                    var retorno = msg.split("/");
+                    var retorno = msg.split("~");
 
                     if (msg == '') {
                         <?php if ($tipoNota == 'A') { ?>
@@ -1186,7 +1190,8 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                                 }
                             <?php } ?>
 
-                            document.getElementById("qtdneg").placeholder = retorno[2];
+                            document.getElementById("qtdneg").placeholder = retorno[2] + ' (' + retorno[2] * Math.pow(10, retorno[14]) + ' UND)';
+                            document.getElementById("qtdneg").setAttribute("data-qtdRetornada", retorno[2])
                             document.getElementById("endereco").placeholder = retorno[1];
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
                             document.getElementById("referencia").placeholder = retorno[0];
@@ -1201,6 +1206,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                             document.getElementById("codprod").value = retorno[10];
                             document.getElementById("qtdlocalInput").value = retorno[4];
                             document.getElementById("sequencia").value = retorno[8];
+                            document.getElementById("descricao").textContent = retorno[13];
 
                             produtoseq = retorno[8]
 
