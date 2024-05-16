@@ -153,13 +153,15 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			if (checkedCheckboxes[0] == null) {
 				alert('Selecione pelo menos uma linha para inserir!');
 			} else {
-				var referencia = "";
 				for (var i = 0; i < checkedCheckboxes.length; i++) {
-					var referencia = checkedCheckboxes[i].getAttribute('data-codbarra');
-					inserependencia(<?php echo $nunota2; ?>, referencia);
+					referencia = checkedCheckboxes[i].getAttribute('data-codbarra').trim();
+					qtdInserir = checkedCheckboxes[i].getAttribute('data-insert');
+					if (qtdInserir > 0) {
+						inserependencia(<?php echo $nunota2; ?>, referencia, qtdInserir);
+					} else {
+						alert('Digite uma quantidade válida do item ' + referencia + '.');
+					}
 				}
-				alert("Item(s) inseridos(s) com sucesso!");
-				window.location.href = 'detalhesconferencia.php?nunota=<?php echo $nunota2 ?>';
 			}
 		}
 	</script>
@@ -411,30 +413,36 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 				<!-- Formulário para inserir as pendências -->
 				<div style="background-color: red; margin: 0">
 					<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
-						<table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="table">
+						<table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="tablePendencias">
 							<tr>
 								<th width="1%" style="margin-right: 0; "><input type="checkbox" id="select_all" value="" /></th>
-								<th width="20.0%" align="center">Referencia</th>
+								<th width="10.0%" align="center">Referencia</th>
 								<th width="40.0%" style="text-align: center;">Descrição do Produto</th>
-								<th width="20.0%">Local</th>
-								<th width="20.0%" align="center">Quantidade pendente</th>
-								<th width="20.0%" align="center">Controle</th>
+								<th width="10.0%">Local</th>
+								<th align="center">Quantidade conferida</th>
+								<th align="center">Estoque possível</th>
+								<th align="center">Quantidade pendente</th>
+								<th width="10.0%" align="center">Controle</th>
 							</tr>
 							<?php
 							$tsql2 = "select * from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
 							$stmt2 = sqlsrv_query($conn, $tsql2);
+							$i = 0;
 							while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
 							?>
 								<tr style="cursor: hand; cursor: pointer;">
 								<tr>
-									<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox" data-codbarra="<?php echo $row2[0]; ?>" /></td>
-									<td width="20.0%"><?php echo $row2[0]; ?></td>
-									<td width="20.0%"><?php echo $row2[1]; ?></td>
-									<td width="20.0%" align="center"><?php echo $row2[2]; ?></td>
-									<td width="20.0%" align="center"><?php echo $row2[3]; ?></td>
-									<td width="20.0%" align="center"><?php echo $row2[4]; ?></td>
+									<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox" data-codbarra="<?php echo $row2[0]; ?>" id="<?php echo 'pendenciasTr' . $i ?>" data-insert="<?php echo $row2[5] ?>" /></td>
+									<td><?php echo $row2[0]; ?></td>
+									<td><?php echo $row2[1]; ?></td>
+									<td align="center"><?php echo $row2[2]; ?></td>
+									<td align="center"><input type="number" value="<?php echo $row2[5] ?>" class="qtdInserir" style="width: 100%;" data-index="<?php echo $i; ?>"></td>
+									<td align="center"><?php echo $row2[5] ?></td>
+									<td align="center"><?php echo $row2[3]; ?></td>
+									<td align="center"><?php echo $row2[4]; ?></td>
 								</tr>
 							<?php
+								$i++;
 							}
 							?>
 						</table>
@@ -946,7 +954,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			});
 		}
 
-		function inserependencia(nunota, codigobarra) {
+		function inserependencia(nunota, referencia, quantidade) {
 			//O método $.ajax(); é o responsável pela requisição
 			$.ajax({
 				//Configurações
@@ -959,12 +967,14 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 				},
 				data: {
 					nunota: nunota,
-					codigobarra: codigobarra
+					referencia: referencia,
+					quantidade: quantidade
 				}, //Dados para consulta
 				//função que será executada quando a solicitação for finalizada.
 				success: function(msg) {
-					//window.location.href='detalhesconferencia.php?nunota=<?php echo $nunota2 ?>&codbarra=0';
+					alert(msg);
 					$("#loader").show();
+					window.location.href = 'detalhesconferencia.php?nunota=<?php echo $nunota2 ?>&codbarra=0';
 				}
 			});
 		}
@@ -1134,6 +1144,12 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 				}, 50);
 			}
 		}
+
+		$(".qtdInserir").change(function() {
+			var index = $(this).data('index');
+			var valor = $(this).val();
+			document.getElementById('pendenciasTr' + index).setAttribute('data-insert', valor);
+		});
 	</script>
 
 	<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
