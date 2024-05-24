@@ -32,6 +32,7 @@ use Neodynamic\SDK\Web\WebClientPrint;
 
     <script>
         $(document).ready(function() {
+            // Caso o tipo da nota seja 1780, imprime o vale logo ao abrir a tela.
             if (<?php echo $row[0] ?> === 1780) {
                 $("#gerarVale").click();
             }
@@ -56,7 +57,6 @@ use Neodynamic\SDK\Web\WebClientPrint;
             </div>
         </div>
     </div>
-
     <script src="./impressao.js"></script>
 
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
@@ -66,22 +66,14 @@ use Neodynamic\SDK\Web\WebClientPrint;
 
 </html>
 
-<?php
-
-//Get Absolute URL of this page
-$currentAbsoluteURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
+<?php $currentAbsoluteURL = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
 $currentAbsoluteURL .= $_SERVER["SERVER_NAME"];
 if ($_SERVER["SERVER_PORT"] != "80" && $_SERVER["SERVER_PORT"] != "443") {
     $currentAbsoluteURL .= ":" . $_SERVER["SERVER_PORT"];
 }
-$currentAbsoluteURL .= $_SERVER["REQUEST_URI"];
 
-//WebClientPrinController.php is at the same page level as WebClientPrint.php
-$webClientPrintControllerAbsoluteURL = substr($currentAbsoluteURL, 0, strrpos($currentAbsoluteURL, '/')) . '/WebClientPrintController.php';
+$webClientPrintControllerAbsoluteURL = $currentAbsoluteURL . '/SistemaConferencia/Etiquetas/WebClientPrintController.php';
+$printFileControllerAbsoluteURL = $currentAbsoluteURL . '/SistemaConferencia/Etiquetas/PrintFileController.php';
 
-//DemoPrintFileController.php is at the same page level as WebClientPrint.php
-$demoPrintFileControllerAbsoluteURL = substr($currentAbsoluteURL, 0, strrpos($currentAbsoluteURL, '/')) . '/DemoPrintFileController.php';
-
-//Specify the ABSOLUTE URL to the WebClientPrintController.php and to the file that will create the ClientPrintJob object
-echo WebClientPrint::createScript($webClientPrintControllerAbsoluteURL, $demoPrintFileControllerAbsoluteURL, session_id());
+echo WebClientPrint::createScript($webClientPrintControllerAbsoluteURL, $printFileControllerAbsoluteURL, session_id());
 ?>
