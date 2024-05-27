@@ -44,6 +44,44 @@ tr:active{background-color: yellow !important;}
 	z-index: 999;
 }
 
+.popupprodutos{
+	display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    padding: 15px;
+    border: solid 1px #4c4d4f;
+    background: white;
+    z-index: 999;
+}
+
+/* Estilos para telas menores que 768px (celulares) */
+@media screen and (max-width: 767px) {
+    .popupprodutos {
+        width: 90%; /* 90% do tamanho da tela */
+        height: 50%; /* 90% do tamanho da tela */
+        min-width: 0; /* Remova a largura mínima */
+        min-height: 0; /* Remova a altura mínima */
+    }
+}
+
+/* Estilos para telas maiores ou iguais a 768px (computadores) */
+@media screen and (min-width: 768px) {
+    .popupprodutos {
+        width: 65%; /* 50% do tamanho da tela */
+        height: 50%; /* 50% do tamanho da tela */
+    }
+}
+
+#popupprodutos th,
+#popupprodutos td {
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 300px; /* Define uma largura máxima para evitar que o conteúdo estique demais */
+}
+
 .popuppendencias{
 	position: fixed;
 	top: 0; bottom: 0; 
@@ -186,16 +224,22 @@ border-top: solid 5px #e54e43;
 
 .fechar{
 	position: absolute;
-	top: -10px;
-	right: -10px;
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
+	top: 1px;
+	right: 1px;
+	width: 22px;
+	height: 22px;
+	border-radius: 100%;
 	border: 0;
 	background-color: red;
 	color: white;
-	font-size: 20px;
 	cursor: pointer;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fechar::before {
+	content: 'X';
 }
 
 .btnPendencia {
@@ -302,7 +346,7 @@ border-top: solid 5px #e54e43;
 }
 .screen{
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	text-align: center;
