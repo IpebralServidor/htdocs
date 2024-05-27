@@ -10,8 +10,10 @@ $codusu = $_SESSION["idUsuario"];
 $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
 $stmtTipoNota = sqlsrv_query($conn, $tsqlTipoNota);
 $rowTipoNota = sqlsrv_fetch_array($stmtTipoNota, SQLSRV_FETCH_NUMERIC);
-$_SESSION['tipoNota'] = $rowTipoNota[0];
+
 $tipoNota = $rowTipoNota[0];
+
+$_SESSION['tipoNota'] = $tipoNota;
 
 if ($tipoNota == 'A') {
     $enderecoInit = 0;
@@ -40,6 +42,21 @@ $tsqlPdSemFiltro = "SELECT AD_CODUSUBIP FROM [sankhya].[AD_FNT_PROXIMO_PRODUTO_R
 $stmtPdSemFiltro = sqlsrv_query($conn, $tsqlPdSemFiltro);
 $rowPdSemFiltro = sqlsrv_fetch_array($stmtPdSemFiltro, SQLSRV_FETCH_NUMERIC);
 
+if (isset($_REQUEST["fila"])) {
+    $fila = $_REQUEST["fila"];
+    $_SESSION["fila"] = $fila;
+}
+
+$tsqlEhTransf = "   SELECT AD_PEDIDOECOMMERCE 
+                        FROM TGFCAB 
+                        WHERE NUNOTA = $nunota2";
+$stmtEhTransf = sqlsrv_query($conn, $tsqlEhTransf);
+$rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
+
+$tsqlProdutosParaLocalpad = "SELECT [sankhya].[AD_FN_VERIFICA_PRODUTOS_LOCALPAD_REABASTECIMENTO]($nunota2, 1)";
+$stmtProdutosParaLocalpad = sqlsrv_query($conn, $tsqlProdutosParaLocalpad);
+$rowProdutosParaLocalpad = sqlsrv_fetch_array($stmtProdutosParaLocalpad, SQLSRV_FETCH_NUMERIC);
+
 if ($rowPdtAtual[0] == 0) {
     if (empty($rowPdSemFiltro[0]) && $row[0] != 0 && $tipoNota != "A") {
         $tsqlUpdate = "UPDATE TGFITE SET AD_CODUSUBIP = $codusu WHERE NUNOTA = ($nunota2) AND ABS(SEQUENCIA) = $row[0]";
@@ -49,13 +66,13 @@ if ($rowPdtAtual[0] == 0) {
             header("Location: verificarprodutos.php?nunota=" . $nunota2);
         } else if (empty($row[0])) {
             echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";
+        } else if ($tipoNota == "A" && $fila == 'S' && $rowEhTransf[0]  === 'TRANSFPROD_SAIDA') {
+            // Lógica para que os produtos de saída da produção que não sejam endereçados para o local padrão não possam ser pegos com fila
+            if ($rowProdutosParaLocalpad[0] === 'N') {
+                echo "<script>alert('Favor pegar sem fila.'); location = './menuseparacao.php?nunota=$nunota2' </script>";
+            }
         }
     }
-}
-
-if (isset($_REQUEST["fila"])) {
-    $fila = $_REQUEST["fila"];
-    $_SESSION["fila"] = $fila;
 }
 
 $tsqlStatus = "SELECT [sankhya].[AD_FN_RETORNA_STATUS_NOTA]($nunota2, $codusu)";
@@ -75,11 +92,6 @@ $rowNota = sqlsrv_fetch_array($stmtNota, SQLSRV_FETCH_ASSOC);
 $tsql2 = "SELECT * FROM [sankhya].[AD_FNT_PRODUTO_SEPARADO_REABASTECIMENTO] ($nunota2) ORDER BY CODLOCALORIG DESC, SEQUENCIA DESC";
 $stmt2 = sqlsrv_query($conn, $tsql2);
 
-$tsqlEhTransf = "   SELECT AD_PEDIDOECOMMERCE 
-                        FROM TGFCAB 
-                        WHERE NUNOTA = $nunota2";
-$stmtEhTransf = sqlsrv_query($conn, $tsqlEhTransf);
-$rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 ?>
 
 <!DOCTYPE html>
@@ -248,7 +260,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
     </div>
 
     <!-- Modal para entregar tudo -->
-    <div class="modal fade" id="entregaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="pegaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -258,14 +270,12 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php if ($rowEhTransf[0]  == 'TRANSFPROD_ENTRADA') { ?>
-                        <p>Tem certeza que deseja guardar todas as mercadorias?</p>
-                    <?php } else { ?>
+                    <?php if ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' and $tipoNota === 'S') { ?>
                         <p>Tem certeza que deseja separar todas as mercadorias?</p>
                     <?php } ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnEntregarTudo">Sim</button>
+                    <button type="button" class="btn btn-primary" id="btnPegarTudo">Sim</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
                 </div>
             </div>
@@ -389,9 +399,13 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             </div>
 
             <div class="d-flex justify-content-end">
-                <!--<button type="button" class="statusReabastecimento" style="background-color: red" data-toggle="modal" data-target="#entregaModal">
-                    Entregar tudo
-                </button>-->
+                <?php
+                if ($rowEhTransf[0] === 'TRANSFPROD_SAIDA' and $tipoNota === 'S') {
+                    echo "<button type='button' class='statusReabastecimento' style='background-color: red' data-toggle='modal' data-target='#pegaModal'>
+                            Pegar tudo
+                          </button>";
+                }
+                ?>
                 <button class="statusReabastecimento" style=" background-color: <?php echo $corTipoNota; ?> !important;">
                     <?php echo $tituloNota; ?>
                 </button>
@@ -412,22 +426,33 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
         <div class="header-body">
 
             <div class="header-body-left">
-
-
-                <div class="d-flex justify-content-center align-items-center">
+                <?php
+                $campoEndereco =
+                    '<div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
                         <h6>Endereço:</h6>
                     </div>
                     <input type="number" name="endereco" id="endereco" class="form-control" placeholder="" oninput="iniciarMedicao()" onblur="finalizarMedicao()">
 
-                </div>
+                </div>';
 
-                <div class="d-flex justify-content-center align-items-center">
+                $campoReferencia =
+                    '<div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
                         <h6>Referência:</h6>
                     </div>
                     <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()">
-                </div>
+                </div>';
+
+                if ($tipoNota === 'A' && $fila === 'N') {
+                    echo $campoReferencia;
+                    echo $campoEndereco;
+                } else {
+                    echo $campoEndereco;
+                    echo $campoReferencia;
+                }
+
+                ?>
 
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
@@ -865,7 +890,8 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").getAttribute("data-qtdRetornada");
             var enderecoClick = document.getElementById("endereco").value
-
+            qtdDigitada = parseFloat(qtdDigitada);
+            qtdRetornada = parseFloat(qtdRetornada);
             if ((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP') {
                 alert('Esta nota não é possível passar quantidade a mais!')
             } else if ((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S') {
@@ -1071,7 +1097,8 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
                     if (msg == 'Concluido') {
-                        location.reload();
+                        alert('Concluído. Nota de guarda: <?php echo $rowNotaVinculo[0] ?>');
+                        window.location.href = "index.php";
                     } else {
                         alert(msg);
                     }
@@ -1079,7 +1106,7 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
             });
         }
 
-        $('#btnEntregarTudo').click(function() {
+        $('#btnPegarTudo').click(function() {
             abastecerTudo('<?php echo $nunota2; ?>')
         });
 
@@ -1119,10 +1146,8 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
 
         <?php if ($fila == 'N') { ?>
 
-            document.getElementById("qtdneg").addEventListener("focus", function() {
-
+            document.getElementById("endereco").addEventListener("focus", function() {
                 retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
-                //document.getElementById("localorigem").textContent = "teste";
             }, {
                 once: true
             });
@@ -1166,7 +1191,6 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
                     var retorno = msg.split("~");
-
                     if (msg == '') {
                         <?php if ($tipoNota == 'A') { ?>
                             alert('Este item não foi separado!');
@@ -1191,8 +1215,11 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                             <?php } ?>
 
                             document.getElementById("qtdneg").placeholder = retorno[2] + ' (' + retorno[2] * Math.pow(10, retorno[14]) + ' UND)';
-                            document.getElementById("qtdneg").setAttribute("data-qtdRetornada", retorno[2])
+                            document.getElementById("qtdneg").setAttribute("data-qtdRetornada", retorno[2]);
                             document.getElementById("endereco").placeholder = retorno[1];
+                            if (('<?php echo $tipoNota ?>' == "A") && ('<?php echo $fila ?>' == 'N') && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA') && ('<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N')) {
+                                document.getElementById("endereco").placeholder = '';
+                            }
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
                             document.getElementById("referencia").placeholder = retorno[0];
                             document.getElementById("observacao").textContent = retorno[9];
@@ -1219,6 +1246,41 @@ $rowEhTransf = sqlsrv_fetch_array($stmtEhTransf, SQLSRV_FETCH_NUMERIC);
                                 abrirReferencia()
                                 document.getElementById('referencia').value = null
                                 document.getElementById('referencia').placeholder = ''
+                            }
+
+                            if (('<?php echo $tipoNota ?>' == "S") && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA')) {
+                                <?php
+                                $tsqlCodLocal =
+                                    "SELECT DISTINCT ITE.CODLOCALORIG
+                                    FROM TGFCAB CAB 
+                                    JOIN TGFITE ITE
+                                    ON CAB.NUNOTA = ITE.NUNOTA 
+                                    WHERE CAB.NUNOTA = ?
+                                    AND ITE.SEQUENCIA > 0
+                                    AND AD_PEDIDOECOMMERCE = ?
+                                    AND AD_GARANTIAVERIFICADA = ?";
+                                $params = array($nunota2, $rowEhTransf[0], $tipoNota);
+                                $stmtCodLocal = sqlsrv_query($conn, $tsqlCodLocal, $params);
+                                $rowCodLocal = sqlsrv_fetch_array($stmtCodLocal, SQLSRV_FETCH_NUMERIC);
+                                ?>
+                                document.getElementById('endereco').value = <?php echo $rowCodLocal[0]; ?>;
+                                document.getElementById('endereco').disabled = true;
+                            } else if (('<?php echo $tipoNota ?>' == "A") && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_ENTRADA') && ('<?php echo $fila ?>' == 'S')) {
+                                <?php
+                                $tsqlCodLocal = "SELECT DISTINCT ITE.CODLOCALORIG
+                                FROM TGFCAB CAB 
+                                JOIN TGFITE ITE
+                                ON CAB.NUNOTA = ITE.NUNOTA 
+                                WHERE CAB.NUNOTA = ?
+                                AND ITE.SEQUENCIA < 0
+                                AND AD_PEDIDOECOMMERCE = ?
+                                AND AD_GARANTIAVERIFICADA = ?";
+                                $params = array($nunota2, $rowEhTransf[0], $tipoNota);
+                                $stmtCodLocal = sqlsrv_query($conn, $tsqlCodLocal, $params);
+                                $rowCodLocal = sqlsrv_fetch_array($stmtCodLocal, SQLSRV_FETCH_NUMERIC);
+                                ?>
+                                document.getElementById('endereco').value = <?php echo $rowCodLocal[0]; ?>;
+                                document.getElementById('endereco').disabled = true;
                             }
                         }
                     }
