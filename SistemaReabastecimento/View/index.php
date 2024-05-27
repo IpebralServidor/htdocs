@@ -87,8 +87,10 @@ require_once '../../App/auth.php';
 						<table class="table">
 							<thead>
 								<tr>
+									<th>Usuário</th>
 									<th>Nunota</th>
 									<th>Cod TOP</th>
+									<th>Tipo</th>
 									<th>Qtd Itens</th>
 									<th>Data</th>
 								</tr>
