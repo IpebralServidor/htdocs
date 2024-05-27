@@ -1,6 +1,9 @@
 <?php
 include "../../conexaophp.php";
-$referencia = $_POST['REFERENCIA'];
+require_once '../../App/auth.php';
+
+$codprod = $_REQUEST['codprod'];
+$codusu = $_SESSION["idUsuario"];
 ?>
 
 <!DOCTYPE html>
@@ -40,9 +43,10 @@ $referencia = $_POST['REFERENCIA'];
 	<div class="container">
 		<div class="header-body">
 			<?php
-			$tsql = "SELECT * FROM [sankhya].[AD_FNT_InfoProduto_ConsultaEstoque]('$referencia')";
+			$params = array($codprod, $codusu);
+			$tsql = "SELECT * FROM [sankhya].[AD_FNT_InfoProduto_ConsultaEstoque](?, ?)";
 
-			$stmt = sqlsrv_query($conn, $tsql);
+			$stmt = sqlsrv_query($conn, $tsql, $params);
 			$row2 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
 			$produto = $row2['CODPROD'];
@@ -71,7 +75,7 @@ $referencia = $_POST['REFERENCIA'];
 						<h6>Local padrão:
 							<?php
 							$tsql = "	SELECT DISTINCT CODLOCALPAD 
-											FROM TGFPEM WHERE CODPROD = (SELECT CODPROD FROM TGFBAR WHERE CODBARRA = '$referencia') 
+											FROM TGFPEM WHERE CODPROD = $codprod
 											  AND CODEMP IN (1,7)";
 							$stmt = sqlsrv_query($conn, $tsql);
 							while ($row2 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
@@ -87,12 +91,10 @@ $referencia = $_POST['REFERENCIA'];
 
 		<div class="image d-flex justify-content-center">
 			<?php
-			if ($referencia != '') {
+			if ($codprod != '') {
 				$tsql2 = " select ISNULL(IMAGEM,(SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000))
-								from TGFPRO inner join
-									--TGFITE ON TGFITE.CODPROD = TGFPRO.CODPROD INNER JOIN
-									TGFBAR ON TGFBAR.CODPROD = TGFPRO.CODPROD
-								where CODBARRA = '{$referencia}' ";
+							from TGFPRO
+							where CODPROD = $codprod";
 			} else {
 				$tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000";
 			}
@@ -117,7 +119,7 @@ $referencia = $_POST['REFERENCIA'];
 				</tr>
 
 				<?php
-				$tsql2 = "SELECT * FROM [sankhya].[AD_FNT_TabelaEstoque_ConsultaEstoque]('$referencia')";
+				$tsql2 = "SELECT * FROM [sankhya].[AD_FNT_TabelaEstoque_ConsultaEstoque]('$codprod')";
 
 				$stmt2 = sqlsrv_query($conn, $tsql2);
 				$rowId = 0;
