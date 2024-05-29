@@ -225,52 +225,6 @@ body{
 	padding: 10px;
 }
 
-
-
-
-/* .div-table{
-	height: 80%;
-	overflow: auto;
-}
-.div-table table{
-	font-family: 'Roboto', sans-serif;
-	width: 100%;
-	border-collapse: collapse;
-}
-.div-table thead{
-	position: sticky;
-	top: 0;
-	font-size: 14px;
-	background-color: #f8fafc;
-	color:#9ea9b8;
-}
-.div-table th{
-	padding: 10px;
-	padding-bottom: 15px;
-}
-.div-table td{
-	font-size: 13px;
-	text-align: center;
-	font-family: 'Roboto', sans-serif;
-	padding: 20px;
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .popup .overlay{
 	position: fixed;
 	top: 0;
@@ -283,15 +237,15 @@ body{
 	height: 100%;
 }
 .popup .content{
-	/* align-items: end; */
 	border-radius: var(--border-radius-pad);
 	position: absolute;
 	top: 50%;	
 	left: 50%;
 	transform: translate(-50%, -50%) scale(0);
 	background: #fff;
-	/* width: 100%; */
-	/* height: auto; */
+	width: 170px; /* Ajuste a largura conforme necessário */
+    height: auto; /* Deixe a altura automática para que a popup se ajuste ao conteúdo */
+    padding: 20px; /* Adicione preenchimento interno para espaçamento interno */
 	margin: 0;
 	z-index: 2;
 }
@@ -435,4 +389,11 @@ body{
 		padding: 9px;
 		margin-bottom: 8%;
 	}
+}
+
+.form-control{
+	height: 2.5rem !important;
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.5rem !important;
+	border-radius: 50px !important;
 }

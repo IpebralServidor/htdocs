@@ -70,27 +70,6 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 								</a>
 							<?php } ?>
 
-							<a href="./SistemaConferencia/listaconferencia.php" class="a-deactive">
-								<div class="side-menu-itens">
-									<i class="fa-solid fa-circle-check"></i>
-									<span class="span-menu">Conferência</span>
-								</div>
-							</a>
-
-							<a href="./ConsultaEstoque" class="a-deactive">
-								<div class="side-menu-itens">
-									<i class="fa-solid fa-boxes-packing"></i>
-									<span class="span-menu">Consulta de estoque</span>
-								</div>
-							</a>
-
-							<a href="./SistemaEstoque" class="a-deactive">
-								<div class="side-menu-itens">
-									<i class="fa-solid fa-truck-ramp-box"></i>
-									<span class="span-menu">Entrada de mercadorias</span>
-								</div>
-							</a>
-						
 							<?php if (in_array($usuconf, $a, true)) { ?>
 								<a href='./Manutencao' class="a-deactive">
 									<div class="side-menu-itens">
@@ -209,18 +188,14 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 							<span>Transferências avulsas</span>
 						</div>
 					</a>
-
-                    <?php if ($usuconf == 3134 || $usuconf == 3274 || $usuconf == 82 || $usuconf == 692) { ?>
-                    <a href="./SistemaTransferenciasHomol" class="card">
-                        <div class="padding">
-                            <div class="icon-card">
-                                <i class="fa-solid fa-right-left" style="background-color: #ff947a"></i>
-                            </div>
-                            <span>Transferências avulsas Homol</span>
-                        </div>
-                    </a>
-                    <?php } ?>
-
+					<a href="#" onclick="abrirPopRetirarCaixa()" class="card">
+						<div class="padding">
+							<div class="icon-card">
+								<i class="fa-solid fa-box" style="background-color: #ff947a"></i>
+							</div>
+							<span>Retirar caixas da gôndola</span>
+						</div>
+					</a>
 				</div>
 			</div>
 
@@ -289,6 +264,31 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
 		</div>
 	</div>
+
+	<div class="popup" id="popRetirarCaixa">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopRetirarCaixa()">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+
+				<div class="div-form">
+					<div class="form">
+						<label>Empresa:</label>
+						<select id="filtroEmpresa" name="status" class="form-control">
+							<option value="1">1</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+						</select>
+
+						<button name="confirmaFiltroRetirarCaixa" id="confirmaFiltroRetirarCaixa" onclick="confirmaFiltroRetirarCaixa()">Confirmar</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 	</div>
 
 	<?php
@@ -314,6 +314,14 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
 		function abrir() {
 			document.getElementById('popAlterarSenha').classList.toggle("active");
+		}
+
+		function abrirPopRetirarCaixa() {
+			document.getElementById('popRetirarCaixa').classList.toggle("active");
+		}
+
+		function confirmaFiltroRetirarCaixa() {
+			window.location.href = 'DesativaProdutoEndereco/View/index.php?codemp=' + document.getElementById('filtroEmpresa').value;
 		}
 
 		function menuM() {
