@@ -4,9 +4,7 @@ include "../../conexaophp.php";
 $codemp = $_POST['codemp'];
 $params = array($codemp);
 
-
-$tsql = "SELECT * FROM [sankhya].[AD_FNT_RetornaProdutos_DesativaProduto](?)";
-
+$tsql = "EXEC [sankhya].[AD_STP_DESATIVALOCALPADRAO] ?";
 $stmt = sqlsrv_query($conn, $tsql, $params);
 $returnArray = '';
 

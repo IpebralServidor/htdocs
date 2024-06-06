@@ -22,6 +22,7 @@ require_once '../../App/auth.php';
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+
 	<title>Desativa produtos</title>
 </head>
 
@@ -57,13 +58,13 @@ require_once '../../App/auth.php';
 							Endereço: <span style="color: red">*</span>
 						</div>
 						<div class="mb-1">
-							<input type="text" class="form-control" id="enderecoProduto">
+							<input type="text" class="form-control" style="color: #86B7FE !important;" id="enderecoProduto">
 						</div>
 						<div class="modal-body fw-bold">
 							Referência: <span style="color: red">*</span>
 						</div>
 						<div class="mb-1">
-							<input type="text" class="form-control" id="referenciaProduto">
+							<input type="text" class="form-control" style="color: #86B7FE !important;" id="referenciaProduto">
 							<input type="checkbox" id="semcaixa" onchange='handleCheck(this);'>
 							<label for="semcaixa">Caixa não está no endereço</label><br>
 						</div>

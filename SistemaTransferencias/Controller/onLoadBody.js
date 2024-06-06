@@ -59,17 +59,70 @@ document.getElementById("setaDownDiv").addEventListener("click", ()=>{
         setaDown.style.transform = "rotate(0deg)";
         rotated = false;
     }
-
-    $.ajax({
-        type: 'POST',
-        dataType: 'html',
-        url: '../Model/produtosInseridos.php',
-        async: false,
-        data: {nunota: nunota},
-        success: function (msg)
-        {
-            document.getElementById('tabelaProdutosInseridos').innerHTML = msg
-        }
-    });
+    alteraTable();
 })
 
+function alteraTable() {
+    var switchBox = document.getElementById('chkInp');
+
+    if (switchBox.checked == true) {
+        document.getElementById('titleBoxH6').textContent = 'Produtos transferidos';
+        $.ajax({
+            type: 'POST',
+            dataType: 'html',
+            url: '../Model/produtosInseridos.php',
+            data: {nunota: nunota},
+            success: function (msg)
+            {
+                document.getElementById('tabelaSwitch').innerHTML = msg
+            }
+        });
+    } else {
+        document.getElementById('titleBoxH6').textContent = 'Locais vazios';
+        $.ajax({
+            type: 'POST',
+            dataType: 'html',
+            url: '../Model/locaisVazios.php',
+            async: false,
+            data: {nunota: nunota},
+            success: function (msg)
+            {
+                document.getElementById('tabelaSwitch').innerHTML = msg
+            }
+        });
+    }
+}
+
+function setRowData(codemp, codlocal) {
+    document.getElementById('btnDeletaLocal').setAttribute('codemp', codemp);
+    document.getElementById('btnDeletaLocal').setAttribute('codlocal', codlocal);
+}
+
+
+function deletaLocal (button) {
+    let codemp = button.getAttribute('codemp');
+    let codlocal = button.getAttribute('codlocal');
+    let gif = document.getElementById("loader");
+    $.ajax ({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/deletaLocalVazio.php',
+        beforeSend: function () {
+            gif.style.display = "block"
+            gif.classList.add("loader")
+        },
+        complete: function(){
+            gif.style.display = "none"
+            gif.classList.remove("loader")
+        },
+        data: {
+            codemp: codemp, 
+            codlocal: codlocal
+        },
+        success: function (msg)
+        {
+            alert(msg);
+            alteraTable();
+        }
+    });
+}
