@@ -40,11 +40,18 @@ const openDesativaModal = (currentRow) => {
 }
 
 const desativaProduto = () => {
+    let checkboxCaixa = document.getElementById('semcaixa').checked;
     if(document.getElementById('enderecoProduto').value != document.getElementById('enderecoProduto').placeholder) {
         alert('Digite o endereço correto!');
-    } else if(document.getElementById('semcaixa').checked == false && document.getElementById('referenciaProduto').value != document.getElementById('referenciaProduto').placeholder) {
+    } else if(checkboxCaixa === false && document.getElementById('referenciaProduto').value != document.getElementById('referenciaProduto').placeholder) {
         alert('Digite a referência correta!');
     } else {
+        let localVazio;
+        if(checkboxCaixa) {
+            localVazio = 'N';
+        } else {
+            localVazio = 'S';
+        }
         $.ajax({
             type: 'POST', 
             dataType: 'HTML', 
@@ -52,12 +59,10 @@ const desativaProduto = () => {
             beforeSend: function() {
                 $("#loader").show();
             },
-            complete: function() {
-                $("#loader").hide();
-            },
             data: {
                 codprod: document.getElementById('codprodatual').value,
-                codemp: codemp
+                codemp: codemp,
+                localVazio: localVazio
             },
             success: function(msg) {
                 alert(msg);

@@ -3,10 +3,12 @@ include "../../conexaophp.php";
 
 $codprod = $_POST['codprod'];
 $codemp = $_POST['codemp'];
-$params = array($codprod, $codemp);
+$localVazio = $_POST['localVazio'];
+
+$params = array($codprod, $codemp, $localVazio);
 
 
-$tsql = "EXEC [sankhya].[AD_STP_DESATIVA_LOCALPAD] ?, ?";
+$tsql = "EXEC [sankhya].[AD_STP_DESATIVA_LOCALPAD] ?, ?, ?";
 
 $stmt = sqlsrv_query($conn, $tsql, $params);
 

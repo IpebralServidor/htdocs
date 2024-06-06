@@ -206,3 +206,73 @@ main{
     font-size: 13px;
     box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
 }
+
+
+.titleBox{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.titleBox p{
+    margin: 0;
+}
+.switchBox{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	background-color: white;
+	border-radius: 50px;
+}
+.background{
+	background-color: #3a6070 !important;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.label{
+    height: 26px;
+    width: 50px;
+    background-color: green;
+    display: flex;
+    border-radius: 50px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 5px;
+}
+.ball{
+    height: 22px;
+    width: 22px;
+    background-color: white;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+	transition: transform 0.2s linear;
+}
+.checkbox{
+	opacity: 0;
+	position: absolute;
+}
+.checkbox:checked + .label .ball{
+	transform: translateX(24px);
+}
+.checkbox:checked + .label{
+	background-color: red;
+}
+
+#titleBoxH6 {
+    font-weight: bold;
+}
+
+.btnPendencia {
+	cursor: hand; cursor: pointer; 
+	color: white;
+  	background-color: #e54e43 !important;
+  	border: solid #e54e43 1px !important;
+	font-size: 13px;
+	margin-left: 5px;
+	border-radius: 7px;
+}
