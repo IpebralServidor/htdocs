@@ -1,7 +1,7 @@
 :root{
 	--border-radius-pad: 15px;
 	--padding-pad: 20px;
-	--side-menu-width: 18%;
+	
 	--box-shadow-pad: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 	--icon-color: #65768c;
 	/* --red-pad: #bd2a2a; */
@@ -17,11 +17,7 @@ body{
 	height: 100vh;
 	display: flex;
 }
-.side-menu{
-	width: var(--side-menu-width);
-	padding: var(--padding-pad);
-	transition: all 0.1s linear;
-}
+
 .side-menu-div{
 	background-color: white;
 	border-radius: var(--border-radius-pad);
@@ -63,7 +59,7 @@ body{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 15%;
+	margin-bottom: 50%;
 }
 .div-logo img{
 	width: 60%;
@@ -126,10 +122,9 @@ body{
 	display: none;
 }
 .main{
-	
 	display: flex;
 	flex-direction: column;
-	width: calc(100% - var(--side-menu-width));
+	width: calc(100%);
 	padding: var(--padding-pad);
 	gap: var(--padding-pad);
 }
@@ -144,9 +139,9 @@ body{
 	justify-content: center;
 	justify-items: center;
 	grid-gap: 10px;
-	grid-template-columns: repeat(auto-fit, minmax(30%, 1fr)); 
+	grid-template-columns: repeat(auto-fit, minmax(24%, 1fr)); 
 }
-.card{
+.cardStyle{
 	text-decoration: none;
 	color: black;
 	background-color: white;
@@ -239,11 +234,11 @@ body{
 .popup .content{
 	border-radius: var(--border-radius-pad);
 	position: absolute;
-	top: 50%;	
+	top: 60%;	
 	left: 50%;
 	transform: translate(-50%, -50%) scale(0);
 	background: #fff;
-	width: 170px; /* Ajuste a largura conforme necessário */
+	width: 200px; /* Ajuste a largura conforme necessário */
     height: auto; /* Deixe a altura automática para que a popup se ajuste ao conteúdo */
     padding: 20px; /* Adicione preenchimento interno para espaçamento interno */
 	margin: 0;
@@ -255,7 +250,7 @@ body{
 
 .popup.active .content{
 	transition: all 0.2s linear;
-	transform: translate(-50%, -90%) scale(1);
+	transform: translate(-50%, -70%) scale(1);
 }
 .close-btn{
 	width: 30px;
@@ -306,10 +301,6 @@ body{
 }
 
 @media (orientation: portrait) {
-	:root{
-		--side-menu-width: 42px;
-		--teste: calc(100% - var(--side-menu-width));
-	}
 	.page {
 	  flex-direction: column;
 	}
@@ -329,11 +320,7 @@ body{
 	.inside-menu-div{
 		padding: 5px;
 	}
-	.show{
-		width: 100%;
-		display: flex;
-		justify-content: center;
-	}
+
 	.top{
 		padding-top: var(--padding-pad);
 	}
@@ -389,6 +376,9 @@ body{
 		padding: 9px;
 		margin-bottom: 8%;
 	}
+	.dropdown-menu{
+		min-width: 96%;
+	}	
 }
 
 .form-control{
@@ -396,4 +386,21 @@ body{
 	margin-top: 0.5rem !important;
 	margin-bottom: 0.5rem !important;
 	border-radius: 50px !important;
+}
+
+.dropdown-menu{
+	min-height: 90vh;
+}
+.dropdown-menu {
+	display: block;
+	visibility: hidden;
+	opacity:0;
+	transform: translateY(50px);
+	transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease 0.1s;
+}
+.dropdown-menu.show {
+	display: block;
+	visibility: visible;
+	opacity:1;
+	transform: translateY(0px);
 }
