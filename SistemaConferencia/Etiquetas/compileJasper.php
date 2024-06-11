@@ -23,7 +23,7 @@ function compileJasper()
 
     mkdir('C:\xampp\htdocs\SistemaConferencia\Etiquetas\nunotas/' . $param);
     $output = 'C:\xampp\htdocs\SistemaConferencia\Etiquetas\nunotas/' . $param;
-    $input = 'C:\xampp\htdocs\Reports/' . $file . '.jrxml';
+    $input = 'C:\xampp\htdocs\Files/' . $file . '.jrxml';
 
     $jasper = new PHPJasper;
 
