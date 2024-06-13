@@ -124,7 +124,7 @@ body{
 .main{
 	display: flex;
 	flex-direction: column;
-	width: calc(100%);
+	width: 100%;
 	padding: var(--padding-pad);
 	gap: var(--padding-pad);
 }
@@ -168,7 +168,7 @@ body{
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 10%;
-	padding: var(--padding-pad);
+	padding: 15px;
 	overflow-wrap: break-word;
 }
 .padding span{

@@ -23,6 +23,11 @@ $(document).ready(function() {
             aplicarFiltro();
         }
     });
+    $('#nunotaImpressao').on('keypress', function(event) {
+        if(event.keyCode === 13) {
+            confirmarPopImpressao();
+        }
+    });
     $.ajax({
         //Configurações
         type: 'GET', //Método que está sendo utilizado.
@@ -256,5 +261,18 @@ function converteTipo (type, value) {
             return value.replace(/[0-9]/g, '');
         case 'date':
             return new Date(value.split('/').reverse().join('/'));
+    }
+}
+
+function abrirPopImpressao() {
+    document.getElementById('popImpressao').classList.toggle("active");
+}
+
+function confirmarPopImpressao() {
+    let nunota = document.getElementById('nunotaImpressao').value;
+    if(nunota) {
+        window.location.href = "../Etiquetas/impressao.php?nunota=" + nunota;
+    } else {
+        alert("Digite um número único válido!");
     }
 }

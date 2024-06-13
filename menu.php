@@ -58,7 +58,7 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 			<button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fa-solid fa-bars"></i>
 			</button>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			<div class="dropdown-menu" style="display: flex; flex-direction: column;" aria-labelledby="dropdownMenuButton">
 
 				<div id="div-logo" style="text-align: center; margin-left: 10px; margin-right: 10px; margin-bottom: 10px;">
 					<img src="images/logo ipebral.png" alt="" class="img-logo">
@@ -79,7 +79,7 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 					<i class="fa-solid fa-right-from-bracket"></i>
 					<span class="span-menu">Logout</span>
 				</a>
-				<div id="nomefoto" style="position: absolute; bottom: 0; text-align: center; width: 100%;  align-items: center;">
+				<div id="nomefoto" style="text-align: center; margin-top: auto;">
 
 					<?php
 					$tsql2 = " SELECT ISNULL(FOTO, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) FROM TSIUSU WHERE CODUSU = $usuconf";

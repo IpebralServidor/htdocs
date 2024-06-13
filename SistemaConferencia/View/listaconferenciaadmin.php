@@ -11,6 +11,9 @@ require_once '../App/auth.php';
 	<title>Lista Conferência - <?php echo $_SESSION["idUsuario"]; ?></title>
 	<link href="../css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="../Controller/ListaConferenciaAdminController.js"></script>
 </head>
@@ -48,6 +51,25 @@ require_once '../App/auth.php';
 				</div>
 			</table>
 			<button class="fechar" onclick="fecharconferentes();">X</button>
+		</div>
+	</div>
+
+	<div class="popup" id="popImpressao">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopImpressao()">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+				<div class="div-form">
+					<div class="form">
+						<strong>Nota para impressão:</strong>
+						<input id="nunotaImpressao" min="0" oninput="validity.valid||(value='');" type="number" value="" class="form-control" class="text" placeholder="Número Único:">
+						<button id="confirmarPopImpressao" onclick="confirmarPopImpressao()">Confirmar</button>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
@@ -114,6 +136,12 @@ require_once '../App/auth.php';
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
 					<path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
 					<path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+				</svg>
+			</button>
+			<button style="width: 40px !important; height: 36px !important; margin-right: 10px;" class="btn btn-admin btn-form col" onclick="abrirPopImpressao();">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+					<path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+					<path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
 				</svg>
 			</button>
 		</p>
