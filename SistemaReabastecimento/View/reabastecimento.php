@@ -400,11 +400,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
 
             <div class="d-flex justify-content-end">
                 <?php
-                if ($rowEhTransf[0] === 'TRANSFPROD_SAIDA' and $tipoNota === 'S') {
+                /*if ($rowEhTransf[0] === 'TRANSFPROD_SAIDA' and $tipoNota === 'S') {
                     echo "<button type='button' class='statusReabastecimento' style='background-color: red' data-toggle='modal' data-target='#pegaModal'>
                             Pegar tudo
                           </button>";
-                }
+                }*/
                 ?>
                 <button class="statusReabastecimento" style=" background-color: <?php echo $corTipoNota; ?> !important;">
                     <?php echo $tituloNota; ?>
@@ -1145,6 +1145,30 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         }
 
         <?php if ($fila == 'N') { ?>
+            if (('<?php echo $tipoNota ?>' == "S") && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA')) {
+                <?php
+                $tsqlCodLocal =
+                    "SELECT DISTINCT ITE.CODLOCALORIG
+                                    FROM TGFCAB CAB 
+                                    JOIN TGFITE ITE
+                                    ON CAB.NUNOTA = ITE.NUNOTA 
+                                    WHERE CAB.NUNOTA = ?
+                                    AND ITE.SEQUENCIA > 0
+                                    AND AD_PEDIDOECOMMERCE = ?
+                                    AND AD_GARANTIAVERIFICADA = ?";
+                $params = array($nunota2, $rowEhTransf[0], $tipoNota);
+                $stmtCodLocal = sqlsrv_query($conn, $tsqlCodLocal, $params);
+                $rowCodLocal = sqlsrv_fetch_array($stmtCodLocal, SQLSRV_FETCH_NUMERIC);
+                ?>
+                document.getElementById('endereco').value = <?php echo $rowCodLocal[0]; ?>;
+                document.getElementById('endereco').disabled = true;
+
+                document.getElementById("qtdneg").addEventListener("focus", function() {
+                    retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
+                }, {
+                    once: true
+                });
+            }
 
             document.getElementById("endereco").addEventListener("focus", function() {
                 retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
@@ -1194,10 +1218,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     if (msg == '') {
                         <?php if ($tipoNota == 'A') { ?>
                             alert('Este item não foi separado!');
+                        <?php } else if ($tipoNota == 'S' && $rowEhTransf[0] === 'TRANSFPROD_SAIDA') { ?>
+                            alert('Item não está na lista de separação!');
                         <?php } else { ?>
                             alert('Ocorreu um erro favor contatar a T.I');
                         <?php } ?>
-
                     } else {
 
                         if (retorno[8] == 0) {

@@ -36,7 +36,22 @@ function abrirNota(nunota, fila) {
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
         success: function() {
-            window.location.href = 'reabastecimento.php?nunota=' + nunota + '&fila=S';
+            
+            $.ajax({
+                type: 'POST',
+                dataType: 'html', 
+                url: '../Model/retornatipotransf.php', 
+                data: {
+                    nunota: nunota
+                }, 
+                success: function(tipotransf) { 
+                    if(tipotransf === 'TRANSFPROD_SAIDA') {
+                        window.location.href = 'reabastecimento.php?nunota=' + nunota + '&fila=N';
+                    } else {
+                        window.location.href = 'reabastecimento.php?nunota=' + nunota + '&fila=S';
+                    }
+                }
+            });    
         }
     });    
 }
