@@ -408,6 +408,35 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			<!-- Fim
 			POP UP de Produtos Divergentes
 			-->
+
+			<div id="popupprodmultiploslocais" class="popuppendencias">
+				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com enderecos diferentes</h4>
+				<div style="background-color: red; margin: 0">
+					<div style=" width: 98.15%; height: 340px; position: absolute; overflow: auto; margin-top: 5px;">
+						<table width="98%" border="1px" style="margin-top: 5px; margin-left: 0px;" id="tableProdMultiplosLocais">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Referencia</th>
+									<th>Endereço</th>
+									<th>Qtd Pedido</th>
+									<th>Qtd Conferida</th>
+									<th>Controle</th>
+								</tr>
+							</thead>
+							<tbody id="produtosMultiplosLocais">
+
+							</tbody>
+
+						</table>
+					</div>
+					<!-- Fim formulário para inserir as pendências -->
+					<button type="submit" style="cursor: hand; cursor: pointer;  float: right; right: 0; bottom: 0; margin-bottom: 2%; margin-right: 4%; margin-top: 10px; position: absolute;" id="confirmaLocalProdutoBtn">Inserir item</button>
+				</div>
+				<button class="fechar" onclick="fecharpopupprodmultiploslocais();">X</button>
+			</div>
+
+
 			<div id="popuppendencias" class="popuppendencias">
 				<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 100%;">Produtos com Pendências</h4>
 				<!-- Formulário para inserir as pendências -->
@@ -756,7 +785,7 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			iniciarpausa(status, nunota)
 		});
 
-		function insereitens(codbarra, quantidade, controle, nunota) {
+		function insereitens(codbarra, quantidade, controle, nunota, endereco) {
 			//O método $.ajax(); é o responsável pela requisição
 			$.ajax({
 				//Configurações
@@ -795,6 +824,29 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 						document.getElementById("quantidade").select();
 					} else {
 						$("#insereitem").html(msg);
+						if (endereco != 'N') {
+							$.ajax({
+								type: 'POST',
+								dataType: 'html',
+								url: '../Model/inseretempitem.php',
+								beforeSend: function() {
+									$("#loader").show();
+								},
+								complete: function() {
+									$("#loader").hide();
+								},
+								data: {
+									nunota: nunota,
+									codbarra: codbarra,
+									controle: controle,
+									endereco: endereco,
+									qtdneg: quantidade
+								},
+								success: function(msg) {
+									fecharpopupprodmultiploslocais();
+								}
+							});
+						}
 						if (document.getElementById("codigodebarra").value === "") {
 							document.getElementById("codigodebarra").focus();
 						}
@@ -808,12 +860,66 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			});
 		}
 		$('#conferir').click(function() {
-			var nunota = "<?php echo $nunota2; ?>"
-			var status = "<?php echo $varStatus; ?>"
+			let nunota = <?php echo $nunota2; ?>;
+			let codigodebarra = $("#codigodebarra").val();
+			let controle = $("#controle").val();
+			$.ajax({
+				//Configurações
+				type: 'POST', //Método que está sendo utilizado.
+				dataType: 'html', //É o tipo de dado que a página vai retornar.
+				url: '../Model/verificamultiploslocais.php', //Indica a página que está sendo solicitada.
+				//função que vai ser executada assim que a requisição for enviada
+				beforeSend: function() {
+					$("#loader").show();
+				},
+				complete: function() {
+					$("#loader").hide();
+				},
+				data: {
+					nunota: nunota,
+					codbarra: codigodebarra,
+					controle: controle
+				}, //Dados para consulta
+				//função que será executada quando a solicitação for finalizada.
+				success: function(msg) {
+					if (msg === 'ok') {
+						confirmaInsercaoItens('N');
+					} else {
+						document.getElementById('produtosMultiplosLocais').innerHTML = msg
+						abrirpopupprodmultiploslocais();
+					}
+				}
+			});
+		});
+
+		function confirmaInsercaoItens(salvaEndereco) {
+			let nunota = <?php echo $nunota2; ?>;
+			let codigodebarra = $("#codigodebarra").val();
+			let controle = $("#controle").val();
+
+			let status = "<?php echo $varStatus; ?>";
 			if (status == "P") {
-				iniciarpausa(status, nunota)
+				iniciarpausa(status, nunota);
 			}
-			insereitens($("#codigodebarra").val(), $("#quantidade").val(), $("#controle").val(), <?php echo $nunota2; ?>)
+			insereitens(codigodebarra, $("#quantidade").val(), controle, nunota, salvaEndereco);
+
+			itensconferidos(<?php echo $nunota2; ?>);
+		}
+
+		$('#confirmaLocalProdutoBtn').click(function() {
+			let rows = document.getElementById('produtosMultiplosLocais').rows;
+			let endereco = '';
+			for (let i = 0; i < rows.length; i++) {
+				let radio = rows[i].querySelector('input[type="radio"]');
+				if (radio.checked) {
+					endereco = radio.id;
+				}
+			}
+			if (endereco === '') {
+				alert('Selecione um local.');
+			} else {
+				confirmaInsercaoItens(endereco);
+			}
 		});
 
 		function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao, frete, mtvdivergencia) {
@@ -1102,11 +1208,6 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			});
 		}
 
-		$('#conferir').click(function() {
-			itensconferidos(<?php echo $nunota2; ?>)
-		});
-
-
 		if (document.getElementById("codigodebarra").value === "") {
 			document.getElementById("codigodebarra").focus();
 		}
@@ -1115,11 +1216,11 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 			if (e.key === "Enter") {
 				const btn = document.querySelector("#conferir");
 				btn.click();
-				if (document.getElementById("codigodebarra").value != "") {
+				/*if (document.getElementById("codigodebarra").value != "") {
 					document.getElementById("quantidade").focus();
 					document.getElementById("quantidade").value = "1";
 					document.getElementById("quantidade").select();
-				}
+				}*/
 			}
 		});
 		var codbarselecionado = "<?php echo $codbarraselecionado; ?>";

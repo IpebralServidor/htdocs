@@ -18,7 +18,7 @@ $(document).ready(function() {
         }
 
     }, 1000);
-
+    
 });
 
 function atualizarContador(tempoAtualSegundos) {
@@ -160,6 +160,14 @@ function fecharErroQtd() {
 
 function abrirImpressaoEtiqueta() {
     document.getElementById('popupetiqueta').style.display = 'block';
+}
+
+function abrirpopupprodmultiploslocais() {
+    document.getElementById('popupprodmultiploslocais').style.display = 'block';
+}
+
+function fecharpopupprodmultiploslocais() {
+    document.getElementById('popupprodmultiploslocais').style.display = 'none';
 }
 
 function validaNumeroInserido() {

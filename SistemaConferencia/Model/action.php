@@ -22,3 +22,11 @@ $tsql3 = "  DELETE
                   AND controle = '$controle'
             ";
 $stmt3 = sqlsrv_query($conn, $tsql3);
+
+$tsql4 = "  DELETE 
+                FROM AD_TEMP_PRODUTOS_CONFERENCIA_ENDERECO 
+                WHERE NUNOTA = $nunota
+                  AND CODPROD = $codprod
+                  AND CONTROLE = '$controle'
+            ";
+$stmt4 = sqlsrv_query($conn, $tsql4);

@@ -10,6 +10,25 @@ $nunota = $_POST['nunota'];
 $observacao = $_POST['observacao'];
 $frete = $_POST['frete'];
 
+$tsqlAtualizaIte = "UPDATE TGFITE
+SET QTDNEG = ISNULL(TEMP.QTDNEG, 0),
+VLRTOT = (ROUND(ISNULL(TEMP.QTDNEG, 0) * ITE.VLRUNIT, 2))
+FROM TGFITE ITE
+LEFT JOIN AD_TEMP_PRODUTOS_CONFERENCIA_ENDERECO TEMP 
+ON TEMP.NUNOTA = ITE.NUNOTA
+AND TEMP.CODPROD = ITE.CODPROD
+AND TEMP.CONTROLE = ITE.CONTROLE
+AND ITE.CODLOCALORIG = TEMP.CODLOCAL
+WHERE ITE.NUNOTA = $nunota
+AND ITE.CODPROD IN (SELECT CODPROD FROM TGFITE WHERE NUNOTA = $nunota GROUP BY CODPROD HAVING COUNT(1) > 1)";
+$stmtAtualizaIte = sqlsrv_query($conn, $tsqlAtualizaIte);
+
+$tsqlAtualizaCab = "UPDATE TGFCAB 
+SET VLRNOTA = (SELECT ROUND(SUM(VLRTOT) - SUM(VLRDESC),2) FROM TGFITE WHERE TGFITE.NUNOTA = TGFCAB.NUNOTA)
+WHERE NUNOTA = $nunota";
+$stmtAtualizaCab = sqlsrv_query($conn, $tsqlAtualizaCab);
+
+
 if ($_POST['mtvdivergencia'] == null) {
     $_POST['mtvdivergencia'] = '';
 }
