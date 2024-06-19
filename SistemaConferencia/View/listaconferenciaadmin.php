@@ -163,11 +163,12 @@ require_once '../App/auth.php';
 					<th onclick="sortTable(8, 'num');">Nro. Nota</th>
 					<th onclick="sortTable(9, 'num');">Empresa</th>
 					<th onclick="sortTable(10, 'numStr');">Parceiro</th>
-					<th onclick="sortTable(11, 'str');">Descrição (Tipo de Operação)</th>
-					<th onclick="sortTable(12, 'num');">Ordem de Carga</th>
-					<th onclick="sortTable(13, 'num');">Sequência da Carga</th>
-					<th onclick="sortTable(14, 'num');">Qtd. Volumes</th>
-					<th onclick="sortTable(15, 'str');">Razão social</th>
+					<th onclick="sortTable(11, 'num');">Prioridade</th>
+					<th onclick="sortTable(12, 'str');">Descrição (Tipo de Operação)</th>
+					<th onclick="sortTable(13, 'num');">Ordem de Carga</th>
+					<th onclick="sortTable(14, 'num');">Sequência da Carga</th>
+					<th onclick="sortTable(15, 'num');">Qtd. Volumes</th>
+					<th onclick="sortTable(16, 'str');">Razão social</th>
 					<th></th>
 				</tr>
 			</thead>

@@ -46,6 +46,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
                             <td>$row[6]</td>
                             <td>$row[7]</td>
                             <td>$row[3] - $row[8]</td>
+                            <td>$row[18]</td>
                             <td>$descricaoTipoOper</td>
                             <td>$row[10]</td>
                             <td>$row[11]</td>
