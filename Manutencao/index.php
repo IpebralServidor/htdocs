@@ -1,10 +1,11 @@
-<?php 
-    include "../conexaophp.php";
-    require_once '../App/auth.php';
+<?php
+include "../conexaophp.php";
+require_once '../App/auth.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
     <meta charset="UTF-8">
@@ -17,15 +18,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
+
 <body>
-<div>
-		<div class="img-voltar">
-			<a href="../menu.php">
-				<img src="images/216446_arrow_left_icon.png" />
-			</a>
-		</div>
-		<div class="screen">
-			<form action="consulta.php" method="post" class="margin-top35" style="width: 80%;">
+    <div>
+        <div class="img-voltar">
+            <a href="../menu.php">
+                <img src="images/216446_arrow_left_icon.png" />
+            </a>
+        </div>
+        <div class="screen">
+            <div class="form margin-top35" style="width: 80%">
                 <div class="form-group">
                     <label for="exampleInputEmail1" class="label-input">Usuário:</label>
                     <input type="text" name="username" id="username" class="form-control margin-top10" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Digite seu usuário">
@@ -34,11 +36,11 @@
                     <label for="exampleInputPassword1">Senha:</label>
                     <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1" placeholder="Senha">
                 </div>
-                
+
                 <button type="submit" id="enviar" class="btn btn-primary btn-form margin-top35">Entrar</button>
-			</form>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
     <!-- <div>
         <div class="header">
             <div class="img-voltar">
@@ -69,37 +71,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
-        function validarLogin(usuario, senha)
-		{
-			//O método $.ajax(); é o responsável pela requisição
-			$.ajax
-            ({
+        function validarLogin(usuario, senha) {
+            //O método $.ajax(); é o responsável pela requisição
+            $.ajax({
                 //Configurações
-                type: 'POST',//Método que está sendo utilizado.
-                dataType: 'html',//É o tipo de dado que a página vai retornar.
-                url: 'validarLogin.php',//Indica a página que está sendo solicitada.
+                type: 'POST', //Método que está sendo utilizado.
+                dataType: 'html', //É o tipo de dado que a página vai retornar.
+                url: 'validarLogin.php', //Indica a página que está sendo solicitada.
                 //função que vai ser executada assim que a requisição for enviada
-                beforeSend: function () {
+                beforeSend: function() {
                     $("#iniciarpausa").html("Carregando...");
                 },
-                data: {usuario: usuario, senha: senha},//Dados para consulta
+                data: {
+                    usuario: usuario,
+                    senha: senha
+                }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
-                success: function (msg)
-                {
-                    if(msg == "Concluido"){
-                        window.location="manutencao.html";
-                    }else{
+                success: function(msg) {
+                    if (msg == "Concluido") {
+                        window.location = "manutencao.html";
+                    } else {
                         alert(msg)
                     }
                 }
             });
-		}
+        }
+
+        $(document).keypress(function(e) {
+            if (e.which == 13) {
+                $('#enviar').click();
+            }
+        });
     </script>
     <script>
-        $('#enviar').click(function () {
+        $('#enviar').click(function() {
             validarLogin($("#username").val(), $("#password").val())
         });
     </script>
 </body>
-</html>
 
+</html>
