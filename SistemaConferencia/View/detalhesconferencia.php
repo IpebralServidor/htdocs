@@ -117,6 +117,8 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 	<meta charset="utf-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
 	<title>Detalhes Conferência - <?php echo $usuconf;
 									echo $linhamarcada; ?></title>
 
@@ -800,7 +802,8 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 					codbarra: codbarra,
 					quantidade: quantidade,
 					controle: controle,
-					nunota: nunota
+					nunota: nunota,
+					endereco: endereco
 				}, //Dados para consulta
 				//função que será executada quando a solicitação for finalizada.
 				success: function(msg) {
@@ -1215,12 +1218,13 @@ while ($row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC)) {
 		document.addEventListener("keypress", function(e) {
 			if (e.key === "Enter") {
 				const btn = document.querySelector("#conferir");
-				btn.click();
-				/*if (document.getElementById("codigodebarra").value != "") {
+				if (document.getElementById("quantidade").value != "") {
+					btn.click();
+				} else if (document.getElementById("codigodebarra").value != "") {
 					document.getElementById("quantidade").focus();
 					document.getElementById("quantidade").value = "1";
 					document.getElementById("quantidade").select();
-				}*/
+				}
 			}
 		});
 		var codbarselecionado = "<?php echo $codbarraselecionado; ?>";
