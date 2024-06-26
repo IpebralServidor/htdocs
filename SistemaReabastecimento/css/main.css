@@ -319,10 +319,11 @@ border-top: solid 5px #e54e43;
 .div-tabela{
 	margin-top: 30px;
 	width: 80%;
-	height: 50%;
+	height: 60%;
 	padding: 5px;
 	border-radius: 25px;
 	box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+	overflow: auto;
 }
 .margin-top35{
 	margin-top: 35px;
@@ -332,6 +333,8 @@ border-top: solid 5px #e54e43;
 }
 .img-voltar{
 	padding: 10px;
+	position: absolute;
+	left: 0;
 }
 .img-voltar img{
 	width: 35px;
@@ -347,6 +350,16 @@ border-top: solid 5px #e54e43;
 	transition: all 0.2s !important;
 }
 .btn-form:hover{
+	transform: scale(1.03) !important;
+}
+#liberartodos {
+	border: none !important;
+	color: white;
+	height: 40px;
+	border-radius: 15px !important;
+	transition: all 0.2s !important;
+}
+#liberartodos:hover {
 	transform: scale(1.03) !important;
 }
 .body-detalhes{
