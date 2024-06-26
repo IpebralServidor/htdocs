@@ -101,6 +101,8 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
     <title>Sistema reabastecimento</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,7 +132,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div style="width: 100%;">
                 <div class="close-btn" onclick="abrir()">
                     <i class="fa-solid fa-xmark"></i>
-                    <!-- <i class="fa-solid fa-circle-xmark"></i> -->
                 </div>
 
                 <div class="div-form">
@@ -546,6 +547,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         <button id="btnProximo" class="btnWidth btnPendencia " data-toggle="modal" data-target="#ocorrenciaModal" style="display: none;">
             Proximo
         </button>
+        <?php if ($tipoNota == 'S') { ?>
+            <button id="btnLiberarProduto" class="btnWidth btnPendencia btnOutroLocal" onclick="liberarProduto()">
+                Liberar produto
+            </button>
+        <?php } ?>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -1446,6 +1452,37 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
                     location.reload();
+                }
+            });
+        }
+
+        function liberarProduto() {
+            $.ajax({
+                //Configurações
+                type: 'POST', //Método que está sendo utilizado.
+                dataType: 'html', //É o tipo de dado que a página vai retornar.
+                url: '../Model/liberarproduto.php', //Indica a página que está sendo solicitada.
+                //função que vai ser executada assim que a requisição for enviada
+                beforeSend: function() {
+                    $("#loader").show();
+                },
+                complete: function() {
+                    $("#loader").hide();
+                },
+                data: {
+                    nunota: <?php echo $nunota2 ?>,
+                    enderecoInit: <?php echo $enderecoInit ?>,
+                    enderecoFim: <?php echo $enderecoFim ?>,
+                    codusu: <?php echo $codusu ?>
+                }, //Dados para consulta
+                //função que será executada quando a solicitação for finalizada.
+                success: function(msg) {
+                    if (msg === 'ok') {
+                        location.reload();
+                    } else {
+                        alert('Acabaram os seus produtos.');
+                        window.location.href = "index.php";
+                    }
                 }
             });
         }

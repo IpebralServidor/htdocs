@@ -3,7 +3,7 @@ $(document).ready(function() {
     const nunota = urlParams.get('nunota');
 
     $('#aplicar').click(function() {
-        abrirNota(nunota, 'S')
+        abrirNota(nunota, 'S');
     });
     
     $('#aplicar-sem-fila').click(function() {
@@ -11,7 +11,21 @@ $(document).ready(function() {
     });
     
     $('#btn-alterasenha').click(function() {
-        abrirNota(nunota, 'N')
+        abrirNota(nunota, 'N');
+    });
+
+    $('#liberartodos').click(function() {
+        $.ajax({
+            type: 'POST',
+            dataType: 'html', 
+            url: '../Model/liberartudo.php', 
+            data: {
+                nunota: nunota
+            }, 
+            success: function(msg) { 
+                alert(msg);
+            }
+        });  
     });
 });
 
