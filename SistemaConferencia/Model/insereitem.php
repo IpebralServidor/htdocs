@@ -7,13 +7,15 @@ $quantidade = str_replace(',', '.', $_POST["quantidade"]);
 $controle = $_POST["controle"];
 $nunota2 = $_POST["nunota"];
 $codusu = $_SESSION['idUsuario'];
+$endereco = $_POST["endereco"];
+
 if ($quantidade == '') {
 	$quantidade = 0;
 }
 if ($quantidade != "0") {
 	$_SESSION['codbarraselecionado'] = $codbarra;
 
-	$tsql6 = "exec AD_STP_INSEREITEM_CONFERENCIA $nunota2 , '$codbarra' , $quantidade , '$controle', $codusu ";
+	$tsql6 = "exec AD_STP_INSEREITEM_CONFERENCIA $nunota2 , '$codbarra' , $quantidade , '$controle', $codusu, $endereco ";
 
 	$stmt6 = sqlsrv_query($conn, $tsql6);
 	$row3 = sqlsrv_fetch_array($stmt6, SQLSRV_FETCH_NUMERIC);
