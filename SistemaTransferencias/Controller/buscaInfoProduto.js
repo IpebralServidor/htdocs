@@ -3,6 +3,27 @@ const localRet = document.getElementById("locRet")
 const urlParams = new URLSearchParams(window.location.search)
 const nunota = urlParams.get("nunota")
 
+
+document.getElementById("referencia").addEventListener("change",() =>{
+    $.ajax
+    ({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/buscaInfoProduto.php',
+        data: {
+            referencia: referencia.value,
+            nunota: nunota
+        },
+        success: function (msg)
+        {
+            let res = msg.split('|')
+
+            let value = parseFloat(res[1])
+            localRet.textContent = value.toString() + ' | ' + value.toString();
+        }
+    });
+})
+
 document.getElementById("quantidade").addEventListener("input",() =>{
     let qtd = document.getElementById("quantidade")
     $.ajax
@@ -17,8 +38,9 @@ document.getElementById("quantidade").addEventListener("input",() =>{
         {
             let res = msg.split('|')
 
-            let value = parseFloat(res[1]) - qtd.value
-            localRet.textContent = value.toString()
+            let value = parseFloat(res[1]);
+            let subtractValue = parseFloat(res[1]) - qtd.value;
+            localRet.textContent = value.toString() + ' | ' + subtractValue.toString();
         }
     });
 })
