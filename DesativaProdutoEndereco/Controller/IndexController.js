@@ -43,7 +43,7 @@ const desativaProduto = () => {
     let checkboxCaixa = document.getElementById('semcaixa').checked;
     if(document.getElementById('enderecoProduto').value != document.getElementById('enderecoProduto').placeholder) {
         alert('Digite o endereço correto!');
-    } else if(checkboxCaixa === false && document.getElementById('referenciaProduto').value != document.getElementById('referenciaProduto').placeholder) {
+    } else if(checkboxCaixa === false && document.getElementById('referenciaProduto').value.toUpperCase() != document.getElementById('referenciaProduto').placeholder.toUpperCase()) {
         alert('Digite a referência correta!');
     } else {
         let localVazio;
