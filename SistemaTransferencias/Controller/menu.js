@@ -1,8 +1,11 @@
 // botão para criar nota de transferência
 document.getElementById("criarNota").addEventListener("click", (event) => {
     let empresa = document.querySelector('#empresas')
-    let endereco = document.getElementById('local').value
-
+    let endereco = document.getElementById('local').value;
+    let reserva = document.getElementById('reserva').value.trim();
+    if(reserva != '') {
+        endereco += '_' + reserva;
+    }
     $.ajax({
         type: 'POST',
         dataType: 'html',
