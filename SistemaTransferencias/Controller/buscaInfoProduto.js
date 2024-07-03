@@ -2,6 +2,7 @@ const referencia = document.getElementById("referencia")
 const localRet = document.getElementById("locRet")
 const urlParams = new URLSearchParams(window.location.search)
 const nunota = urlParams.get("nunota")
+const endereco = document.getElementById("endereco");
 
 
 document.getElementById("referencia").addEventListener("change",() =>{
@@ -20,6 +21,11 @@ document.getElementById("referencia").addEventListener("change",() =>{
 
             let value = parseFloat(res[1])
             localRet.textContent = value.toString() + ' | ' + value.toString();
+            if(res[3] === '0') {
+                endereco.placeholder = '';
+            } else {
+                endereco.placeholder = res[3];
+            }
         }
     });
 })

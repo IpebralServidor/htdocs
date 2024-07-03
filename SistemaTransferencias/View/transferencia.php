@@ -18,6 +18,18 @@ $stmtStatusNota = sqlsrv_query($conn, $tsqlStatusNota);
 $rowStatusNota = sqlsrv_fetch_array($stmtStatusNota, SQLSRV_FETCH_NUMERIC);
 $varStatusNota = $rowStatusNota[0];
 
+$tsqlEnderecoReserva = "SELECT AD_PARAMETROS_REABAST FROM TGFCAB WHERE NUNOTA = $nunota";
+$stmtEnderecoReserva = sqlsrv_query($conn, $tsqlEnderecoReserva);
+$rowEnderecoReserva = sqlsrv_fetch_array($stmtEnderecoReserva, SQLSRV_FETCH_NUMERIC);
+$adParametrosReabast = explode("_", $rowEnderecoReserva[0]);
+$endereco = $adParametrosReabast[0];
+if (isset($adParametrosReabast[1])) {
+    $reserva = $adParametrosReabast[1];
+} else {
+    $reserva = '';
+}
+
+
 if ($varStatusNota == 'L') {
     header('Location: ../index.html');
 }
@@ -116,25 +128,31 @@ if ($varStatusNota == 'L') {
             <div class="header-body">
                 <div style="width: 100%">
                     <div class="mb-1">
-                        <label for="endereco" class="form-label">Endereço <span style="color: red">*</span> </label>
-                        <input type="number" class="form-control" id="endereco">
+                        <label for="endereco" class="form-label">Referência <span style="color: red">*</span></label>
+                        <input type="text" class="form-control" id="referencia" style="color: #86B7FE !important;">
                     </div>
                     <div class="mb-1">
-                        <label for="endereco" class="form-label">Referência <span style="color: red">*</span></label>
-                        <input type="text" class="form-control" id="referencia">
+                        <label for="endereco" class="form-label">Endereço <span style="color: red">*</span> </label>
+                        <input type="number" class="form-control" id="endereco" style="color: #86B7FE !important;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" onchange="checkboxChange(this)" value="" id="enderecoReservaCheckbox" data-toggle="modal" data-target="" tabindex="-1">
+                            <label class="form-check-label" for="enderecoReservaCheckbox">
+                                Usar endereço de reserva?
+                            </label>
+                        </div>
                     </div>
                     <div class="mb-1">
                         <label for="lote" class="form-label">Lote:</label>
-                        <input type="text" class="form-control" id="lote" disabled value="">
+                        <input type="text" class="form-control" id="lote" disabled value="" style="color: #86B7FE !important;">
                     </div>
                     <div class="row">
                         <div class="mb-1 col-6">
                             <label for="endereco" class="form-label">Quantidade <span style="color: red">*</span></label>
-                            <input type="number" class="form-control" id="quantidade">
+                            <input type="number" class="form-control" id="quantidade" style="color: #86B7FE !important;">
                         </div>
                         <div class="mb-1 col-6">
                             <label for="qtdMax" class="form-label">Qtd Máx Local <span style="color: red">*</span></label>
-                            <input type="number" class="form-control" id="qtdMax">
+                            <input type="number" class="form-control" id="qtdMax" style="color: #86B7FE !important;">
                         </div>
                     </div>
                     <div class="row">
@@ -172,6 +190,24 @@ if ($varStatusNota == 'L') {
             <div class="mt-2 w-100 d-flex justify-content-center align-items-center">
                 <button data-toggle="modal" data-target="#modalConfirmaNota" id="inserirProdutoBtn" class="btn btn-primary w-75 fw-bold" style="background-color: red !important; border-color: red !important;">Confirmar nota</button>
             </div>
+
+            <div class="modal fade" id="enderecoReservaModal" tabindex="-1" role="dialog" aria-labelledby="enderecoReservaModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="p-3">
+                            <div class="modal-body fw-bold">
+                                Digite o local de reserva da mercadoria: <span style="color: red">*</span>
+                            </div>
+                            <div class="mb-1">
+                                <input type="text" class="form-control" style="color: #86B7FE !important;" id="enderecoReservaInput">
+                            </div>
+                            <div class="mt-3">
+                                <button id="atualizaEnderecoReserva" onclick="atualizaEnderecoReserva();" type="button" class="btn btn-primary fw-bold w-100" data-dismiss="modal">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
     <script src="../Controller/calcularTimer.js"></script>
@@ -194,6 +230,51 @@ if ($varStatusNota == 'L') {
             let statusPausa = "<?php echo $varStatus; ?>"
             if (statusPausa == 'P') {
                 pausarIniciarContagem('P', document.getElementById("botaoTimer").getAttribute('data-id'));
+            }
+        };
+
+        function checkboxChange(checkbox) {
+            if (checkbox.checked == true) {
+                if ('<?php echo $reserva ?>' === '') {
+                    $('#enderecoReservaModal').modal('show');
+                    document.getElementById("enderecoReservaCheckbox").checked = false;
+                } else {
+                    document.getElementById('endereco').value = '<?php echo $reserva; ?>';
+                    document.getElementById('endereco').disabled = true;
+                }
+            } else {
+                document.getElementById('endereco').disabled = false;
+                document.getElementById('endereco').value = '';
+                document.getElementById('endereco').placeholder = '';
+                $('#enderecoReservaModal').modal('hide');
+            }
+        };
+
+        function atualizaEnderecoReserva() {
+            let nunota = <?php echo $nunota; ?>;
+            let endereco = <?php echo $endereco; ?>;
+            let reserva = document.getElementById("enderecoReservaInput").value;
+            if (reserva != '') {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'html',
+                    url: '../Model/salvaEnderecoReserva.php',
+
+                    data: {
+                        nunota: nunota,
+                        endereco: endereco,
+                        reserva: reserva
+                    },
+                    success: function(msg) {
+                        if (msg == 'OK') {
+                            location.reload();
+                        } else {
+                            alert(msg);
+                        }
+                    }
+                });
+            } else {
+                alert("Digite um valor.");
             }
         };
     </script>

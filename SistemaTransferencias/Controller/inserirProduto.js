@@ -1,4 +1,3 @@
-
 document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
     const inputReferencia = document.getElementById("referencia");
     const inputQuantidade = document.getElementById("quantidade");
@@ -10,7 +9,13 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
     const urlParams = new URLSearchParams(window.location.search);
     const nunota = urlParams.get("nunota");
     const alertMessage = document.getElementById("alertMessage");
-
+    const checkboxReserva = document.getElementById("enderecoReservaCheckbox");
+    let checkboxMarcada;
+    if(checkboxReserva.checked) {
+        checkboxMarcada = 'S';
+    } else {
+        checkboxMarcada = 'N';
+    }
     if(inputQtdMaxLocal.value > 0) {
         $.ajax ({
             type: 'POST',
@@ -24,7 +29,7 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
                 gif.style.display = "none"
                 gif.classList.remove("loader")
             },
-            data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value, qtdMaxLocal: inputQtdMaxLocal.value},
+            data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value, qtdMaxLocal: inputQtdMaxLocal.value, checkboxMarcada: checkboxMarcada},
             success: function (msg) {
                 if(msg == 'Produto adicionado com sucesso!'){
                     alertMessage.classList.remove("d-none")
@@ -39,8 +44,11 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
                     inputEndereco.value = ''
                     inputLote.value = ''
                     inputQtdMaxLocal.value = ''
+                    inputEndereco.placeholder = '';
+                    inputEndereco.disabled = false;
+                    checkboxReserva.checked = false;
 
-                    inputEndereco.focus();
+                    inputReferencia.focus();
                     inputLote.disabled = true;
                     alteraTable();
                 } else{
@@ -63,5 +71,4 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
 
         msgAlert.textContent = 'Insira uma quantidade máxima válida!';
     }
-
 })
