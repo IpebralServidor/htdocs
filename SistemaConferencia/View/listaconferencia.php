@@ -17,6 +17,7 @@ $_SESSION["funcao"] = false;
 	<title>Lista Conferência - <?php echo $usuconf; ?></title>
 	<link href="../css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="../Controller/ListaConferenciaController.js"></script>
 </head>
@@ -67,9 +68,16 @@ $_SESSION["funcao"] = false;
 			</div>
 		</div>
 	</div> <!-- Filtro -->
+
 	<div class="listaconferenciatext">
 		<p class="text-center">Lista de Conferência
 			<button class="btn btn-admin btn-form col" onclick="pegarProximaNota(<?php echo $usuconf ?>);">Pegar próxima nota</button>
+			<button style="width: 40px !important; height: 36px !important; margin-right: 10px;" class="btn btn-admin btn-form col" onclick="abrirPopImpressao();">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+					<path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+					<path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
+				</svg>
+			</button>
 		</p>
 	</div>
 	<div id="ListaConferencia" class="listaconferencia">
@@ -100,6 +108,45 @@ $_SESSION["funcao"] = false;
 
 			</tbody>
 		</table>
+	</div>
+
+	<div class="popup" id="popImpressao">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopImpressao()">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+				<div class="div-form">
+					<div class="form">
+						<strong>Nota para impressão:</strong>
+						<input id="nunotaImpressao" min="0" oninput="validity.valid||(value='');" type="number" value="" class="form-control" class="text" placeholder="Número Único:">
+						<button id="confirmarPopImpressao" onclick="confirmarPopImpressao()">Confirmar</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="popup" id="popSeparador">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopSeparador()">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+				<div class="div-form">
+					<div class="form">
+						<strong>Separador:</strong>
+						<input id="notaSeparador" type="number" style="display: none;">
+						<input id="codSeparador" min="0" oninput="validity.valid||(value='');" type="number" value="" class="form-control" class="text" placeholder="Código de usuário:">
+						<button id="confirmarPopImpressao" onclick="confirmarPopSeparador()">Confirmar</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
 	</div>
 </body>
 
