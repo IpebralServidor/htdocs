@@ -5,6 +5,11 @@ $(document).ready(function() {
             aplicarFiltro();
         }
     });
+    $('#nunotaImpressao').on('keypress', function(event) {
+        if(event.keyCode === 13) {
+            confirmarPopImpressao();
+        }
+    });
     aplicarFiltro();
 });
 
@@ -65,30 +70,45 @@ const aplicarFiltro = () => {
             $('#listaConferencias tr').dblclick(function() {
                 // Obtém o ID da linha clicada
                 var nota = this.getAttribute('data-nota');
-                //Enviar o dado via AJAX para o servidor
                 $.ajax({
-                    //Configurações
-                    type: 'POST', //Método que está sendo utilizado.
-                    dataType: 'html', //É o tipo de dado que a página vai retornar.
-                    url: '../Model/iniciarconferencia.php', //Indica a página que está sendo solicitada.
-                    //função que vai ser executada assim que a requisição for enviada
-                    beforeSend: function() {
-                        $("#loader").show();
-                    },
-                    complete: function() {
-                        $("#loader").hide();
-                    },
+                    type: 'POST',
+                    dataType: 'html',
+                    url: '../Model/buscaseparador.php',
                     data: {
                         nota: nota
-                    }, //Dados para consulta
-                    //função que será executada quando a solicitação for finalizada.
+                    }, 
                     success: function(msg) {
-                        if (msg == 'errado') {
-                            alert('Fature a nota pelo SANKHYA')
-                        } else if (msg.length <= 10) {
-                            window.location.href = 'detalhesconferencia.php?nunota=' + msg + '&codbarra=0';
+                        if(msg === 'ok') {
+                            //Enviar o dado via AJAX para o servidor
+                            $.ajax({
+                                //Configurações
+                                type: 'POST', //Método que está sendo utilizado.
+                                dataType: 'html', //É o tipo de dado que a página vai retornar.
+                                url: '../Model/iniciarconferencia.php', //Indica a página que está sendo solicitada.
+                                //função que vai ser executada assim que a requisição for enviada
+                                beforeSend: function() {
+                                    $("#loader").show();
+                                },
+                                complete: function() {
+                                    $("#loader").hide();
+                                },
+                                data: {
+                                    nota: nota
+                                }, //Dados para consulta
+                                //função que será executada quando a solicitação for finalizada.
+                                success: function(msg) {
+                                    if (msg == 'errado') {
+                                        alert('Fature a nota pelo SANKHYA')
+                                    } else if (msg.length <= 10) {
+                                        window.location.href = 'detalhesconferencia.php?nunota=' + msg + '&codbarra=0';
+                                    } else {
+                                        alert(msg);
+                                    }
+                                }
+                            });
                         } else {
-                            alert(msg);
+                            abrirPopSeparador();
+                            document.getElementById('notaSeparador').value = nota;
                         }
                     }
                 });
@@ -164,5 +184,44 @@ function converteTipo (type, value) {
             return parseFloat(value.replace(',','.'));
         case 'date':
             return new Date(value.split('/').reverse().join('/'));
+    }
+}
+
+function abrirPopImpressao() {
+    document.getElementById('popImpressao').classList.toggle("active");
+}
+
+function confirmarPopImpressao() {
+    let nunota = document.getElementById('nunotaImpressao').value;
+    if(nunota) {
+        window.location.href = "../Etiquetas/impressao.php?nunota=" + nunota;
+    } else {
+        alert("Digite um número único válido!");
+    }
+}
+
+function abrirPopSeparador() {
+    document.getElementById('popSeparador').classList.toggle("active");
+}
+
+function confirmarPopSeparador() {
+    let codSeparador = document.getElementById('codSeparador').value;
+    if(codSeparador) {
+        let notaSeparador = document.getElementById('notaSeparador').value;
+        $.ajax({
+            type: 'POST',
+            dataType: 'html',
+            url: '../Model/atribuirseparador.php',
+            data: {
+                nunota: notaSeparador,
+                separador: codSeparador
+            }, 
+            success: function(msg) {
+                abrirPopSeparador();
+                $("#listaConferencias tr[data-nota="+notaSeparador+"]").trigger("dblclick");
+            }
+        });
+    } else {
+        alert("Digite um código válido!");
     }
 }
