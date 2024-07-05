@@ -9,7 +9,7 @@ $tsqlNomeUsu = "SELECT NOMEPARC FROM TGFPAR WHERE CODPARC = (
 $stmtNomeUsu = sqlsrv_query($conn, $tsqlNomeUsu);
 $rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
-$a = array(2, 3274, 3266, 42, 7257, 106);
+$a = array(2, 3274, 3266, 42, 7257, 106, 692);
 $b = array(3274, 2, 3149, 3287, 3276);
 $c = array(3274, 3134);
 
@@ -274,12 +274,16 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 				<div class="close-btn" onclick="abrirLeitorQRCode()">
 					<i class="fa-solid fa-xmark"></i>
 				</div>
-				<div class="div-form">
+				<div class="div-form" style="display: flex; flex-direction: row;">
 					<div class="form">
 						<strong style="white-space: nowrap;">- Pareamento Bluetooth: </strong>
 						<img src="images/pareamentoBluetooth.jpeg" alt="" style="margin-bottom: 40px;">
 						<strong style="white-space: nowrap;">- Tab Automático: </strong>
 						<img src="images/tabAutomatico.jpeg" alt="">
+					</div>
+					<div class="form" style="margin-left: 40px;">
+						<strong style="white-space: nowrap;">- Resetar leitor: </strong>
+						<img src="images/resetScan.jpeg" alt="">
 					</div>
 				</div>
 			</div>
