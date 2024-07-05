@@ -124,7 +124,7 @@ body{
 .main{
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: calc(100%);
 	padding: var(--padding-pad);
 	gap: var(--padding-pad);
 }
@@ -238,7 +238,7 @@ body{
 	left: 50%;
 	transform: translate(-50%, -50%) scale(0);
 	background: #fff;
-	width: 200px; /* Ajuste a largura conforme necessário */
+	width: 380px; /* Ajuste a largura conforme necessário */
     height: auto; /* Deixe a altura automática para que a popup se ajuste ao conteúdo */
     padding: 20px; /* Adicione preenchimento interno para espaçamento interno */
 	margin: 0;
@@ -251,6 +251,14 @@ body{
 .popup.active .content{
 	transition: all 0.2s linear;
 	transform: translate(-50%, -70%) scale(1);
+}
+
+.popup img {
+	height: auto;
+	width: auto;
+	max-width: 150px;
+	max-height: 150px;
+
 }
 .close-btn{
 	width: 30px;
@@ -389,7 +397,7 @@ body{
 }
 
 .dropdown-menu{
-	min-height: 90vh;
+	min-height: 87vh;
 }
 .dropdown-menu {
 	display: block;
