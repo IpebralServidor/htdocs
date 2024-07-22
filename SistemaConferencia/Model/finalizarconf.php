@@ -9,10 +9,24 @@ $pesobruto = $_POST['pesobruto'];
 $nunota = $_POST['nunota'];
 $observacao = $_POST['observacao'];
 $frete = $_POST['frete'];
+$codusulib = $_POST['codusulib'];
 $params = array($nunota);
 // Simula o corte dos itens para saber se algum problema vai ocorrer
 $tsqlChecaCorte = "EXEC [sankhya].[AD_STP_CHECA_CORTE_CONFERENCIA] ?";
 $stmtChecaCorte = sqlsrv_query($conn, $tsqlChecaCorte, $params);
+if ($stmtChecaCorte === false) {
+    $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
+
+    if ($errors !== null) {
+        foreach ($errors as $error) {
+            // Remover a parte '[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]' da mensagem
+            $errorMessage = $error['message'];
+            $errorMessage = preg_replace('/\[[^\]]*\]/', '', $errorMessage);
+            echo trim($errorMessage);
+            die;
+        }
+    }
+}
 $checkCorte = sqlsrv_fetch_array($stmtChecaCorte, SQLSRV_FETCH_NUMERIC);
 if ($checkCorte[0] == 'ERRO') {
     echo 'PHP: Ocorreu um erro durante o corte na finalização. Favor procurar a equipe de T.I.';
@@ -39,9 +53,9 @@ if ($checkCorte[0] == 'ERRO') {
         $row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC);
         $linhas = $row2[0];
         if ($linhas > 0 || $linhasPendente > 0) {
-            $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', $frete, '$mtvdivergencia' ";
+            $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', $frete, '$mtvdivergencia', '$codusulib' ";
         } else {
-            $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '', $frete ";
+            $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '', $frete, '$codusulib' ";
         }
         $stmt4 = sqlsrv_query($conn, $tsql4);
         $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);

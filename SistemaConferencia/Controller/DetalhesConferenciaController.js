@@ -146,6 +146,15 @@ function fecharconfdivcorte() {
     document.getElementById('popupconfdivcorte').style.display = 'none';
 }
 
+function abrirconfrecontagem() {
+    document.getElementById('popupconfrecontagem').style.display = 'block';
+}
+
+function fecharconfrecontagem() {
+    document.getElementById('popupconfrecontagem').style.display = 'none';
+}
+
+
 function fecharconfdivpendencia() {
     document.getElementById('popuppendencias').style.display = 'none';
 }
@@ -168,6 +177,20 @@ function abrirpopupprodmultiploslocais() {
 
 function fecharpopupprodmultiploslocais() {
     document.getElementById('popupprodmultiploslocais').style.display = 'none';
+}
+
+function abrirPopAutorizaCorte() {
+    document.getElementById('popAutorizaCorte').classList.toggle("active");
+    document.getElementById('userCorte').value = '';
+    document.getElementById('senhaCorte').value = '';
+}
+
+function abrirpopupverificacorte() {
+    document.getElementById('popupverificacorte').style.display = 'block';
+}
+
+function fecharpopupverificacorte() {
+    document.getElementById('popupverificacorte').style.display = 'none';
 }
 
 function validaNumeroInserido() {
@@ -212,4 +235,71 @@ function abrirconferentes() {
 
 function fecharconferentes() {
     document.getElementById('popupconferentes').style.display = 'none';
+}
+
+function abrirRecontagem(nomeTabela) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const nunota = urlParams.get('nunota');
+    let linhasRecontar = [];
+    $("#"+nomeTabela+" input[type=checkbox]:checked").map(function() {
+        let row = $(this).closest("tr")[0];
+        linhasRecontar.push(
+            {
+                "CODPROD": $("#" + row.id + " > .codprod").html(),
+                "CONTROLE": $("#" + row.id + " > .controle").html().trim()
+            }
+        );
+    });
+    $.ajax({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/abrirrecontagem.php',
+        data: {
+            nunota: nunota,
+            linhasRecontar: linhasRecontar
+        },
+        success: function(msg) {
+            alert(msg);
+            location.reload();
+        }
+    });
+}
+
+function autorizaCorte() {
+    let user = document.getElementById('userCorte').value;
+    let senha = document.getElementById('senhaCorte').value;
+    $.ajax({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/autorizacorte.php',
+        data: {
+            user: user,
+            senha: senha
+        },
+        success: function(msg) {
+            if(msg === 'erro') {
+                alert('Não foi possível autorizar.');
+            } else {
+                abrirPopAutorizaCorte();
+                document.getElementById('codusulib').value = msg;
+                abrirpopupverificacorte();
+            }
+        }
+    });
+}
+
+function abrirVolumeBtn () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const nunota = urlParams.get('nunota');
+    $.ajax({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/abrirvolume.php',
+        data: {
+            nunota: nunota
+        },
+        success: function(msg) {
+            document.getElementById('abrirVolumeBtn').innerHTML = msg;
+        }
+    });
 }

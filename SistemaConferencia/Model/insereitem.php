@@ -8,6 +8,7 @@ $controle = $_POST["controle"];
 $nunota2 = $_POST["nunota"];
 $codusu = $_SESSION['idUsuario'];
 $endereco = $_POST["endereco"];
+$volume = $_POST["volume"];
 
 if ($quantidade == '') {
 	$quantidade = 0;
@@ -15,7 +16,7 @@ if ($quantidade == '') {
 if ($quantidade != "0") {
 	$_SESSION['codbarraselecionado'] = $codbarra;
 
-	$tsql6 = "exec AD_STP_INSEREITEM_CONFERENCIA $nunota2 , '$codbarra' , $quantidade , '$controle', $codusu, $endereco ";
+	$tsql6 = "exec AD_STP_INSEREITEM_CONFERENCIA $nunota2 , '$codbarra' , $quantidade , '$controle', $codusu, $endereco, $volume ";
 
 	$stmt6 = sqlsrv_query($conn, $tsql6);
 	$row3 = sqlsrv_fetch_array($stmt6, SQLSRV_FETCH_NUMERIC);
