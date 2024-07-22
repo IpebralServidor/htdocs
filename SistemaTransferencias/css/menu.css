@@ -14,7 +14,7 @@ body{
     --bs-border-color: #dee2e6;
 }
 header{
-    padding: var(--padding-pad);
+    padding: 20px;
 }
 .img-voltar img{
     width: 35px;
@@ -22,7 +22,7 @@ header{
     border-radius: 100%;
 }
 main{
-    padding: var(--padding-pad);
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -116,7 +116,7 @@ main{
     font-size: 13px;
     height: 40px;
     text-align: center !important;
-    width: 25%;
+    width: 20%;
 }
 .loader{
     position: fixed;
