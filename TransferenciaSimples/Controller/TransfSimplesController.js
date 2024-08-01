@@ -1,3 +1,16 @@
+// Variáveis que guardarão o tempo de digitação dos campos
+let tempoInicialReferencia = 0;
+let tempoInicialEndSaida = 0;
+let tempoInicialEndChegada = 0;
+
+// Variáveis que guardarão o texto de digitação dos campos
+let inputInicialReferencia = '';
+let inputInicialEndSaida = '';
+let inputInicialEndChegada = '';
+
+// Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
+const tempoMaximoDigitacao = 1;
+
 const desabilitaSelectPadrao = () => {
     document.getElementById("selectPadrao").disabled = true;
 }
@@ -35,6 +48,41 @@ const buscaInformacoesProduto = () => {
             console.log(status);
         }
     });   
+}
+
+const buscaLocalPadrao = () => {
+    const referencia = document.getElementById('referencia').value;
+    const codemp = document.getElementById('empresas').value;
+    if(referencia != '' && codemp != '') {
+        $.ajax({
+            method: 'GET',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            data: {
+                referencia: referencia,
+                codemp: codemp,
+                route: 'buscaLocalPadrao'
+            },
+            success: function(response) {
+                if(response.success) {
+                    document.getElementById('localpadrao').innerHTML = response.success.codlocalpad;
+                } else {
+                    alert('Erro: ' + response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Erro na requisição AJAX: ' + error);
+                console.log(xhr);
+                console.log(status);
+            }
+        });   
+    }
 }
 
 const buscaInformacoesLocal = () => {
@@ -87,6 +135,43 @@ const buscaInformacoesLocal = () => {
     } else {
         document.getElementById('endsaida').value = '';
         alert('Selecione uma empresa.');
+    }
+}
+
+const buscaQtdMax = () => {
+    const referencia = document.getElementById('referencia').value;
+    const codemp = document.getElementById('empresas').value;
+    const endchegada = document.getElementById('endchegada').value;
+    if(referencia != '' && codemp != '') {
+        $.ajax({
+            method: 'GET',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            data: {
+                referencia: referencia,
+                codemp: codemp,
+                endchegada: endchegada,
+                route: 'buscaQtdMax'
+            },
+            success: function(response) {
+                if(response.success) {
+                    document.getElementById('qtdmax').value = response.success.qtdmax;
+                } else {
+                    alert('Erro: ' + response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Erro na requisição AJAX: ' + error);
+                console.log(xhr);
+                console.log(status);
+            }
+        });   
     }
 }
 
@@ -180,4 +265,119 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdma
             console.log(status);
         }
     });
+}
+
+const limpaCampo = (campo) => {
+    document.getElementById(campo).value = '';
+}
+
+const iniciarMedicaoReferencia = () => {
+    tempoInicialReferencia = Date.now();
+}
+
+const finalizarMedicaoReferencia = () => {
+    let tempoFinalReferencia = Date.now();
+    if(tempoFinalReferencia - tempoInicialReferencia > tempoMaximoDigitacao) {
+        inputInicialReferencia = document.getElementById('referencia').value;
+        togglePopupConfirmarReferencia();
+        limpaCampo('referencia');
+    } else {
+        buscaInformacoesProduto();
+        buscaLocalPadrao(); 
+    }
+}
+
+const togglePopupConfirmarReferencia = () => {
+    document.getElementById('popupConfirmarReferencia').classList.toggle("active");
+    document.getElementById('confirmacaoReferencia').value = '';
+    document.getElementById('confirmacaoReferencia').focus();
+}
+
+const confirmaReferencia = () => {
+    let inputNovoReferencia = document.getElementById('confirmacaoReferencia').value;
+    if(inputNovoReferencia != '') {
+        if(inputNovoReferencia != inputInicialReferencia) {
+            alert('Valores digitados não batem. Verifique a digitação');
+        } else {
+            togglePopupConfirmarReferencia();
+            document.getElementById('referencia').value = inputNovoReferencia;
+            buscaInformacoesProduto(); 
+            buscaLocalPadrao(); 
+        }
+    } else {
+        alert('Digite um valor.');
+    }
+}
+
+const iniciarMedicaoEndSaida = () => {
+    tempoInicialEndSaida = Date.now();
+}
+
+const finalizarMedicaoEndSaida = () => {
+    let tempoFinalEndSaida = Date.now();
+    if(tempoFinalEndSaida - tempoInicialEndSaida > tempoMaximoDigitacao) {
+        inputInicialEndSaida = document.getElementById('endsaida').value;
+        togglePopupConfirmarEndSaida();
+        limpaCampo('endsaida');
+    } else {
+        buscaInformacoesLocal();
+    }
+}
+
+const togglePopupConfirmarEndSaida = () => {
+    document.getElementById('popupConfirmarEndSaida').classList.toggle("active");
+    document.getElementById('confirmacaoEndSaida').value = '';
+    document.getElementById('confirmacaoEndSaida').focus();
+}
+
+const confirmaEndSaida = () => {
+    let inputNovoEndSaida = document.getElementById('confirmacaoEndSaida').value;
+    if(inputNovoEndSaida != '') {
+        if(inputNovoEndSaida != inputInicialEndSaida) {
+            alert('Valores digitados não batem. Verifique a digitação');
+        } else {
+            togglePopupConfirmarEndSaida();
+            document.getElementById('endsaida').value = inputNovoEndSaida;
+            buscaInformacoesLocal();
+        }
+    } else {
+        alert('Digite um valor.');
+    }
+}
+
+const iniciarMedicaoEndChegada = () => {
+    tempoInicialEndChegada = Date.now();
+}
+
+const finalizarMedicaoEndChegada = () => {
+    let tempoFinalEndChegada = Date.now();
+    if(tempoFinalEndChegada - tempoInicialEndChegada > tempoMaximoDigitacao) {
+        inputInicialEndChegada = document.getElementById('endchegada').value;
+        togglePopupConfirmarEndChegada();
+        limpaCampo('endchegada');
+    } else {
+        buscaQtdMax();
+    }
+}
+
+const togglePopupConfirmarEndChegada = () => {
+    document.getElementById('popupConfirmarEndChegada').classList.toggle("active");
+    document.getElementById('confirmacaoEndChegada').value = '';
+    document.getElementById('confirmacaoEndChegada').focus();
+}
+
+
+const confirmaEndChegada = () => {
+    let inputNovoEndChegada = document.getElementById('confirmacaoEndChegada').value;
+    if(inputNovoEndChegada != '') {
+        if(inputNovoEndChegada != inputInicialEndChegada) {
+            alert('Valores digitados não batem. Verifique a digitação');
+        } else {
+            togglePopupConfirmarEndChegada();
+            document.getElementById('endchegada').value = inputNovoEndChegada;
+            buscaQtdMax();
+        }
+    } else {
+        alert('Digite um valor.');
+    }
 }

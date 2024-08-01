@@ -19,6 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+            case 'buscaLocalPadrao':
+                if (isset($_GET['referencia']) && isset($_GET['codemp'])) {
+                    $referencia = $_GET['referencia'];
+                    $codemp = $_GET['codemp'];
+                    buscaLocalPadrao($conn, $referencia, $codemp);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             case 'buscaInformacoesLocal':
                 if (isset($_GET['referencia']) && isset($_GET['codemp']) && isset($_GET['endsaida']) && isset($_GET['lote'])) {
                     $codemp = $_GET['codemp'];
@@ -26,6 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $endsaida = $_GET['endsaida'];
                     $lote = $_GET['lote'];
                     buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+            case 'buscaQtdMax':
+                if (isset($_GET['referencia']) && isset($_GET['codemp']) && isset($_GET['endchegada'])) {
+                    $referencia = $_GET['referencia'];
+                    $codemp = $_GET['codemp'];
+                    $endchegada = $_GET['endchegada'];
+                    buscaQtdMax($conn, $referencia, $codemp, $endchegada);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
