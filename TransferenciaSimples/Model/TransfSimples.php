@@ -27,6 +27,36 @@ function buscaInformacoesProduto($conn, $referencia)
     }
 }
 
+function buscaLocalPadrao($conn, $referencia, $codemp)
+{
+    try {
+        $params = array($referencia, $codemp);
+        $tsql = "SELECT CODLOCALPAD FROM TGFPEM
+                 WHERE CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+                   AND CODEMP = ?
+        ";
+
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+
+        if ($stmt === false) {
+            throw new Exception('Erro ao executar a consulta SQL.');
+        }
+
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        if (!isset($row['CODLOCALPAD'])) {
+            throw new Exception('Produto não encontrado.');
+        }
+        $response = [
+            'success' => [
+                'codlocalpad' => $row['CODLOCALPAD']
+            ]
+        ];
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
 function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
 {
     try {
@@ -62,6 +92,40 @@ function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
             'success' => [
                 'qtdlocal' => $row['QTDLOCAL'],
                 'qtdmax' => $row['QTDMAX']
+            ]
+        ];
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
+{
+    try {
+        $params = array($referencia, $codemp, $endchegada);
+        $tsql = "SELECT ISNULL(AD_QTDMAXLOCAL, 0) AS QTDMAX
+                 FROM TGFPEM 
+                 WHERE CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+                 AND CODEMP = ?
+                 AND (CODLOCALPAD = ? OR CODLOCALPAD = 1990000)
+        ";
+
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+
+        if ($stmt === false) {
+            throw new Exception('Erro ao executar a consulta SQL.');
+        }
+
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        if (!isset($row['QTDMAX'])) {
+            $qtdmax = '';
+        } else {
+            $qtdmax = $row['QTDMAX'];
+        }
+        $response = [
+            'success' => [
+                'qtdmax' => $qtdmax
             ]
         ];
         echo json_encode($response);
