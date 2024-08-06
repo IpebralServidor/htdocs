@@ -163,12 +163,22 @@ function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endche
     }
 }
 
-function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $idUsuario)
+function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $referenciaBipado, $enderecoSaidaBipado, $enderecoChegadaBipado, $idUsuario)
 {
     try {
-        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $idUsuario);
+        $observacao = '';
+        if ($referenciaBipado === 'N') {
+            $observacao .= '| Referencia digitada ';
+        }
+        if ($enderecoSaidaBipado === 'N') {
+            $observacao .= '| Endereco de saida digitado ';
+        }
+        if ($enderecoChegadaBipado === 'N') {
+            $observacao .= '| Endereco de chegada digitado ';
+        }
+        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $observacao, $idUsuario);
 
-        $tsql = "EXEC [sankhya].[AD_STP_TRANSF_SIMPLES_APP] ?, ?, ?, ?, ?, ?, ?";
+        $tsql = "EXEC [sankhya].[AD_STP_TRANSF_SIMPLES_APP] ?, ?, ?, ?, ?, ?, ?, ?";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 

@@ -221,7 +221,6 @@ if ($varStatusNota == 'L') {
     <script src="../Controller/confirmarNota.js"></script>
     <script src="../Controller/confirmarEndereco.js"></script>
     <script src="../Controller/confirmarReferencia.js"></script>
-    <script src="../Controller/padraoJs.js"></script>
     <script>
         document.getElementById("body").onload = function() {
 

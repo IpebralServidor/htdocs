@@ -7,10 +7,11 @@
     <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="../css/main.css?v=<?php time() ?>">
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <script src="../../../js/bootstrap.bundle.min.js"></script>
-    <script src="../../../js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../Controller/TransfSimplesController.js?v=<?php time() ?>"></script>
     <title>Transferência Simples</title>
 </head>
@@ -39,7 +40,7 @@
                     <div class="div-form">
                         <div class="form">
                             <label>Digite a referência novamente:</label>
-                            <input type="number" class="form-control" id="confirmacaoReferencia" style="color: #86B7FE !important;" required>
+                            <input type="text" class="form-control" id="confirmacaoReferencia" style="color: #86B7FE !important;" required>
                             <button onclick="confirmaReferencia()">Confirmar</button>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
     const alertMessage = document.getElementById("alertMessage");
     const checkboxReserva = document.getElementById("enderecoReservaCheckbox");
     let checkboxMarcada;
+
     if(checkboxReserva.checked) {
         checkboxMarcada = 'S';
     } else {
@@ -19,6 +20,13 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
     
     if(inputQtdMaxLocal.value > 0) {
         if(inputEndereco.value != '') {
+            let observacao = '';
+            if (enderecoBipado === 'N') {
+                observacao += '| Endereco digitado ';
+            }
+            if (referenciaBipado === 'N') {
+                observacao += '| Referencia digitada ';
+            }
             $.ajax ({
                 type: 'POST',
                 dataType: 'html',
@@ -31,7 +39,7 @@ document.getElementById("inserirProdutoBtn").addEventListener("click",() =>{
                     gif.style.display = "none"
                     gif.classList.remove("loader")
                 },
-                data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value, qtdMaxLocal: inputQtdMaxLocal.value, checkboxMarcada: checkboxMarcada},
+                data: {nunota: nunota, referencia: inputReferencia.value, qtdneg: inputQuantidade.value, endereco: inputEndereco.value, lote: inputLote.value, qtdMaxLocal: inputQtdMaxLocal.value, checkboxMarcada: checkboxMarcada, observacao: observacao},
                 success: function (msg) {
                     if(msg == 'Produto adicionado com sucesso!'){
                         alertMessage.classList.remove("d-none")
