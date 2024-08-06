@@ -10,9 +10,11 @@ $lote = $_POST["lote"];
 $codUsu = $_SESSION["idUsuario"];
 $qtdMaxLocal = $_POST["qtdMaxLocal"];
 $checkboxMarcada = $_POST["checkboxMarcada"];
+$observacao = $_POST['observacao'];
 
-$tsql = "EXEC [sankhya].[AD_STP_PROXIMO_PRODUTO_TRANSFERENCIA] $nunota, '$referencia',$qtdneg, $endereco, '$lote', $codUsu, $qtdMaxLocal, $checkboxMarcada";
+$tsql = "EXEC [sankhya].[AD_STP_PROXIMO_PRODUTO_TRANSFERENCIA] $nunota, '$referencia',$qtdneg, $endereco, '$lote', $codUsu, $qtdMaxLocal, $checkboxMarcada, '$observacao'";
 $stmt = sqlsrv_query($conn, $tsql);
+
 $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
 
 echo utf8_encode($row[0]);

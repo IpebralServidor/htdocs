@@ -8,8 +8,11 @@ let inputInicialReferencia = '';
 let inputInicialEndSaida = '';
 let inputInicialEndChegada = '';
 
+let referenciaBipado = '';
+let enderecoSaidaBipado = '';
+let enderecoChegadaBipado = '';
 // Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
-const tempoMaximoDigitacao = 1;
+const tempoMaximoDigitacao = 250;
 
 const desabilitaSelectPadrao = () => {
     document.getElementById("selectPadrao").disabled = true;
@@ -161,7 +164,9 @@ const buscaQtdMax = () => {
             },
             success: function(response) {
                 if(response.success) {
-                    document.getElementById('qtdmax').value = response.success.qtdmax;
+                    if(response.success.qtdmax != '') {
+                        document.getElementById('qtdmax').value = response.success.qtdmax;
+                    }
                 } else {
                     alert('Erro: ' + response.error);
                 }
@@ -248,6 +253,9 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdma
             endsaida: endsaida,
             endchegada: endchegada,
             qtdmax: qtdmax,
+            referenciaBipado: referenciaBipado,
+            enderecoSaidaBipado: enderecoSaidaBipado,
+            enderecoChegadaBipado: enderecoChegadaBipado,
             route: 'transferirProduto'
         },
         success: function(response) {
@@ -282,6 +290,7 @@ const finalizarMedicaoReferencia = () => {
         togglePopupConfirmarReferencia();
         limpaCampo('referencia');
     } else {
+        referenciaBipado = 'S';
         buscaInformacoesProduto();
         buscaLocalPadrao(); 
     }
@@ -301,6 +310,7 @@ const confirmaReferencia = () => {
         } else {
             togglePopupConfirmarReferencia();
             document.getElementById('referencia').value = inputNovoReferencia;
+            referenciaBipado = 'N';
             buscaInformacoesProduto(); 
             buscaLocalPadrao(); 
         }
@@ -320,6 +330,7 @@ const finalizarMedicaoEndSaida = () => {
         togglePopupConfirmarEndSaida();
         limpaCampo('endsaida');
     } else {
+        enderecoSaidaBipado = 'S';
         buscaInformacoesLocal();
     }
 }
@@ -338,6 +349,7 @@ const confirmaEndSaida = () => {
         } else {
             togglePopupConfirmarEndSaida();
             document.getElementById('endsaida').value = inputNovoEndSaida;
+            enderecoSaidaBipado = 'N';
             buscaInformacoesLocal();
         }
     } else {
@@ -356,6 +368,7 @@ const finalizarMedicaoEndChegada = () => {
         togglePopupConfirmarEndChegada();
         limpaCampo('endchegada');
     } else {
+        enderecoChegadaBipado = 'S';
         buscaQtdMax();
     }
 }
@@ -375,6 +388,7 @@ const confirmaEndChegada = () => {
         } else {
             togglePopupConfirmarEndChegada();
             document.getElementById('endchegada').value = inputNovoEndChegada;
+            enderecoChegadaBipado = 'N';
             buscaQtdMax();
         }
     } else {

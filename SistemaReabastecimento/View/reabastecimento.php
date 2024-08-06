@@ -137,7 +137,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 <div class="div-form">
                     <div id="form_alterasenha" class="form">
                         <label> Digite o endereço novamente:</label>
-                        <input type="number" name="end_conf" id="end_conf" required>
+                        <input type="number" name="end_conf" id="end_conf" style="color: #86B7FE" required>
 
                         <button name="ConfEnd" id="btn_confend">Confirmar</button>
                     </div>
@@ -161,7 +161,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 <div class="div-form">
                     <div id="form_alterasenha" class="form">
                         <label> Digite a referência novamente:</label>
-                        <input type="text" name="end_conf" id="ref_conf" required>
+                        <input type="text" name="end_conf" id="ref_conf" style="color: #86B7FE" required>
 
                         <button name="ConfRef" id="btn_confref">Confirmar</button>
                     </div>
@@ -563,6 +563,10 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
     <script>
         var tempoInicial;
         var tempoFinal;
+        let inputInicialEndereco = '';
+        let inputInicialReferencia = '';
+        let referenciaBipado = '';
+        let enderecoBipado = '';
 
         function iniciarMedicao() {
             tempoInicial = new Date();
@@ -573,8 +577,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             var tempoDecorrido = tempoFinal - tempoInicial;
 
             if (tempoDecorrido > 250) {
-                abrirEndereco()
-                document.getElementById('endereco').value = null
+                inputInicialEndereco = document.getElementById('endereco').value;
+                abrirEndereco();
+                document.getElementById('endereco').value = null;
+            } else {
+                enderecoBipado = 'S';
             }
         }
     </script>
@@ -592,8 +599,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             var tempoDecorrido = tempoFinal - tempoInicial;
 
             if (tempoDecorrido > 250) {
+                inputInicialReferencia = document.getElementById('referencia').value;
                 abrirReferencia()
                 document.getElementById('referencia').value = null
+            } else {
+                referenciaBipado = 'S';
             }
         }
     </script>
@@ -654,24 +664,45 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
 
         function abrirRef() {
             document.getElementById('popConfRef').classList.toggle("active");
+            document.getElementById('ref_conf').value = '';
             document.getElementById('ref_conf').focus();
         }
 
         function abrir() {
             document.getElementById('popConfEnd').classList.toggle("active");
+            document.getElementById('end_conf').value = '';
             document.getElementById('end_conf').focus();
         }
 
         $('#btn_confend').click(function() {
-            var enderecoPopUp = document.getElementById('end_conf').value
-            document.getElementById('endereco').value = enderecoPopUp
-            abrir()
+            let inputConfirmacaoEndereco = document.getElementById('end_conf').value;
+            if (inputConfirmacaoEndereco != '') {
+                if (inputInicialEndereco != inputConfirmacaoEndereco) {
+                    alert('Valores digitados não batem. Verifique a digitação');
+                } else {
+                    document.getElementById('endereco').value = inputConfirmacaoEndereco;
+                    enderecoBipado = 'N';
+                    abrir();
+                }
+            } else {
+                alert('Digite um valor.');
+            }
         })
 
         $('#btn_confref').click(function() {
+            let inputConfirmacaoReferencia = document.getElementById('ref_conf').value;
+            if (inputConfirmacaoReferencia != '') {
+                if (inputInicialReferencia != inputConfirmacaoReferencia) {
+                    alert('Valores digitados não batem. Verifique a digitação');
+                } else {
+                    document.getElementById('referencia').value = inputConfirmacaoReferencia;
+                    referenciaBipado = 'N';
+                    abrirRef()
+                }
+            } else {
+                alert('Digite um valor.');
+            }
             var referenciaPopUp = document.getElementById('ref_conf').value
-            document.getElementById('referencia').value = referenciaPopUp
-            abrirRef()
         })
 
         var produtoseq
@@ -903,7 +934,14 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             } else if ((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S') {
                 $('#btnProximo').click();
             } else {
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, '')
+                let obs = '';
+                if (enderecoBipado === 'N') {
+                    obs += '| Endereco digitado ';
+                }
+                if (referenciaBipado === 'N') {
+                    obs += '| Referencia digitada ';
+                }
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, obs)
             }
 
         });
