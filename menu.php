@@ -9,9 +9,7 @@ $tsqlNomeUsu = "SELECT NOMEPARC FROM TGFPAR WHERE CODPARC = (
 $stmtNomeUsu = sqlsrv_query($conn, $tsqlNomeUsu);
 $rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
-$a = array(2, 3274, 3266, 42, 7257, 106, 692);
-$b = array(3274, 2, 3149, 3287, 3276);
-$c = array(3274, 3134);
+$a = array(2, 100, 3266, 42, 7257, 106, 692);
 
 $tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 $stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
@@ -40,14 +38,12 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
 	<link rel="stylesheet" type="text/css" href="css/menu2.css?v=<?= time() ?>">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
-
+	<link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="./node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+	<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<title>Menu</title>
 </head>
 
@@ -55,7 +51,7 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
 	<div class="page">
 		<div class="dropdown">
-			<button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fa-solid fa-bars"></i>
 			</button>
 			<div class="dropdown-menu" style="display: flex; flex-direction: column;" aria-labelledby="dropdownMenuButton">
@@ -184,7 +180,7 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 						</div>
 					</a>
 					<?php if (in_array($usuconf, $a, true)) { ?>
-						<a href="#" onclick="abrirPopFiltroInventario()" class="cardStyle">
+						<a href="./SistemaInventario/View/index.php" class="cardStyle">
 							<div class="padding">
 								<div class="icon-card">
 									<i class="fa-solid fa-calculator" style="background-color: #74C0FC"></i>
@@ -232,10 +228,6 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
 		</div>
 	</div>
-
-
-
-
 
 	<!-- pop up LOGIN e CADASTRO -->
 	<div class="popup" id="popAlterarSenha">
@@ -310,106 +302,55 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 		</div>
 	</div>
 
-	<div class="popup" id="popFiltroInventario">
-		<div class="overlay"></div>
-		<div class="content">
-			<div style="width: 100%;">
-				<div class="close-btn" onclick="abrirPopFiltroInventario()">
-					<i class="fa-solid fa-xmark"></i>
-				</div>
+	<?php
 
-				<div class="div-form">
-					<div class="form">
-						<strong>Informe a empresa:</strong>
-						<select id="empresaInventario" class="form-control">
-							<option value="1">Matriz</option>
-							<option value="6">Nordeste</option>
-						</select>
-						<strong>Informe o intervalo de endereço:</strong>
-						<div style="display: flex; align-items: center;">
-							<input type="number" id="endIni" style="width: 100%; margin-right: 5px">
-							<label> a </label>
-							<input type="number" id="endFim" style="width: 100%; margin-left: 5px"">
-						</div>
-						<button id=" confirmaFiltroInventario" onclick="confirmaFiltroInventario()">Confirmar</button>
-						</div>
-					</div>
-				</div>
+	if (isset($_POST['AlteraSenha'])) {
 
-			</div>
-		</div>
+		$senhaalt = $_POST['senha_alt'];
+		$senhaconf = $_POST['senha_conf'];
 
+		if ($senhaalt === $senhaconf) {
+			$tsql = "UPDATE TSIUSU SET AD_SENHA = '$senhaconf' WHERE CODUSU = $usuconf";
+			$stmt = sqlsrv_query($conn, $tsql);
+		} else {
+			echo "<script> alert('As senhas são diferentes. Digite a mesma senha nas duas caixas de texto!') </script>";
+		}
+	}
+	?>
 
+	<script type="text/javascript">
+		var mobile = document.getElementById("div-cabecalho-2");
 
-		<?php
+		function abrir() {
+			document.getElementById('popAlterarSenha').classList.toggle("active");
+		}
 
-		if (isset($_POST['AlteraSenha'])) {
+		function abrirPopRetirarCaixa() {
+			document.getElementById('popRetirarCaixa').classList.toggle("active");
+		}
 
-			$senhaalt = $_POST['senha_alt'];
-			$senhaconf = $_POST['senha_conf'];
+		function abrirLeitorQRCode() {
+			document.getElementById('popLeitorQRCode').classList.toggle("active");
+		}
 
-			if ($senhaalt === $senhaconf) {
-				$tsql = "UPDATE TSIUSU SET AD_SENHA = '$senhaconf' WHERE CODUSU = $usuconf";
-				$stmt = sqlsrv_query($conn, $tsql);
-			} else {
-				echo "<script> alert('As senhas são diferentes. Digite a mesma senha nas duas caixas de texto!') </script>";
+		function abrirArquivo(arquivo) {
+			if (arquivo === 'hierarquiaCod') {
+				window.open('./Files/Hierarquia dos Códigos da Ipebral.pdf');
 			}
 		}
-		?>
 
-		<script src="https://kit.fontawesome.com/9c65c9f9d0.js" crossorigin="anonymous"></script>
-		<script type="text/javascript">
-			var mobile = document.getElementById("div-cabecalho-2");
+		function confirmaFiltroRetirarCaixa() {
+			window.location.href = 'DesativaProdutoEndereco/View/index.php?codemp=' + document.getElementById('filtroEmpresa').value;
+		}
 
-			function abrir() {
-				document.getElementById('popAlterarSenha').classList.toggle("active");
-			}
+		function menuM() {
+			mobile.style.display = "block";
+		}
 
-			function abrirPopRetirarCaixa() {
-				document.getElementById('popRetirarCaixa').classList.toggle("active");
-			}
-
-			function abrirLeitorQRCode() {
-				document.getElementById('popLeitorQRCode').classList.toggle("active");
-			}
-
-			function abrirPopFiltroInventario() {
-				document.getElementById('popFiltroInventario').classList.toggle("active");
-			}
-
-			function abrirArquivo(arquivo) {
-				if (arquivo === 'hierarquiaCod') {
-					window.open('./Files/Hierarquia dos Códigos da Ipebral.pdf');
-				}
-			}
-
-			function confirmaFiltroRetirarCaixa() {
-				window.location.href = 'DesativaProdutoEndereco/View/index.php?codemp=' + document.getElementById('filtroEmpresa').value;
-			}
-
-			function confirmaFiltroInventario() {
-				let enderecoInicio = document.getElementById('endIni').value;
-				let enderecoFim = document.getElementById('endFim').value;
-				let codEmp = document.getElementById('empresaInventario').value;
-				if (!isNaN(enderecoInicio) && enderecoInicio !== '') {
-					if (!isNaN(enderecoFim) && enderecoFim !== '') {
-						window.location.href = './SistemaInventario/View/index.php?codemp=' + codEmp + '&endini=' + enderecoInicio + '&endfim=' + enderecoFim;
-					} else {
-						alert('Insira um endereço fim válido!');
-					}
-				} else {
-					alert('Insira um endereço de início válido!');
-				}
-			}
-
-			function menuM() {
-				mobile.style.display = "block";
-			}
-
-			function fecharmobile() {
-				mobile.style.display = "none";
-			}
-		</script>
+		function fecharmobile() {
+			mobile.style.display = "none";
+		}
+	</script>
 </body>
 
 </html>
