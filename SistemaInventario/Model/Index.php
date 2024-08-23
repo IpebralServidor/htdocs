@@ -43,7 +43,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                     break;
                 case 'CS':
                     $color = '#F08650';
-                    $statusText = 'Concluido / Bloqueado - Separação';
+                    $statusText = 'Concluido / Bloqueado - Separacao';
                     break;
                 case 'CR':
                     $color = '#F08650';
@@ -52,6 +52,28 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CT':
                     $color = '#F08650';
                     $statusText = 'Concluido / Bloqueado - Troca Propriedade';
+                    break;
+                case 'CP':
+                    $color = '#9ebf78';
+                    $statusText = 'Concluido Parcialmente';
+                    $action = "onclick='confirmaAbrirInventario(this)'";
+                    break;
+                case 'CD':
+                    $color = '#9ebf78';
+                    $statusText = 'Concluido / Adicionado posteriormente';
+                    $action = "onclick='confirmaAbrirInventario(this)'";
+                    break;
+                case 'CDS':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Separacao';
+                    break;
+                case 'CDR':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Reabastecimento';
+                    break;
+                case 'CDT':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Troca Propriedade';
                     break;
             }
             $tableHtml .= "<tr " . $action . "style='background-color: $color'>";

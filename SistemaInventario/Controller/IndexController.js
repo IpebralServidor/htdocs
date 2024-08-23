@@ -22,7 +22,7 @@ const buscaEnderecosInventario = (codemp, endini, endfim, concluidos) => {
             route: 'buscaEnderecosInventario'
         },
         success: function(response) {
-            if(response.success) {
+            if(response.success || response.success === '') {
                 document.getElementById('enderecosInventario').innerHTML = response.success
             } else {
                 alert('Erro: ' + response.error);
@@ -43,10 +43,10 @@ const confirmaAbrirInventario = (row) => {
     let confirmMsg;
     if(status === 'D') {
         confirmMsg = `Deseja abrir inventário para o local ${codlocal}?`;
-    } else if(status === 'C') {
+    } else if(status.includes('C')) {
         confirmMsg = `Inventário já concluído. Deseja abrir novo inventário para o local ${codlocal}?`;
     }
-    const confirmacao = (status === 'D' || status === 'C') ? confirm(confirmMsg) : true;
+    const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
     if(confirmacao) {
         window.location.href = `./inventario.php?codemp=${codemp}&codlocal=${codlocal}`;
     }
