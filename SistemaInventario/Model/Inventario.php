@@ -179,6 +179,8 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                 ];
                 echo json_encode($response);
             }
+        } else {
+            echo json_encode(['error' => 'Produto não existe']);
         }
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
@@ -222,18 +224,29 @@ function contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quanti
 function finalizaInventario($conn, $codemp, $codlocal, $idUsuario)
 {
     try {
-        $params = array($codemp, $codemp, $idUsuario, $codemp, $codlocal, $codlocal);
+        $params = array($codemp, $codemp, $codemp, $codlocal, $idUsuario, $codemp, $codlocal, $codlocal);
         $tsql = "DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
                                                          WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
                                                          ELSE CAST(? AS VARCHAR(10))
                                                      END
         
         UPDATE AD_INVENTARIOCAB
-        SET STATUS = 'C',
+        SET STATUS = CASE WHEN ISNULL((SELECT COUNT(1)
+                                FROM AD_INVENTARIOCAB INVCAB
+                                INNER JOIN AD_INVENTARIOITE INVITE
+                                ON INVCAB.NUNOTA = INVITE.NUNOTA
+                                WHERE INVCAB.CODEMP = ?
+                                  AND INVCAB.CODLOCAL = ?
+                                  AND INVCAB.STATUS = 'A'
+                                  AND INVITE.TIPO = 'N'), 0) > 0 THEN 'CP'
+                          ELSE 'C'
+                     END,
             DTFIM = GETDATE(),
             CODUSUFIM = ?
         FROM AD_INVENTARIOCAB INVCAB
-        WHERE INVCAB.CODEMP = ? 
+        INNER JOIN AD_INVENTARIOITE INVITE
+        ON INVCAB.NUNOTA = INVITE.NUNOTA
+        WHERE INVCAB.CODEMP = ?
         AND INVCAB.CODLOCAL = ?
         AND INVCAB.STATUS = 'A'
         
