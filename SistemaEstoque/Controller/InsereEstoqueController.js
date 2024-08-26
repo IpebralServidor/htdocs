@@ -7,7 +7,21 @@ const checkbox = document.getElementById('checkVariosProdutos');
 const botao = document.getElementById('editarTempBtn');
 let checkboxEstadoAnterior = checkbox.checked;
 
+// Variáveis que guardarão o tempo de digitação dos campos
+let tempoInicialProduto = 0;
+let tempoInicialEndereco = 0;
+let tempoInicialEnderecoTemp = 0;
 
+// Variáveis que guardarão o texto de digitação dos campos
+let inputInicialProduto = '';
+let inputInicialEndereco = '';
+let inputInicialEnderecoTemp = '';
+
+let produtoBipado = '';
+let enderecoBipado = '';
+let enderecoTempBipado = '';
+// Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
+const tempoMaximoDigitacao = 250;
 
 $(document).ready(function() {
     //O método $.ajax(); é o responsável pela requisição
@@ -179,11 +193,18 @@ function insereitens(produto, quantidade, endereco, nunota, checkvariosprodutos)
             quantidade: quantidade,
             endereco: endereco,
             nunota: nunota,
+            produtoBipado: produtoBipado,
+            enderecoBipado: enderecoBipado,
+            enderecoTempBipado: enderecoTempBipado,
             checkvariosprodutos: isChecked
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
         success: function(msg) {
             msg = msg.trim();
+            console.log(msg);
+            produtoBipado = '';
+            enderecoBipado = '';
+            enderecoTempBipado = '';
             if (msg.includes("Item inserido com sucesso")) {
                 document.getElementById("produto").value = "";
                 document.getElementById("quantidade").value = "";
@@ -296,11 +317,18 @@ function insereItensTempITE(nunota, endereco) {
         },
         data: {
             nunota: nunota,
-            endereco: endereco
+            endereco: endereco,
+            produtoBipado: produtoBipado,
+            enderecoBipado: enderecoBipado,
+            enderecoTempBipado: enderecoTempBipado
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
         success: function(msg) {
             msg = msg.trim();
+            console.log(msg);
+            produtoBipado = '';
+            enderecoBipado = '';
+            enderecoTempBipado = '';
             if (msg.includes("IPB: Itens Inseridos com Sucesso!")) {
                 fecharInsereEndereco();
             } else if (msg != "") {
@@ -501,5 +529,119 @@ $('#finalizar').click(function() {
 });
 
 $('#InserirTempITE').click(function() {
-    insereItensTempITE(nunota, $("#enderecotemp").val());
+    if($("#enderecotemp").val()) {
+        insereItensTempITE(nunota, $("#enderecotemp").val());
+    }
 });
+
+const limpaCampo = (campo) => {
+    document.getElementById(campo).value = '';
+}
+
+const iniciarMedicaoProduto = () => {
+    tempoInicialProduto = Date.now();
+}
+
+const finalizarMedicaoProduto = () => {
+    let tempoFinalProduto = Date.now();
+    if(tempoFinalProduto - tempoInicialProduto > tempoMaximoDigitacao) {
+        inputInicialProduto = document.getElementById('produto').value;
+        togglePopupConfirmarProduto();
+        limpaCampo('produto');
+    } else {
+        produtoBipado = 'S';
+    }
+}
+
+const togglePopupConfirmarProduto = () => {
+    document.getElementById('popupConfirmarProduto').classList.toggle("active");
+    document.getElementById('confirmacaoProduto').value = '';
+    document.getElementById('confirmacaoProduto').focus();
+}
+
+const confirmaProduto = () => {
+    let inputNovoProduto = document.getElementById('confirmacaoProduto').value;
+    if(inputNovoProduto != '') {
+        if(inputNovoProduto != inputInicialProduto) {
+            alert('Valores digitados não batem. Verifique a digitação');
+        } else {
+            togglePopupConfirmarProduto();
+            document.getElementById('produto').value = inputNovoProduto;
+            produtoBipado = 'N';
+        }
+    } else {
+        alert('Digite um valor.');
+    }
+}
+
+const iniciarMedicaoEndereco = () => {
+    tempoInicialEndereco = Date.now();
+}
+
+const finalizarMedicaoEndereco = () => {
+    let tempoFinalEndereco = Date.now();
+    if(tempoFinalEndereco - tempoInicialEndereco > tempoMaximoDigitacao) {
+        inputInicialEndereco = document.getElementById('endereco').value;
+        togglePopupConfirmarEndereco();
+        limpaCampo('endereco');
+    } else {
+        enderecoBipado = 'S';
+    }
+}
+
+const togglePopupConfirmarEndereco = () => {
+    document.getElementById('popupConfirmarEndereco').classList.toggle("active");
+    document.getElementById('confirmacaoEndereco').value = '';
+    document.getElementById('confirmacaoEndereco').focus();
+}
+
+const confirmaEndereco = () => {
+    let inputNovoEndereco = document.getElementById('confirmacaoEndereco').value;
+    if(inputNovoEndereco != '') {
+        if(inputNovoEndereco != inputInicialEndereco) {
+            alert('Valores digitados não batem. Verifique a digitação');
+        } else {
+            togglePopupConfirmarEndereco();
+            document.getElementById('endereco').value = inputNovoEndereco;
+            enderecoBipado = 'N';
+        }
+    } else {
+        alert('Digite um valor.');
+    }
+}
+
+const iniciarMedicaoEnderecoTemp = () => {
+    tempoInicialEnderecoTemp = Date.now();
+}
+
+const finalizarMedicaoEnderecoTemp = () => {
+    let tempoFinalEnderecoTemp = Date.now();
+    if(tempoFinalEnderecoTemp - tempoInicialEnderecoTemp > tempoMaximoDigitacao) {
+        inputInicialEnderecoTemp = document.getElementById('enderecotemp').value;
+        togglePopupConfirmarEnderecoTemp();
+        limpaCampo('enderecotemp');
+    } else {
+        enderecoTempBipado = 'S';
+    }
+}
+
+const togglePopupConfirmarEnderecoTemp = () => {
+    document.getElementById('popupConfirmarEnderecoTemp').classList.toggle("active");
+    document.getElementById('confirmacaoEnderecoTemp').value = '';
+    document.getElementById('confirmacaoEnderecoTemp').focus();
+}
+
+const confirmaEnderecoTemp = () => {
+    let inputNovoEnderecoTemp = document.getElementById('confirmacaoEnderecoTemp').value;
+    if(inputNovoEnderecoTemp != '') {
+        if(inputNovoEnderecoTemp != inputInicialEnderecoTemp) {
+            alert('Valores digitados não batem. Verifique a digitação');
+        } else {
+            togglePopupConfirmarEnderecoTemp();
+            document.getElementById('enderecotemp').value = inputNovoEnderecoTemp;
+            enderecoTempBipado = 'N';
+        }
+    } else {
+        alert('Digite um valor.');
+    }
+}

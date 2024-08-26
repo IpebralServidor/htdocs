@@ -21,7 +21,10 @@ $tipoNota = $row[0];
 	<meta charset="utf-8">
 	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
 	<link rel="stylesheet" type="text/css" href="../css/insereestoque.css?v=2">
+	<link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 	<title>Coletor</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -124,7 +127,7 @@ $tipoNota = $row[0];
 
 				<br>
 				<label>Endereço:</label>
-				<input class="cxtexto" type="text" id="enderecotemp" class="text" value="">
+				<input class="cxtexto" type="text" id="enderecotemp" oninput="iniciarMedicaoEnderecoTemp();" onchange="finalizarMedicaoEnderecoTemp();" class="text" value="">
 
 				<br><br>
 				<input id="InserirTempITE" class="btn btn-primary btn-form" name="InserirTemp" type="submit" value="Inserir">
@@ -150,6 +153,72 @@ $tipoNota = $row[0];
 		</div>
 		<!-- Fim da exibição das Divergências -->
 
+		<!-- Modal para confirmar produto-->
+
+		<div class="popup" id="popupConfirmarProduto">
+			<div class="overlay"></div>
+			<div class="content">
+				<div style="width: 100%;">
+					<div class="close-btn" onclick="togglePopupConfirmarProduto(); limpaCampo('produto');">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+
+					<div class="div-form">
+						<div class="form">
+							<label>Digite a referência novamente:</label>
+							<input type="text" class="form-control" id="confirmacaoProduto" style="color: #86B7FE !important;" required>
+							<button onclick="confirmaProduto()">Confirmar</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Modal para confirmar endereço-->
+
+		<div class="popup" id="popupConfirmarEndereco">
+			<div class="overlay"></div>
+			<div class="content">
+				<div style="width: 100%;">
+					<div class="close-btn" onclick="togglePopupConfirmarEndereco(); limpaCampo('endereco');">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+
+					<div class="div-form">
+						<div class="form">
+							<label>Digite o endereço novamente:</label>
+							<input type="number" class="form-control" id="confirmacaoEndereco" style="color: #86B7FE !important;" required>
+							<button onclick="confirmaEndereco()">Confirmar</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Modal para confirmar endereço temp-->
+
+		<div class="popup" id="popupConfirmarEnderecoTemp">
+			<div class="overlay"></div>
+			<div class="content">
+				<div style="width: 100%;">
+					<div class="close-btn" onclick="togglePopupConfirmarEnderecoTemp(); limpaCampo('enderecotemp');">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+
+					<div class="div-form">
+						<div class="form">
+							<label>Digite o endereço:</label>
+							<input type="number" class="form-control" id="confirmacaoEnderecoTemp" style="color: #86B7FE !important;" required>
+							<button onclick="confirmaEnderecoTemp()">Confirmar</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
 		<!-- Fim dos POPUP's -->
 
 		<div class="container">
@@ -166,7 +235,7 @@ $tipoNota = $row[0];
 							<span id='resultadoVariosProd' style="margin-left:3px; margin-top: 0;">
 								Marcar Vários</span> <!--Retorno do resultado checkbox-->
 						</div>
-						<input type="text" id="produto" class="form-control" placeholder="">
+						<input type="text" id="produto" class="form-control" oninput="iniciarMedicaoProduto();" onchange="finalizarMedicaoProduto();" style="color: #86B7FE !important;" placeholder="">
 					</div>
 					<!-- Fim do INPUT de Produto -->
 
@@ -175,7 +244,7 @@ $tipoNota = $row[0];
 						<div class="input-h6">
 							<h6>Quantidade:</h6>
 						</div>
-						<input type="number" id="quantidade" class="form-control" placeholder="">
+						<input type="number" id="quantidade" class="form-control" style="color: #86B7FE !important;" placeholder="">
 					</div>
 					<!-- Fim do INPUT de Quantidade -->
 
@@ -184,7 +253,7 @@ $tipoNota = $row[0];
 						<div class="input-h6">
 							<h6>Endereço:</h6>
 						</div>
-						<input type="number" id="endereco" class="form-control" placeholder="">
+						<input type="number" id="endereco" class="form-control" oninput="iniciarMedicaoEndereco();" onchange="finalizarMedicaoEndereco();" style="color: #86B7FE !important;" placeholder="">
 					</div>
 					<!-- Fim do INPUT de Endereço -->
 
