@@ -387,6 +387,8 @@ border-top: solid 5px #e54e43;
 }
 .img-voltar{
 	padding: 10px;
+	position: absolute;
+	left: 0;
 }
 .img-voltar img{
 	width: 35px;

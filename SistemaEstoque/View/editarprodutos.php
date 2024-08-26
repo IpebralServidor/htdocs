@@ -34,6 +34,7 @@ $usuconf = $_SESSION["idUsuario"];
 					 TGFPRO ON TGFPRO.CODPROD = TGFITE.CODPROD
 				WHERE NUNOTA = $nunotadest
 				  AND SEQUENCIA > 0
+				  ORDER BY TGFITE.SEQUENCIA
 						";
 
 	$stmt2 = sqlsrv_query($conn, $tsql2);
