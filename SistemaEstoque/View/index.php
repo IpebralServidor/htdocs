@@ -33,14 +33,14 @@ require_once '../../App/auth.php';
 	</div>
 
 	<div>
-		<div class="img-voltar">
-			<a href="../../menu.php">
-				<img src="../images/216446_arrow_left_icon.png" />
-			</a>
-		</div>
-
+		
 		<div class="screen">
-			<div class="margin-top35" style="width: 80%;">
+			<div class="img-voltar">
+				<a href="../../menu.php">
+					<img src="../images/216446_arrow_left_icon.png" />
+				</a>
+			</div>
+			<div style="width: 80%; margin-top:90px;">
 				<div class="form-group">
 					<label for="nunota">Número Único: (Origem)</label>
 					<input type="number" name="NUNOTA" id="nunota" class="form-control margin-top10">
