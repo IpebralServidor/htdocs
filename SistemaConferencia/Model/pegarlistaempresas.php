@@ -14,7 +14,7 @@ $stmtTodasEmpresas = sqlsrv_query($conn, $tsqlTodasEmpresas);
 $empresasList = "";
 
 while ($rowTodasEmpresas = sqlsrv_fetch_array($stmtTodasEmpresas, SQLSRV_FETCH_NUMERIC)) {
-    if ($rowEmpresaAtual[0] == $rowTodasEmpresas[0]) {
+    if ($rowTodasEmpresas[0] === 1) {
         $selected = "selected";
     } else {
         $selected = "";

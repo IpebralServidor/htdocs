@@ -881,7 +881,9 @@ $qtdVolume = $rowStatusVolume[1];
 		<div id="Itens do Pedido" style="width: 48%; height:54%; /*background-color: red;*/ display: inline-block; float: right; margin-left: 1%; overflow: hidden; margin-left: 0;">
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4>
 			<?php
-			$tsql2 = "  SELECT COUNT(1)
+			$tsql2 = "SELECT COUNT(1) FROM [sankhya].[AD_FNT_ITENS_PEDIDO]($nunota2)";
+			// Comentado por Gabriel Assis, dia 07/08/2024, pois esse select não condizia com a quantidade de itens do pedido
+			/*$tsql2 = "  SELECT COUNT(1)
 							FROM TGFCAB CAB INNER JOIN
 									TGFITE ITE ON ITE.NUNOTA = CAB.NUNOTA INNER JOIN
 									TGFPRO PRO ON PRO.CODPROD = ITE.CODPROD LEFT JOIN
@@ -891,7 +893,7 @@ $qtdVolume = $rowStatusVolume[1];
 											  					 WHERE TGFBAR.CODPROD = BAR.CODPROD
 											  					) INNER JOIN
 									TGFVOL VOL ON VOL.CODVOL = ITE.CODVOL 
-							WHERE CAB.NUNOTA = $nunota2";
+							WHERE CAB.NUNOTA = $nunota2";*/
 			$stmt2 = sqlsrv_query($conn, $tsql2);
 			while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
 				$QtdPedido = $row2[0];

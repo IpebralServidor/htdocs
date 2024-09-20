@@ -779,7 +779,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             var ocorrencia = selectedOption + ' ' + observacao
 
             //registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(), ocorrencia)
+            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(), ocorrencia, '');
         });
 
         document.getElementById("timer-color").style.backgroundColor = "green";
@@ -888,7 +888,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             document.getElementById('popupObservacao').style.display = 'block';
         }
 
-        function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco, ocorrencia) {
+        function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco, ocorrencia, obs) {
             // O método $.ajax(); é o responsável pela requisição
             $.ajax({
                 //Configurações
@@ -909,7 +909,8 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     sequencia: sequencia,
                     referencia: referencia,
                     endereco: endereco,
-                    ocorrencia: ocorrencia
+                    ocorrencia: ocorrencia,
+                    obs: obs
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
@@ -941,7 +942,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 if (referenciaBipado === 'N') {
                     obs += '| Referencia digitada ';
                 }
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, obs)
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, '', obs)
             }
 
         });

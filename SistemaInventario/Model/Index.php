@@ -31,7 +31,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                     break;
                 case 'S':
                     $color = '#FF4D4D';
-                    $statusText = 'Bloqueado - Separação';
+                    $statusText = 'Bloqueado - Separacao';
                     break;
                 case 'R':
                     $color = '#FF4D4D';
@@ -40,6 +40,14 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'T':
                     $color = '#FF4D4D';
                     $statusText = 'Bloqueado - Troca Propriedade';
+                    break;
+                case 'M':
+                    $color = '#FF4D4D';
+                    $statusText = 'Bloqueado - Prod. Empresa diferente';
+                    break;
+                case 'E':
+                    $color = '#FF4D4D';
+                    $statusText = 'Bloqueado - Entrada de mercadoria';
                     break;
                 case 'CS':
                     $color = '#F08650';
@@ -52,6 +60,14 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CT':
                     $color = '#F08650';
                     $statusText = 'Concluido / Bloqueado - Troca Propriedade';
+                    break;
+                case 'CM':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Bloqueado - Prod. Empresa diferente';
+                    break;
+                case 'CE':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Bloqueado - Entrada de mercadoria';
                     break;
                 case 'CP':
                     $color = '#9ebf78';
@@ -74,6 +90,34 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CDT':
                     $color = '#F08650';
                     $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Troca Propriedade';
+                    break;
+                case 'CDM':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Prod. Empresa diferente';
+                    break;
+                case 'CDE':
+                    $color = '#F08650';
+                    $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Entrada de mercadoria';
+                    break;
+                case 'CPS':
+                    $color = '#F08650';
+                    $statusText = 'Concluido Parcialmente / Bloqueado - Separacao';
+                    break;
+                case 'CPR':
+                    $color = '#F08650';
+                    $statusText = 'Concluido Parcialmente / Bloqueado - Reabastecimento';
+                    break;
+                case 'CPT':
+                    $color = '#F08650';
+                    $statusText = 'Concluido Parcialmente / Bloqueado - Troca Propriedade';
+                    break;
+                case 'CPM':
+                    $color = '#F08650';
+                    $statusText = 'Concluido Parcialmente / Bloqueado - Prod. Empresa diferente';
+                    break;
+                case 'CPE':
+                    $color = '#F08650';
+                    $statusText = 'Concluido Parcialmente / Bloqueado - Entrada de mercadoria';
                     break;
             }
             $tableHtml .= "<tr " . $action . "style='background-color: $color'>";

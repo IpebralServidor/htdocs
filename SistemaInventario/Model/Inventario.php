@@ -114,6 +114,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
           AND EST.CODPROD = @CODPROD
           AND EST.CODLOCAL = ?
           AND EST.CODPARC = 0
+          AND EST.ESTOQUE <> 0
           AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
         
         SELECT SUM(ESTOQUE - RESERVADO) AS QTDESTOQUE
@@ -151,6 +152,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                     AND EST.CODPROD = @CODPROD
                     AND EST.CODLOCAL = ?
                     AND EST.CODPARC = 0
+                    AND EST.ESTOQUE <> 0
                     AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
 
                 UPDATE AD_INVENTARIOITE

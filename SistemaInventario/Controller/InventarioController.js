@@ -9,7 +9,7 @@ let inputInicialReferencia = '';
 // Variáveis para guardar se o campo foi bipado ou digitado
 let referenciaBipado = '';
 // Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
-const tempoMaximoDigitacao = 999999;
+const tempoMaximoDigitacao = 250;
 
 $(document).ready(function() {
     document.getElementById('titleBoxH6').innerHTML = 'Produtos no endereço ' + codlocal;
@@ -136,7 +136,7 @@ const verificaRecontagem = () => {
     const referencia = document.getElementById('referencia').value;
     const controle = document.getElementById('lote').value;
     const quantidade = document.getElementById('quantidade').value;
-    if(quantidade <= 0 || referencia === '') {
+    if(quantidade < 0 || referencia === '') {
         alert('Informe os campos corretamente.');
     } else {
         $.ajax({
@@ -162,7 +162,11 @@ const verificaRecontagem = () => {
                     alert(response.success);
                     location.reload();
                 } else if(response.recontagem) {
-                    const quantidadeTransf = prompt(`O item ${referencia.trim()} deu divergência em relação ao estoque do sistema. Favor recontar e digite a quantidade novamente: `);
+                    let quantidadeTransf;
+                    do {
+                        quantidadeTransf = prompt(`O item ${referencia.trim()} deu divergência em relação ao estoque do sistema. Favor recontar e digite a quantidade novamente: `);
+                    }  while(quantidadeTransf === null || quantidadeTransf.trim() === "");
+                    
                     if(isNaN(Number(quantidadeTransf))) {
                         alert('Digite uma quantidade válida!');
                     } else {

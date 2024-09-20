@@ -25,9 +25,10 @@ $tsqlProdutos = "SELECT
                     INNER JOIN TSIUSU 
                     ON TGFCAB.CODUSU = TSIUSU.CODUSU
                     WHERE TGFCAB.AD_PEDIDOECOMMERCE IN ('TRANSFAPP', 'TRANSF_NOTA', 'TRANSF_CD5', 'TRANSFPROD_ENTRADA', 'TRANSFPROD_SAIDA')
-                    AND TGFCAB.DTNEG BETWEEN DATEADD(DAY, -5, GETDATE()) AND GETDATE()
+                    AND TGFCAB.DTNEG BETWEEN DATEADD(DAY, -30, GETDATE()) AND GETDATE()
                     AND TGFCAB.STATUSNOTA = 'A'
-                    AND TGFCAB.AD_GARANTIAVERIFICADA = ?";
+                    AND TGFCAB.AD_GARANTIAVERIFICADA = ?
+                    ORDER BY TGFCAB.DTNEG";
 
 $stmtProdutos = sqlsrv_query($conn, $tsqlProdutos, $params);
 
