@@ -66,9 +66,9 @@ if ($rowPdtAtual[0] == 0) {
             header("Location: verificarprodutos.php?nunota=" . $nunota2);
         } else if (empty($row[0])) {
             echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";
-        } else if ($tipoNota == "A" && $fila == 'S' && $rowEhTransf[0]  === 'TRANSFPROD_SAIDA') {
+        } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA')) {
             // Lógica para que os produtos de saída da produção que não sejam endereçados para o local padrão não possam ser pegos com fila
-            if ($rowProdutosParaLocalpad[0] === 'N') {
+            if ($rowProdutosParaLocalpad[0] === 'N' || $rowEhTransf[0] === 'TRANSF_PENDENCIA') {
                 echo "<script>alert('Favor pegar sem fila.'); location = './menuseparacao.php?nunota=$nunota2' </script>";
             }
         }
@@ -108,9 +108,12 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/main.css?v=<?= time() ?>">
-    <link href="../css/main.css?v=<?= time() ?>" rel='stylesheet' type='text/css' />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body class="body" <?php if ($fila == "S") { ?> <?php if ($rowStatus[0] == "P") { ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), 
@@ -179,7 +182,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Observação</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -198,7 +201,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Movimentações</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -229,7 +232,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><span id="mensagemModal"></span></h5>
-                    <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" id="close" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -266,7 +269,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -277,7 +280,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="btnPegarTudo">Sim</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
                 </div>
             </div>
         </div>
@@ -288,7 +291,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Buscar usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -314,7 +317,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Editar quantidade máxima local padrão</h5>
-                    <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" id="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -373,7 +376,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
 
         <div class="d-flex justify-content-between" style="background-color: #3a6070 !important;">
             <nav class="bg navbar">
-                <a id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square" viewBox="0 0 16 16">
                         <path d="M3.626 6.832A.5.5 0 0 1 4 6h8a.5.5 0 0 1 .374.832l-4 4.5a.5.5 0 0 1-.748 0l-4-4.5z" />
                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2z" />
@@ -402,7 +405,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             <div class="d-flex justify-content-end">
                 <?php
                 /*if ($rowEhTransf[0] === 'TRANSFPROD_SAIDA' and $tipoNota === 'S') {
-                    echo "<button type='button' class='statusReabastecimento' style='background-color: red' data-toggle='modal' data-target='#pegaModal'>
+                    echo "<button type='button' class='statusReabastecimento' style='background-color: red' data-bs-toggle='modal' data-bs-target='#pegaModal'>
                             Pegar tudo
                           </button>";
                 }*/
@@ -471,13 +474,13 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6>
                             <!-- <?php if ($tipoNota == 'S') { ?> -->
-                            <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-toggle="modal" data-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
+                            <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-bs-toggle="modal" data-bs-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
                             <!-- <?php } ?> -->
                         </div>
 
                         <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>
                             <?php if ($tipoNota == 'A') { ?>
-                                <button class="btnPendencia" data-toggle="modal" data-target="#editarQuantidadeMaxLocPad" style="border-radius: 13%">
+                                <button class="btnPendencia" data-bs-toggle="modal" data-bs-target="#editarQuantidadeMaxLocPad" style="border-radius: 13%">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                                     </svg>
@@ -504,27 +507,40 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             </div>
 
         </div>
-
-        <div class="image d-flex justify-content-center" id="imagemproduto">
+        <div class="image d-flex">
             <?php
-            // $referencia = $rowTransferencia['REFERENCIA'];
-
-            //if($referencia!=''){
-            //  $tsql2 = "SELECT [sankhya].[AD_FN_IMAGEM_PRODUTO_PHP] ('$referencia')";
-            //} else {
-            $tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
-            //}
-
-            $stmt2 = sqlsrv_query($conn, $tsql2);
-
-            if ($stmt2) {
-                $row_count = sqlsrv_num_rows($stmt2);
-
-                while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
-                    echo '<img style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="data:image/jpeg;base64,' . base64_encode($row2[0]) . '"/>';
+            if ($rowEhTransf[0] === 'TRANSF_PENDENCIA') {
+                $divPendencia = '';
+                $divPendencia .= "<div class='col d-flex justify-content-center'>
+                                    <div class='pendencias'>
+                                        <div class='titlePendencia'>Pendência</div>
+                                        <h6>Nº 1720: <span id='nunotapendencia'></span></h6>
+                                        <h6>Parc.: <span id='parcpendencia'></span></h6>";
+                if ($tipoNota === 'A') {
+                    $divPendencia .= "    <h6>Pedido/Entregue: <span id='qtdpendencia'></span></h6>
+                                        <h6>Local Pad.: <span id='localpadpendencia'></span></h6>";
                 }
+                $divPendencia .= "    </div>
+                                </div>";
+                echo $divPendencia;
             }
             ?>
+            <div id="imagemproduto" class="col d-flex justify-content-center">
+
+                <?php
+                $tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
+
+                $stmt2 = sqlsrv_query($conn, $tsql2);
+
+                if ($stmt2) {
+                    $row_count = sqlsrv_num_rows($stmt2);
+
+                    while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
+                        echo '<img style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="data:image/jpeg;base64,' . base64_encode($row2[0]) . '"/>';
+                    }
+                }
+                ?>
+            </div>
         </div>
 
         <div class="btn-proximo-abast">
@@ -533,18 +549,18 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
 
     </div>
     <footer class="footer d-flex justify-content-center">
-        <button class="btnWidth btnPendencia " data-toggle="modal" data-target="#exampleModal" onclick="exibirObservacao()">
+        <button class="btnWidth btnPendencia " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="exibirObservacao()">
             Observação
         </button>
         <?php if ($tipoNota == 'S') { ?>
-            <button id="btnOutroLocal" class="btnWidth btnPendencia btnOutroLocal" data-toggle="modal" data-target="#ocorrenciaModal">
+            <button id="btnOutroLocal" class="btnWidth btnPendencia btnOutroLocal" data-bs-toggle="modal" data-bs-target="#ocorrenciaModal">
                 Outro local
             </button>
         <?php } ?>
-        <button id="btnOcorrencia" class="btnWidth btnPendencia " data-toggle="modal" data-target="#ocorrenciaModal">
+        <button id="btnOcorrencia" class="btnWidth btnPendencia " data-bs-toggle="modal" data-bs-target="#ocorrenciaModal">
             Ocorrência
         </button>
-        <button id="btnProximo" class="btnWidth btnPendencia " data-toggle="modal" data-target="#ocorrenciaModal" style="display: none;">
+        <button id="btnProximo" class="btnWidth btnPendencia " data-bs-toggle="modal" data-bs-target="#ocorrenciaModal" style="display: none;">
             Proximo
         </button>
         <?php if ($tipoNota == 'S') { ?>
@@ -553,13 +569,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             </button>
         <?php } ?>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         var tempoInicial;
         var tempoFinal;
@@ -711,6 +720,36 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             $("#navbar-toggler").click(function() {
                 $(this).toggleClass("rotated");
             });
+            if ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') {
+                $.ajax({
+                    method: 'POST',
+                    url: '../Model/retornanumeropendencia.php',
+                    dataType: 'json',
+                    beforeSend: function() {
+                        $("#loader").show();
+                    },
+                    complete: function() {
+                        $("#loader").hide();
+                    },
+                    data: {
+                        nunota: <?php echo $nunota2; ?>,
+                        tiponota: '<?php echo $tipoNota; ?>'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            document.getElementById('nunotapendencia').innerHTML = response.success.nunota;
+                            document.getElementById('parcpendencia').innerHTML = response.success.parceiro;
+                        } else {
+                            alert('Erro: ' + response.error);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Erro na requisição AJAX: ' + error);
+                        console.log(xhr, status, error);
+                    }
+                });
+            }
+
         });
 
         $('#outros').click(function() {
@@ -1238,7 +1277,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         }
 
         function retornainfoprodutos(nunota, referencia) {
-
             $.ajax({
                 //Configurações
                 type: 'POST', //Método que está sendo utilizado.
@@ -1275,7 +1313,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                         } else {
                             <?php if ($tipoNota == 'S') { ?>
                                 if (retorno[4] == 0 || retorno[2] == 0) {
-
                                     document.getElementById("outros").value = 'Produto transferido';
 
                                     procurarOutroLocal(0, <?php echo $nunota2; ?>, retorno[8], retorno[10], '<?php echo $codusu; ?>')
@@ -1287,7 +1324,10 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             document.getElementById("qtdneg").placeholder = retorno[2] + ' (' + retorno[2] * Math.pow(10, retorno[14]) + ' UND)';
                             document.getElementById("qtdneg").setAttribute("data-qtdRetornada", retorno[2]);
                             document.getElementById("endereco").placeholder = retorno[1];
-                            if (('<?php echo $tipoNota ?>' == "A") && ('<?php echo $fila ?>' == 'N') && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA') && ('<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N')) {
+                            if (('<?php echo $tipoNota ?>' == "A") &&
+                                ('<?php echo $fila ?>' == 'N') &&
+                                (('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA' && '<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N') ||
+                                    '<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA')) {
                                 document.getElementById("endereco").placeholder = '';
                             }
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
@@ -1351,6 +1391,34 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                                 ?>
                                 document.getElementById('endereco').value = <?php echo $rowCodLocal[0]; ?>;
                                 document.getElementById('endereco').disabled = true;
+                            } else if (('<?php echo $tipoNota ?>' == "A") && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA')) {
+                                $.ajax({
+                                    method: 'POST',
+                                    url: '../Model/retornainfopendencia.php',
+                                    dataType: 'json',
+                                    beforeSend: function() {
+                                        $("#loader").show();
+                                    },
+                                    complete: function() {
+                                        $("#loader").hide();
+                                    },
+                                    data: {
+                                        nunota: nunota,
+                                        codprod: retorno[10]
+                                    },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            document.getElementById('qtdpendencia').innerHTML = response.success.qtd;
+                                            document.getElementById('localpadpendencia').innerHTML = response.success.localpad;
+                                        } else {
+                                            alert('Erro: ' + response.error);
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        alert('Erro na requisição AJAX: ' + error);
+                                        console.log(xhr, status, error);
+                                    }
+                                });
                             }
                         }
                     }

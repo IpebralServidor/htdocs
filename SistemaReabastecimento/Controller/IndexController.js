@@ -87,6 +87,15 @@ function Confirmar() {
 function produtos() {
     let toggleSwitch = document.getElementById('chkInp');
     let tipoNota;
+    let tipoTransf = document.getElementById('tipoTransf');
+    let cdTransf = document.getElementById('cdTransf');
+    let nomeFiltro = tipoTransf.options[tipoTransf.selectedIndex].text;
+    if(cdTransf.value != 'N') {
+        if(tipoTransf.value === 'TRANSFAPP' || tipoTransf.value === 'TRANSF_PENDENCIA') {
+            nomeFiltro += ' CD' + cdTransf.value;
+        }
+    }
+    document.getElementById('filterName').textContent = nomeFiltro;
     // Observa o switch de Armazenamento/Separação e define o tipo da nota. A = Armazenamento, S = Separação
     if (toggleSwitch.checked == true) {
         document.getElementById('titleBoxH6').textContent = 'Notas de armazenamento';
@@ -106,7 +115,9 @@ function produtos() {
             $("#iniciarpausa").html("Carregando...");
         },
         data: {
-            tipoNota: tipoNota
+            tipoNota: tipoNota,
+            tipoTransf: tipoTransf.value,
+            cdTransf: cdTransf.value
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
         success: function(msg) {
@@ -119,3 +130,7 @@ function produtos() {
 function atribuirDataBotao(button) {
     document.getElementById("numeroNota").value = (button.getAttribute('data-id'));
 };
+
+const abrirPopFiltroNota = () => {
+    document.getElementById('popFiltroNota').classList.toggle("active");
+}
