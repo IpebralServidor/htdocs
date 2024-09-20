@@ -14,6 +14,7 @@ const fecharprodutos = () => {
 
 const pesquisaProduto = () => {
     let referencia = document.getElementById("referencia").value.trim();
+    referencia = referencia.replaceAll(' ', '%');
     if(referencia === '') {
         alert("Digite algo válido!");
     } else {

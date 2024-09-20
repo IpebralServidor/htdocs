@@ -10,7 +10,8 @@ $stmtNomeUsu = sqlsrv_query($conn, $tsqlNomeUsu);
 $rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
 $a = array(2, 100, 3266, 42, 7257, 106, 692);
-$b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 3711, 36, 25, 3782, 82, 4041, 3370, 3149);
+
+$b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 3711, 36, 25, 3782, 82, 4041, 3370, 3149, 3254);
 
 $tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 $stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
