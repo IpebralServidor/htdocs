@@ -8,5 +8,3 @@ $_SESSION['enderecoFim'] = $_POST['enderecoFim'];
 
 echo $_SESSION['enderecoInit'];
 echo $_SESSION['enderecoFim'];
-
-?>

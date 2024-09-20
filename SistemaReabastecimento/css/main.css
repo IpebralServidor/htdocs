@@ -733,6 +733,28 @@ border-top: solid 5px #e54e43;
 	max-height: 110px !important;
 	overflow: auto;
 }
+
+.pendencias {
+	margin-left: 3px;
+	padding: 5px;
+	box-shadow: rgb(255, 0, 0) 0px 1px 3px 0px, rgb(255, 0, 0) 0px 0px 0px 1px;
+	border-radius: 7px;
+	width: 90%;
+	word-break:break-all;
+	max-height: 166px !important;
+	overflow: auto;
+	
+}
+.pendencias h6{
+	font-size: 0.8rem;
+	margin-bottom: 2px;
+}
+
+.titlePendencia {
+	text-align: center;
+	color: rgb(255, 0, 0);
+}
+
 .input-ocorrencia{
 	margin-bottom: 55px;
 }
@@ -1050,4 +1072,18 @@ border-top: solid 5px #e54e43;
 	.popup.active .content {
 		width: 90%;
 	}
+}
+
+.setaDown{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 60px;
+	margin-left: 5px;
+	height: 26px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 13px;
+    background-color: #3a6070;;
+    color: white;
 }
