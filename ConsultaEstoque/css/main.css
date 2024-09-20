@@ -685,10 +685,9 @@ border-top: solid 5px #e54e43;
 	padding: 1rem;
 }
 .overflow{
-	display: flex;
 	/* align-items: center; */
 	justify-content: center;
-	/* overflow: auto; */
+	overflow: auto;
 }
 .table{
 	background-color: white !important;
@@ -698,6 +697,8 @@ border-top: solid 5px #e54e43;
 	font-size: 13px;
 	/* transform: scale(0.9); */
 	text-align: center;
+	word-wrap: break-word;
+	overflow: auto;
 }
 .table table{
 	/* width: 100% !important; */
