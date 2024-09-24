@@ -10,7 +10,6 @@ $stmtNomeUsu = sqlsrv_query($conn, $tsqlNomeUsu);
 $rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
 $a = array(2, 100, 3266, 42, 7257, 106, 692);
-
 $b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 3711, 36, 25, 3782, 82, 4041, 3370, 3149, 3254);
 
 $tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
@@ -124,13 +123,47 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 							<span>Entrada de mercadorias</span>
 						</div>
 					</a>
+					<?php
+					$tsql = "SELECT DISTINCT CASE 
+												WHEN ITE.CODLOCALORIG = 2018888 THEN 5
+												ELSE LEFT(ITE.CODLOCALORIG, 1)
+											END AS NOTIFICATION
+							FROM TGFCAB CAB INNER JOIN
+								TGFITE ITE ON CAB.NUNOTA = ITE.NUNOTA
+							WHERE CAB.STATUSNOTA = 'A'
+							AND CAB.AD_PEDIDOECOMMERCE = 'TRANSF_PENDENCIA'
+							AND CAB.AD_GARANTIAVERIFICADA = 'S'
+							AND ITE.SEQUENCIA > 0";
 
-					<a href="./SistemaReabastecimento/View" class="cardStyle">
+					$result = sqlsrv_query($conn, $tsql);
+					$notifications = [];
+
+					// Coletando os resultados
+					if ($result) {
+						while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+							$notifications[] = $row['NOTIFICATION'];
+						}
+						sqlsrv_free_stmt($result);
+					}
+					?>
+					<a href="./SistemaReabastecimento/View" class="cardStyle" style="position: relative;">
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-right-left" style="background-color: #bf83ff"></i>
 							</div>
 							<span>Transferências (Sankhya)</span>
+
+							<?php if (in_array(3, $notifications)) : ?>
+								<span class="notification" style="top: 5px; left: 1px;">3</span>
+							<?php endif; ?>
+
+							<?php if (in_array(2, $notifications)) : ?>
+								<span class="notification" style="top: 5px; left: 50%; transform: translateX(-50%);">2</span>
+							<?php endif; ?>
+
+							<?php if (in_array(5, $notifications)) : ?>
+								<span class="notification" style="top: 5px; right: 1px;">5</span>
+							<?php endif; ?>
 						</div>
 					</a>
 
