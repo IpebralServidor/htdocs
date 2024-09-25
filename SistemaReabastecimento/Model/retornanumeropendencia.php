@@ -9,7 +9,11 @@ try {
             DECLARE @TIPONOTA VARCHAR(1) = ?
             DECLARE @NUNOTA INT = ?
             SELECT TOP 1 CAB.NUNOTA AS NUNOTA,
-                         CONCAT(PAR.CODPARC, ' - ', PAR.RAZAOSOCIAL) AS PARCEIRO
+                         CONCAT(PAR.CODPARC, ' - ', PAR.RAZAOSOCIAL) AS PARCEIRO,
+                         CASE 
+                            WHEN CAB.CODPARCTRANSP = 11506 THEN 'S' 
+                            ELSE 'N'
+                         END AS BALCAO
             FROM AD_TGFABSTITE ABSTITE INNER JOIN
                 AD_TGFABSTCAB ABSTCAB ON ABSTITE.NUNOTA = ABSTCAB.NUNOTA INNER JOIN
                 TGFCAB CAB ON ABSTCAB.NUNOTA_CAB = CAB.NUNOTA INNER JOIN
@@ -30,7 +34,8 @@ try {
     $response = [
         'success' => [
             'nunota' => $row['NUNOTA'],
-            'parceiro' => $row['PARCEIRO']
+            'parceiro' => $row['PARCEIRO'],
+            'balcao' => $row['BALCAO']
         ]
     ];
     echo json_encode($response);
