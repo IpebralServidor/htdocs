@@ -435,6 +435,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     '<div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
                         <h6>Endereço:</h6>
+                        <span id="balcao" style="color: red"></span>
                     </div>
                     <input type="number" name="endereco" id="endereco" class="form-control" placeholder="" oninput="iniciarMedicao()" onblur="finalizarMedicao()">
 
@@ -739,6 +740,9 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                         if (response.success) {
                             document.getElementById('nunotapendencia').innerHTML = response.success.nunota;
                             document.getElementById('parcpendencia').innerHTML = response.success.parceiro;
+                            if (response.success.balcao === 'S') {
+                                document.getElementById('balcao').innerHTML = 'BALCÃO';
+                            }
                         } else {
                             alert('Erro: ' + response.error);
                         }

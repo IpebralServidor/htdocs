@@ -1087,3 +1087,8 @@ border-top: solid 5px #e54e43;
     background-color: #3a6070;;
     color: white;
 }
+
+.red-background {
+    background-color: #FF4D4D !important;
+    color: white; 
+}
