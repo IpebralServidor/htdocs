@@ -15,7 +15,7 @@ function buscaPendencias($conn, $nunota, $codparc)
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             if ($row['NUNOTA'] !== $ultimaNunota) {
                 $tableHtml .= "<tr class='agrupador'>";
-                $tableHtml .= "<td colspan='9'>Nota 1720: " . $row['NUNOTA'] . '</td>';
+                $tableHtml .= "<td colspan='11'>Nota 1720: " . $row['NUNOTA'] . " | Parceiro: " . $row['PARCEIRO'] . " | Data: " . $row['DTPEND'] . "</td>";
                 $tableHtml .= '</tr>';
                 $ultimaNunota = $row['NUNOTA'];
             }
@@ -23,10 +23,12 @@ function buscaPendencias($conn, $nunota, $codparc)
             $tableHtml .= "<td>" . $row['REFERENCIA'] . '</td>';
             $tableHtml .= '<td>' . $row['DESCRPROD'] . '</td>';
             $tableHtml .= '<td>' . $row['STATUS'] . '</td>';
+            $tableHtml .= '<td>' . $row['CODLOCALORIG'] . '</td>';
             $tableHtml .= '<td>' . $row['CODLOCALDEST'] . '</td>';
             $tableHtml .= '<td>' . $row['QTDNEG'] . '</td>';
             $tableHtml .= '<td>' . $row['DTULTMOV'] . '</td>';
             $tableHtml .= '<td>' . $row['USUULTBIP'] . '</td>';
+            $tableHtml .= '<td>' . $row['TRANSFERENCIAS'] . '</td>';
             $tableHtml .= '<td>' . $row['CONTROLE'] . '</td>';
             $tableHtml .= '<td>' . $row['NUNOTAABAST'] . '</td>';
             $tableHtml .= '</tr>';

@@ -18,6 +18,16 @@ $(function() {
     });
 });
 
+const recarregarPagina = () => {
+    location.reload();
+}
+
+// Define um tempo aleatório entre 60 e 120 segundos (60000 a 120000 milissegundos)
+const tempoRecarregar = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+
+// Chama a função recarregarPagina após o tempo definido
+setTimeout(recarregarPagina, tempoRecarregar);
+
 const buscaPendencias = (nunota, codparc) => {
     $.ajax({
         method: 'GET',
@@ -35,7 +45,6 @@ const buscaPendencias = (nunota, codparc) => {
             route: 'buscaPendencias'
         },
         success: function(response) {
-            console.log(response.success);
             if(response.success || response.success === '') {
                 document.getElementById('pendencias').innerHTML = response.success;
             } else {

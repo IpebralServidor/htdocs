@@ -66,9 +66,9 @@ if ($rowPdtAtual[0] == 0) {
             header("Location: verificarprodutos.php?nunota=" . $nunota2);
         } else if (empty($row[0])) {
             echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";
-        } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA')) {
+        } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || strpos($rowEhTransf[0], 'TRANSF_ABAST') === 0)) {
             // Lógica para que os produtos de saída da produção que não sejam endereçados para o local padrão não possam ser pegos com fila
-            if ($rowProdutosParaLocalpad[0] === 'N' || $rowEhTransf[0] === 'TRANSF_PENDENCIA') {
+            if ($rowProdutosParaLocalpad[0] === 'N' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || substr($rowEhTransf[0], -3) !== 'MAX') {
                 echo "<script>alert('Favor pegar sem fila.'); location = './menuseparacao.php?nunota=$nunota2' </script>";
             }
         }
@@ -822,7 +822,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             var ocorrencia = selectedOption + ' ' + observacao
 
             //registrarOcorrencia(<?php echo $nunota2; ?>, $("#sequencia").val(), $("#qtdneg").val());
-            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(), ocorrencia, '');
+            proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), $("#endereco").val(), ocorrencia);
         });
 
         document.getElementById("timer-color").style.backgroundColor = "green";
@@ -931,7 +931,14 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             document.getElementById('popupObservacao').style.display = 'block';
         }
 
-        function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco, ocorrencia, obs) {
+        function proximoProduto(qtdneg, nunota, codusu, sequencia, referencia, endereco, ocorrencia) {
+            let obs = '';
+            if (enderecoBipado === 'N') {
+                obs += '| Endereco digitado ';
+            }
+            if (referenciaBipado === 'N') {
+                obs += '| Referencia digitada ';
+            }
             // O método $.ajax(); é o responsável pela requisição
             $.ajax({
                 //Configurações
@@ -970,22 +977,21 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
 
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").getAttribute("data-qtdRetornada");
-            var enderecoClick = document.getElementById("endereco").value
+            var enderecoClick = document.getElementById("endereco").value;
+            var qtdLocal = document.getElementById('qtdlocalInput').value;
             qtdDigitada = parseFloat(qtdDigitada);
             qtdRetornada = parseFloat(qtdRetornada);
-            if ((qtdDigitada > qtdRetornada) && '<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP') {
+            qtdLocal = parseFloat(qtdLocal);
+            if (qtdDigitada > qtdLocal && '<?php echo $tipoNota ?>' == 'S') {
+                alert('Quantidade a mais do que existente no estoque!');
+            } else if ((qtdDigitada > qtdRetornada) && ('<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP' &&
+                    '<?php echo $rowEhTransf[0] ?>' != 'TRANSF_PENDENCIA' &&
+                    !('<?php echo $rowEhTransf[0] ?>'.startsWith('TRANSF_ABAST')))) {
                 alert('Esta nota não é possível passar quantidade a mais!')
             } else if ((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S') {
                 $('#btnProximo').click();
             } else {
-                let obs = '';
-                if (enderecoBipado === 'N') {
-                    obs += '| Endereco digitado ';
-                }
-                if (referenciaBipado === 'N') {
-                    obs += '| Referencia digitada ';
-                }
-                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, '', obs)
+                proximoProduto($("#qtdneg").val(), <?php echo $nunota2; ?>, <?php echo $codusu; ?>, $("#sequencia").val(), $("#referencia").val(), enderecoClick, '')
             }
 
         });
@@ -1331,7 +1337,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             if (('<?php echo $tipoNota ?>' == "A") &&
                                 ('<?php echo $fila ?>' == 'N') &&
                                 (('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA' && '<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N') ||
-                                    '<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA')) {
+                                    ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') || (/^TRANSF_ABAST(?!.*MAX$)/.test('<?php echo $rowEhTransf[0] ?>')))) {
                                 document.getElementById("endereco").placeholder = '';
                             }
                             document.getElementById("enderecoMaxLoc").value = retorno[1];

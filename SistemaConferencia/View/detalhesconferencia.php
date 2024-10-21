@@ -176,13 +176,19 @@ $qtdVolume = $rowStatusVolume[1];
 				for (var i = 0; i < checkedCheckboxes.length; i++) {
 					referencia = checkedCheckboxes[i].getAttribute('data-codbarra').trim();
 					qtdInserir = checkedCheckboxes[i].getAttribute('data-insert');
-					if (qtdInserir > 0) {
-						array.push([<?php echo $nunota2 ?>, referencia, qtdInserir]);
+					local = checkedCheckboxes[i].getAttribute('data-local');
+					let codlocal = Number(local);
+					if (qtdInserir > 0 && !isNaN(codlocal)) {
+						array.push([<?php echo $nunota2 ?>, referencia, qtdInserir, codlocal]);
+					} else if (isNaN(codlocal)) {
+						alert('Produto ' + referencia + ' indisponivel.');
 					} else {
 						alert('Digite uma quantidade válida do item ' + referencia + '.');
 					}
 				}
-				inserependencia(array);
+				if (array.length != 0) {
+					inserependencia(array);
+				}
 			}
 		}
 	</script>
@@ -489,7 +495,7 @@ $qtdVolume = $rowStatusVolume[1];
 							?>
 								<tr style="cursor: hand; cursor: pointer;">
 								<tr>
-									<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox" data-codbarra="<?php echo $row2[0]; ?>" id="<?php echo 'pendenciasTr' . $i ?>" data-insert="<?php echo $row2[5] ?>" /></td>
+									<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox" data-codbarra="<?php echo $row2[0]; ?>" id="<?php echo 'pendenciasTr' . $i ?>" data-insert="<?php echo $row2[5] ?>" data-local="<?php echo $row2[2]; ?>" /></td>
 									<td><?php echo $row2[0]; ?></td>
 									<td><?php echo $row2[1]; ?></td>
 									<td align="center"><?php echo $row2[2]; ?></td>
@@ -882,7 +888,6 @@ $qtdVolume = $rowStatusVolume[1];
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7; padding-top: 2px; width: 90%; display: inline-block;">Itens do Pedido</h4>
 			<?php
 			$tsql2 = "SELECT COUNT(1) FROM [sankhya].[AD_FNT_ITENS_PEDIDO]($nunota2)";
-			// Comentado por Gabriel Assis, dia 07/08/2024, pois esse select não condizia com a quantidade de itens do pedido
 			/*$tsql2 = "  SELECT COUNT(1)
 							FROM TGFCAB CAB INNER JOIN
 									TGFITE ITE ON ITE.NUNOTA = CAB.NUNOTA INNER JOIN
@@ -893,7 +898,8 @@ $qtdVolume = $rowStatusVolume[1];
 											  					 WHERE TGFBAR.CODPROD = BAR.CODPROD
 											  					) INNER JOIN
 									TGFVOL VOL ON VOL.CODVOL = ITE.CODVOL 
-							WHERE CAB.NUNOTA = $nunota2";*/
+							WHERE CAB.NUNOTA = $nunota2
+							";*/
 			$stmt2 = sqlsrv_query($conn, $tsql2);
 			while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
 				$QtdPedido = $row2[0];
@@ -1043,7 +1049,7 @@ $qtdVolume = $rowStatusVolume[1];
 				$.ajax({
 					//Configurações
 					type: 'POST', //Método que está sendo utilizado.
-					dataType: 'html', //É o tipo de dado que a página vai retornar.
+					dataType: 'json', //É o tipo de dado que a página vai retornar.
 					url: '../Model/insereitem.php', //Indica a página que está sendo solicitada.
 					//função que vai ser executada assim que a requisição for enviada
 					beforeSend: function() {
@@ -1058,29 +1064,15 @@ $qtdVolume = $rowStatusVolume[1];
 						volume: volume
 					}, //Dados para consulta
 					//função que será executada quando a solicitação for finalizada.
-					success: function(msg) {
-						if (msg == "Codigo de barras nao esta cadastrado!") {
-							alert(msg);
-							document.getElementById("quantidade").value = "";
-							document.getElementById("codigodebarra").focus();
-							document.getElementById("codigodebarra").select();
-						} else if (msg == "Quantidade inserida nao pode ser maior do que a existente na nota!") {
-							alert(msg);
-							document.getElementById("quantidade").focus()
-							document.getElementById("quantidade").select();
-						} else if (msg == "Produto nao existe na nota!") {
-							alert(msg);
-							document.getElementById("quantidade").value = "";
-							document.getElementById("codigodebarra").focus();
-							document.getElementById("codigodebarra").select();
-						} else if (msg == "Estoque insuficiente!") {
-							alert(msg);
-							document.getElementById("quantidade").focus()
-							document.getElementById("quantidade").select();
-						} else if (msg == "Favor abrir volume.") {
-							alert(msg);
-						} else {
-							$("#insereitem").html(msg);
+					success: function(response) {
+						const {
+							success,
+							errorCode,
+							errorMessage,
+							data
+						} = response;
+						if (success) {
+							$("#insereitem").html(data);
 							if (endereco != 'N') {
 								$.ajax({
 									type: 'POST',
@@ -1112,7 +1104,37 @@ $qtdVolume = $rowStatusVolume[1];
 								document.getElementById("quantidade").value = "";
 								document.getElementById("codigodebarra").focus();
 							}
+						} else {
+							switch (errorCode) {
+								case 1:
+									break;
+								case 2:
+									document.getElementById("quantidade").value = "";
+									document.getElementById("codigodebarra").focus();
+									document.getElementById("codigodebarra").select();
+									break;
+								case 3:
+								case 4:
+									document.getElementById("quantidade").focus()
+									document.getElementById("quantidade").select();
+									break;
+								case 5:
+									break;
+								case 6:
+									document.getElementById("quantidade").value = "";
+									document.getElementById("codigodebarra").focus();
+									document.getElementById("codigodebarra").select();
+									break;
+								case 7:
+									document.getElementById("quantidade").focus()
+									document.getElementById("quantidade").select();
+									break;
+							}
+							alert("Erro: " + errorMessage);
 						}
+					},
+					error: function(xhr, status, error) {
+						alert('Erro na requisição AJAX: ' + error);
 					}
 				});
 			} else {

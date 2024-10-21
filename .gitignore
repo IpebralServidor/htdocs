@@ -1,4 +1,7 @@
 /vendor
 /node_modules
+/SistemaConferencia/Etiquetas/nunotas
+/SistemaConferencia/.idea
+/SistemaConferencia/App
 /conexaophp.php
 conexaophp.php

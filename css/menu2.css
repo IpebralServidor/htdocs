@@ -387,6 +387,9 @@ body{
 	.dropdown-menu{
 		min-width: 96%;
 	}	
+	.popup .content{
+		max-width: 90%;
+	}
 }
 
 .form-control{
@@ -411,4 +414,18 @@ body{
 	visibility: visible;
 	opacity:1;
 	transform: translateY(0px);
+}
+
+.notification {
+    position: absolute;
+    background-color: red;
+    color: white;
+    border-radius: 50%; /* Mantém o círculo perfeito */
+    font-size: 12px;
+    font-weight: bold;
+    width: 25px; /* Defina uma largura fixa */
+    height: 25px; /* Defina uma altura fixa */
+    display: flex; /* Para centralizar o texto */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
 }

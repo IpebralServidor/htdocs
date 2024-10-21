@@ -1,3 +1,7 @@
+<?php
+require_once '../../App/auth.php';
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -60,10 +64,12 @@
 						<th>Referência</th>
 						<th>Descrição</th>
 						<th>Status</th>
+						<th>Emp./Local orig.</th>
 						<th>Local dest.</th>
 						<th>Quantidade</th>
 						<th>Ult. mov.</th>
 						<th>Ult. bip</th>
+						<th>Nota sep./abast.</th>
 						<th>Controle</th>
 						<th>Nota abast.</th>
 					</tr>
