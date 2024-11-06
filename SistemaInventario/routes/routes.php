@@ -33,6 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+            case 'mostraBloqueio':
+                if (isset($_GET['codlocal']) && isset($_GET['codemp'])) {
+                    $codlocal = $_GET['codlocal'];
+                    $codemp = $_GET['codemp'];
+                    mostraBloqueio($conn, $codlocal, $codemp);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             default:
                 echo json_encode(['error' => 'Rota não reconhecida']);
                 break;
