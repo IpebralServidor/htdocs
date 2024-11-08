@@ -23,7 +23,7 @@ const buscaEnderecosInventario = (codemp, endini, endfim, concluidos) => {
         },
         success: function(response) {
             if(response.success || response.success === '') {
-                document.getElementById('enderecosInventario').innerHTML = response.success
+                document.getElementById('enderecosInventario').innerHTML = response.success;
             } else {
                 alert('Erro: ' + response.error);
             }
@@ -76,4 +76,38 @@ const confirmaFiltroInventario = () => {
         buscaEnderecosInventario(codEmp, -1, -1, concluidos);
         abrirPopFiltroInventario();
     }
+}
+
+const mostraBloqueio = (codlocal) => {
+    let codemp = document.getElementById('empresaInventario').value;
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            codlocal: codlocal,
+            codemp: codemp,
+            route: 'mostraBloqueio'
+        },
+        success: function(response) {
+            if(response.success) {
+                document.getElementById('notasBloqueio').innerHTML = response.success;
+                let bloqueioModal = new bootstrap.Modal(document.getElementById('mostraBloqueio'));
+                bloqueioModal.show();
+            } else {
+                alert('Erro: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
 }

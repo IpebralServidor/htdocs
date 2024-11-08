@@ -27,6 +27,9 @@ $tsqlProdutos = "DECLARE @TIPOTRANSF VARCHAR(50) = ?
                 WHEN TGFCAB.AD_PEDIDOECOMMERCE LIKE 'TRANSF_ABAST_31%' THEN 'Abastecimento 3/1'
                 WHEN TGFCAB.AD_PEDIDOECOMMERCE LIKE 'TRANSF_ABAST_101%' THEN 'Abastecimento 10/1'
                 WHEN TGFCAB.AD_PEDIDOECOMMERCE LIKE 'TRANSF_ABAST_103%' THEN 'Abastecimento 10/3'
+                WHEN TGFCAB.AD_PEDIDOECOMMERCE = 'TRANSF_ABAST_FILIAL_17' THEN 'Abastecimento 1/7'
+                WHEN TGFCAB.AD_PEDIDOECOMMERCE = 'TRANSF_ABAST_FILIAL_36' THEN 'Abastecimento 3/6'
+                WHEN TGFCAB.AD_PEDIDOECOMMERCE = 'TRANSF_ABAST_FILIAL_16' THEN 'Abastecimento 1/6'
                 WHEN TGFCAB.AD_PEDIDOECOMMERCE = 'TRANSF_PENDENCIA' THEN CASE
                                                                             WHEN (SELECT TOP 1 CAB.CODPARCTRANSP
                                                                                 FROM AD_TGFABSTITE ABSTITE INNER JOIN
