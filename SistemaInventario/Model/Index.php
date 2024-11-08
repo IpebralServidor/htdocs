@@ -32,10 +32,12 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'S':
                     $color = '#FF4D4D';
                     $statusText = 'Bloqueado - Separacao';
+                    $action = "onclick='mostraBloqueio('" . $row['CODLOCAL'] . "')'";
                     break;
                 case 'R':
                     $color = '#FF4D4D';
                     $statusText = 'Bloqueado - Reabastecimento';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'T':
                     $color = '#FF4D4D';
@@ -52,10 +54,12 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CS':
                     $color = '#F08650';
                     $statusText = 'Concluido / Bloqueado - Separacao';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CR':
                     $color = '#F08650';
                     $statusText = 'Concluido / Bloqueado - Reabastecimento';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CT':
                     $color = '#F08650';
@@ -82,10 +86,12 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CDS':
                     $color = '#F08650';
                     $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Separacao';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CDR':
                     $color = '#F08650';
                     $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Reabastecimento';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CDT':
                     $color = '#F08650';
@@ -102,10 +108,12 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CPS':
                     $color = '#F08650';
                     $statusText = 'Concluido Parcialmente / Bloqueado - Separacao';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CPR':
                     $color = '#F08650';
                     $statusText = 'Concluido Parcialmente / Bloqueado - Reabastecimento';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CPT':
                     $color = '#F08650';
@@ -128,6 +136,56 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
             $tableHtml .= "<td style='display: none'>" . $row['STATUS'] . '</td>';
             $tableHtml .= "<td style='display: none'>" . $row['CODEMP'] . '</td>';
             $tableHtml .= '<td>' . $row['USUARIO'] . '</td>';
+            $tableHtml .= '</tr>';
+        }
+        sqlsrv_free_stmt($stmt);
+        echo json_encode(['success' => utf8_encode($tableHtml)]);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+function mostraBloqueio($conn, $codlocal, $codemp)
+{
+    try {
+        $params = array($codlocal, $codemp);
+        $tsql = "DECLARE @CODLOCAL INT = ?
+                DECLARE @CODEMP INT = ?
+                DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
+                                                        WHEN @CODEMP = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
+                                                        ELSE CAST(@CODEMP AS VARCHAR(10))
+                                                    END
+
+                SELECT ITE.NUNOTA, CAB.CODTIPOPER, CONVERT(VARCHAR, CAB.DTNEG, 103) AS DTNEG, PRO.REFERENCIA, ITE.CONTROLE, ITE.QTDNEG
+                FROM TGFEST EST INNER JOIN
+                    TGFPRO PRO ON EST.CODPROD = PRO.CODPROD INNER JOIN
+                    TGFITE ITE ON EST.CODPROD = ITE.CODPROD
+                            AND EST.CODLOCAL = ITE.CODLOCALORIG
+                            AND EST.CODEMP = ITE.CODEMP
+                            AND EST.CONTROLE = ITE.CONTROLE INNER JOIN
+                    TGFCAB CAB ON ITE.NUNOTA = CAB.NUNOTA
+                WHERE EST.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
+                AND EST.CODLOCAL = @CODLOCAL
+                AND EST.ESTOQUE <> 0
+                AND EST.CODPARC = 0
+                AND EST.RESERVADO <> 0
+                AND ITE.RESERVA = 'S'
+                AND ITE.PENDENTE = 'S'
+                AND ITE.ATUALESTOQUE = 1";
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        if ($stmt === false) {
+            throw new Exception('Erro ao executar a consulta SQL.');
+        }
+
+        $tableHtml = '';
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $tableHtml .= "<tr>";
+            $tableHtml .= '<td>' . $row['NUNOTA'] . '</td>';
+            $tableHtml .= '<td>' . $row['CODTIPOPER'] . '</td>';
+            $tableHtml .= '<td>' . $row['DTNEG'] . '</td>';
+            $tableHtml .= '<td>' . $row['REFERENCIA'] . '</td>';
+            $tableHtml .= '<td>' . $row['CONTROLE'] . '</td>';
+            $tableHtml .= '<td>' . $row['QTDNEG'] . '</td>';
             $tableHtml .= '</tr>';
         }
         sqlsrv_free_stmt($stmt);

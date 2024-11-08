@@ -68,7 +68,7 @@ if ($rowPdtAtual[0] == 0) {
             echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";
         } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || strpos($rowEhTransf[0], 'TRANSF_ABAST') === 0)) {
             // Lógica para que os produtos de saída da produção que não sejam endereçados para o local padrão não possam ser pegos com fila
-            if ($rowProdutosParaLocalpad[0] === 'N' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || substr($rowEhTransf[0], -3) !== 'MAX') {
+            if ($rowProdutosParaLocalpad[0] === 'N' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || (substr($rowEhTransf[0], -3) !== 'MAX' && strpos($rowEhTransf[0], 'FILIAL') === false)) {
                 echo "<script>alert('Favor pegar sem fila.'); location = './menuseparacao.php?nunota=$nunota2' </script>";
             }
         }
@@ -899,7 +899,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         });
 
         function atribuirDataBotao(button) {
-
             var popup = document.getElementById('buscarUsuario');
             var popupButton = document.getElementById('btnEntregar');
 
@@ -1337,7 +1336,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             if (('<?php echo $tipoNota ?>' == "A") &&
                                 ('<?php echo $fila ?>' == 'N') &&
                                 (('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA' && '<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N') ||
-                                    ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') || (/^TRANSF_ABAST(?!.*MAX$)/.test('<?php echo $rowEhTransf[0] ?>')))) {
+                                    ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') || (/^TRANSF_ABAST(?!.*MAX$)(?!.*FILIAL)/.test('<?php echo $rowEhTransf[0] ?>')))) {
                                 document.getElementById("endereco").placeholder = '';
                             }
                             document.getElementById("enderecoMaxLoc").value = retorno[1];

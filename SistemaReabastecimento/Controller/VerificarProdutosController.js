@@ -20,6 +20,23 @@ $(document).ready(function() {
         //função que será executada quando a solicitação for finalizada.
         success: function(produtos) {
             document.getElementById('produtosList').innerHTML = produtos;
+            var botoesAbrirPopUp = document.querySelectorAll(".botao-abastecer");
+            var meuPopUp = document.getElementById("buscarUsuario");
+            var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEntregar");
+            // Adicione um ouvinte de eventos para cada botão
+            botoesAbrirPopUp.forEach(function(botao) {
+                botao.addEventListener("click", function() {
+                    // Obtém o valor do atributo data-id do botão clicado
+                    var dataId = this.getAttribute('data-id');
+                    // Define o valor em um atributo personalizado do botão dentro do pop-up
+                    botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
+        
+                    // Abre o pop-up
+                    meuPopUp.style.display = "block";
+                });
+            });
+
+            
         }
     });
     $.ajax({
@@ -104,25 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
             var valorTexto = inputTexto.value;
 
             alterarQuantidade(nunota, sequencia, valorTexto);
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    var botoesAbrirPopUp = document.querySelectorAll(".botao-abastecer");
-    var meuPopUp = document.getElementById("buscarUsuario");
-    var botaoDentroDoPopUp = meuPopUp.querySelector("#btnEntregar");
-
-    // Adicione um ouvinte de eventos para cada botão
-    botoesAbrirPopUp.forEach(function(botao) {
-        botao.addEventListener("click", function() {
-            // Obtém o valor do atributo data-id do botão clicado
-            var dataId = this.getAttribute('data-id');
-            // Define o valor em um atributo personalizado do botão dentro do pop-up
-            botaoDentroDoPopUp.setAttribute('data-id-pop-up', dataId);
-
-            // Abre o pop-up
-            meuPopUp.style.display = "block";
         });
     });
 });

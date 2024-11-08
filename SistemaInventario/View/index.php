@@ -81,6 +81,30 @@
                 </tbody>
             </table>
         </div>
+        <div class="modal fade" id="mostraBloqueio" tabindex="-1" role="dialog" aria-labelledby="mostraBloqueioLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="p-3">
+                        <div style=" overflow-x: auto; width: 100%; border: 1px solid #ddd;">
+                            <table width="100%" border="1px" id="table" class="tableEnderecos">
+                                <thead>
+                                    <tr>
+                                        <th width="16%">Número Único</th>
+                                        <th width="16%">TOP</th>
+                                        <th width="16%">Data</th>
+                                        <th width="16%">Referência</th>
+                                        <th width="16%">Controle</th>
+                                        <th width="16%">Qtd</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notasBloqueio">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
