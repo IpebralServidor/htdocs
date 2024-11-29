@@ -79,7 +79,7 @@ $(document).ready(function() {
             let tipoTransf = tipos.split("~")[0];
             let tipoNota = tipos.split("~")[1];
             var tr = document.getElementById('productsTable').tHead.children[0];
-            if(tipoTransf == 'TRANSFPROD_ENTRADA' && tipoNota == 'S') {
+            if((tipoTransf == 'TRANSFPROD_ENTRADA' || tipoTransf.startsWith('TRANSF_ABAST_FILIAL')) && tipoNota == 'S') {
                 tr.insertCell(3).outerHTML = 
                 "<th><button class='btnEntregaPegaTudo' data-toggle='modal' data-target='#entregaModal'>Entregar</button></th>";
             } else {
