@@ -17,7 +17,9 @@ function abrir() {
             }, //Dados para consulta
             //função que será executada quando a solicitação for finalizada.
             success: function(msg) {
-                if (msg.substring(0, 2) == 13) {
+                if(msg == -1) {
+                    alert('Nota não existe ou já confirmada.');
+                } else if (msg.substring(0, 2) == 13) {
                     $.ajax({
                         type: 'POST', //Método que está sendo utilizado.
                         dataType: 'html', //É o tipo de dado que a página vai retornar.

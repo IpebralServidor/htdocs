@@ -1,5 +1,6 @@
 const referencia = document.getElementById("referencia")
 const localRet = document.getElementById("locRet")
+const descricao = document.getElementById("descricao")
 const urlParams = new URLSearchParams(window.location.search)
 const nunota = urlParams.get("nunota")
 const endereco = document.getElementById("endereco");
@@ -17,10 +18,13 @@ document.getElementById("referencia").addEventListener("change",() =>{
         },
         success: function (msg)
         {
-            let res = msg.split('|')
 
+            let res = msg.split('|')
             let value = parseFloat(res[1])
             localRet.textContent = value.toString() + ' | ' + value.toString();
+            
+            let valueD = res[4];
+            descricao.textContent = valueD.toString();
             if(res[3] === '0') {
                 endereco.placeholder = '';
             } else {

@@ -6,7 +6,7 @@ $referencia = $_POST["referencia"];
 $nunota = $_POST["nunota"];
 
 $tsqlInfos = "DECLARE @NUNOTA INT = $nunota
-              DECLARE @REFERENCIA VARCHAR(100) = '$referencia'
+              DECLARE @REFERENCIA VARCHAR(100) = (SELECT DISTINCT REFERENCIA FROM TGFPRO INNER JOIN TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD WHERE TGFPRO.REFERENCIA = '$referencia' OR TGFBAR.CODBARRA = '$referencia')
               DECLARE @STRING VARCHAR(100) = (SELECT AD_PARAMETROS_REABAST FROM TGFCAB WHERE NUNOTA = @NUNOTA)
               DECLARE @ENDERECO VARCHAR(100)
               DECLARE @RESERVA VARCHAR(100)
@@ -28,7 +28,8 @@ $tsqlInfos = "DECLARE @NUNOTA INT = $nunota
                   WHEN (SELECT CODLOCALPAD FROM TGFPEM PEM WHERE PEM.CODEMP = TGFCAB.CODEMP AND PEM.CODPROD = TGFPRO.CODPROD) <> 1990000 
                     THEN (SELECT CODLOCALPAD FROM TGFPEM PEM WHERE PEM.CODEMP = TGFCAB.CODEMP AND PEM.CODPROD = TGFPRO.CODPROD)
                   ELSE ''
-                END AS LOCALPADRAO
+                END AS LOCALPADRAO,
+                TGFPRO.DESCRPROD
               FROM TGFPRO INNER JOIN 
               TGFPEM ON TGFPEM.CODPROD = TGFPRO.CODPROD INNER JOIN
               TGFCAB ON TGFCAB.CODEMP = TGFPEM.CODEMP
@@ -37,4 +38,4 @@ $tsqlInfos = "DECLARE @NUNOTA INT = $nunota
 $stmtInfos = sqlsrv_query($conn, $tsqlInfos);
 $rowInfos = sqlsrv_fetch_array($stmtInfos, SQLSRV_FETCH_NUMERIC);
 
-echo $rowInfos[0] . '|' . $rowInfos[1] . '|' . $rowInfos[2] . '|' . $rowInfos[3];
+echo $rowInfos[0] . '|' . $rowInfos[1] . '|' . $rowInfos[2] . '|' . $rowInfos[3] . '|' . $rowInfos[4];
