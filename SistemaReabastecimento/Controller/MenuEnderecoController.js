@@ -19,6 +19,38 @@ $(document).ready(function() {
             type: 'POST',
             dataType: 'html', 
             url: '../Model/liberartudo.php', 
+            
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            
+            data: {
+                nunota: nunota
+            }, 
+            success: function(msg) { 
+                alert(msg);
+            }
+        });  
+
+        
+    });
+
+    $('#prodzerados').click(function() {
+        $.ajax({
+            type: 'POST',
+            dataType: 'html', 
+            url: '../Model/liberarprodzerados.php', 
+           
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },           
+           
             data: {
                 nunota: nunota
             }, 
@@ -27,6 +59,8 @@ $(document).ready(function() {
             }
         });  
     });
+
+
 });
 
 
