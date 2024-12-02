@@ -68,7 +68,13 @@ if ($rowPdtAtual[0] == 0) {
             echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";
         } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || strpos($rowEhTransf[0], 'TRANSF_ABAST') === 0)) {
             // Lógica para que os produtos de saída da produção que não sejam endereçados para o local padrão não possam ser pegos com fila
-            if ($rowProdutosParaLocalpad[0] === 'N' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || (substr($rowEhTransf[0], -3) !== 'MAX' && strpos($rowEhTransf[0], 'FILIAL') === false)) {
+            if (
+                $rowProdutosParaLocalpad[0] === 'N'
+                || $rowEhTransf[0] === 'TRANSF_PENDENCIA'
+                || (substr($rowEhTransf[0], -3) !== 'MAX'
+                    && $rowEhTransf[0] !== 'TRANSF_ABAST_103_MAX')
+                || strpos($rowEhTransf[0], 'FILIAL') !== false
+            ) {
                 echo "<script>alert('Favor pegar sem fila.'); location = './menuseparacao.php?nunota=$nunota2' </script>";
             }
         }
