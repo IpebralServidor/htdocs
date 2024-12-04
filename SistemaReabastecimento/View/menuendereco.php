@@ -39,16 +39,22 @@
         </div>
     </div>
     <div>
+        <div id="loader" style="display: none;"> 
+                <img style=" width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif">
+        </div> 
         <div class="img-voltar">
-            <a href="index.php">
-                <img src="../images/216446_arrow_left_icon.png" />
-            </a>
+                <a href="index.php">
+                    <img src="../images/216446_arrow_left_icon.png" />
+                </a>
         </div>
+            
         <div class="screen">
             <div class="margin-top35" style="width: 80%;">
                 <button type="submit" id="aplicar" name="aplicar" class="btn btn-primary btn-form">Separar a nota inteira</button><br><br>
                 <button type="submit" id="aplicar-sem-fila" name="aplicar-sem-fila" class="btn btn-primary btn-form">Pegar endereços específicos</button><br><br>
                 <button type="submit" id="liberartodos" name="liberartodos" class="btn btn-danger ">Liberar todos produtos atribuídos a usuários</button><br><br>
+                <button type="submit" id="prodzerados" name="prodzerados" class="btn btn-danger ">Liberar produtos zerados</button><br><br>
+
             </div>
         </div>
     </div>
