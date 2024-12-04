@@ -34,7 +34,7 @@ $tipoNota = $row[0];
 
 <body onload="endereco()">
 
-
+	<div id="modalLocalProduto"></div>
 	<!-- Ícone para carregamento de certos botões -->
 	<div id="loader" style="display: none;">
 		<img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
@@ -56,7 +56,7 @@ $tipoNota = $row[0];
 
 	</div>
 	<!-- Fim do Menu-->
-
+	<input type="number" id="codemp" value="" style="display: none;">
 	<!-- Informações da Nota -->
 	<div class="infonota">
 		<table class="infonotatable">
@@ -251,7 +251,8 @@ $tipoNota = $row[0];
 					<!-- INPUT de Endereço -->
 					<div class="d-flex justify-content-center align-items-center">
 						<div class="input-h6">
-							<h6>Endereço:</h6>
+							<h6 class="d-inline">Endereço:</h6>
+							<span id="popupLocalProduto"></span>
 						</div>
 						<input type="number" id="endereco" class="form-control" oninput="iniciarMedicaoEndereco();" onchange="finalizarMedicaoEndereco();" style="color: #86B7FE !important;" placeholder="">
 					</div>
@@ -313,6 +314,7 @@ $tipoNota = $row[0];
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="../Controller/InsereEstoqueController.js"></script>
+	<script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
 </body>
 
 </html>

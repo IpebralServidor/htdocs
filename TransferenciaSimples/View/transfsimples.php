@@ -13,11 +13,13 @@
     <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../Controller/TransfSimplesController.js?v=<?php time() ?>"></script>
+    <script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
     <title>Transferência Simples</title>
 </head>
 
 <body>
     <div class="page">
+        <div id="modalLocalProduto"></div>
         <div id="loader" style="display: none;">
             <img style=" width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif">
         </div>
@@ -124,7 +126,9 @@
                         <input type="number" class="form-control" oninput="iniciarMedicaoEndSaida()" onchange="finalizarMedicaoEndSaida();" id="endsaida" style="color: #86B7FE !important;">
                     </div>
                     <div class="mb-1 col-6">
-                        <label for="qtdMax" class="form-label">Endereço chegada <span style="color: red">*</span></label>
+                        <label for="qtdMax" class="form-label">Endereço chegada <span style="color: red">*</span>
+                            <span id="popupLocalProduto"></span>
+                        </label>
                         <input type="number" class="form-control" oninput="iniciarMedicaoEndChegada()" onchange="finalizarMedicaoEndChegada();" id="endchegada" style="color: #86B7FE !important;">
                     </div>
                 </div>
