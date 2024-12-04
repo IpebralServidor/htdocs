@@ -700,6 +700,7 @@ border-top: solid 5px #e54e43;
 }
 .input-h6{
 	width: 10rem !important;
+	white-space: nowrap;
 }
 .timer{
 	display: flex;

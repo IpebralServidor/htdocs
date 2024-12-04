@@ -57,6 +57,7 @@ const buscaLocalPadrao = () => {
     const referencia = document.getElementById('referencia').value;
     const codemp = document.getElementById('empresas').value;
     if(referencia != '' && codemp != '') {
+        verificaLocaisComProduto(referencia, codemp);
         $.ajax({
             method: 'GET',
             url: '../routes/routes.php',

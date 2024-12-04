@@ -119,6 +119,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
 
 </head>
 
@@ -129,6 +130,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             produtos(<?php echo $nunota2; ?>),
             retornaMovimentacoes()" <?php } ?> <?php } else { ?> onload="produtos(<?php echo $nunota2; ?>), endereco()" <?php } ?>>
 
+    <div id="modalLocalProduto"></div>
     <div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
     </div>
@@ -440,8 +442,9 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 $campoEndereco =
                     '<div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
-                        <h6>Endereço:</h6>
+                        <h6 class="d-inline">Endereço:</h6>
                         <span id="balcao" style="color: red"></span>
+                        <span id="popupLocalProduto"></span>
                     </div>
                     <input type="number" name="endereco" id="endereco" class="form-control" placeholder="" oninput="iniciarMedicao()" onblur="finalizarMedicao()">
 
@@ -510,7 +513,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 <input type="text" id="observacao" value="" style="display: none;">
                 <input type="text" id="codemp" value="" style="display: none;">
                 <input type="text" id="enderecoMaxLoc" value="" style="display: none;">
-
             </div>
 
         </div>
@@ -1344,6 +1346,9 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                                 (('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA' && '<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N') ||
                                     ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') || (/^TRANSF_ABAST(?!.*MAX$)(?!.*FILIAL)/.test('<?php echo $rowEhTransf[0] ?>')))) {
                                 document.getElementById("endereco").placeholder = '';
+                                if (('<?php echo $rowEhTransf[0] ?>' != 'TRANSF_PENDENCIA')) {
+                                    verificaLocaisComProduto(referencia, retorno[15]);
+                                }
                             }
                             document.getElementById("enderecoMaxLoc").value = retorno[1];
                             document.getElementById("referencia").placeholder = retorno[0];

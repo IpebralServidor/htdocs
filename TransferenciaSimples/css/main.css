@@ -59,6 +59,7 @@ main{
     width: 10rem !important;
     font-weight: bold !important;
     font-size: 15px;
+	white-space: nowrap;
 }
 
 .form-control{
