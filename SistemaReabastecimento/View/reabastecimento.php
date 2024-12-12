@@ -450,7 +450,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 $campoReferencia =
                     '<div class="d-flex justify-content-center align-items-center">
                     <div class="input-h6">
-                        <h6>Referência:</h6>
+                        <h6>Referência/Codbar:</h6>
                     </div>
                     <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()">
                 </div>';
