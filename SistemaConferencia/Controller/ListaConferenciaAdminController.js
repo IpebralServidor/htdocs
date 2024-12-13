@@ -100,8 +100,6 @@ function setConferentesActions() {
                 }
                 fazerUpdateNoBanco(notas, user);
             };
-            window.location.href = 'listaconferenciaadmin.php';
-            $("#aplicar").click();
         });
     }
 }
@@ -136,6 +134,7 @@ function fazerUpdateNoBanco(notas, usuario) {
         success: function(msg) {
             alert(msg);
             window.location.href = 'listaconferenciaadmin.php';
+            $("#aplicar").click();
 
         }
     });
