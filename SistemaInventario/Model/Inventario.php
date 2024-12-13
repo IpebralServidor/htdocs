@@ -101,7 +101,6 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
     try {
         $params = array($referencia, $codemp, $codemp, $codlocal, $controle, $codlocal);
         $tsql = "
-        DECLARE @REFERENCIA VARHCAR(100) = ?
 
             DECLARE @CODEMP_ITEM INT
             DECLARE @CODPROD INT =  (SELECT TOP 1 tgfpro.CODPROD 
@@ -146,7 +145,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
             } else {
                 $params = array($referencia, $codemp, $codemp, $codlocal, $controle, $quantidade, $codlocal, $controle);
                 $tsql = "
-                DECLARE @REFERENCIA VARHCAR(100) = ?
+                DECLARE @REFERENCIA VARCHAR(100) = ?
                 DECLARE @CODEMP_ITEM INT
                  DECLARE @CODPROD INT =  (SELECT TOP 1 tgfpro.CODPROD 
                                     FROM TGFPRO LEFT JOIN 
