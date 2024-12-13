@@ -352,14 +352,14 @@ border-top: solid 5px #e54e43;
 .btn-form:hover{
 	transform: scale(1.03) !important;
 }
-#liberartodos {
+#liberartodos, #prodzerados {
 	border: none !important;
 	color: white;
 	height: 40px;
 	border-radius: 15px !important;
 	transition: all 0.2s !important;
 }
-#liberartodos:hover {
+#liberartodos:hover, #prodzerados:hover {
 	transform: scale(1.03) !important;
 }
 .body-detalhes{
