@@ -10,44 +10,7 @@ $params = array($nunota,$codusu);
 
 
 // A consulta SQL
-$tsql = 
-" 
-
-DECLARE @NUNOTA int = ?
-DECLARE @CODUSU INT = ?
-
-
-UPDATE TGFITE SET atualestoque = CASE WHEN SEQUENCIA > 0 THEN -1 WHEN sequencia < 0 THEN 1 end, QTDNEG = 0, AD_CODUSUBIP = @CODUSU, AD_DTBIP = GETDATE(),OBSERVACAO = 'Item negativado pelo botao de liberar produtos zerados' WHERE NUNOTA = (SELECT TOP 1 AD_VINCULONF FROM TGFITE WHERE NUNOTA = @NUNOTA) AND ABS(SEQUENCIA) IN (
-	SELECT ABS(SEQUENCIA)
-    FROM tgfite 
-    WHERE nunota = @NUNOTA
-	  AND ATUALESTOQUE = 0 
-	  AND AD_CODUSUBIP IS NULL
-      AND NOT EXISTS (
-          SELECT codprod 
-          FROM TGFEST EST
-          WHERE EST.CODPROD = TGFITE.CODPROD
-          AND EST.CODEMP = TGFITE.CODEMP 
-		  AND EST.CODPARC = 0 
-		
-      )
-)
-
-UPDATE tgfite SET atualestoque = CASE WHEN SEQUENCIA > 0 THEN -1 WHEN sequencia < 0 THEN 1 end, QTDNEG = 0, AD_CODUSUBIP = @CODUSU, AD_DTBIP = GETDATE(),OBSERVACAO = 'Item negativado pelo botao de liberar produtos zerados' WHERE nunota = @NUNOTA AND ABS(SEQUENCIA) IN (
-    SELECT ABS(SEQUENCIA)
-    FROM tgfite 
-    WHERE nunota = @NUNOTA
-	  AND ATUALESTOQUE = 0 
-	  AND AD_CODUSUBIP IS NULL
-      AND NOT EXISTS (
-          SELECT codprod 
-          FROM TGFEST EST
-          WHERE EST.CODPROD = TGFITE.CODPROD
-          AND EST.CODEMP = TGFITE.CODEMP 
-		  AND EST.CODPARC = 0 
-      )
-)
-";
+$tsql = "exec [AD_STP_libera_produtos_zerados] ?,?";
   
 // Executando a consulta
 $stmt = sqlsrv_query($conn, $tsql, $params);

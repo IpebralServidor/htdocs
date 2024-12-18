@@ -100,8 +100,15 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
 {
     try {
         $params = array($referencia, $codemp, $codemp, $codlocal, $controle, $codlocal);
-        $tsql = "DECLARE @CODEMP_ITEM INT
-        DECLARE @CODPROD INT = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+        $tsql = "
+
+            DECLARE @CODEMP_ITEM INT
+            DECLARE @CODPROD INT =  (SELECT TOP 1 tgfpro.CODPROD 
+                                    FROM TGFPRO LEFT JOIN 
+                                        tgfbar ON tgfbar.codprod = tgfpro.codprod
+                                    WHERE (REFERENCIA = @REFERENCIA OR TGFBAR.CODBARRA = @REFERENCIA))
+
+        SELECT @CODPROD
         DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
                                                 WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
                                                 ELSE CAST(? AS VARCHAR(10))
@@ -109,21 +116,21 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
         SELECT TOP 1 @CODEMP_ITEM = EST.CODEMP
         FROM TGFEST EST
         INNER JOIN TGFPRO PRO
-          ON EST.CODPROD = PRO.CODPROD
+            ON EST.CODPROD = PRO.CODPROD
         WHERE EST.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
-          AND EST.CODPROD = @CODPROD
-          AND EST.CODLOCAL = ?
-          AND EST.CODPARC = 0
-          AND EST.ESTOQUE <> 0
-          AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
-        
+            AND EST.CODPROD = @CODPROD
+            AND EST.CODLOCAL = ?
+            AND EST.CODPARC = 0
+            AND EST.ESTOQUE <> 0
+            AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
+                
         SELECT SUM(ESTOQUE - RESERVADO) AS QTDESTOQUE
         FROM TGFEST 
         WHERE CODEMP = @CODEMP_ITEM 
-          AND CODPARC = 0 
-          AND ESTOQUE - RESERVADO <> 0 
-          AND CODLOCAL = ? 
-          AND CODPROD = @CODPROD";
+            AND CODPARC = 0 
+            AND ESTOQUE - RESERVADO <> 0 
+            AND CODLOCAL = ? 
+            AND CODPROD = @CODPROD";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
         if ($stmt === false) {
@@ -137,8 +144,13 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                 echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
             } else {
                 $params = array($referencia, $codemp, $codemp, $codlocal, $controle, $quantidade, $codlocal, $controle);
-                $tsql = "DECLARE @CODEMP_ITEM INT
-                DECLARE @CODPROD INT = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+                $tsql = "
+                DECLARE @REFERENCIA VARCHAR(100) = ?
+                DECLARE @CODEMP_ITEM INT
+                 DECLARE @CODPROD INT =  (SELECT TOP 1 tgfpro.CODPROD 
+                                    FROM TGFPRO LEFT JOIN 
+                                        tgfbar ON tgfbar.codprod = tgfpro.codprod
+                                    WHERE (REFERENCIA = @REFERENCIA OR TGFBAR.CODBARRA = @REFERENCIA))
                 DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
                                                         WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
                                                         ELSE CAST(? AS VARCHAR(10))
@@ -182,7 +194,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                 echo json_encode($response);
             }
         } else {
-            echo json_encode(['error' => 'Produto não existe']);
+            echo json_encode(['error' => 'Produto/codigo de barra não existe']);
         }
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);

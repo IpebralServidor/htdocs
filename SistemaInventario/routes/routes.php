@@ -4,6 +4,8 @@ require_once "../../conexaophp.php";
 require_once '../../App/auth.php';
 require_once '../Model/Index.php';
 require_once '../Model/Inventario.php';
+$codusu = $_SESSION["idUsuario"];
+
 
 // Verifica se foi feita uma requisição GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -59,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if (isset($_POST['codemp']) && isset($_POST['codlocal'])) {
                     $codemp = $_POST['codemp'];
                     $codlocal = $_POST['codlocal'];
-                    buscaItensInventario($conn, $codemp, $codlocal, $idUsuario);
+                    buscaItensInventario($conn, $codemp, $codlocal,$codusu  );
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -71,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $referencia = $_POST['referencia'];
                     $controle = $_POST['controle'];
                     $quantidade = $_POST['quantidade'];
-                    contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
+                    contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -83,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $referencia = $_POST['referencia'];
                     $controle = $_POST['controle'];
                     $quantidade = $_POST['quantidade'];
-                    verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
+                    verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -92,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if (isset($_POST['codemp']) && isset($_POST['codlocal'])) {
                     $codemp = $_POST['codemp'];
                     $codlocal = $_POST['codlocal'];
-                    finalizaInventario($conn, $codemp, $codlocal, $idUsuario);
+                    finalizaInventario($conn, $codemp, $codlocal, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -104,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $referencia = $_POST['referencia'];
                     $controle = $_POST['controle'];
                     $quantidade = $_POST['quantidade'];
-                    transfereItem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
+                    transfereItem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
