@@ -75,6 +75,13 @@ require_once '../../App/auth.php';
 								<option value="TRANSFPROD_SAIDA">Saída da produção</option>
 								<option value="TRANSF_NOTA">Transferência avulsa</option>
 								<option value="TRANSF_CD5">Entrada CD5</option>
+								<option value="TRANSF_ABAST_31">Abastecimento 3/1</option>
+								<option value="TRANSF_ABAST_101_MAX">Abastecimento 10/1</option>
+								<option value="TRANSF_ABAST_103_MAX">Abastecimento 10/3</option>
+								<option value="TRANSF_ABAST_FILIAL_16">Abastecimento 1/6</option>
+								<option value="TRANSF_ABAST_FILIAL_36">Abastecimento 3/6</option>
+								<option value="TRANSF_ABAST_FILIAL_17">Abastecimento 1/7</option>
+																													
 							</select>
 							<strong>CD:</strong>
 							<select id="cdTransf" class="form-control">
@@ -83,6 +90,11 @@ require_once '../../App/auth.php';
 								<option value="3">3</option>
 								<option value="2">2</option>
 							</select>
+
+							<strong>Referencia/Cod.barra</strong>
+							<input type="text" id="referencia" class="form-control">
+								
+						
 							<button id="confirmaFiltroNota" onclick="abrirPopFiltroNota(); produtos();">Confirmar</button>
 						</div>
 					</div>

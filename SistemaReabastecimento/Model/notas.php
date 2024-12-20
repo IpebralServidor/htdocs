@@ -6,12 +6,20 @@ require_once '../../App/auth.php';
 $tipoNota = $_POST["tipoNota"];
 $tipoTransf = $_POST["tipoTransf"];
 $cdTransf = $_POST["cdTransf"];
+$referencia = $_POST["referencia"];
 
-$params = array($tipoTransf, $cdTransf, $tipoNota);
+$params = array($referencia,$tipoTransf, $cdTransf, $tipoNota);
 
-$tsqlProdutos = "DECLARE @TIPOTRANSF VARCHAR(50) = ?
+$tsqlProdutos = "
+                DECLARE @REFERENCIA VARCHAR(50) = ?
+                DECLARE @TIPOTRANSF VARCHAR(50) = ?
                 DECLARE @CD CHAR(1) = ?
                 DECLARE @TIPONOTA VARCHAR(1) = ?
+                DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD 
+						FROM TGFPRO PRO INNER JOIN 
+							 TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD 
+						WHERE PRO.REFERENCIA = @REFERENCIA
+						   OR BAR.CODBARRA = @REFERENCIA)
                 SELECT 
                 TGFCAB.NUNOTA, 
                 TGFCAB.CODTIPOPER, 
@@ -51,14 +59,15 @@ $tsqlProdutos = "DECLARE @TIPOTRANSF VARCHAR(50) = ?
                                                                         END
                 END AS TIPOTRANSF,
                 TSIUSU.NOMEUSU
-                FROM TGFCAB 
-                INNER JOIN TSIUSU 
-                ON TGFCAB.CODUSU = TSIUSU.CODUSU
+                FROM TGFCAB INNER JOIN 
+                    TSIUSU ON TGFCAB.CODUSU = TSIUSU.CODUSU INNER JOIN
+                    TGFITE ON TGFITE.NUNOTA = TGFCAB.NUNOTA
                 WHERE (@TIPOTRANSF = 'N' AND (TGFCAB.AD_PEDIDOECOMMERCE IN ('TRANSFAPP', 'TRANSF_NOTA', 'TRANSF_CD5', 'TRANSFPROD_ENTRADA', 'TRANSFPROD_SAIDA', 'TRANSF_PENDENCIA') OR TGFCAB.AD_PEDIDOECOMMERCE LIKE 'TRANSF_ABAST%')
-                        OR TGFCAB.AD_PEDIDOECOMMERCE = @TIPOTRANSF)
-                    AND TGFCAB.DTNEG BETWEEN DATEADD(DAY, -19, GETDATE()) AND GETDATE()
+                        OR TGFCAB.AD_PEDIDOECOMMERCE LIKE @TIPOTRANSF+'%')
+                    AND TGFCAB.DTNEG BETWEEN DATEADD(DAY, -30, GETDATE()) AND GETDATE()
                     AND TGFCAB.STATUSNOTA = 'A'
                     AND TGFCAB.AD_GARANTIAVERIFICADA = @TIPONOTA
+                    AND ((TGFITE.CODPROD = @CODPROD AND TGFITE.QTDNEG <> 0 AND TGFITE.ATUALESTOQUE = 0) OR @CODPROD IS NULL)
                     AND (
                         (@TIPONOTA = 'S'
                             AND (
@@ -76,7 +85,7 @@ $tsqlProdutos = "DECLARE @TIPOTRANSF VARCHAR(50) = ?
                                 ) OR @TIPOTRANSF NOT IN ('TRANSF_PENDENCIA', 'TRANSFAPP')
                             )
                         )OR @TIPONOTA = 'A')
-                ORDER BY DTNEG";
+                    GROUP BY TGFCAB.NUNOTA,TGFCAB.CODTIPOPER,TGFCAB.CODEMP,TGFCAB.DTNEG,TGFCAB.AD_PEDIDOECOMMERCE,TSIUSU.NOMEUSU";
 
 $stmtProdutos = sqlsrv_query($conn, $tsqlProdutos, $params);
 

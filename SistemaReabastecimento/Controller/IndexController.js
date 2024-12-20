@@ -89,6 +89,8 @@ function produtos() {
     let tipoNota;
     let tipoTransf = document.getElementById('tipoTransf');
     let cdTransf = document.getElementById('cdTransf');
+    let referencia = document.getElementById('referencia');
+
     let nomeFiltro = tipoTransf.options[tipoTransf.selectedIndex].text;
     if(cdTransf.value != 'N') {
         if(tipoTransf.value === 'TRANSFAPP' || tipoTransf.value === 'TRANSF_PENDENCIA') {
@@ -117,7 +119,8 @@ function produtos() {
         data: {
             tipoNota: tipoNota,
             tipoTransf: tipoTransf.value,
-            cdTransf: cdTransf.value
+            cdTransf: cdTransf.value,
+            referencia: referencia.value
         }, //Dados para consulta
         //função que será executada quando a solicitação for finalizada.
         success: function(msg) {
