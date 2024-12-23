@@ -19,7 +19,7 @@ if ($enderecoBipado === 'N') {
 if ($enderecoTempBipado === 'N') {
     $observacao .= '| Endereco temporario digitado';
 }
-var_dump($observacao);
+
 $tsql = "exec AD_STP_INSEREPRODUTO_TEMP_ITE_PROCESSOESTOQUECD5 $nunotaorig, $endereco, $usuconf, '$observacao'";
 
 $stmt = sqlsrv_query($conn, $tsql);
