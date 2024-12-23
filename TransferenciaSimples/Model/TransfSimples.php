@@ -3,8 +3,8 @@
 function buscaInformacoesProduto($conn, $referencia)
 {
     try {
-        $params = array($referencia);
-        $tsql = "SELECT TIPCONTEST, ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM FROM TGFPRO WHERE REFERENCIA = ?";
+        $params = array($referencia, $referencia);
+        $tsql = "SELECT TIPCONTEST, ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM FROM TGFPRO INNER JOIN TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD WHERE REFERENCIA = ? OR CODBARRA = ?";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
@@ -30,9 +30,11 @@ function buscaInformacoesProduto($conn, $referencia)
 function buscaLocalPadrao($conn, $referencia, $codemp)
 {
     try {
-        $params = array($referencia, $codemp);
-        $tsql = "SELECT CODLOCALPAD FROM TGFPEM
-                 WHERE CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+        $params = array($referencia, $referencia, $codemp);
+        $tsql = "SELECT CODLOCALPAD FROM TGFPEM INNER JOIN 
+						TGFPRO ON TGFPEM.CODPROD = TGFPRO.CODPROD INNER JOIN
+						TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD
+                   WHERE (TGFPRO.REFERENCIA = ? OR TGFBAR.CODBARRA = ?)
                    AND CODEMP = ?
         ";
 
@@ -60,7 +62,7 @@ function buscaLocalPadrao($conn, $referencia, $codemp)
 function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
 {
     try {
-        $params = array($codemp, $referencia, $endsaida, $lote);
+        $params = array($codemp, $referencia, $referencia, $endsaida, $lote);
 
         $tsql = "SELECT SUM(EST.ESTOQUE - EST.RESERVADO) AS QTDLOCAL, ISNULL(PEM.AD_QTDMAXLOCAL, -1) AS QTDMAX FROM TGFEST EST
                 INNER JOIN TGFPRO PRO
@@ -69,9 +71,12 @@ function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
                 ON EST.CODPROD = PEM.CODPROD
                 AND EST.CODEMP = PEM.CODEMP
                 AND EST.CODLOCAL = PEM.CODLOCALPAD
-                WHERE EST.CODEMP = ? 
+				INNER JOIN TGFBAR BAR
+				ON PRO.CODPROD = BAR.CODPROD
+                WHERE EST.CODEMP = ?
                 AND EST.CODPARC = 0 
-                AND PRO.REFERENCIA = ?
+                AND (PRO.REFERENCIA = ?
+				OR BAR.CODBARRA = ?)
                 AND EST.CODLOCAL = ?
                 AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
                 AND ESTOQUE - RESERVADO > 0

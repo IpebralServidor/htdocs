@@ -42,6 +42,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'T':
                     $color = '#FF4D4D';
                     $statusText = 'Bloqueado - Troca Propriedade';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'M':
                     $color = '#FF4D4D';
@@ -64,6 +65,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CT':
                     $color = '#F08650';
                     $statusText = 'Concluido / Bloqueado - Troca Propriedade';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CM':
                     $color = '#F08650';
@@ -96,6 +98,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CDT':
                     $color = '#F08650';
                     $statusText = 'Concluido / Adicionado posteriormente / Bloqueado - Troca Propriedade';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CDM':
                     $color = '#F08650';
@@ -118,6 +121,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                 case 'CPT':
                     $color = '#F08650';
                     $statusText = 'Concluido Parcialmente / Bloqueado - Troca Propriedade';
+                    $action = "onclick='mostraBloqueio(" . $row['CODLOCAL'] . ")'";
                     break;
                 case 'CPM':
                     $color = '#F08650';

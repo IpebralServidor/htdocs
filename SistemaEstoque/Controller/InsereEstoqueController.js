@@ -42,6 +42,7 @@ $(document).ready(function() {
             document.getElementById('nunota').innerHTML = infosNota['NUNOTAORIGEM'];
             document.getElementById('codtipoperdest').innerHTML = infosNota['CODTIPOPERDESTINO'];
             document.getElementById('nunotadest').innerHTML = infosNota['NUNOTADESTINO'];
+            document.getElementById("codemp").value = infosNota['CODEMP'];
         }
     });
 
@@ -166,7 +167,7 @@ function retornainfoprodutos(produto, codparc) {
             document.getElementById("referenciaprod").textContent = retorno[0];
             document.getElementById("codfornprod").textContent = retorno[1];
             document.getElementById("descrprod").textContent = retorno[2];
-
+            verificaLocaisComProduto(produto, document.getElementById("codemp").value);
         }
     });
 }

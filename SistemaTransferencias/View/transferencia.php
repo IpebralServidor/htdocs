@@ -128,7 +128,7 @@ if ($varStatusNota == 'L') {
             <div class="header-body">
                 <div style="width: 100%">
                     <div class="mb-1">
-                        <label for="endereco" class="form-label">Referência <span style="color: red">*</span></label>
+                        <label for="endereco" class="form-label">Referência/Codbarra <span style="color: red">*</span></label>
                         <input type="text" class="form-control" id="referencia" style="color: #86B7FE !important;">
                     </div>
                     <div class="mb-1">
@@ -174,6 +174,8 @@ if ($varStatusNota == 'L') {
                         <div class="col-6 mt-3">
                             <div class="form-control" style="font-size: 10px !important;">
                                 <div>
+                                    <span class="fw-bold">Descrição : </span><span id="descricao"></span>
+                                    <br>
                                     <span class="fw-bold">Qtd.local retirada : </span><span id="locRet">0</span>
                                 </div>
                             </div>

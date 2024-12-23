@@ -33,7 +33,8 @@ if ($stmt) {
 			. $row["FORNECEDORES"] . '~'
 			. $row["CODEMP"] . '~'
 			. $row["DESCRPROD"] . '~'
-			. $row["DECQTD"];
+			. $row["DECQTD"] . '~'
+			. $row["CODEMPNEGOC"];
 	}
 	echo $returnValue;
 }

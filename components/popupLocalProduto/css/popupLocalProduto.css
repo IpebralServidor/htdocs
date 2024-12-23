@@ -1,0 +1,16 @@
+.tableEnderecos {
+    margin: 5px 7px 0px;
+}
+
+.tableEnderecos th {
+	text-align: center;
+	background-color: #3a6070;
+	color: #FFF;
+	font-weight: 400 !important;
+}
+
+.tableEnderecos td {
+    text-align: center;
+	border: 1px solid #e3e3e3;
+	padding: 4px 8px;
+}
