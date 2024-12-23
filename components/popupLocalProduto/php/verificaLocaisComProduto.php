@@ -3,9 +3,12 @@ include "../../../conexaophp.php";
 
 $referencia = $_GET["referencia"];
 $codemp = $_GET["codemp"];
-$params = array($referencia, $codemp);
+$params = array($referencia, $referencia, $codemp);
 
-$tsql = "DECLARE @CODPROD INT = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+$tsql = "DECLARE @CODPROD INT = (SELECT DISTINCT TGFPRO.CODPROD 
+                                FROM TGFPRO INNER JOIN 
+                                     TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD 
+                                WHERE (REFERENCIA = ? OR TGFBAR.CODBARRA = ?))
         DECLARE @CODEMP INT = ?;
 
         WITH LocalProdutos AS (

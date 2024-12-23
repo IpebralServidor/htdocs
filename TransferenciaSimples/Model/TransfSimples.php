@@ -30,7 +30,7 @@ function buscaInformacoesProduto($conn, $referencia)
 function buscaLocalPadrao($conn, $referencia, $codemp)
 {
     try {
-        $params = array($referencia, $referencia , $codemp);
+        $params = array($referencia, $referencia, $codemp);
         $tsql = "SELECT CODLOCALPAD FROM TGFPEM INNER JOIN 
 						TGFPRO ON TGFPEM.CODPROD = TGFPRO.CODPROD INNER JOIN
 						TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD
@@ -72,7 +72,7 @@ function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
                 AND EST.CODEMP = PEM.CODEMP
                 AND EST.CODLOCAL = PEM.CODLOCALPAD
 				INNER JOIN TGFBAR BAR
-				ON PEM.CODPROD = BAR.CODPROD
+				ON PRO.CODPROD = BAR.CODPROD
                 WHERE EST.CODEMP = ?
                 AND EST.CODPARC = 0 
                 AND (PRO.REFERENCIA = ?
