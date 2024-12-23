@@ -85,7 +85,7 @@
             <div style="width: 100%">
                 <div class="row">
                     <div class="mb-1 col-6">
-                        <label for="referencia" class="form-label">Referência/CODBARRA <span style="color: red">*</span> </label>
+                        <label for="referencia" class="form-label">Referência <span style="color: red">*</span> </label>
                         <input type="text" class="form-control" oninput="iniciarMedicaoReferencia();" onchange="finalizarMedicaoReferencia();" id="referencia" style="color: #86B7FE !important;">
                     </div>
                     <div class="mb-1 col-6">

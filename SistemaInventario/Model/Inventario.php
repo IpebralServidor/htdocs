@@ -49,13 +49,13 @@ function buscaItensInventario($conn, $codemp, $codlocal, $codusu)
 function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
 {
     try {
-        $params = array($codemp, $codemp, $referencia, $codlocal);
+        $params = array($codemp, $codemp, $referencia, $referencia, $codlocal);
         $tsql = "
         DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
                                                 WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
                                                 ELSE CAST(? AS VARCHAR(10))
                                             END
-
+        DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD FROM TGFPRO PRO INNER JOIN TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD WHERE PRO.REFERENCIA = ? OR BAR.CODBARRA = ?)
         SELECT PRO.CODPROD,
                PRO.TIPCONTEST, 
                PRO.DESCRPROD,
@@ -66,7 +66,7 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
         INNER JOIN TGFPRO PRO
             ON INVITE.CODPROD = PRO.CODPROD
         WHERE INVITE.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
-          AND PRO.REFERENCIA = ?
+          AND PRO.CODPROD = @CODPROD
           AND INVITE.CODLOCAL = ?
         ";
 
@@ -99,16 +99,15 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
 function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario)
 {
     try {
-        $params = array($referencia, $codemp, $codemp, $codlocal, $controle, $codlocal);
+        $params = array($referencia, $referencia, $codemp, $codemp, $codlocal, $controle, $codlocal);
         $tsql = "
 
             DECLARE @CODEMP_ITEM INT
-            DECLARE @CODPROD INT =  (SELECT TOP 1 tgfpro.CODPROD 
+            DECLARE @CODPROD INT =  (SELECT DISTINCT TGFPRO.CODPROD 
                                     FROM TGFPRO LEFT JOIN 
-                                        tgfbar ON tgfbar.codprod = tgfpro.codprod
-                                    WHERE (REFERENCIA = @REFERENCIA OR TGFBAR.CODBARRA = @REFERENCIA))
+                                        TGFBAR ON TGFBAR.CODPROD = TGFPRO.CODPROD
+                                    WHERE (REFERENCIA = ? OR TGFBAR.CODBARRA = ?))
 
-        SELECT @CODPROD
         DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
                                                 WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
                                                 ELSE CAST(? AS VARCHAR(10))
@@ -147,9 +146,9 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                 $tsql = "
                 DECLARE @REFERENCIA VARCHAR(100) = ?
                 DECLARE @CODEMP_ITEM INT
-                 DECLARE @CODPROD INT =  (SELECT TOP 1 tgfpro.CODPROD 
-                                    FROM TGFPRO LEFT JOIN 
-                                        tgfbar ON tgfbar.codprod = tgfpro.codprod
+                 DECLARE @CODPROD INT =  (SELECT DISTINCT TGFPRO.CODPROD 
+                                    FROM TGFPRO INNER JOIN 
+                                        TGFBAR ON TGFBAR.CODPROD = TGFPRO.CODPROD
                                     WHERE (REFERENCIA = @REFERENCIA OR TGFBAR.CODBARRA = @REFERENCIA))
                 DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
                                                         WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
