@@ -27,6 +27,24 @@ tr:active{background-color: yellow !important;}
   background-color: yellow;
 }
 
+/*POP UP EMAIL*/
+.popupEmail {
+    display: none; /* Inicialmente oculto */
+    position: fixed;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+	padding: 20px;
+    text-align: center;
+}
+
+
+
 .popupdivergencias{
 	position: fixed;
 	top: 0; bottom: 0; 
@@ -953,4 +971,18 @@ border-top: solid 5px #e54e43;
 }
 .close-btn:hover{
 	cursor: pointer;
+}
+
+.img-prod{
+	width: 200px;
+	height: 200px;
+	transition: transform 0.3s ease; /* Transição suave */
+
+
+}
+
+.img-prod:hover{
+	transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
+
+
 }

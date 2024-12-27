@@ -32,6 +32,12 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
 ?>
 
+
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 
@@ -45,10 +51,13 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 	<script src="./node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="./node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
 	<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="./components/popUpAviso/js/popUpAviso.js"></script>
 	<title>Menu</title>
 </head>
 
 <body>
+
+	
 
 	<div class="page">
 		<div class="dropdown">
@@ -271,6 +280,16 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 		</div>
 	</div>
 
+	 <!-- Bloco do popup -->
+	 
+
+
+	<!-- PopUp Avisos -->
+
+	<div id="popUpAviso"></div>
+
+
+									
 	<!-- pop up LOGIN e CADASTRO -->
 	<div class="popup" id="popAlterarSenha">
 		<div class="overlay"></div>
@@ -321,6 +340,8 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 
 		</div>
 	</div>
+
+
 	<div class="popup" id="popLeitorQRCode">
 		<div class="overlay"></div>
 		<div class="content">
@@ -358,8 +379,9 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 			echo "<script> alert('As senhas são diferentes. Digite a mesma senha nas duas caixas de texto!') </script>";
 		}
 	}
-	?>
 
+	
+	?>
 	<script type="text/javascript">
 		var mobile = document.getElementById("div-cabecalho-2");
 

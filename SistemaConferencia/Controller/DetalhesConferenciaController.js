@@ -114,6 +114,17 @@ function fechardivergencias() {
     document.getElementById('popupdivergencias').style.display = 'none';
 }
 
+function confirmarEnvioEmail() {
+    document.getElementById('popupEmail').style.display = 'block';
+}
+
+
+function fecharPopupEmail() {   
+    document.getElementById('popupEmail').style.display = 'none';
+    
+}
+
+
 function abrirconf() {
     document.getElementById('popupconf').style.display = 'block';
 }
@@ -303,3 +314,7 @@ function abrirVolumeBtn () {
         }
     });
 }
+
+
+
+
