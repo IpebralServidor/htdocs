@@ -818,7 +818,7 @@ $qtdVolume = $rowStatusVolume[1];
 		<!-- Imagem e Consulta de Produtos -->
 		<div id="Imagem do Produto" style="width: 48%; height: 50%; /*background-color: #D9DAFA;*/ display: inline-block; margin-left: 1%; ">
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7;padding-top: 2px; width: 100%;">Informações do Produto</h4>
-			<div class= "img-prod"  style="width: 50%; height: 50%; line-height: 100%; align-items: center; display: inline-flex; margin-top: 0; padding-top: 0" id="imagemproduto" onclick="confirmarEnvioEmail()">
+			<div class= "img-prod"  id="imagemproduto" onclick="confirmarEnvioEmail()">
 			
 				
 				<?php
@@ -1461,6 +1461,8 @@ $qtdVolume = $rowStatusVolume[1];
 
 	function enviaEmailSemFoto() {
 		let codigodebarra =  $("#codigodebarra").val();
+		let usuconf =  $("#codigodebarra").val();
+
 		if(codigodebarra != '') {
 			$.ajax({
 				type: 'POST',
@@ -1468,16 +1470,18 @@ $qtdVolume = $rowStatusVolume[1];
 				url: '../Model/emailSemFoto.php',
 				data: {
 					codigodebarra: codigodebarra
+				
 				},
-				success: function(msg) {
-					
+				success: function(msg) {					
 					fecharPopupEmail(); // Fecha o pop-up após enviar o e-mail
+				
+
 				}
 			});
 		}
 		else{
 			fecharPopupEmail(); // Fecha o pop-up após enviar o e-mail
-		}
+			}
 	}
 
 	

@@ -196,9 +196,9 @@ const validaParametros = () => {
             beforeSend: function() {
                 $("#loader").show();
             },
-            complete: function() {
-                $("#loader").hide();
-            },
+            // complete: function() {
+            //     $("#loader").hide();
+            // },
             data: {
                 codemp: codemp,
                 referencia: referencia,
@@ -218,8 +218,15 @@ const validaParametros = () => {
                     } 
                     const confirmacao = confirm(localPadraoText + `Confirma a transferência do item ${referencia} do local ${endsaida} para o local ${endchegada}?`);
                     if(confirmacao) {
+                        
                         transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdmax);
+                       
                     }
+                    else{
+
+                        $("#loader").hide();
+                    }
+
                 } else {
                     alert('Erro: ' + response.error);
                 }
@@ -237,13 +244,14 @@ const validaParametros = () => {
 }
 
 const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdmax) => {
+    //$("#loader").show();
     $.ajax({
         method: 'POST',
         url: '../routes/routes.php',
         dataType: 'json',
-        beforeSend: function() {
-            $("#loader").show();
-        },
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
         complete: function() {
             $("#loader").hide();
         },
@@ -267,6 +275,7 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdma
             } else {
                 alert('Erro: ' + response.error);
             }
+      //      $("#loader").hide();
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
@@ -395,4 +404,13 @@ const confirmaEndChegada = () => {
     } else {
         alert('Digite um valor.');
     }
+}
+
+
+function carregando() {
+    document.getElementById('loader').style.display = 'block';
+}
+
+function carregou() {
+    document.getElementById('loader').style.display = 'none';
 }

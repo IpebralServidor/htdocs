@@ -79,15 +79,20 @@
         font-size: 20px;
     }
 }
+
 .nao-mostrar{
 	padding: 13px;
 	border: none;
 	border-radius: var(--border-radius-pad);
 	background-color: #e67e22;
 	color: white;
+    
+
 }
 .nao-mostrar:hover, .ok:hover{
 	cursor: pointer;
+    transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
+
 }
 .ok{
 	padding: 13px;
@@ -95,5 +100,12 @@
 	border-radius: var(--border-radius-pad);
 	background-color: var(--red-pad);
 	color: white;
+  
+
 }
 
+.ok:hover{
+    transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
+
+
+}

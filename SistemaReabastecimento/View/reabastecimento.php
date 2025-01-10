@@ -128,7 +128,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             produtos(<?php echo $nunota2; ?>),
             retornaMovimentacoes()" <?php } else { ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
             produtos(<?php echo $nunota2; ?>),
-            retornaMovimentacoes()" <?php } ?> <?php } else { ?> onload="produtos(<?php echo $nunota2; ?>), endereco()" <?php } ?>>
+            retornaMovimentacoes()" <?php } ?> <?php } else { ?> onload="produtos(<?php echo $nunota2; ?>), endereco()"  <?php } ?>>
 
     <div id="modalLocalProduto"></div>
     <div id="loader" style="display: none;">
@@ -455,7 +455,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     <div class="input-h6">
                         <h6>Referência:</h6>
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()">
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2() autofocus">
                 </div>';
 
                 if ($tipoNota === 'A' && $fila === 'N') {
@@ -726,6 +726,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         var produtoseq
 
         $(document).ready(function() {
+            focarReferencia();
             $("#navbar-toggler").click(function() {
                 $(this).toggleClass("rotated");
             });
@@ -1612,7 +1613,30 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     }
                 }
             });
+        }        
+        
+        function focarReferencia() {
+
+            
+            if ('<?php echo $tipoNota ?>' === 'A' && '<?php echo $fila ?>' === 'N') {
+                const referenciaInput = document.getElementById('referencia');
+                if (referenciaInput) {
+                referenciaInput.focus();
+                }
+                
+                
+            } else {
+                const enderecoInput = document.getElementById('endereco');
+                if (enderecoInput) {
+                    enderecoInput.focus();
+                }
+                
+            }
+
         }
+
+
+
     </script>
 </body>
 
