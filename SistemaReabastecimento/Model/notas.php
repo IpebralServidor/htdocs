@@ -8,7 +8,7 @@ $tipoTransf = $_POST["tipoTransf"];
 $cdTransf = $_POST["cdTransf"];
 $referencia = $_POST["referencia"];
 
-$params = array($referencia,$tipoTransf, $cdTransf, $tipoNota);
+$params = array($referencia, $tipoTransf, $cdTransf, $tipoNota);
 
 $tsqlProdutos = "
                 DECLARE @REFERENCIA VARCHAR(50) = ?
@@ -64,7 +64,7 @@ $tsqlProdutos = "
                     TGFITE ON TGFITE.NUNOTA = TGFCAB.NUNOTA
                 WHERE (@TIPOTRANSF = 'N' AND (TGFCAB.AD_PEDIDOECOMMERCE IN ('TRANSFAPP', 'TRANSF_NOTA', 'TRANSF_CD5', 'TRANSFPROD_ENTRADA', 'TRANSFPROD_SAIDA', 'TRANSF_PENDENCIA') OR TGFCAB.AD_PEDIDOECOMMERCE LIKE 'TRANSF_ABAST%')
                         OR TGFCAB.AD_PEDIDOECOMMERCE LIKE @TIPOTRANSF+'%')
-                    AND TGFCAB.DTNEG BETWEEN DATEADD(DAY, -30, GETDATE()) AND GETDATE()
+                    AND TGFCAB.DTNEG BETWEEN DATEADD(DAY, -50, GETDATE()) AND GETDATE()
                     AND TGFCAB.STATUSNOTA = 'A'
                     AND TGFCAB.AD_GARANTIAVERIFICADA = @TIPONOTA
                     AND ((TGFITE.CODPROD = @CODPROD AND TGFITE.QTDNEG <> 0 AND TGFITE.ATUALESTOQUE = 0) OR @CODPROD IS NULL)

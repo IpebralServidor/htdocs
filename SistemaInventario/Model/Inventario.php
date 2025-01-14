@@ -84,7 +84,7 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
             'success' => [
                 'codprod' => $row['CODPROD'],
                 'tipcontest' => $row['TIPCONTEST'],
-                'descrprod' => $row['DESCRPROD'],
+                'descrprod' => mb_convert_encoding($row['DESCRPROD'], 'UTF-8', mb_detect_encoding($row['DESCRPROD'], 'UTF-8, ISO-8859-1', true)),
                 'agrupmin' => $row['AGRUPMIN'],
                 'obsetiqueta' => $row['OBSETIQUETA'],
                 'imagem' => base64_encode($row['IMAGEM'])

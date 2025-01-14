@@ -50,14 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }
                 break;
             case 'validaParametros':
-                if (isset($_GET['codemp']) && isset($_GET['referencia']) && isset($_GET['lote']) && isset($_GET['endsaida']) && isset($_GET['endchegada']) && isset($_GET['qtdmax'])) {
+                if (isset($_GET['codemp']) && isset($_GET['referencia']) && isset($_GET['lote']) && isset($_GET['endsaida']) && isset($_GET['endchegada']) && isset($_GET['qtdneg']) && isset($_GET['qtdmax'])) {
                     $codemp = $_GET['codemp'];
                     $referencia = $_GET['referencia'];
                     $lote = $_GET['lote'];
                     $endsaida = $_GET['endsaida'];
                     $endchegada = $_GET['endchegada'];
+                    $qtdneg = $_GET['qtdneg'];
                     $qtdmax = $_GET['qtdmax'];
-                    validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax);
+                    validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -76,17 +77,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         switch ($route) {
             case 'transferirProduto':
-                if (isset($_POST['codemp']) && isset($_POST['referencia']) && isset($_POST['lote']) && isset($_POST['endsaida']) && isset($_POST['endchegada']) && isset($_POST['qtdmax']) && isset($_POST['referenciaBipado']) && isset($_POST['enderecoSaidaBipado']) && isset($_POST['enderecoChegadaBipado'])) {
+                if (isset($_POST['codemp']) && isset($_POST['referencia']) && isset($_POST['lote']) && isset($_POST['endsaida']) && isset($_POST['endchegada']) && isset($_POST['qtdneg']) && isset($_POST['qtdmax']) && isset($_POST['referenciaBipado']) && isset($_POST['enderecoSaidaBipado']) && isset($_POST['enderecoChegadaBipado'])) {
                     $codemp = $_POST['codemp'];
                     $referencia = $_POST['referencia'];
                     $lote = $_POST['lote'];
                     $endsaida = $_POST['endsaida'];
                     $endchegada = $_POST['endchegada'];
+                    $qtdneg = $_POST['qtdneg'];
                     $qtdmax = $_POST['qtdmax'];
                     $referenciaBipado = $_POST['referenciaBipado'];
                     $enderecoSaidaBipado = $_POST['enderecoSaidaBipado'];
                     $enderecoChegadaBipado = $_POST['enderecoChegadaBipado'];
-                    transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $referenciaBipado, $enderecoSaidaBipado, $enderecoChegadaBipado, $idUsuario);
+                    transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $referenciaBipado, $enderecoSaidaBipado, $enderecoChegadaBipado, $idUsuario);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
