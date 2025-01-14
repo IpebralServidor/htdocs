@@ -107,6 +107,7 @@
                         <option value="6">Nordeste</option>
                         <option value="7">Triângulo</option>
                         <option value="10">Mecontech</option>
+                        <option value="30">Remedcar (Emp 30)</option>
                     </select>
                 </div>
                 <div class="row">
@@ -133,20 +134,29 @@
                 </div>
                 <div class="row">
                     <div class="mb-1 col-6">
+                        <label for="qtdneg" class="form-label">Quantidade <span style="color: red">*</span></label>
+                        <input type="number" class="form-control" id="qtdneg" disabled value="" style="color: #86B7FE !important;">
+                    </div>
+                    <div class="mb-1 col-6">
                         <label for="qtdMax" class="form-label">Qtd Máx Local <span style="color: red">*</span></label>
                         <input type="number" class="form-control" id="qtdmax" style="color: #86B7FE !important;">
                     </div>
-
-                    <div class="col-6 mt-3">
+                </div>
+                <div class="row">
+                    <div class="mt-3">
                         <div class="form-control" style="font-size: 12px !important;">
                             <div>
-                                <span class="fw-bold">Qtd.local retirada : </span><span id="qtdlocal">0</span>
+                                <span class="fw-bold">Descrição: </span><span id="descrprod"></span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Qtd.local retirada: </span><span id="qtdlocal">0</span>
                             </div>
                             <div>
                                 <span class="fw-bold">Local padrão: </span><span id="localpadrao"></span>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="image d-flex justify-content-center">
                     <img id="imagemproduto" style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="" />

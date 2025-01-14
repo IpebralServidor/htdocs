@@ -21,7 +21,7 @@ function buscaEnderecosInventario($conn, $codemp, $endini, $endfim, $concluidos)
                     break;
                 case 'C':
                     $color = '#8fffb1';
-                    $statusText = 'Concluído';
+                    $statusText = 'Concluido';
                     $action = "onclick='confirmaAbrirInventario(this)'";
                     break;
                 case 'D':
