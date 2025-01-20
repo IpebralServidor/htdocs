@@ -8,7 +8,7 @@ $tipoTransf = $_POST["tipoTransf"];
 $cdTransf = $_POST["cdTransf"];
 $referencia = $_POST["referencia"];
 
-$params = array($referencia,$tipoTransf, $cdTransf, $tipoNota);
+$params = array($referencia, $tipoTransf, $cdTransf, $tipoNota);
 
 $tsqlProdutos = "
                 DECLARE @REFERENCIA VARCHAR(50) = ?

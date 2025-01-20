@@ -4,7 +4,7 @@ function buscaInformacoesProduto($conn, $referencia)
 {
     try {
         $params = array($referencia, $referencia);
-        $tsql = "SELECT TIPCONTEST, ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM FROM TGFPRO INNER JOIN TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD WHERE REFERENCIA = ? OR CODBARRA = ?";
+        $tsql = "SELECT TIPCONTEST, ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM, DESCRPROD FROM TGFPRO INNER JOIN TGFBAR ON TGFPRO.CODPROD = TGFBAR.CODPROD WHERE REFERENCIA = ? OR CODBARRA = ?";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
@@ -18,7 +18,8 @@ function buscaInformacoesProduto($conn, $referencia)
         $response = [
             'success' => [
                 'tipcontest' => $row['TIPCONTEST'],
-                'imagem' => base64_encode($row['IMAGEM'])
+                'imagem' => base64_encode($row['IMAGEM']),
+                'descrprod' => mb_convert_encoding($row['DESCRPROD'], 'UTF-8', mb_detect_encoding($row['DESCRPROD'], 'UTF-8, ISO-8859-1', true))
             ]
         ];
         echo json_encode($response);
@@ -64,7 +65,7 @@ function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
     try {
         $params = array($codemp, $referencia, $referencia, $endsaida, $lote);
 
-        $tsql = "SELECT SUM(EST.ESTOQUE - EST.RESERVADO) AS QTDLOCAL, ISNULL(PEM.AD_QTDMAXLOCAL, -1) AS QTDMAX FROM TGFEST EST
+        $tsql = "SELECT SUM(DISTINCT EST.ESTOQUE - EST.RESERVADO) AS QTDLOCAL, ISNULL(PEM.AD_QTDMAXLOCAL, -1) AS QTDMAX FROM TGFEST EST
                 INNER JOIN TGFPRO PRO
                 ON EST.CODPROD = PRO.CODPROD
                 LEFT JOIN TGFPEM PEM
@@ -139,17 +140,27 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
     }
 }
 
-function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax)
+function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax)
 {
     try {
-        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax);
+        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax);
 
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?)";
+        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            //throw new Exception('Erro ao executar a consulta SQL.');
+            $errors = sqlsrv_errors();
+
+            // Cria uma mensagem de erro detalhada
+            $errorMessage = "Erro ao executar a consulta SQL: ";
+            foreach ($errors as $error) {
+                $errorMessage .= "Código: " . $error['code'] . ", Mensagem: " . $error['message'] . "; ";
+            }
+
+            // Lança a exceção com a mensagem detalhada
+            throw new Exception($errorMessage);
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
@@ -168,7 +179,7 @@ function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endche
     }
 }
 
-function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $referenciaBipado, $enderecoSaidaBipado, $enderecoChegadaBipado, $idUsuario)
+function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $referenciaBipado, $enderecoSaidaBipado, $enderecoChegadaBipado, $idUsuario)
 {
     try {
         $observacao = '';
@@ -181,14 +192,24 @@ function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endch
         if ($enderecoChegadaBipado === 'N') {
             $observacao .= '| Endereco de chegada digitado ';
         }
-        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdmax, $observacao, $idUsuario);
+        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $observacao, $idUsuario);
 
-        $tsql = "EXEC [sankhya].[AD_STP_TRANSF_SIMPLES_APP] ?, ?, ?, ?, ?, ?, ?, ?";
+        $tsql = "EXEC [sankhya].[AD_STP_TRANSF_SIMPLES_APP] ?, ?, ?, ?, ?, ?, ?, ?, ?";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            // throw new Exception('Erro ao executar a consulta SQL.');
+            $errors = sqlsrv_errors();
+
+            // Cria uma mensagem de erro detalhada
+            $errorMessage = "Erro ao executar a consulta SQL: ";
+            foreach ($errors as $error) {
+                $errorMessage .= "Codigo: " . $error['code'] . ", Mensagem: " . $error['message'] . "; ";
+            }
+
+            // Lança a exceção com a mensagem detalhada
+            echo $errorMessage;
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);

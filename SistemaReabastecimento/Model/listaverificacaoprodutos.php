@@ -12,7 +12,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
     $produtosList .=
         "<tr>
             <td>$row[4]</td>
-            <td>$row[3]</td>
+            <td style='color: " . ($row[3] == '5019999' || $row[3] == '3990000' || $row[3] == '5990000' ? 'red' : '') . ";'>$row[3]</td>
             <td>$row[5]</td>
             <td>
                 <a class='botao-abastecer' data-id='$row[1]'>

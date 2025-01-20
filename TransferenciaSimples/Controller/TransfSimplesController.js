@@ -13,6 +13,7 @@ let enderecoSaidaBipado = '';
 let enderecoChegadaBipado = '';
 // Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
 const tempoMaximoDigitacao = 250;
+const regex = /^[18]/;
 
 const desabilitaSelectPadrao = () => {
     document.getElementById("selectPadrao").disabled = true;
@@ -36,6 +37,7 @@ const buscaInformacoesProduto = () => {
         },
         success: function(response) {
             if(response.success) {
+                document.getElementById('descrprod').innerHTML = response.success.descrprod;
                 document.getElementById('imagemproduto').src = 'data:image/jpeg;base64,' + response.success.imagem;
                 response.success.tipcontest != 'L' ? document.getElementById('lote').disabled = true : document.getElementById('lote').disabled = false;
                 document.getElementById('lote').value = '';
@@ -187,6 +189,7 @@ const validaParametros = () => {
     const lote = document.getElementById('lote').value;
     const endsaida = document.getElementById('endsaida').value;
     const endchegada = document.getElementById('endchegada').value;
+    const qtdneg = document.getElementById('qtdneg').value;
     const qtdmax = document.getElementById('qtdmax').value;
     if(codemp != '' && referencia != '' && endsaida != '' && endchegada != '') {
         $.ajax({
@@ -206,21 +209,19 @@ const validaParametros = () => {
                 endsaida: endsaida,
                 endchegada: endchegada,
                 qtdmax: qtdmax,
+                qtdneg: qtdneg,
                 route: 'validaParametros'
             },
             success: function(response) {
                 if(response.success) {
                     // Verifica se o endereco de chegada e de saida começam com 1 ou 8
-                    const regex = /^[18]/;
                     let localPadraoText = '';
                     if(regex.test(endsaida) && regex.test(endchegada)) {
                         localPadraoText = 'O local padrão será alterado. '
                     } 
                     const confirmacao = confirm(localPadraoText + `Confirma a transferência do item ${referencia} do local ${endsaida} para o local ${endchegada}?`);
                     if(confirmacao) {
-                        
-                        transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdmax);
-                       
+                        transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdneg, qtdmax);
                     }
                     else{
 
@@ -243,8 +244,7 @@ const validaParametros = () => {
     }
 }
 
-const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdmax) => {
-    //$("#loader").show();
+const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdneg, qtdmax) => {
     $.ajax({
         method: 'POST',
         url: '../routes/routes.php',
@@ -261,6 +261,7 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdma
             lote: lote,
             endsaida: endsaida,
             endchegada: endchegada,
+            qtdneg: qtdneg,
             qtdmax: qtdmax,
             referenciaBipado: referenciaBipado,
             enderecoSaidaBipado: enderecoSaidaBipado,
@@ -342,6 +343,7 @@ const finalizarMedicaoEndSaida = () => {
     } else {
         enderecoSaidaBipado = 'S';
         buscaInformacoesLocal();
+        habilitaQuantidade();
     }
 }
 
@@ -361,6 +363,7 @@ const confirmaEndSaida = () => {
             document.getElementById('endsaida').value = inputNovoEndSaida;
             enderecoSaidaBipado = 'N';
             buscaInformacoesLocal();
+            habilitaQuantidade();
         }
     } else {
         alert('Digite um valor.');
@@ -380,6 +383,7 @@ const finalizarMedicaoEndChegada = () => {
     } else {
         enderecoChegadaBipado = 'S';
         buscaQtdMax();
+        habilitaQuantidade();
     }
 }
 
@@ -400,17 +404,27 @@ const confirmaEndChegada = () => {
             document.getElementById('endchegada').value = inputNovoEndChegada;
             enderecoChegadaBipado = 'N';
             buscaQtdMax();
+            habilitaQuantidade();
         }
     } else {
         alert('Digite um valor.');
     }
 }
 
-
-function carregando() {
-    document.getElementById('loader').style.display = 'block';
-}
-
-function carregou() {
-    document.getElementById('loader').style.display = 'none';
+const habilitaQuantidade = () => {
+    let endsaida = document.getElementById('endsaida').value
+    let endchegada = document.getElementById('endchegada').value;
+    let qtdneg = document.getElementById('qtdneg');
+    if(endsaida != '' && endchegada != '') {
+        if(regex.test(endsaida) && regex.test(endchegada)) {
+            qtdneg.disabled = true;
+            qtdneg.value = '';
+        } else {
+            qtdneg.disabled = false;
+            qtdneg.focus();
+        }
+    } else {
+        qtdneg.disabled = true;
+        qtdneg.value = '';
+    }
 }
