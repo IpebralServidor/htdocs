@@ -1,0 +1,111 @@
+.popupMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.overlay2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.content2 {
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.close-btn2 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #e74c3c; /* Cor vermelha para o botão de sair */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn2:hover {
+    color: #c0392b; /* Cor de hover mais intensa */
+}
+
+.div-form2 p {
+    font-size: 18px;
+    color: #333;
+    margin: 20px 0;
+}
+
+.content2 i {
+    font-size: 40px;
+    color: #e67e22; /* Cor laranja para o ícone de alerta */
+    margin-bottom: 10px;
+}
+
+.div-form2 {
+    padding: 20px;
+}
+
+.popupMenu .content2 .div-form2 p {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .content2 {
+        width: 80%;
+        padding: 15px;
+    }
+    .close-btn2 {
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
+    }
+}
+
+.nao-mostrar{
+	padding: 13px;
+	border: none;
+	border-radius: var(--border-radius-pad);
+	background-color: #e67e22;
+	color: white;
+    
+
+}
+.nao-mostrar:hover, .ok:hover{
+	cursor: pointer;
+    transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
+
+}
+.ok{
+	padding: 13px;
+	border: none;
+	border-radius: var(--border-radius-pad);
+	background-color: var(--red-pad);
+	color: white;
+  
+
+}
+
+.ok:hover{
+    transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
+
+
+}

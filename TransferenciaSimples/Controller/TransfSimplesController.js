@@ -199,9 +199,9 @@ const validaParametros = () => {
             beforeSend: function() {
                 $("#loader").show();
             },
-            complete: function() {
-                $("#loader").hide();
-            },
+            // complete: function() {
+            //     $("#loader").hide();
+            // },
             data: {
                 codemp: codemp,
                 referencia: referencia,
@@ -223,6 +223,11 @@ const validaParametros = () => {
                     if(confirmacao) {
                         transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdneg, qtdmax);
                     }
+                    else{
+
+                        $("#loader").hide();
+                    }
+
                 } else {
                     alert('Erro: ' + response.error);
                 }
@@ -244,9 +249,9 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
         method: 'POST',
         url: '../routes/routes.php',
         dataType: 'json',
-        beforeSend: function() {
-            $("#loader").show();
-        },
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
         complete: function() {
             $("#loader").hide();
         },
@@ -271,6 +276,7 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
             } else {
                 alert('Erro: ' + response.error);
             }
+      //      $("#loader").hide();
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
