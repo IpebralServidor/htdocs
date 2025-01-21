@@ -128,7 +128,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             produtos(<?php echo $nunota2; ?>),
             retornaMovimentacoes()" <?php } else { ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
             produtos(<?php echo $nunota2; ?>),
-            retornaMovimentacoes()" <?php } ?> <?php } else { ?> onload="produtos(<?php echo $nunota2; ?>), endereco()"  <?php } ?>>
+            retornaMovimentacoes()" <?php } ?> <?php } else { ?> onload="produtos(<?php echo $nunota2; ?>), endereco()" <?php } ?>>
 
     <div id="modalLocalProduto"></div>
     <div id="loader" style="display: none;">
@@ -455,7 +455,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     <div class="input-h6">
                         <h6>Referência:</h6>
                     </div>
-                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2() autofocus">
+                    <input type="text" name="referencia" id="referencia" class="form-control" placeholder="" oninput="iniciarMedicao2()" onblur="finalizarMedicao2()">
                 </div>';
 
                 if ($tipoNota === 'A' && $fila === 'N') {
@@ -481,11 +481,10 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                         <h6>Agp. min: <span id="agrupmin"><span></h6>
 
                         <div class="d-flex justify-content-start">
+                            <h6>Reservado: <span id="reservado"></span>&nbsp / &nbsp</h6>
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6>
-                            <!-- <?php if ($tipoNota == 'S') { ?> -->
                             <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-bs-toggle="modal" data-bs-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
-                            <!-- <?php } ?> -->
                         </div>
 
                         <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>
@@ -726,7 +725,6 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         var produtoseq
 
         $(document).ready(function() {
-            focarReferencia();
             $("#navbar-toggler").click(function() {
                 $(this).toggleClass("rotated");
             });
@@ -1356,6 +1354,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             document.getElementById("observacao").textContent = retorno[9];
                             document.getElementById("agrupmin").textContent = retorno[3];
                             document.getElementById("qtdlocal").textContent = retorno[4];
+                            document.getElementById("reservado").textContent = retorno[16];
                             document.getElementById("fornecedores").textContent = retorno[11];
                             document.getElementById("maxlocalpadrao").textContent = retorno[5];
                             document.getElementById("estlocalpadrao").textContent = retorno[6];
@@ -1613,30 +1612,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     }
                 }
             });
-        }        
-        
-        function focarReferencia() {
-
-            
-            if ('<?php echo $tipoNota ?>' === 'A' && '<?php echo $fila ?>' === 'N') {
-                const referenciaInput = document.getElementById('referencia');
-                if (referenciaInput) {
-                referenciaInput.focus();
-                }
-                
-                
-            } else {
-                const enderecoInput = document.getElementById('endereco');
-                if (enderecoInput) {
-                    enderecoInput.focus();
-                }
-                
-            }
-
         }
-
-
-
     </script>
 </body>
 
