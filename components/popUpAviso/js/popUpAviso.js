@@ -1,4 +1,4 @@
-const limiteMensagens = 3;
+const limiteMensagens = 300000;
 
 $(document).ready(function() {
     $.ajax({

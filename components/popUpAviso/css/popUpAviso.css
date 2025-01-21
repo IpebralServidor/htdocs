@@ -27,7 +27,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1001;
     max-width: 400px;
-    width: 90%;
+    width: 100%;
     text-align: center;
     font-family: Arial, sans-serif;
 }
@@ -36,7 +36,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: 13px;
     color: #e74c3c; /* Cor vermelha para o botão de sair */
     cursor: pointer;
     transition: color 0.3s ease;
@@ -47,9 +47,9 @@
 }
 
 .div-form2 p {
-    font-size: 18px;
+    font-size: 17px;
     color: #333;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 .content2 i {
@@ -59,7 +59,7 @@
 }
 
 .div-form2 {
-    padding: 20px;
+    padding: 10px;
 }
 
 .popupMenu .content2 .div-form2 p {
@@ -70,8 +70,8 @@
 /* Responsividade */
 @media (max-width: 600px) {
     .content2 {
-        width: 80%;
-        padding: 15px;
+        width: 100%;
+        padding: 5px;
     }
     .close-btn2 {
         top: 8px;
@@ -86,26 +86,18 @@
 	border-radius: var(--border-radius-pad);
 	background-color: #e67e22;
 	color: white;
-    
-
 }
-.nao-mostrar:hover, .ok:hover{
-	cursor: pointer;
-    transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
 
-}
 .ok{
 	padding: 13px;
 	border: none;
 	border-radius: var(--border-radius-pad);
 	background-color: var(--red-pad);
 	color: white;
-  
-
 }
 
-.ok:hover{
-    transform: scale(1.2); /* Aumenta 20% ao passar o mouse */
-
-
+.aviso {
+    max-height: 400px; /* Defina a altura máxima conforme necessário */
+    overflow-y: auto; /* Habilita a rolagem vertical quando necessário */
+    word-wrap: break-word; /* Garante que o texto quebra corretamente se for muito longo */
 }

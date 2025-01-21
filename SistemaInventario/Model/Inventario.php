@@ -57,29 +57,32 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
                                             END
         DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD FROM TGFPRO PRO INNER JOIN TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD WHERE PRO.REFERENCIA = ? OR BAR.CODBARRA = ?)
         SELECT PRO.CODPROD,
-               PRO.TIPCONTEST, 
-               PRO.DESCRPROD,
-               PRO.AGRUPMIN,
-               PRO.OBSETIQUETA,
-               ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM 
-        FROM AD_INVENTARIOITE INVITE 
-        INNER JOIN TGFPRO PRO
-            ON INVITE.CODPROD = PRO.CODPROD
-        WHERE INVITE.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
-          AND PRO.CODPROD = @CODPROD
-          AND INVITE.CODLOCAL = ?
+                PRO.TIPCONTEST, 
+                PRO.DESCRPROD,
+                PRO.AGRUPMIN,
+                PRO.OBSETIQUETA,
+                ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM,
+                INVITE.NUNOTA
+        FROM TGFPRO PRO LEFT JOIN
+            AD_INVENTARIOITE INVITE ON INVITE.CODPROD = PRO.CODPROD
+                                    AND INVITE.CODLOCAL = ?
+                                    AND INVITE.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
+        WHERE PRO.CODPROD = @CODPROD
         ";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
-
 
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
         }
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-        if (!isset($row['CODPROD'])) {
-            throw new Exception('Produto não existe no local.');
+
+        if (!isset($row['NUNOTA'])) {
+            if (verificaSeisMil($conn, $codemp, $referencia) === 'N') {
+                throw new Exception('Produto não existe no local.');
+            }
         }
+
         $response = [
             'success' => [
                 'codprod' => $row['CODPROD'],
@@ -87,9 +90,11 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
                 'descrprod' => mb_convert_encoding($row['DESCRPROD'], 'UTF-8', mb_detect_encoding($row['DESCRPROD'], 'UTF-8, ISO-8859-1', true)),
                 'agrupmin' => $row['AGRUPMIN'],
                 'obsetiqueta' => $row['OBSETIQUETA'],
-                'imagem' => base64_encode($row['IMAGEM'])
+                'imagem' => base64_encode($row['IMAGEM']),
+                'nunota' => $row['NUNOTA']
             ]
         ];
+
         echo json_encode($response);
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
@@ -193,7 +198,11 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                 echo json_encode($response);
             }
         } else {
-            echo json_encode(['error' => 'Produto/codigo de barra não existe']);
+            if (verificaSeisMil($conn, $codemp, $referencia) === 'N') {
+                echo json_encode(['error' => 'Produto/codigo de barra não existe']);
+            } else {
+                echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
+            }
         }
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
@@ -216,7 +225,7 @@ function contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quanti
                     $errorMessage = $error['message'];
                     $errorMessage = preg_replace('/\[[^\]]*\]/', '', $errorMessage);
 
-                    if (strpos($errorMessage, 'IPB: Estoque insuficiente! Produto:' . $referencia) !== false) {
+                    if (strpos($errorMessage, 'IPB GERAITE: Estoque insuficiente! Produto:' . $referencia) !== false) {
                         // Se for especificamente esta mensagem, é porque o GERAITE dá erro ao transferir itens do 6000000.
                         // Neste caso, ainda são gerados os dados, e este erro é ignorado.
                     } else {
@@ -301,5 +310,36 @@ function transfereItem($conn, $codemp, $codlocal, $referencia, $controle, $quant
         echo json_encode($response);
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+function verificaSeisMil($conn, $codemp, $referencia)
+{
+    $paramsSeisMil = array($codemp, $codemp, $referencia, $referencia);
+
+    $tsqlSeisMil = "
+    DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
+                                            WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
+                                            ELSE CAST(? AS VARCHAR(10))
+                                        END
+    DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD FROM TGFPRO PRO INNER JOIN TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD WHERE PRO.REFERENCIA = ? OR BAR.CODBARRA = ?)
+    SELECT TOP 1 ESTOQUE
+    FROM TGFEST EST
+    WHERE EST.CODPARC = 0 
+    AND EST.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
+    AND EST.ESTOQUE <> 0
+    AND CODPROD = @CODPROD
+    AND CODLOCAL BETWEEN 6000000 AND 6000099
+    ";
+    $stmtSeisMil = sqlsrv_query($conn, $tsqlSeisMil, $paramsSeisMil);
+
+    if ($stmtSeisMil === false) {
+        throw new Exception('PHP: Erro ao executar a consulta SQL.');
+    }
+    $rowSeisMil = sqlsrv_fetch_array($stmtSeisMil, SQLSRV_FETCH_ASSOC);
+    if (!isset($rowSeisMil['ESTOQUE'])) {
+        return 'N';
+    } else {
+        return 'S';
     }
 }

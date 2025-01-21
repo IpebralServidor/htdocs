@@ -199,17 +199,17 @@ function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endch
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            // throw new Exception('Erro ao executar a consulta SQL.');
-            $errors = sqlsrv_errors();
+            throw new Exception('Erro ao executar a consulta SQL.');
+            // $errors = sqlsrv_errors();
 
-            // Cria uma mensagem de erro detalhada
-            $errorMessage = "Erro ao executar a consulta SQL: ";
-            foreach ($errors as $error) {
-                $errorMessage .= "Codigo: " . $error['code'] . ", Mensagem: " . $error['message'] . "; ";
-            }
+            // // Cria uma mensagem de erro detalhada
+            // $errorMessage = "Erro ao executar a consulta SQL: ";
+            // foreach ($errors as $error) {
+            //     $errorMessage .= "Codigo: " . $error['code'] . ", Mensagem: " . $error['message'] . "; ";
+            // }
 
-            // Lança a exceção com a mensagem detalhada
-            echo $errorMessage;
+            // // Lança a exceção com a mensagem detalhada
+            // echo $errorMessage;
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
