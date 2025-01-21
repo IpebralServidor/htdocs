@@ -81,6 +81,7 @@ require_once '../../App/auth.php';
 								<option value="TRANSF_ABAST_FILIAL_16">Abastecimento 1/6</option>
 								<option value="TRANSF_ABAST_FILIAL_36">Abastecimento 3/6</option>
 								<option value="TRANSF_ABAST_FILIAL_17">Abastecimento 1/7</option>
+								<option value="TRANSF_TROCA_PROPRIEDADE">Troca de Propriedade</option>
 																													
 							</select>
 							<strong>CD:</strong>
