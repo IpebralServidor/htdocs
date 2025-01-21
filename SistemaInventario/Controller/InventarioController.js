@@ -111,16 +111,32 @@ const buscaInformacoesProduto = () => {
         },
         success: function(response) {
             if(response.success) {
-                document.getElementById('imagemproduto').src = 'data:image/jpeg;base64,' + response.success.imagem;
-                response.success.tipcontest != 'L' ? document.getElementById('lote').disabled = true : document.getElementById('lote').disabled = false;
-                document.getElementById('lote').value = '';
-                document.getElementById('descrprod').innerHTML = response.success.descrprod;
-                document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
-                document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
+                if(!response.success.nunota) {
+                    let resgate = confirm('Item não consta no local. Deseja resgatar do 6000000?');
+                    if(resgate) {
+                        document.getElementById('imagemproduto').src = 'data:image/jpeg;base64,' + response.success.imagem;
+                        response.success.tipcontest != 'L' ? document.getElementById('lote').disabled = true : document.getElementById('lote').disabled = false;
+                        document.getElementById('lote').value = '';
+                        document.getElementById('descrprod').innerHTML = response.success.descrprod;
+                        document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
+                        document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
+                    } else {
+                        document.getElementById('referencia').value = '';
+                        document.getElementById('lote').value = '';        
+                        document.getElementById('referencia').focus();
+                    }
+                } else {
+                    document.getElementById('imagemproduto').src = 'data:image/jpeg;base64,' + response.success.imagem;
+                    response.success.tipcontest != 'L' ? document.getElementById('lote').disabled = true : document.getElementById('lote').disabled = false;
+                    document.getElementById('lote').value = '';
+                    document.getElementById('descrprod').innerHTML = response.success.descrprod;
+                    document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
+                    document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
+                }
             } else {
-                
                 document.getElementById('referencia').value = '';
                 document.getElementById('lote').value = '';
+                document.getElementById('referencia').focus();
                 alert('Erro: ' + response.error);
             }
         },
