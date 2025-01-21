@@ -1,0 +1,186 @@
+/*POPUP de pesquisa de itens*/
+.popupprodutos{
+	display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    padding: 15px;
+    border: solid 1px #4c4d4f;
+    background: white;
+    z-index: 999;
+}
+
+/* Estilos para telas menores que 768px (celulares) */
+@media screen and (max-width: 767px) {
+    .popupprodutos {
+        width: 90%; /* 90% do tamanho da tela */
+        height: 70%; /* 90% do tamanho da tela */
+        min-width: 0; /* Remova a largura mínima */
+        min-height: 0; /* Remova a altura mínima */
+    }
+}
+
+/* Estilos para telas maiores ou iguais a 768px (computadores) */
+@media screen and (min-width: 768px) {
+    .popupprodutos {
+        width: 65%; /* 50% do tamanho da tela */
+        height: 50%; /* 50% do tamanho da tela */
+    }
+}
+
+#popupprodutos th,
+#popupprodutos td {
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 300px; /* Define uma largura máxima para evitar que o conteúdo estique demais */
+}
+
+
+
+
+
+/* Container para ambos os botões */
+#floating-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Posição geral no canto inferior direito */
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+/* Estilo para ambos os botões */
+.floating-button-item {
+    width: 60px;
+    height: 60px;
+    background-color: #4caf50; /* Verde */
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Botão "Finalizar" */
+#finalizar-button {
+    display: flex; /* Define o botão como um container flex */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
+    background-color: #84291F;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px; /* Cantos bem arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    white-space: nowrap; /* Garante que o texto não quebre em várias linhas */
+    border: none; /* Remove bordas padrão */
+    text-align: center; /* Adicional para garantir centralização */
+    height: 40px; /* Altura mínima do botão para um visual consistente */
+}
+
+/* Botão "Exportar" */
+#exportarPlanilha {
+    display: flex; /* Define o botão como um container flex */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
+    background-color: #3a6070;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px; /* Cantos bem arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    white-space: nowrap; /* Garante que o texto não quebre em várias linhas */
+    border: none; /* Remove bordas padrão */
+    text-align: center; /* Adicional para garantir centralização */
+    height: 40px; /* Altura mínima do botão para um visual consistente */
+}
+
+
+
+
+
+
+/* Botão Flutuante (Estilo para todos os botões usados) */
+#floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #4caf50; /* Verde */
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#floating-button:hover {
+    transform: scale(1.1);
+}
+
+/* Sidebar */
+#search-container {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Inicialmente fora da tela */
+    width: 300px;
+    height: 100%;
+    background-color: #f4f4f4;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    transition: all 0.3s;
+}
+
+#search-container.open {
+    right: 0; /* Traz a sidebar para dentro da tela */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.sidebar-header button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/*Estilização para botões e inputs para digitação*/
+#search-input, #referencia, #uploadarquivo, #escolherArquivo, #codParc, #baixararquivo {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 2%;
+}
+
+
+/*Botão que fecha o POPUP de Pesquisa*/
+#fecharPesquisa {
+    position: fixed;
+    top: -15px; /* Posiciona acima do popup */
+    right: -15px; 
+    z-index: 1001;
+}
