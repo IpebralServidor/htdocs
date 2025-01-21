@@ -87,7 +87,7 @@
  				//$_SESSION['foto']      = $this->dados['imagem'];
  				
  				
- 				if($_SESSION['idUsuario'] = 181) {
+ 				if($_SESSION['idUsuario'] == 3374 || $_SESSION['idUsuario'] == 4240) {
  					header("Location: ../importacao/preco/listaorcamento.php");
  				} else {
  					header("Location: ../menu.php");
