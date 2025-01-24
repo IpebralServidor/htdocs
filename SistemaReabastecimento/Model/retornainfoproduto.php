@@ -35,7 +35,8 @@ if ($stmt) {
 			. $row["DESCRPROD"] . '~'
 			. $row["DECQTD"] . '~'
 			. $row["CODEMPNEGOC"] . '~'
-			. $row["RESERVADO"];
+			. $row["RESERVADO"] . '~'
+			. $row["DISPONIVEL"];
 
 			
 	}

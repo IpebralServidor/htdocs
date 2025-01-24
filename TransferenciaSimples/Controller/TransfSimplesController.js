@@ -96,53 +96,69 @@ const buscaInformacoesLocal = () => {
     const referencia = document.getElementById('referencia').value;
     const endsaida = document.getElementById('endsaida').value;
     const lote = document.getElementById('lote').value;
-    if(codemp != '') {
-        if(referencia != '') {
-            $.ajax({
-                method: 'GET',
-                url: '../routes/routes.php',
-                dataType: 'json',
-                beforeSend: function() {
-                    $("#loader").show();
-                },
-                complete: function() {
-                    $("#loader").hide();
-                },
-                data: {
-                    codemp: codemp,
-                    referencia: referencia,
-                    endsaida: endsaida,
-                    lote: lote,
-                    route: 'buscaInformacoesLocal'
-                },
-                success: function(response) {
-                    if(response.success) {
-                        document.getElementById('qtdlocal').innerHTML = response.success.qtdlocal;
-                        if(response.success.qtdmax == -1) {
-                            document.getElementById('qtdmax').value = '';
-                        } else {
-                            document.getElementById('qtdmax').value = response.success.qtdmax;
-                        }
-                    } else {
-                        document.getElementById('endsaida').value = '';
-                        alert('Erro: ' + response.error);
+
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            codemp: codemp , // Enviar vazio se não houver valor
+            referencia: referencia,
+            endsaida: endsaida,
+            lote: lote,
+            route: 'buscaInformacoesLocal'
+        },
+        success: function(response) {
+
+            
+           // console.log('Valor de codemp retornado:', response.success ? response.success.codemp : 'Nenhum dado');
+
+            if (response.success) {
+                // Preencher qtdlocal com o valor retornado
+                document.getElementById('qtdlocal').innerHTML = response.success.qtdlocal;
+                const select = document.getElementById('empresas');
+
+                const returnedValue = response.success.codemp; // Valor retornado pelo PHP
+                const options = select.options;
+
+                // Percorrer as opções do select e selecionar a que corresponde ao valor retornado
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value == returnedValue) {
+                        options[i].selected = true; // Define como selecionado
+                        break;
                     }
-                },
-                error: function(xhr, status, error) {
-                    alert('Erro na requisição AJAX: ' + error);
-                    console.log(xhr);
-                    console.log(status);
                 }
-            });   
-        } else {
-            document.getElementById('endsaida').value = '';
-            alert('Digite a referência.');    
+          
+                // Preencher qtdmax com o valor retornado ou deixar vazio se for -1
+                if (response.success.qtdmax == -1) {
+                    document.getElementById('qtdmax').value = '';
+                } else {
+                    document.getElementById('qtdmax').value = response.success.qtdmax;
+                }
+
+                // Preencher o campo selectPadrao com o codemp retornado
+                document.getElementById('selectPadrao').value = response.success.codemp;
+            } else {
+                document.getElementById('endsaida').value = '';
+                alert('Erro: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
         }
-    } else {
-        document.getElementById('endsaida').value = '';
-        alert('Selecione uma empresa.');
-    }
-}
+    });
+};
+
+
+
 
 const buscaQtdMax = () => {
     const referencia = document.getElementById('referencia').value;
@@ -199,9 +215,9 @@ const validaParametros = () => {
             beforeSend: function() {
                 $("#loader").show();
             },
-            // complete: function() {
-            //     $("#loader").hide();
-            // },
+            complete: function() {
+                $("#loader").hide();
+            },
             data: {
                 codemp: codemp,
                 referencia: referencia,
@@ -223,11 +239,6 @@ const validaParametros = () => {
                     if(confirmacao) {
                         transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdneg, qtdmax);
                     }
-                    else{
-
-                        $("#loader").hide();
-                    }
-
                 } else {
                     alert('Erro: ' + response.error);
                 }
@@ -249,9 +260,9 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
         method: 'POST',
         url: '../routes/routes.php',
         dataType: 'json',
-        // beforeSend: function() {
-        //     $("#loader").show();
-        // },
+        beforeSend: function() {
+            $("#loader").show();
+        },
         complete: function() {
             $("#loader").hide();
         },
@@ -276,7 +287,6 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
             } else {
                 alert('Erro: ' + response.error);
             }
-      //      $("#loader").hide();
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
