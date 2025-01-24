@@ -49,6 +49,9 @@ $codusu = $_SESSION["idUsuario"];
 			$agrupmin = $row2['AGRUPMIN'];
 			$precovenda = $row2['PRECOVENDA'];
 			$fornecedores = $row2['OBSETIQUETA'];
+			$volume = $row2['VOLUME'];
+			$COMPLDESC = $row2['COMPLDESC'];
+
 
 			?>
 
@@ -59,11 +62,13 @@ $codusu = $_SESSION["idUsuario"];
 						<h6>Referência: <?php echo $codreferencia; ?></h6>
 						<h6>Preço venda: R$<?php echo str_replace('.', ',', $precovenda); ?></h6>
 						<h6>Ref. Fornecedores: <?php echo str_replace('.', ',', $fornecedores); ?></h6>
+						<h6>Complemento: <?php echo $COMPLDESC; ?></h6>
 					</div>
 					<div class="infos-2">
 						<h6>Media venda: <?php echo $mediavenda; ?></h6>
 						<h6>Agrupamento mínimo: <?php echo $agrupmin; ?></h6>
 						<h6>Descrição: <?php echo $descrprod; ?></h6>
+						<h6>Vol.: <?php echo $volume; ?></h6>						
 						<h6>Local padrão:
 							<?php
 							$tsql = "	SELECT DISTINCT CODLOCALPAD 

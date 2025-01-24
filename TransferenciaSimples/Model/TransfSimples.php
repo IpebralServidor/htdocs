@@ -63,48 +63,50 @@ function buscaLocalPadrao($conn, $referencia, $codemp)
 function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
 {
     try {
-        $params = array($codemp, $referencia, $referencia, $endsaida, $lote);
+        $params = array($codemp, $referencia, $endsaida, $lote);
 
-        $tsql = "SELECT SUM(DISTINCT EST.ESTOQUE - EST.RESERVADO) AS QTDLOCAL, ISNULL(PEM.AD_QTDMAXLOCAL, -1) AS QTDMAX FROM TGFEST EST
-                INNER JOIN TGFPRO PRO
-                ON EST.CODPROD = PRO.CODPROD
-                LEFT JOIN TGFPEM PEM
-                ON EST.CODPROD = PEM.CODPROD
-                AND EST.CODEMP = PEM.CODEMP
-                AND EST.CODLOCAL = PEM.CODLOCALPAD
-				INNER JOIN TGFBAR BAR
-				ON PRO.CODPROD = BAR.CODPROD
-                WHERE EST.CODEMP = ?
-                AND EST.CODPARC = 0 
-                AND (PRO.REFERENCIA = ?
-				OR BAR.CODBARRA = ?)
-                AND EST.CODLOCAL = ?
-                AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
-                AND ESTOQUE - RESERVADO > 0
-                AND RESERVADO = 0
-                GROUP BY ISNULL(PEM.AD_QTDMAXLOCAL, -1)";
+        $tsql = "SELECT * FROM [AD_FNT_TRANSF_SIMPLES_PHP] (?,?,?,?)";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
         }
-        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-        if (!isset($row['QTDLOCAL'])) {
+
+        $rows = []; // Armazena todas as linhas retornadas
+        $codempSet = []; // Para verificar duplicidade em CODEMP
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $rows[] = $row; // Adiciona a linha ao array
+            $codempSet[$row['CODEMP']] = true; // Usa o valor de CODEMP como chave
+        }
+
+        if (empty($rows)) {
             throw new Exception('Produto com reserva ou não encontrado neste endereço.');
         }
 
+        // Verifica se há mais de um valor distinto em CODEMP
+        if (count($codempSet) > 1) {
+            throw new Exception('Local existe em mais de uma empresa. Favor escolher a empresa manualmente.');
+        }
+
+        // Recupera a única linha, pois temos apenas uma empresa
+        $row = $rows[0];
         $response = [
             'success' => [
                 'qtdlocal' => $row['QTDLOCAL'],
-                'qtdmax' => $row['QTDMAX']
+                'qtdmax' => $row['QTDMAX'],
+                'codemp' => $row['CODEMP']
             ]
         ];
+
         echo json_encode($response);
+
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
 }
+
 
 function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
 {

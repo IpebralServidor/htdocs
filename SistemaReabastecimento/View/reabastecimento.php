@@ -481,11 +481,14 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                         <h6>Agp. min: <span id="agrupmin"><span></h6>
 
                         <div class="d-flex justify-content-start">
-                            <h6>Reservado: <span id="reservado"></span>&nbsp / &nbsp</h6>
+                            
                             <h6 id="qtdLocal">Qtd Local: <span id="qtdlocal"></span>&nbsp / &nbsp</h6>
                             <h6 id="informacaoAtualizada">0</h6>
                             <span class="obsMovimentacoes movimentacoesFlag" id="obsMovimentacoes" data-bs-toggle="modal" data-bs-target="#movimentacoesModal" style="display: block;" onclick="retornaMovimentacoes()"></span>
                         </div>
+                        
+                        <h6>Reservado: <span id="reservado"></span></h6>
+                        <h6>Disponivel: <span id="disponivel"></span></h6>
 
                         <h6>Max. loc. padrão: <span id="maxlocalpadrao"></span>
                             <?php if ($tipoNota == 'A') { ?>
@@ -496,7 +499,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                                 </button>
                             <?php } ?>
                         </h6>
-
+                        
                         <h6>Est. loc. padrão: <span id="estlocalpadrao"></span></h6>
                         <h6>Med. venda: <span id="mediavenda"></span></h6>
                     </div>
@@ -1354,7 +1357,8 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             document.getElementById("observacao").textContent = retorno[9];
                             document.getElementById("agrupmin").textContent = retorno[3];
                             document.getElementById("qtdlocal").textContent = retorno[4];
-                            document.getElementById("reservado").textContent = retorno[16];
+                            document.getElementById("informacaoAtualizada").textContent = retorno[4];  
+                            document.getElementById("reservado").textContent = retorno[16];                            
                             document.getElementById("fornecedores").textContent = retorno[11];
                             document.getElementById("maxlocalpadrao").textContent = retorno[5];
                             document.getElementById("estlocalpadrao").textContent = retorno[6];
@@ -1364,6 +1368,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             document.getElementById("qtdlocalInput").value = retorno[4];
                             document.getElementById("sequencia").value = retorno[8];
                             document.getElementById("descricao").textContent = retorno[13];
+                            document.getElementById("disponivel").textContent = retorno[17];
 
                             produtoseq = retorno[8]
 
