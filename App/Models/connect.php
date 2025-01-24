@@ -86,7 +86,13 @@
  				//$_SESSION['perm']      = $this->dados['Permissao'];
  				//$_SESSION['foto']      = $this->dados['imagem'];
  				
- 				header("Location: ../menu.php");
+ 				
+ 				if($_SESSION['idUsuario'] == 3374 || $_SESSION['idUsuario'] == 4240) {
+ 					header("Location: ../importacao/preco/listaorcamento.php");
+ 				} else {
+ 					header("Location: ../menu.php");
+ 				}
+
  			}else{
  				header("Location: ../login.php?alert=2");
  			}
