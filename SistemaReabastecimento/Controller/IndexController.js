@@ -17,9 +17,12 @@ function abrir() {
             }, //Dados para consulta
             //função que será executada quando a solicitação for finalizada.
             success: function(msg) {
+                
                 if(msg == -1) {
                     alert('Nota não existe ou já confirmada.');
-                } else if (msg.substring(0, 2) == 13) {
+                } else if (msg == -2) {
+                    alert('Esta nota não é uma transferência');
+                } else if(msg == -3) {
                     $.ajax({
                         type: 'POST', //Método que está sendo utilizado.
                         dataType: 'html', //É o tipo de dado que a página vai retornar.
@@ -44,7 +47,8 @@ function abrir() {
                         }
                     });
                 } else {
-                    alert('Esta nota não é uma transferência');
+                    document.getElementById('msg').innerHTML = msg;
+                    abrirPopAutorizaTrava();
                 }
             }
         });
@@ -138,4 +142,55 @@ function atribuirDataBotao(button) {
 
 const abrirPopFiltroNota = () => {
     document.getElementById('popFiltroNota').classList.toggle("active");
+}
+
+const abrirPopAutorizaTrava = () => {
+    document.getElementById('popAutorizaTrava').classList.toggle("active");
+    document.getElementById('user').value = '';
+    document.getElementById('senha').value = '';
+}
+
+const autorizaTrava = () => {
+    let user = document.getElementById('user').value;
+    let senha = document.getElementById('senha').value;
+    $.ajax({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/autorizatrava.php',
+        data: {
+            user: user,
+            senha: senha
+        },
+        success: function(msg) {
+            if(msg === 'erro') {
+                alert('Não foi possível autorizar.');
+            } else {
+                abrirPopAutorizaTrava();
+                let nunota = document.getElementById('numeroNota').value;
+                $.ajax({
+                    type: 'POST', //Método que está sendo utilizado.
+                    dataType: 'html', //É o tipo de dado que a página vai retornar.
+                    url: '../Model/buscarvinculo.php', //Indica a página que está sendo solicitada.
+                    async: false,
+                    beforeSend: function() {
+                        $("#loader").show();
+                    },
+                    complete: function() {
+                        $("#loader").hide();
+                    },
+                    data: {
+                        numeroNota: nunota
+                    }, //Dados para consulta
+                    //função que será executada quando a solicitação for finalizada.
+                    success: function(msg) {
+                        if (msg == 0) {
+                            document.getElementById('popConfirmar').classList.toggle("active");
+                        } else {
+                            Confirmar();
+                        }
+                    }
+                });
+            }
+        }
+    });
 }

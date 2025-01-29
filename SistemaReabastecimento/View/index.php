@@ -47,6 +47,29 @@ require_once '../../App/auth.php';
 
 		</div>
 	</div>
+
+	<div class="popup" id="popAutorizaTrava">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopAutorizaTrava()">
+					<i class="fa-solid fa-xmark"></i>
+					<!-- <i class="fa-solid fa-circle-xmark"></i> -->
+				</div>
+
+				<div class="form">
+					<strong><label id="msg"></label></strong>
+					<br>
+					<label>Usuário:</label>
+					<input type="text" id="user" required>
+
+					<label>Senha:</label>
+					<input type="password" id="senha" required>
+					<button id="btn-autorizacorte" onclick="autorizaTrava();">Confirmar</button>
+				</div>
+			</div>
+
+		</div>
 	</div>
 
 	<div>
@@ -82,7 +105,7 @@ require_once '../../App/auth.php';
 								<option value="TRANSF_ABAST_FILIAL_36">Abastecimento 3/6</option>
 								<option value="TRANSF_ABAST_FILIAL_17">Abastecimento 1/7</option>
 								<option value="TRANSF_TROCA_PROPRIEDADE">Troca de Propriedade</option>
-																													
+
 							</select>
 							<strong>CD:</strong>
 							<select id="cdTransf" class="form-control">
@@ -94,8 +117,8 @@ require_once '../../App/auth.php';
 
 							<strong>Referencia/Cod.barra</strong>
 							<input type="text" id="referencia" class="form-control">
-								
-						
+
+
 							<button id="confirmaFiltroNota" onclick="abrirPopFiltroNota(); produtos();">Confirmar</button>
 						</div>
 					</div>

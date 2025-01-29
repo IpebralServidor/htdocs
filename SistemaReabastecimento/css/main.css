@@ -946,7 +946,7 @@ border-top: solid 5px #e54e43;
 	transform: translate(-50%, -50%) scale(0);
 	background: #fff;
 	width: 450px;
-	height: 350px;
+	height: auto;
 	z-index: 2;
 }
 .popup.active .overlay{
