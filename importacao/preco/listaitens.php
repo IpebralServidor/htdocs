@@ -48,11 +48,12 @@ $_SESSION['nuorcamento'] = $nuorcamento;
             <thead>
                 <tr>
                     <th width="15%">Referência</th>
-                    <th width="15%">Fabricante</th>
-                    <th width="40%">Descrição</th>
+                    <th width="10%">Fabricante</th>
+                    <th width="30%">Descrição</th>
                     <th width="10%">Quantidade</th>
                     <th width="15%">Referência Interna</th>
-                    <th width="15%">Preço Venda</th>
+                    <th width="10%">Preço Venda</th>
+                    <th width="10%">Estoque</th>
                 </tr>
             </thead>
             
@@ -69,7 +70,8 @@ $_SESSION['nuorcamento'] = $nuorcamento;
                             PRECOVENDA,
                             CORLINHA,
                             DESCRICAO,
-                            QUANTIDADE
+                            QUANTIDADE,
+                            ESTOQUE
                      FROM AD_IMPORTACAO_TELEMARKETING
                      WHERE NUORCAMENTO = $nuorcamento";
 
@@ -83,11 +85,12 @@ $_SESSION['nuorcamento'] = $nuorcamento;
                 $listaConferencias .= "
                         <tr id='linhaSelecionada' data-id='$row[REFERENCIAFABRICANTE]' style='background-color: $row[CORLINHA];'>
                             <td style='width: 15%;'>$row[REFERENCIAFABRICANTE] </td>
-                            <td style='width: 15%;'>$row[FABRICANTE] </td>
-                            <td style='width: 40%;'>$row[DESCRICAO] </td>
-                            <td style='width: 5%;'><input class='quantidade' style='width: 100%;' type='number' value='$row[QUANTIDADE]' min='0'> </td>
+                            <td style='width: 10%;'>$row[FABRICANTE] </td>
+                            <td style='width: 30%;'>$row[DESCRICAO] </td>
+                            <td style='width: 10%;'><input class='quantidade' style='width: 100%;' type='number' value='$row[QUANTIDADE]' min='0'> </td>
                             <td style='width: 15%;'>$row[REFERENCIAINTERNA] </td>
-                            <td style='width: 15%;'>$row[PRECOVENDA] </td>
+                            <td style='width: 10%;'>$row[PRECOVENDA] </td>
+                            <td style='width: 10%;'>$row[ESTOQUE] </td>
                             
                         </tr>
                 ";
