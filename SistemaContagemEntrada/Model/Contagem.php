@@ -34,7 +34,7 @@ function buscaItensContagem($conn, $nunota, $tipo, $codusu)
 function buscaInformacoesProduto($conn,$nunota,$referencia,$tipo)
 {
     try {
-        $params = array($nunota,$referencia, $referencia,$tipo);
+        $params = array($nunota,$referencia,$tipo);
         $tsql = "
         SELECT * FROM [AD_FNT_BUSCA_INFO_PRODUTO_ENTRADA_APP](?,?,?)
         ";
