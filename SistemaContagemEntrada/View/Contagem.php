@@ -13,10 +13,12 @@
     <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../Controller/contagemController.js?v=<?php time() ?>"></script>
+    <script src="../../components/emailFoto/js/emailFoto.js"></script>    
     <title>Contagem</title>
 </head>
 <body>
     <div class="page">
+        <div id="emailFoto"></div>
         <div id="loader" style="display: none;">
             <img style="width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif" alt="Loading...">
         </div>
@@ -36,6 +38,9 @@
 
                         <input type="radio" id="trocado" name="ocorrencia" value="Produto trocado">
                         <label class="labelOcorrencia" for="trocado">Produto trocado</label><br>
+
+                        <input type="radio" id="naorecebido" name="ocorrencia" value="Produto nao recebido">
+                        <label class="labelOcorrencia" for="naorecebido">Produto nao recebido</label><br>
 
                         <div class="d-flex align-items-center">
                             <label class="labelOcorrencia me-2" for="outros">Outros: </label>
@@ -149,12 +154,12 @@
                     </div>
                     <div class="row">
                         <div class="mb-1 col-6">
-                            <label for="quantidade" class="form-label">Qtd. Contada</label>
-                            <input type="number" class="form-control" id="quantidade">
-                        </div>
-                        <div class="mb-1 col-6">
                             <label for="codbalanca" class="form-label">Cod. Balança</label>
                             <input type="number" class="form-control" id="codbalanca" >
+                        </div>
+                        <div class="mb-1 col-6">
+                            <label for="quantidade" class="form-label">Qtd. Total Contada</label>
+                            <input type="number" class="form-control" id="quantidade">
                         </div>
                     </div>
                 </div>
@@ -169,8 +174,9 @@
                         <div>
                             <span class="fw-bold">Ref. fornecedores: </span><span id="obsetiqueta"></span>
                         </div>
-                        <div>
-                            <span class="fw-bold">Qtd. Separar: </span><span id="qtdseparar"></span>
+                        <div class="special-item total">
+                            <span class="fw-bold">Qtd. Separar: </span><span id="qtdseparar"></span><br>
+                            <!-- <span class="fw-bold">Total: </span><span id="total"></span> -->
                         </div>
                     </div>
                 </div>
@@ -182,8 +188,8 @@
 
                 <div class="dimensions-box">
                     <div class="dimensions-header">
-                        <h3>Dimensões e Peso</h3>
-                        <button class="update-btn" onclick="atualizarDimensoes()"><i class="fa-solid fa-arrows-rotate"></i> Atualizar</button>
+                        <h4>Dimensões e Peso</h4>
+                        <!-- <button class="update-btn" onclick="atualizarDimensoes()"><i class="fa-solid fa-arrows-rotate"></i> Atualizar</button> -->
                     </div>
                     <div class="row">
                         <div class="mb-1 col-6">
@@ -205,7 +211,13 @@
                             <input type="number" class="form-control" id="comprimento" step="0.1">
                         </div>
                     </div>
+                    
+                    <div class="d-flex align-items-center justify-content-center">
+                        <img id="imagemcaixa" style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="../../images/dimensoes.png" />
+                    </div>
                 </div>    
+                
+
             </div>
 
             <div class="buttonsRow"> 

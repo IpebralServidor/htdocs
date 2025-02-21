@@ -161,10 +161,10 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.dimensions-header h3 {
+.dimensions-header h4 {
   font-weight: 500;
   color: var(--primary-color);
   margin: 0; /* Remove margens para melhor alinhamento */
@@ -351,4 +351,19 @@ input {
 }
 .div-form{
 	width: 100%;
+}
+
+.special-item {
+  background-color: #f0f8ff; /* cor suave para destacar */
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #b0c4de;
+}
+
+.total {
+
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 5px;
+  font-size: 13px;
 }

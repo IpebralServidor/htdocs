@@ -46,9 +46,13 @@
                         <th width="20%">Qtd Itens</th>
                         <th width="20%">Status</th>
                         <th width="20%">Usuário</th>
+                        <th width="20%">Parceiro</th>
+                        <th width="20%">Dt.Neg.</th>
+                        <th width="20%">TOP</th>
+                        <th width="20%">Empresa</th>
                     </tr>
                 </thead>
-                <tbody id="listaNotas" style="cursor: pointer" ></tbody>
+                <tbody id="listaNotas" style="cursor: pointer"></tbody>
             </table>
         </div>
     </main>    

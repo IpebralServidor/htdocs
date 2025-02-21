@@ -35,19 +35,65 @@ const buscaNotasContagem = () => {
 }
 
 const confirmaAbrirContagem= (row) => {
+    
     const nunota = row.id;
     const tipo = row.getAttribute('data-tipo');
     const status = row.getAttribute('data-status');   
-    let confirmMsg;
-    if(status === 'D') {
-        confirmMsg = `Deseja abrir contagem o N° ${nunota}?`;
-    } else if(status.includes('C')) {
-        confirmMsg = `Contagem já concluída. Deseja abrir nova contagem p/N° ${nunota}?`;
-    }
-    const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
-    if(confirmacao) {
-        window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;
-    }
+    if(tipo == 'N') {
+        $.ajax({
+            method: 'GET',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            data: {            
+                nunota : nunota,
+                route: 'verificaEmpresa'
+            },
+            success: function(response) {
+                if(response.success.msg != 'false') {
+                    alert('Existem notas empresa 1 para esse parceiro que são prioridade! Contar eles primeiro Notas: ' + response.success.msg)
+                    return;
+                } else {
+                    
+                    let confirmMsg;
+                    if(status === 'D') {
+                        confirmMsg = `Deseja abrir contagem o N° ${nunota}?`;
+                    } else if(status.includes('C')) {
+                    alert('Não é possível abrir contagem concluída sem pedido de recontagem.');
+                    return;
+                    }
+                    const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
+                    if(confirmacao) {
+                        window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;
+                    }        
+                }
+                
+                   
+            },
+            error: function(xhr, status, error) {
+                alert('Erro na requisição AJAX: ' + error);
+                console.log(xhr);
+                console.log(status);
+            }
+        });
+    } else {
+        let confirmMsg;
+        if(status === 'D') {
+            confirmMsg = `Deseja abrir contagem o N° ${nunota}?`;
+        } else if(status.includes('C')) {
+        alert('Não é possível abrir contagem concluída sem pedido de recontagem.');
+        return;
+        }
+        const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
+        if(confirmacao) {
+            window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;
+        }
+    } 
 }
 
 const confirmaAbrirContagemFiltro= () => {

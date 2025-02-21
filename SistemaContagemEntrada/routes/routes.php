@@ -43,6 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+            case 'verificaEmpresa':
+                if (isset($_GET['nunota'])) {
+                    $nunota = $_GET['nunota'];
+                    verificaEmpresa($conn, $nunota);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             default:
                 echo json_encode(['error' => 'Rota não reconhecida']);
                 break;
@@ -79,27 +87,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }   
                 break;
             case 'verificaRecontagem':
-                if (isset($_POST['nunota']) && isset($_POST['referencia']) && isset($_POST['qtdcont']) && isset($_POST['codbalanca']) && isset($_POST['tipo']) && isset($_POST['lote'])) {
+                if (isset($_POST['nunota']) && isset($_POST['referencia']) && isset($_POST['qtdcont']) && isset($_POST['codbalanca']) && isset($_POST['tipo']) && isset($_POST['lote']) && isset($_POST['qtdseparar'])) {
                     $nunota = $_POST['nunota'];
                     $referencia = $_POST['referencia'];
                     $qtdcont = $_POST['qtdcont'];
                     $codbalanca = $_POST['codbalanca'];
                     $tipo = $_POST['tipo'];
                     $lote = $_POST['lote'];
-                    verificaRecontagem($conn, $nunota, $referencia,$qtdcont,$codbalanca,$tipo, $lote);
+                    $qtdseparar = $_POST['qtdseparar'];
+                    verificaRecontagem($conn, $nunota, $referencia,$qtdcont,$codbalanca,$tipo, $lote, $qtdseparar);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
             case 'atualizarContagem':
-                if (isset($_POST['referencia']) && isset($_POST['nunota']) && isset($_POST['tipo']) && isset($_POST['codbalanca']) && isset($_POST['qtdcont']) && isset($_POST['lote'])) {
+                if (isset($_POST['referencia']) && isset($_POST['nunota']) && isset($_POST['tipo']) && isset($_POST['codbalanca']) && isset($_POST['qtdcont']) && isset($_POST['lote']) && isset($_POST['qtdseparar'])) {
                     $referencia = $_POST['referencia'];
                     $nunota = $_POST['nunota'];
                     $tipo = $_POST['tipo'];
                     $codbalanca = $_POST['codbalanca'];
                     $qtdcont = $_POST['qtdcont'];
                     $lote = $_POST['lote'];
-                    atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote);
+                    $qtdseparar = $_POST['qtdseparar'];
+
+                    atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
@@ -108,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if (isset($_POST['nunota']) && isset($_POST['tipo'])) {
                     $nunota = $_POST['nunota'];
                     $tipo = $_POST['tipo'];
-                    finalizarContagem($conn,$nunota,$tipo);
+                    finalizarContagem($conn,$nunota,$tipo, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
@@ -126,10 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }   
                 break;
             case 'editaSubContagem':
-                if (isset($_POST['nucontsub']) && isset($_POST['qtd'])) {
+                if (isset($_POST['nucontsub']) && isset($_POST['qtd']) && isset($_POST['nunota']) && isset($_POST['tipo'])) {
                     $nucontsub = $_POST['nucontsub'];
                     $qtd = $_POST['qtd'];
-                    editaSubContagem($conn, $nucontsub, $qtd);
+                    $nunota = $_POST['nunota'];
+                    $tipo = $_POST['tipo'];
+                    editaSubContagem($conn, $nucontsub, $qtd, $nunota, $tipo);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   

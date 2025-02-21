@@ -26,7 +26,7 @@ function buscaItensContagem($conn, $nunota, $tipo, $codusu)
             'success' => utf8_encode($tableHtml),
             'progress_bar' => $progressBar
         ]);
-    } catch (Exception $e) {
+    } catch  (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
 }
@@ -67,7 +67,7 @@ function buscaInformacoesProduto($conn,$nunota,$referencia,$tipo)
                 'largura' => ($row['LARGURA'] == 0 ? null : $row['LARGURA']),
                 'altura' => ($row['ALTURA'] == 0 ? null : $row['ALTURA']),
                 'espessura' => ($row['ESPESSURA'] == 0 ? null : $row['ESPESSURA']),
-                'qtdseparar' => ($row['QTDSEPARAR'] == 0 ? null : $row['QTDSEPARAR']),
+                'qtdseparar' => $row['QTDSEPARAR'],
 
             ]
         ];
@@ -157,10 +157,10 @@ function desabilitaFinalizaCont($conn,$nunota)
 }
 
 
-function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote)
+function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar)
 {
     try {
-        $params = array($referencia,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote);
+        $params = array($referencia,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar);
         $tsql = "
         DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD FROM TGFPRO PRO INNER JOIN TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD WHERE PRO.REFERENCIA = ? OR BAR.CODBARRA = ?)
         
@@ -169,29 +169,120 @@ function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont,
           @CODBALANCA INT = ?,
           @QTDCONT FLOAT = ?,
           @LOTE VARCHAR(11) = ?,
-          @NUCONT INT 
+          @NUCONT INT ,
+          @QTDSEPARAR FLOAT = ?,
+          @NUCONTITE INT
 
           SET @NUCONT = (SELECT MAX(NUCONT)
                          FROM sankhya.AD_TGFCONTCAB
                          WHERE NUNOTA = @NUNOTA
                              AND TIPO = @TIPO
                              AND STATUS = 'A')
-       
-           UPDATE AD_TGFCONTSUB
-            set AD_TGFCONTSUB.QTDCONT = @QTDCONT,
-				AD_TGFCONTSUB.CODBALANCA = @CODBALANCA,
-                AD_TGFCONTSUB.DTCONT = GETDATE()
-            FROM  AD_TGFCONTSUB  INNER JOIN 
-                    AD_TGFCONTITE ITE ON  ITE.NUCONTITE = AD_TGFCONTSUB.NUCONTITE INNER JOIN
-                    TGFPRO PRO ON PRO.CODPROD = ITE.CODPROD
-            WHERE  ITE.NUCONT = @NUCONT
-                AND ITE.CODPROD = @CODPROD
-                AND ((PRO.TIPCONTEST = 'L' AND ITE.CONTROLE = @LOTE) OR PRO.TIPCONTEST <> 'L')
-                
+          SET @NUCONTITE = (SELECT ITE.NUCONTITE
+                            FROM AD_TGFCONTITE ITE INNER JOIN
+                                TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
+                            WHERE ITE.NUCONT = @NUCONT
+                            AND ITE.CODPROD = @CODPROD
+                            AND ((PRO.TIPCONTEST = 'L' AND ITE.CONTROLE = @LOTE) OR PRO.TIPCONTEST <> 'L'))                    
+
+            IF (SELECT SUB.QTDCONT 
+            FROM sankhya.AD_TGFCONTSUB SUB INNER JOIN
+                    sankhya.AD_TGFCONTITE ITE ON  ITE.NUCONTITE = SUB.NUCONTITE
+            WHERE ITE.NUCONTITE = @NUCONTITE
+                AND NUCONTSUB = (SELECT MAX(NUCONTSUB)
+                                FROM  sankhya.AD_TGFCONTSUB
+                                WHERE AD_TGFCONTSUB.NUCONTITE = ITE.NUCONTITE)) IS NOT NULL
+            BEGIN 
+
+                    INSERT INTO 
+                    sankhya.AD_TGFCONTSUB
+                    (
+                        NUCONTITE,
+                        QTDCONT,
+                        DTCONT,
+                        QTDRECONT,
+                        DTRECONT,
+                        CODBALANCA,
+                        QTDSEPARAR
+                    )
+                    VALUES
+                    (   
+                        @NUCONTITE, -- NUCONTITE - int
+                        @QTDCONT, -- QTDCONT - float
+                        GETDATE(), -- DTCONT - datetime
+                        NULL, -- QTDRECONT - float
+                        NULL, -- DTRECONT - datetime
+                        @CODBALANCA, -- CODBALANCA - varchar(100)
+                        @QTDSEPARAR  -- QTDSEPARAR - float
+
+                    )
+            END ELSE
+            BEGIN
+
+                UPDATE AD_TGFCONTSUB
+                set AD_TGFCONTSUB.QTDCONT = @QTDCONT,
+                    AD_TGFCONTSUB.CODBALANCA = @CODBALANCA,
+                    AD_TGFCONTSUB.DTCONT = GETDATE(),
+                    AD_TGFCONTSUB.QTDSEPARAR = @QTDSEPARAR
+                FROM  AD_TGFCONTSUB  INNER JOIN 
+                        AD_TGFCONTITE ITE ON  ITE.NUCONTITE = AD_TGFCONTSUB.NUCONTITE
+                WHERE  ITE.NUCONTITE = @NUCONTITE
+                   AND AD_TGFCONTSUB.NUCONTSUB = (SELECT MAX(NUCONTSUB)
+                                                  FROM  sankhya.AD_TGFCONTSUB
+                                                  WHERE AD_TGFCONTSUB.NUCONTITE = ITE.NUCONTITE)
+                    
+            END
             UPDATE AD_TGFCONTITE 
-            SET AD_TGFCONTITE.QTDCONT =  (SELECT SUM(QTDCONT) FROM AD_TGFCONTSUB sub WHERE SUB.nucontite = AD_TGFCONTITE.nucontite  )
+            SET AD_TGFCONTITE.QTDCONT =  (SELECT SUM(QTDCONT) 
+                                        FROM AD_TGFCONTSUB sub
+                                        WHERE SUB.nucontite = AD_TGFCONTITE.nucontite  )
             FROM AD_TGFCONTITE                         
             WHERE AD_TGFCONTITE.NUCONT = @NUCONT
+
+            IF(@TIPO = 'O')
+            BEGIN
+                UPDATE TPRAPA
+                SET TPRAPA.AD_QTDCONTADA = (
+                                    SELECT CASE WHEN QTDCONT - (SELECT ISNULL(SUM(QTDAPONTADA), 0)
+                                                    FROM tpriatv ATV INNER JOIN
+                                                            TPRAPO APO ON APO.IDIATV = ATV.IDIATV INNER join
+                                                            TPRAPA APA ON APA.NUAPO= APO.NUAPO INNER JOIN
+                                                            TPREFX EFX  ON EFX.IDEFX = ATV.IDEFX
+                                                        WHERE ATV.IDIPROC = @NUNOTA
+                                                        AND APO.SITUACAO = 'C'
+                                                        AND EFX.DESCRICAO LIKE '%1152%') < 0 
+                                                THEN 0
+                                                ELSE QTDCONT - (SELECT ISNULL(SUM(QTDAPONTADA), 0)
+                                                    FROM tpriatv ATV INNER JOIN
+                                                            TPRAPO APO ON APO.IDIATV = ATV.IDIATV INNER join
+                                                            TPRAPA APA ON APA.NUAPO= APO.NUAPO INNER JOIN
+                                                            TPREFX EFX  ON EFX.IDEFX = ATV.IDEFX
+                                                        WHERE ATV.IDIPROC = @NUNOTA
+                                                        AND APO.SITUACAO = 'C'
+                                                        AND EFX.DESCRICAO LIKE '%1152%')
+
+                                            END
+                                    FROM AD_TGFCONTCAB INNER JOIN
+                                        AD_TGFCONTITE ON AD_TGFCONTCAB.NUCONT = AD_TGFCONTITE.NUCONT
+                                    WHERE NUNOTA = @NUNOTA
+                                        AND AD_TGFCONTITE.NUCONT = (SELECT MAX(NUCONT) 
+                                                                    FROM AD_TGFCONTCAB CC
+                                                                    WHERE CC.NUNOTA = AD_TGFCONTCAB.NUNOTA))
+                FROM TPRIPROC INNER JOIN
+                    TPRIATV ON TPRIPROC.IDIPROC = TPRIATV.IDIPROC INNER JOIN
+                    TPREFX ON TPREFX.IDEFX = TPRIATV.IDEFX
+                        AND TPREFX.IDPROC = TPRIPROC.IDPROC INNER JOIN
+                    TPRAPO ON TPRAPO.IDIATV = TPRIATV.IDIATV INNER JOIN
+                    TPRAPA ON TPRAPO.NUAPO = TPRAPA.NUAPO
+                WHERE TPRIPROC.IDIPROC = @NUNOTA
+                AND TPREFX.DESCRICAO LIKE '%1152%'
+                AND TPRAPA.NUAPO = (SELECT MAX(A.NUAPO)
+                                    FROM TPRAPA A INNER JOIN
+                                        TPRAPO O ON O.NUAPO = A.NUAPO INNER JOIN
+                                        TPRIATV TV ON TV.IDIATV = O.IDIATV 
+                                    WHERE TV.IDIPROC = @NUNOTA 
+                                        AND O.SITUACAO <> 'C')
+            END
             ";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
@@ -214,61 +305,11 @@ function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont,
 }
 
 
-function finalizarContagem($conn,$nunota,$tipo)
+function finalizarContagem($conn,$nunota,$tipo, $codusu)
 {
     try {
-        $params = array($nunota,$tipo);
-        $tsql = "
-            DECLARE @NUNOTA INT  = ?,
-                    @NUCONT INT ,
-                    @TIPO varchar(100) = ?
-                    
-            SET @NUCONT = (SELECT MAX(NUCONT)
-                                FROM sankhya.AD_TGFCONTCAB
-                                WHERE NUNOTA = @NUNOTA
-                                    AND TIPO = @TIPO
-                                    AND STATUS = 'A')
-            IF(@TIPO = 'N')
-            BEGIN
-                UPDATE ITE
-                SET OBSERVACAO = CONCAT(CONVERT(VARCHAR(max), OBSERVACAO), ' | ', CONCAT('Solicitado: ', CONTITE.QTDNEG, ' Informado: ', CONTITE.QTDCONT)),
-                    AD_OCORRENCIAVERIFICADA = 'N'
-                FROM TGFITE ITE INNER JOIN
-                    AD_TGFCONTCAB CONTCAB ON ITE.NUNOTA = CONTCAB.NUNOTA INNER JOIN
-                    AD_TGFCONTITE CONTITE ON CONTCAB.NUCONT = CONTITE.NUCONT
-                                        AND CONTITE.CODPROD = ITE.CODPROD
-                                        AND CONTITE.CONTROLE = ITE.CONTROLE
-                WHERE ITE.NUNOTA = @NUNOTA
-                AND CONTCAB.NUCONT = @NUCONT
-                AND CONTITE.QTDCONT <> CONTITE.QTDNEG
-            END
-            
-            UPDATE AD_TGFCONTCAB 
-            SET STATUS = 'C',
-            DTFIM = GETDATE()
-            WHERE NUCONT = @NUCONT
-            
-            IF(@TIPO = 'O')
-            BEGIN
-            
-            DECLARE 
-            @QTDCONT INT = (SELECT QTDCONT 
-                            FROM AD_TGFCONTITE ITE INNER JOIN
-                                AD_TGFCONTCAB CAB ON CAB.NUCONT = ITE.NUCONT 
-                            WHERE NUNOTA = 774
-                            AND CAB.NUCONT = @nucont)
-           
-            UPDATE TPRIPROC	 
-            SET AD_OBSERVACAO = CONCAT(CONVERT(VARCHAR(max), OBSERVACAO), ' | ', CONCAT('Solicitado: ', (@QTDCONT -  TPRAPA.QTDAPONTADA), ' Informado: ', @QTDCONT))
-            FROM TPRIPA INNER JOIN 
-                TPRIATV ON TPRIATV.IDIPROC = TPRIPA.IDIPROC INNER JOIN 
-                TPRAPO ON TPRAPO.IDIATV = TPRIATV.IDIATV INNER JOIN
-                TPRAPA ON TPRAPA.NUAPO = TPRAPO.NUAPO INNER JOIN 
-                TPRIPROC ON tpriatv.idiproc = TPRIPROC.IDIPROC 
-            WHERE TPRIPROC.IDIPROC = @nunota
-            AND TPRAPA.QTDAPONTADA <> @QTDCONT
-              
-            END";
+        $params = array($nunota,$tipo, $codusu);
+        $tsql = "EXEC AD_STP_FINALIZA_CONTAGEM_APP ?, ?, ?";
             
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
@@ -278,7 +319,7 @@ function finalizarContagem($conn,$nunota,$tipo)
 
         $response = [
             'success' => [
-                'msg' => 'APP: Contagem finalizada com sucesso!',
+                'msg' => 'APP: Contagem finalizada com sucesso!'
             ]
         ];
 
@@ -350,8 +391,8 @@ function mostraContagens ($conn, $nucontite) {
 }
 
 
-
-function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$tipo, $lote)
+ 
+function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$tipo, $lote, $qtdseparar)
 {
     try {
         $params = array($referencia, $referencia, $nunota, $qtdcont, $tipo, $lote, $codbalanca, $codbalanca);
@@ -365,12 +406,14 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
                     @TIPO char(1) = ?,
                     @LOTE VARCHAR(11) = ?,
                     @NUCONT INT 
-            
+
             SET @NUCONT = (SELECT MAX(NUCONT)
-                                FROM sankhya.AD_TGFCONTCAB
-                                WHERE NUNOTA = @NUNOTA
-                                    AND TIPO = @TIPO
-                                    AND STATUS = 'A')
+                FROM sankhya.AD_TGFCONTCAB
+                WHERE NUNOTA = @NUNOTA
+                    AND TIPO = @TIPO
+                    AND STATUS = 'A')
+                    
+            
             IF(@TIPO = 'N')
             BEGIN
                 SELECT ITE.QTDNEG as QTDNEG,
@@ -383,17 +426,14 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
             END 
             ELSE IF(@TIPO = 'O')
             BEGIN
-               SELECT TPRIPA.QTDPRODUZIR as QTDNEG,
-                    ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA
-                 FROM TPRIPA INNER JOIN 
-							  TPRIATV ON TPRIATV.IDIPROC = TPRIPA.IDIPROC INNER JOIN 
-							  TPRAPO ON TPRAPO.IDIATV = TPRIATV.IDIATV INNER JOIN
-							  TPRAPA ON TPRAPA.NUAPO = TPRAPO.NUAPO INNER JOIN 
-							  TPRIPROC ON tpriatv.idiproc = TPRIPROC.IDIPROC  inner join
-                              TGFPRO PRO ON PRO.CODPROD = TPRAPA.CODPRODPA 
+                SELECT TPRIPA.QTDPRODUZIR as QTDNEG,
+                       ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA
+                FROM TPRIPA INNER JOIN 
+                     TPRIPROC ON TPRIPA.idiproc = TPRIPROC.IDIPROC  inner join
+                     TGFPRO PRO ON PRO.CODPROD = TPRIPA.CODPRODPA 
                 WHERE TPRIPROC.IDIPROC = @NUNOTA
-                  AND TPRAPA.CODPRODPA = @CODPROD
-                  AND ((PRO.TIPCONTEST = 'L' AND TPRAPA.CONTROLEPA = @LOTE) OR PRO.TIPCONTEST <> 'L')
+                  AND TPRIPA.CODPRODPA = @CODPROD
+                  AND ((PRO.TIPCONTEST = 'L' AND TPRIPA.CONTROLEPA = @LOTE) OR PRO.TIPCONTEST <> 'L')
             END
                 ";
 
@@ -406,7 +446,7 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
         if (isset($row['QTDNEG'])) {
             $tolerance = 0.000001;
             if (abs($qtdcont == $row['QTDNEG']) || $row['CODBALANCA'] !== 0) {
-                echo atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote);
+                echo atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote, $qtdseparar);
             } else {
                 $params = array($referencia,$referencia,$tipo,$nunota, $lote, $qtdcont);
                 $tsql = "
@@ -417,24 +457,64 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
                 @NUCONT INT ,
                 @TIPO char(1) = ?,
                 @NUNOTA INT = ?,
-                @LOTE VARCHAR(11) = ?
-                
+                @LOTE VARCHAR(11) = ?,
+                @QTDCONT FLOAT = ?,
+                @NUCONTITE INT
 
                 SET @NUCONT = (SELECT MAX(NUCONT)
                                 FROM sankhya.AD_TGFCONTCAB
                                 WHERE NUNOTA = @NUNOTA
                                     AND TIPO = @TIPO
-                                    AND STATUS = 'A')                                    
-                                
-                UPDATE AD_TGFCONTSUB
-                SET AD_TGFCONTSUB.QTDRECONT = ?,
-                    AD_TGFCONTSUB.DTRECONT = GETDATE()
-                FROM  AD_TGFCONTSUB  INNER JOIN 
-                    AD_TGFCONTITE ite ON  ite.nucontite = AD_TGFCONTSUB.nucontite INNER JOIN
-                    TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
-                WHERE ITE.NUCONT = @NUCONT
-                    AND ITE.CODPROD = @CODPROD
-                    AND ((PRO.TIPCONTEST = 'L' AND ITE.CONTROLE = @LOTE) OR PRO.TIPCONTEST <> 'L')
+                                    AND STATUS = 'A')          
+                
+                SET @NUCONTITE = (SELECT ITE.NUCONTITE
+                                  FROM AD_TGFCONTITE ITE INNER JOIN
+                                       TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
+                                  WHERE ITE.NUCONT = @NUCONT
+                                    AND ITE.CODPROD = @CODPROD
+                                    AND ((PRO.TIPCONTEST = 'L' AND ITE.CONTROLE = @LOTE) OR PRO.TIPCONTEST <> 'L')
+                                    )                    
+                IF (SELECT SUB.QTDCONT 
+                FROM sankhya.AD_TGFCONTSUB SUB INNER JOIN
+                        sankhya.AD_TGFCONTITE ITE ON  ITE.NUCONTITE = SUB.NUCONTITE
+                WHERE ITE.NUCONTITE = @NUCONTITE
+                    AND NUCONTSUB = (SELECT MAX(NUCONTSUB)
+                                    FROM  sankhya.AD_TGFCONTSUB
+                                    WHERE AD_TGFCONTSUB.NUCONTITE = ITE.NUCONTITE)) IS NOT NULL
+                BEGIN 
+
+                        INSERT INTO 
+                        sankhya.AD_TGFCONTSUB
+                        (
+                            NUCONTITE,
+                            QTDCONT,
+                            DTCONT,
+                            QTDRECONT,
+                            DTRECONT,
+                            CODBALANCA,
+                            QTDSEPARAR
+                        )
+                        VALUES
+                        (   @NUCONTITE, -- NUCONTITE - int
+                            NULL, -- QTDCONT - float
+                            NULL, -- DTCONT - datetime
+                            @QTDCONT, -- QTDRECONT - float
+                            GETDATE(), -- DTRECONT - datetime
+                            NULL, -- CODBALANCA - varchar(100)
+                            NULL  -- QTDSEPARAR - float
+                            )
+                END ELSE
+                BEGIN
+                    UPDATE AD_TGFCONTSUB 
+                    SET AD_TGFCONTSUB.QTDRECONT = @QTDCONT,
+                        AD_TGFCONTSUB.DTRECONT = GETDATE()
+                    FROM AD_TGFCONTSUB  INNER JOIN 
+                         AD_TGFCONTITE ite ON  ite.nucontite = AD_TGFCONTSUB.nucontite
+                    WHERE ITE.NUCONTITE = @NUCONTITE
+                      AND AD_TGFCONTSUB.NUCONTSUB = (SELECT MAX(NUCONTSUB)
+                                                     FROM  sankhya.AD_TGFCONTSUB
+                                                     WHERE AD_TGFCONTSUB.NUCONTITE = ITE.NUCONTITE) 
+                END
                 ";
                 $stmt = sqlsrv_query($conn, $tsql, $params);
                 if ($stmt === false) {
@@ -457,10 +537,12 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
 }
 
 
-function editaSubContagem ($conn, $nucontsub, $qtd) {
+function editaSubContagem ($conn, $nucontsub, $qtd, $nunota, $tipo) {
     try {
-        $params = array($nucontsub, $qtd);
+        $params = array($nucontsub, $nunota, $tipo, $qtd);
         $tsql = "DECLARE @NUCONTSUB INT = ?
+                DECLARE @NUNOTA INT = ?
+                DECLARE @TIPO CHAR(1) = ?
 
                 UPDATE AD_TGFCONTSUB
                 SET QTDCONT = ?,
@@ -472,7 +554,53 @@ function editaSubContagem ($conn, $nucontsub, $qtd) {
                 UPDATE AD_TGFCONTITE
                 SET AD_TGFCONTITE.QTDCONT =  (SELECT SUM(QTDCONT) FROM AD_TGFCONTSUB SUB WHERE SUB.NUCONTITE = AD_TGFCONTITE.NUCONTITE)
                 FROM AD_TGFCONTITE
-                WHERE NUCONTITE = @NUCONTITE";
+                WHERE NUCONTITE = @NUCONTITE
+
+                IF(@TIPO = 'O')
+                BEGIN
+                    UPDATE TPRAPA
+                    SET TPRAPA.AD_QTDCONTADA = (
+                                        SELECT CASE WHEN QTDCONT - (SELECT ISNULL(SUM(QTDAPONTADA), 0)
+                                                        FROM tpriatv ATV INNER JOIN
+                                                                TPRAPO APO ON APO.IDIATV = ATV.IDIATV INNER join
+                                                                TPRAPA APA ON APA.NUAPO= APO.NUAPO INNER JOIN
+                                                                TPREFX EFX  ON EFX.IDEFX = ATV.IDEFX
+                                                            WHERE ATV.IDIPROC = @NUNOTA
+                                                            AND APO.SITUACAO = 'C'
+                                                            AND EFX.DESCRICAO LIKE '%1152%') < 0 
+                                                    THEN 0
+                                                    ELSE QTDCONT - (SELECT ISNULL(SUM(QTDAPONTADA), 0)
+                                                        FROM tpriatv ATV INNER JOIN
+                                                                TPRAPO APO ON APO.IDIATV = ATV.IDIATV INNER join
+                                                                TPRAPA APA ON APA.NUAPO= APO.NUAPO INNER JOIN
+                                                                TPREFX EFX  ON EFX.IDEFX = ATV.IDEFX
+                                                            WHERE ATV.IDIPROC = @NUNOTA
+                                                            AND APO.SITUACAO = 'C'
+                                                            AND EFX.DESCRICAO LIKE '%1152%')
+
+                                                END
+                                        FROM AD_TGFCONTCAB INNER JOIN
+                                            AD_TGFCONTITE ON AD_TGFCONTCAB.NUCONT = AD_TGFCONTITE.NUCONT
+                                        WHERE NUNOTA = @NUNOTA
+                                            AND AD_TGFCONTITE.NUCONT = (SELECT MAX(NUCONT) 
+                                                                        FROM AD_TGFCONTCAB CC
+                                                                        WHERE CC.NUNOTA = AD_TGFCONTCAB.NUNOTA))
+                    FROM TPRIPROC INNER JOIN
+                        TPRIATV ON TPRIPROC.IDIPROC = TPRIATV.IDIPROC INNER JOIN
+                        TPREFX ON TPREFX.IDEFX = TPRIATV.IDEFX
+                            AND TPREFX.IDPROC = TPRIPROC.IDPROC INNER JOIN
+                        TPRAPO ON TPRAPO.IDIATV = TPRIATV.IDIATV INNER JOIN
+                        TPRAPA ON TPRAPO.NUAPO = TPRAPA.NUAPO
+                    WHERE TPRIPROC.IDIPROC = @NUNOTA
+                    AND TPREFX.DESCRICAO LIKE '%1152%'
+                    AND TPRAPA.NUAPO = (SELECT MAX(A.NUAPO)
+                                        FROM TPRAPA A INNER JOIN
+                                            TPRAPO O ON O.NUAPO = A.NUAPO INNER JOIN
+                                            TPRIATV TV ON TV.IDIATV = O.IDIATV 
+                                        WHERE TV.IDIPROC = @NUNOTA 
+                                            AND O.SITUACAO <> 'C')
+                END
+                ";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 

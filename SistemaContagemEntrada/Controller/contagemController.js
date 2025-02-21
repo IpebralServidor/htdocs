@@ -16,6 +16,23 @@ $(document).ready(function() {
     document.getElementById('notaAtual').innerHTML = 'Nota: ' + nunota;
     buscaItensContagem(nunota, tipo);
     desabilitaFinalizaCont(); //libero ou nao o botao de finalizar contagem
+
+    $('#ocorrenciaModal').on('show.bs.modal', function () {
+        // Desmarca os botões de rádio
+        $('input[name="ocorrencia"]').prop('checked', false);
+    
+        // Limpa o campo de texto
+        $('#outros').val('');
+    });
+    // let inputQtd = document.getElementById('quantidade');
+    // let qtdSeparar = document.getElementById('qtdseparar');
+    // let total = document.getElementById('total');
+
+    // inputQtd.addEventListener('input', function() {
+    //     let qtd = (inputQtd.value == '' ? 0 : inputQtd.value);
+    //     let tot = parseFloat(qtd) + parseFloat(qtdSeparar.innerHTML);
+    //     total.textContent = ' ' + tot;
+    // });
 });
 
 const buscaItensContagem = (nunota, tipo) => {
@@ -121,8 +138,9 @@ const buscaInformacoesProduto = () => {
                 document.getElementById('largura').value  = response.success.largura;
                 document.getElementById('altura').value  = response.success.altura;
                 document.getElementById('comprimento').value  = response.success.espessura;
-                document.getElementById('qtdseparar').value  = response.success.qtdseparar;
-
+                document.getElementById('obsetiqueta').innerHTML  = response.success.obsetiqueta;
+                document.getElementById('qtdseparar').innerHTML  = response.success.qtdseparar;
+                //document.getElementById('total').textContent = response.success.qtdseparar;
             } else {
                 document.getElementById('referencia').value = '';
                 document.getElementById('lote').value = '';
@@ -138,7 +156,6 @@ const buscaInformacoesProduto = () => {
     });   
 }
 
-
 const atualizarDimensoes = () => {
     const referencia = document.getElementById('referencia').value;
     const peso = document.getElementById('peso').value;
@@ -146,7 +163,12 @@ const atualizarDimensoes = () => {
     const altura = document.getElementById('altura').value;
     const comprimento = document.getElementById('comprimento').value;
 
-    
+    // Validação para evitar valores inválidos
+    if (peso == 0 || largura == 0 || altura == 0 || comprimento == 0) {
+        alert('Favor preencher com valores válidos as medidas e peso.');
+        return; // Interrompe a execução da função
+    }
+
     $.ajax({
         method: 'POST',
         url: '../routes/routes.php',
@@ -158,22 +180,17 @@ const atualizarDimensoes = () => {
             $("#loader").hide();
         },
         data: {
-         
             referencia: referencia,
             peso: peso,
-            largura : largura,
+            largura: largura,
             altura: altura,
             comprimento: comprimento,            
             route: 'atualizarDimensoes'
         },
         success: function(response) {
             if(response.success) {
-               
-                alert(response.success.msg)
-
-                
+                alert(response.success.msg);
             } else {
-             
                 alert('Erro: ' + response.error);
             }
         },
@@ -219,6 +236,8 @@ const atualizaContagem = (qtdcont) => {
     const referencia = document.getElementById('referencia').value
     const codbalanca = document.getElementById('codbalanca').value
     const lote = document.getElementById('lote').value;
+    const qtdseparar = document.getElementById('qtdseparar').innerHTML;
+
 
     $.ajax({
         method: 'POST',
@@ -237,11 +256,13 @@ const atualizaContagem = (qtdcont) => {
             codbalanca: codbalanca,
             qtdcont: qtdcont,
             lote: lote,
+            qtdseparar: qtdseparar,
             route: 'atualizarContagem'
         },
         success: function(response) {
             if(response.success) {
                 alert(response.success.msg)
+                atualizarDimensoes();
                 location.reload();            
             } else {
                 
@@ -263,6 +284,7 @@ const verificaRecontagem = () => {
     const codbalanca = document.getElementById('codbalanca').value;
     const qtdcont = document.getElementById('quantidade').value;
     const lote = document.getElementById('lote');
+    const qtdseparar = document.getElementById('qtdseparar').innerHTML;
     
     const peso = document.getElementById('peso').value;
     const largura = document.getElementById('largura').value;
@@ -292,11 +314,12 @@ const verificaRecontagem = () => {
                 codbalanca: codbalanca,
                 tipo:tipo,
                 lote: lote.value,
+                qtdseparar: qtdseparar,
                 route: 'verificaRecontagem'
             },
             success: function(response) {
                 if(response.success) {
-                    alert(response.success);
+                    alert(response.success.msg);
                     location.reload();
                 } else if(response.recontagem) {
                     let quantidadeRecont;
@@ -461,6 +484,8 @@ const saveQtd = (nucontsub) => {
         data: {
             nucontsub: nucontsub,
             qtd: newValue,
+            nunota: nunota,
+            tipo: tipo,
             route: 'editaSubContagem'
         },
         success: function(response) {
