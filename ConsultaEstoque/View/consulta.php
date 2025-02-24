@@ -51,6 +51,7 @@ $codusu = $_SESSION["idUsuario"];
 			$fornecedores = $row2['OBSETIQUETA'];
 			$volume = $row2['VOLUME'];
 			$COMPLDESC = $row2['COMPLDESC'];
+			
 
 
 			?>
@@ -78,8 +79,9 @@ $codusu = $_SESSION["idUsuario"];
 							while ($row2 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
 								echo $row2["CODLOCALPAD"] . " | ";
 							}
+							
 							?>
-						</h6>
+						
 					</div>
 				</div>
 			</div>
@@ -113,6 +115,8 @@ $codusu = $_SESSION["idUsuario"];
 						Pad./Máx.
 					</th>
 					<th class="border-top-right-radius">Controle</th>
+					<th class="border-top-right-radius">Status Contagem</th>
+
 				</tr>
 
 				<?php
@@ -150,6 +154,7 @@ $codusu = $_SESSION["idUsuario"];
 							</div>
 						</td>
 						<td><?php echo $row2['CONTROLE'] ?></td>
+						<td><?php echo $row2['STATUSCONT']; ?></td>
 					</tr>
 				<?php } ?>
 			</table>

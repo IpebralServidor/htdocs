@@ -1,0 +1,37 @@
+/*POP UP EMAIL*/
+.popupEmail {
+    display: none; /* Inicialmente oculto */
+    position: fixed;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.popupEmail {
+    padding: 20px;
+    text-align: center;
+}
+
+.popupEmail p {
+    color: black; /* Texto preto */
+    margin-bottom: 20px;
+}
+
+.bntEmail-sim, .bntEmail-nao {
+    background-color: orange; /* Fundo laranja */
+    color: black; /* Texto preto */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.bntEmail-sim:hover, .bntEmail-nao:hover {
+    background-color: darkorange; /* Cor mais escura ao passar o mouse */
+}

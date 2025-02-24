@@ -241,6 +241,15 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 							<span>Dashboard Pendências</span>
 						</div>
 					</a>
+					<a href="./SistemaContagemEntrada/View/index.php" class="cardStyle">
+						<div class="padding">
+							<div class="icon-card">
+								<i class="fa-solid fa-scale-unbalanced" style="background-color:rgb(255, 59, 245)"></i>
+							</div>
+							<span>Contagem Ent.Mercadorias</span>
+						</div>
+					</a>
+
 				</div>
 			</div>
 
