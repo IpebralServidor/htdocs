@@ -99,7 +99,12 @@
                         <input type="number" class="form-control" id="quantidade" style="color: #86B7FE !important;">
                     </div>
 
-                    <div class="mt-3 col-6">
+                    <div class="mb-1 col-6">
+                        <label for="qtdMax" class="form-label">Qtd Máx Local</label>
+                        <input type="number" class="form-control" id="qtdmax" style="color: #86B7FE !important;">
+                    </div>
+
+                    <div class="mt-3">
                         <div class="form-control" style="font-size: 12px !important;">
                             <div>
                                 <span class="fw-bold">Descrição: </span><span id="descrprod"></span>

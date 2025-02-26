@@ -61,31 +61,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 if (isset($_POST['codemp']) && isset($_POST['codlocal'])) {
                     $codemp = $_POST['codemp'];
                     $codlocal = $_POST['codlocal'];
-                    buscaItensInventario($conn, $codemp, $codlocal,$codusu  );
+                    buscaItensInventario($conn, $codemp, $codlocal, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
             case 'contaProduto':
-                if (isset($_POST['codemp']) && isset($_POST['codlocal']) && isset($_POST['referencia']) && isset($_POST['controle']) && isset($_POST['quantidade'])) {
+                if (isset($_POST['codemp']) && isset($_POST['codlocal']) && isset($_POST['referencia']) && isset($_POST['controle']) && isset($_POST['quantidade']) && isset($_POST['qtdmax'])) {
                     $codemp = $_POST['codemp'];
                     $codlocal = $_POST['codlocal'];
                     $referencia = $_POST['referencia'];
                     $controle = $_POST['controle'];
                     $quantidade = $_POST['quantidade'];
-                    contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu);
+                    $qtdmax = $_POST['qtdmax'];
+                    contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu, $qtdmax);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
             case 'verificaRecontagem':
-                if (isset($_POST['codemp']) && isset($_POST['codlocal']) && isset($_POST['referencia']) && isset($_POST['controle']) && isset($_POST['quantidade'])) {
+                if (isset($_POST['codemp']) && isset($_POST['codlocal']) && isset($_POST['referencia']) && isset($_POST['controle']) && isset($_POST['quantidade']) && isset($_POST['qtdmax'])) {
                     $codemp = $_POST['codemp'];
                     $codlocal = $_POST['codlocal'];
                     $referencia = $_POST['referencia'];
                     $controle = $_POST['controle'];
                     $quantidade = $_POST['quantidade'];
-                    verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu);
+                    $qtdmax = $_POST['qtdmax'];
+                    verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $codusu, $qtdmax);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }

@@ -16,3 +16,6 @@ $connectionInfo = array(
 
 /* Conexao com SQL Server usando autenticacao. */
 $conn = sqlsrv_connect($serverName, $connectionInfo);
+
+
+sqlsrv_query($conn, 'UPDATE sankhya.tsiulg SET ATUALIZANDO = 0  WHERE spid = @@spid');
