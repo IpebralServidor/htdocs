@@ -16,13 +16,14 @@ $nuorcamento = $_SESSION['nuorcamento'];
 				<th>Ref. Fabricante</th>
 				<th>Referência Interna</th>
 				<th>Descr. Prod</th>
+				<th>Estoque</th>
 			</tr>
 
 
 			<?php
 
 			
-			$tsql2 = "SELECT REFERENCIAFABRICANTE, REFERENCIAINTERNA, DESCRPROD, PRECOVENDA
+			$tsql2 = "SELECT REFERENCIAFABRICANTE, REFERENCIAINTERNA, DESCRPROD, PRECOVENDA, ESTOQUE
 					  FROM AD_IMPORTACAO_TELEMARKETING_ITE
 					  WHERE REFERENCIAFABRICANTE = '{$id}'
 						AND NUORCAMENTO = $nuorcamento";
@@ -30,10 +31,14 @@ $nuorcamento = $_SESSION['nuorcamento'];
 			$stmt2 = sqlsrv_query($conn, $tsql2);
 			while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC)) {
 			?>
-				<tr style="cursor: hand; cursor: pointer;" data-id="<?php echo $id; ?>" data-ref="<?php echo $row2['REFERENCIAINTERNA'] ?>" data-price = "<?php echo $row2['PRECOVENDA'] ?>" >
-					<td width="33%" align="center"><?php echo $id; ?>&nbsp;</td>
-					<td width="33%" align="center"><?php echo $row2['REFERENCIAINTERNA']; ?>&nbsp;</td>
-					<td width="33%" align="center"><?php echo mb_convert_encoding($row2['DESCRPROD'], 'UTF-8', mb_detect_encoding($row2['DESCRPROD'], 'UTF-8, ISO-8859-1', true)); ?>&nbsp;</td>
+				<tr style="cursor: hand; cursor: pointer;" data-id="<?php echo $id; ?>" 
+														   data-ref="<?php echo $row2['REFERENCIAINTERNA'] ?>" 
+														   data-price = "<?php echo $row2['PRECOVENDA'] ?>" 
+														   data-est="<?php echo $row2['ESTOQUE'] ?>">
+					<td width="20%" align="center"><?php echo $id; ?>&nbsp;</td>
+					<td width="25%" align="center"><?php echo $row2['REFERENCIAINTERNA']; ?>&nbsp;</td>
+					<td width="40%" align="center"><?php echo mb_convert_encoding($row2['DESCRPROD'], 'UTF-8', mb_detect_encoding($row2['DESCRPROD'], 'UTF-8, ISO-8859-1', true)); ?>&nbsp;</td>
+					<td width="15%" align="center"><?php echo $row2['ESTOQUE']; ?>&nbsp;</td>
 				</tr>
 			<?php
 
@@ -95,6 +100,7 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
                 const selectedId = this.getAttribute('data-id'); // ID da linha na segunda tabela
                 const selectedRef = this.getAttribute('data-ref'); // Valor selecionado
                 const selectedPreco = this.getAttribute('data-price'); // Valor selecionado
+				const selectedEstoque = this.getAttribute('data-est'); // Valor selecionado
                 
 
                 // Atualizar linha correspondente na primeira tabela
@@ -106,7 +112,8 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
 
                     // Atualizar conteúdo da célula quando se clica em uma linha e escolhe a mesma.
                     rowInTable1.cells[4].textContent = selectedRef; 
-                    rowInTable1.cells[5].textContent = selectedPreco; 
+                    rowInTable1.cells[5].textContent = selectedPreco;
+                    rowInTable1.cells[6].textContent = selectedEstoque;
                 }
 
 
