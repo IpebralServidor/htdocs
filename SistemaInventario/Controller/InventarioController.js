@@ -14,6 +14,7 @@ const tempoMaximoDigitacao = 250;
 $(document).ready(function() {
     document.getElementById('titleBoxH6').innerHTML = 'Produtos no endereço ' + codlocal;
     document.getElementById('enderecoAtual').innerHTML = 'Endereço: ' + codlocal;
+    codlocal.startsWith('1') || codlocal.startsWith('8') ? document.getElementById('qtdmax').disabled = false : document.getElementById('qtdmax').disabled = true;
     buscaItensInventario(codemp, codlocal);
 });
 
@@ -120,9 +121,11 @@ const buscaInformacoesProduto = () => {
                         document.getElementById('descrprod').innerHTML = response.success.descrprod;
                         document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
                         document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
+                        document.getElementById('qtdmax').value = response.success.qtdmax;
                     } else {
                         document.getElementById('referencia').value = '';
-                        document.getElementById('lote').value = '';        
+                        document.getElementById('lote').value = '';
+                        document.getElementById('qtdmax').value = '';
                         document.getElementById('referencia').focus();
                     }
                 } else {
@@ -132,10 +135,12 @@ const buscaInformacoesProduto = () => {
                     document.getElementById('descrprod').innerHTML = response.success.descrprod;
                     document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
                     document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
+                    document.getElementById('qtdmax').value = response.success.qtdmax;
                 }
             } else {
                 document.getElementById('referencia').value = '';
                 document.getElementById('lote').value = '';
+                document.getElementById('qtdmax').value = '';
                 document.getElementById('referencia').focus();
                 alert('Erro: ' + response.error);
             }
@@ -152,6 +157,7 @@ const verificaRecontagem = () => {
     const referencia = document.getElementById('referencia').value;
     const controle = document.getElementById('lote').value;
     const quantidade = document.getElementById('quantidade').value;
+    const qtdmax = document.getElementById('qtdmax').value;
     if(quantidade < 0 || referencia === '') {
         alert('Informe os campos corretamente.');
     } else {
@@ -171,6 +177,7 @@ const verificaRecontagem = () => {
                 referencia: referencia,
                 controle: controle,
                 quantidade: quantidade,
+                qtdmax: qtdmax,
                 route: 'verificaRecontagem'
             },
             success: function(response) {
@@ -186,7 +193,7 @@ const verificaRecontagem = () => {
                     if(isNaN(Number(quantidadeTransf))) {
                         alert('Digite uma quantidade válida!');
                     } else {
-                        contaProduto(codemp, codlocal, referencia, controle, quantidadeTransf);
+                        contaProduto(codemp, codlocal, referencia, controle, quantidadeTransf, qtdmax);
                     }
                 } else {
                     alert('Erro: ' + response.error);
@@ -199,7 +206,7 @@ const verificaRecontagem = () => {
     }
 }
 
-const contaProduto = (codemp, codlocal, referencia, controle, quantidadeTransf) => {
+const contaProduto = (codemp, codlocal, referencia, controle, quantidadeTransf, qtdmax) => {
     $.ajax({
         method: 'POST',
         url: '../routes/routes.php',
@@ -216,6 +223,7 @@ const contaProduto = (codemp, codlocal, referencia, controle, quantidadeTransf) 
             referencia: referencia,
             controle: controle,
             quantidade: quantidadeTransf,
+            qtdmax: qtdmax,
             route: 'contaProduto'
         },
         success: function(response) {

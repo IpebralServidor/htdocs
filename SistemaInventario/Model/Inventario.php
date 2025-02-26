@@ -49,12 +49,12 @@ function buscaItensInventario($conn, $codemp, $codlocal, $codusu)
 function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
 {
     try {
-        $params = array($codemp, $codemp, $referencia, $referencia, $codlocal);
+        $params = array($codemp, $codemp, $referencia, $referencia, $codlocal, $codemp, $codlocal);
         $tsql = "
         DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
-                                                WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
-                                                ELSE CAST(? AS VARCHAR(10))
-                                            END
+                                        WHEN ? = 1 THEN (SELECT STRING_AGG(CODEMP, ',') FROM TGFEMP WHERE CODEMP NOT IN (6, 7))
+                                        ELSE CAST(? AS VARCHAR(10))
+                                    END
         DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD FROM TGFPRO PRO INNER JOIN TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD WHERE PRO.REFERENCIA = ? OR BAR.CODBARRA = ?)
         SELECT PRO.CODPROD,
                 PRO.TIPCONTEST, 
@@ -62,11 +62,15 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
                 PRO.AGRUPMIN,
                 PRO.OBSETIQUETA,
                 ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM,
-                INVITE.NUNOTA
+                INVITE.NUNOTA,
+                ISNULL(CONVERT(VARCHAR(100), PEM.AD_QTDMAXLOCAL), '') AS QTDMAX
         FROM TGFPRO PRO LEFT JOIN
-            AD_INVENTARIOITE INVITE ON INVITE.CODPROD = PRO.CODPROD
+             AD_INVENTARIOITE INVITE ON INVITE.CODPROD = PRO.CODPROD
                                     AND INVITE.CODLOCAL = ?
-                                    AND INVITE.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
+                                    AND INVITE.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ',')) LEFT JOIN
+             TGFPEM PEM ON PEM.CODEMP = ?
+                    AND PEM.CODPROD = PRO.CODPROD
+                    AND PEM.CODLOCALPAD = ?
         WHERE PRO.CODPROD = @CODPROD
         ";
 
@@ -91,7 +95,8 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
                 'agrupmin' => $row['AGRUPMIN'],
                 'obsetiqueta' => $row['OBSETIQUETA'],
                 'imagem' => base64_encode($row['IMAGEM']),
-                'nunota' => $row['NUNOTA']
+                'nunota' => $row['NUNOTA'],
+                'qtdmax' => $row['QTDMAX']
             ]
         ];
 
@@ -101,7 +106,7 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
     }
 }
 
-function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario)
+function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax)
 {
     try {
         $params = array($referencia, $referencia, $codemp, $codemp, $codlocal, $controle, $codlocal);
@@ -145,7 +150,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
         if (isset($row['QTDESTOQUE'])) {
             $tolerance = 0.000001;
             if (abs($quantidade - $row['QTDESTOQUE']) < $tolerance) {
-                echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
+                echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax);
             } else {
                 $params = array($referencia, $codemp, $codemp, $codlocal, $controle, $quantidade, $codlocal, $controle);
                 $tsql = "
@@ -201,7 +206,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
             if (verificaSeisMil($conn, $codemp, $referencia) === 'N') {
                 echo json_encode(['error' => 'Produto/codigo de barra não existe']);
             } else {
-                echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
+                echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax);
             }
         }
     } catch (Exception $e) {
@@ -209,11 +214,11 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
     }
 }
 
-function contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario)
+function contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax)
 {
     try {
-        $params = array($codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario);
-        $tsql = "EXEC [sankhya].[AD_STP_AJUSTA_ESTOQUE_INVENTARIO] ?, ?, ?, ?, ?, ?";
+        $params = array($codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax);
+        $tsql = "EXEC [sankhya].[AD_STP_AJUSTA_ESTOQUE_INVENTARIO] ?, ?, ?, ?, ?, ?, ?";
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
@@ -234,8 +239,10 @@ function contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quanti
                 }
             }
         }
+
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
         $response = [
-            'success' => 'Produto inventariado com sucesso.'
+            'success' => 'Produto inventariado com sucesso.' . $row[0]
         ];
         echo json_encode($response);
     } catch (Exception $e) {
