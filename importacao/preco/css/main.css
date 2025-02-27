@@ -39,6 +39,48 @@
 
 
 
+/*POPUP de seleção de itens para Geração da 1700*/
+.popupitens1700{
+	display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    padding: 15px;
+    border: solid 1px #4c4d4f;
+    background: white;
+    z-index: 999;
+}
+
+/* Estilos para telas menores que 768px (celulares) */
+@media screen and (max-width: 767px) {
+    .popupitens1700 {
+        width: 90%; /* 90% do tamanho da tela */
+        height: 70%; /* 90% do tamanho da tela */
+        min-width: 0; /* Remova a largura mínima */
+        min-height: 0; /* Remova a altura mínima */
+    }
+}
+
+/* Estilos para telas maiores ou iguais a 768px (computadores) */
+@media screen and (min-width: 768px) {
+    .popupitens1700 {
+        width: 70%; /* 50% do tamanho da tela */
+        height: 85%; /* 50% do tamanho da tela */
+    }
+}
+
+#popupitens1700 th,
+#popupitens1700 td {
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 300px; /* Define uma largura máxima para evitar que o conteúdo estique demais */
+}
+
+
+
+
 
 
 /* Container para ambos os botões */
@@ -50,6 +92,21 @@
     gap: 10px; /* Espaçamento entre os botões */
     align-items: center; /* Centraliza verticalmente */
 }
+
+
+/* Container para botões na geração da 1700 */
+#floating-container-1700 {
+    position: fixed;
+    bottom: 20px;
+    width: 90%;
+    /* right: 20px; Posição geral no canto inferior direito */
+    align-items: center;
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza os itens horizontalmente */
+}
+
 
 /* Estilo para ambos os botões */
 .floating-button-item {
@@ -106,7 +163,88 @@
     height: 40px; /* Altura mínima do botão para um visual consistente */
 }
 
+/* Botão Gerar 1700*/
+#gera1700-button {
+    display: flex; /* Define o botão como um container flex */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
+    background-color: #2b2727;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px; /* Cantos bem arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    white-space: nowrap; /* Garante que o texto não quebre em várias linhas */
+    border: none; /* Remove bordas padrão */
+    text-align: center; /* Adicional para garantir centralização */
+    height: 40px; /* Altura mínima do botão para um visual consistente */
+}
 
+
+/* Botão para Limpar Linha*/
+#limparlinha-button {
+    display: flex; /* Define o botão como um container flex */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
+    background-color: #e9b2a5;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    border-radius: 30px; /* Cantos bem arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    white-space: nowrap; /* Garante que o texto não quebre em várias linhas */
+    border: none; /* Remove bordas padrão */
+    text-align: center; /* Adicional para garantir centralização */
+    height: 40px; /* Altura mínima do botão para um visual consistente */
+}
+
+
+/* Botão Gerar 1700*/
+#gerar1700-button {
+    display: flex; /* Define o botão como um container flex */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px; /* Cantos bem arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    white-space: nowrap; /* Garante que o texto não quebre em várias linhas */
+    border: none; /* Remove bordas padrão */
+    text-align: center; /* Adicional para garantir centralização */
+    height: 40px; /* Altura mínima do botão para um visual consistente */
+}
+
+
+/* Botão Gerar 1700*/
+#cancelar1700-button {
+    display: flex; /* Define o botão como um container flex */
+    justify-content: center; /* Centraliza o texto horizontalmente */
+    align-items: center; /* Centraliza o texto verticalmente */
+    padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
+    background-color: #84291F;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px; /* Cantos bem arredondados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    white-space: nowrap; /* Garante que o texto não quebre em várias linhas */
+    border: none; /* Remove bordas padrão */
+    text-align: center; /* Adicional para garantir centralização */
+    height: 40px; /* Altura mínima do botão para um visual consistente */
+}
 
 
 
@@ -166,7 +304,7 @@
 }
 
 /*Estilização para botões e inputs para digitação*/
-#search-input, #referencia, #uploadarquivo, #escolherArquivo, #codParc, #baixararquivo {
+#search-input, #referencia, #uploadarquivo, #escolherArquivo, #codParc, #baixararquivo, #codEmp {
     width: 100%;
     padding: 10px;
     font-size: 16px;

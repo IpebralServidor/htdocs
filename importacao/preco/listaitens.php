@@ -5,12 +5,14 @@ require_once '../../App/auth.php';
 
 //Cria variável de sessão desses parâmetros, para ser usado depois caso precise.
 $codParc = isset($_SESSION['codParc']) ? trim($_SESSION['codParc']) : $_POST['codParc'];
+$codEmp = isset($_SESSION['codEmp']) ? trim($_SESSION['codEmp']) : $_POST['codEmp'];
 $nuorcamento = isset($_SESSION['nuorcamento']) ? trim($_SESSION['nuorcamento']) : $_POST['nuorcamento'];
 $codUsuario = $_SESSION['idUsuario'];
 
 //Se foi feito através do clique em uma das tabelas no cabeçalho, cria variáveis de sessão para usar no AJAX
 $_SESSION['codParc'] = $codParc;
 $_SESSION['nuorcamento'] = $nuorcamento;
+$_SESSION['codEmp'] = $codEmp;
 
 
 ?>
@@ -102,6 +104,67 @@ $_SESSION['nuorcamento'] = $nuorcamento;
         </tbody>
 
         </table>
+
+
+        <div id="popupitens1700" class="popupitens1700" style="display: none;">
+			
+			<button class="fechar" onclick="fechargera1700();" id="fecharPesquisa">X</button>
+
+			<div style=" width: 100%; overflow: auto; margin-top: 5px; height: 82%;">
+				<table width="95%" border="1px" style="margin-top: 5px; margin-left: 7px; table-layout: fixed" id="table">
+					<thead>
+						<tr>
+                            <th width="5%"><input type="checkbox" id="selectAll"></th>
+							<th width="20%" style="text-align: center;">Referência</th>
+							<th width="60%" style="text-align: center;">Descrição do Produto</th>
+							<th width="15%" style="text-align: center;">Quantidade</th>
+						</tr>
+					</thead>
+					<tbody>
+                        <?php
+                             //Retorna os dados da tabela para ser exibida na tela. As referências que tem na importação.
+                            $tsql = "SELECT REFERENCIAINTERNA,
+                                            DESCRICAO,
+                                            QUANTIDADE
+                                     FROM AD_IMPORTACAO_TELEMARKETING
+                                     WHERE NUORCAMENTO =$nuorcamento
+                                       AND REFERENCIAINTERNA IS NOT NULL";
+
+                            $stmt = sqlsrv_query($conn, $tsql);
+
+                            $listaItnes1700 = "";
+
+                            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+
+                                $listaItnes1700 .= "
+                                        <tr data-referencia = '$row[REFERENCIAINTERNA]'>
+                                            <td width='5%'><input type='checkbox' class='itemCheckbox'></td>
+                                            <td width='20%' style='text-align: center;'>$row[REFERENCIAINTERNA]</td>
+                                            <td width='60%' style='text-align: center;'>$row[DESCRICAO]</td>
+                                            <td width='15%' style='text-align: center;'>$row[QUANTIDADE]</td>
+                                        </tr>
+                                ";
+
+                            }
+
+                            echo $listaItnes1700;
+
+
+                        ?>
+
+					</tbody>
+				</table>
+			</div>
+			
+            <!-- Botão para gerar 1700 depois que todos os itens estiverem selecionados. -->
+            <div id="floating-container-1700">
+				<div id="gerar1700-button" class="floating-button">Gerar 1700</div>
+				<div id="cancelar1700-button" class="floating-button" onclick="fechargera1700();">Cancelar</div>
+			</div>
+
+		</div>
+
+
     </div>
 
     <!-- Itens que aparecerem na pesquisa -->

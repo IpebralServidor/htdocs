@@ -14,18 +14,16 @@ if (!$conn) {
 
 //Recebe os resultados que foram retornados pelo AJAX
 $id = $_POST['id'];
-$referencia = $_POST['referencia'];
-$preco = $_POST['preco'];
-$estoque = $_POST['estoque'];
 
 
-if (isset($id) && isset($referencia)) {
+
+if (isset($id)) {
 
     // Atualizar o preço na tabela principal
-    $query = "EXEC AD_STP_ATUALIZA_DADOS_IMPORTACAO_TELEMARKETING ?, ?, ?, ?, ?, ?, ?";
-    $params = array($nuorcamento, $codUsuario, $codparc, $id, $referencia, $preco, $estoque);
+    $query = "EXEC AD_STP_LIMPAR_DADOS_IMPORTACAO_TELEMARKETING ?, ?, ?, ?";
+    $params = array($nuorcamento, $codUsuario, $codparc, $id);
     $stmt = sqlsrv_query($conn, $query, $params);
-       
+
 
     if ($stmt === false) {
         die(print_r(sqlsrv_errors(), true));

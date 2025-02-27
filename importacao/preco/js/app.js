@@ -76,8 +76,9 @@ $(document).ready(function () {
 
 
         const nuorcamento = $(this).data('id'); // Obtém o ID da linha clicada
-        const coluna1 = $(this).find('td:eq(0)').text(); // Primeira coluna
-        const coluna2 = $(this).find('td:eq(1)').text(); // Primeira coluna
+        const orcamento = $(this).find('td:eq(0)').text(); // Primeira coluna
+        const empresa = $(this).find('td:eq(1)').text(); // Segunda coluna
+        const parceiro = $(this).find('td:eq(1)').text(); // Terceira coluna
 
         //alert(nuorcamento + ' / ' + coluna1 + ' / ' + coluna2);
 
@@ -92,7 +93,8 @@ $(document).ready(function () {
         const url = "listaitens.php"; // URL de destino
         const data = {
             nuorcamento: nuorcamento,
-            codParc: coluna2
+            codParc: parceiro,
+            codEmp: empresa
         };
         abrirOrcamento(url, data);
 
@@ -159,3 +161,11 @@ function showLoading() {
     // Desativa o botão para evitar múltiplos envios
     document.getElementById('uploadarquivo').disabled = true;
 }
+
+
+document.getElementById("selectAll").addEventListener("change", function() {
+    let checkboxes = document.querySelectorAll(".itemCheckbox");
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});

@@ -51,7 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //Recebe as variáveis de sessão e grava o Parceiro como uma varíavel de sessão.
         $codParc = isset($_POST['codParc']) ? trim($_POST['codParc']) : '';
+        $codEmp = isset($_POST['codEmp']) ? trim($_POST['codEmp']) : '';
         $_SESSION['codParc'] = $codParc;
+        $_SESSION['codEmp'] = $codParc;
         $codUsuario = $_SESSION['idUsuario'];
 
         //Seleciona o último número de orçamento, para inserção nas tabela de cabeçalho e itens
@@ -73,11 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['nuorcamento'] = $nuorcamento;
 
         //insere os itens, de acordo com o cursor.
-        $sql = "EXEC AD_STP_CRIA_IMPORTACAO_TELEMARKETING ?, ?, ?, ?, ?, ?, ?";
+        $sql = "EXEC AD_STP_CRIA_IMPORTACAO_TELEMARKETING ?, ?, ?, ?, ?, ?, ?, ?";
         echo $sql;
 
         foreach ($dados as $linha) {
-            $params = [$nuorcamento, $codUsuario, $codParc, $linha['REFERENCIA'], $linha['FABRICANTE'], $linha['DESCRICAO'], $linha['QUANTIDADE']];
+            $params = [$nuorcamento, $codUsuario, $codParc, $linha['REFERENCIA'], $linha['FABRICANTE'], $linha['DESCRICAO'], $linha['QUANTIDADE'], $codEmp];
             $stmt = sqlsrv_query($conn, $sql, $params);
 
             if ($stmt === false) {

@@ -13,6 +13,10 @@ const fecharprodutos = () => {
     document.getElementById('popupprodutos').style.display = 'none';
 }
 
+const fechargera1700 = () => {
+    document.getElementById('popupitens1700').style.display = 'none';
+}
+
 const pesquisaProduto = () => {
     let referencia = document.getElementById("search-input").value.trim();
 
@@ -54,35 +58,6 @@ const pesquisaProduto = () => {
 
 }
 
-// const chamaTelaConsulta = (codprod) => {
-//     window.location.href="../consulta.php?codprod=" + codprod;
-// }
-
-// //Faz o evento de clique de botão após pesquisar um item específico
-// const popupTable = document.getElementById('produtos');
-// //const selectedId = this.getAttribute('data-id');
-
-// popupTable.addEventListener('click', function(event) {
-//     if (event.target.tagName === 'TD') {
-//         const itemId = event.target.getAttribute('data-popup');
-//         //const idAdicionar = event.target.getAttribute('id-popup');
-//         const idTabela = window.idSelecionado; // ID da tabela principal
-        
-//         //alert('teste');
-
-//         //alert(idTabela + ' / ' + itemId);
-//         //alert(itemId);
-//         //alert(idTabela + ' / '+ idAdicionar);
-
-//         //alert(id);
-
-
-//             insertItem(idTabela, itemId);
-
-//             fecharprodutos();
-
-//     }
-// });
 
 document.addEventListener('click', function(event) {
     if (event.target.closest('#produtos td')) {
@@ -123,6 +98,45 @@ document.addEventListener('click', function(event) {
                     console.log('Item inserido com sucesso!');
                     alert('Item inserido!');
                     listaReferencia(idTabela);
+
+                    
+                    // Aguarda um tempo para garantir que a tabela foi recarregada antes de buscar a última linha
+                    setTimeout(() => {
+                        
+                        // Seleciona a linha correta na tabela #tableListaItens baseada no código do produto
+                        const rowInTable2 = document.querySelector(`#tableListaItens tbody tr[data-codprod="${itemId}"]`);
+                        
+                        if (rowInTable2) {
+                            console.log("Linha encontrada:", rowInTable2);
+                            // Recupera os valores diretamente da linha na tabela de Itens das Referências
+                            const selectedRef = rowInTable2.getAttribute('data-ref');
+                            const selectedPreco = rowInTable2.getAttribute('data-price');
+                            const selectedEstoque = rowInTable2.getAttribute('data-est');
+                            const selectedCodProd = rowInTable2.getAttribute('data-codprod');
+
+                            // Agora, encontramos a linha correspondente na tabela de retorno (#tableListaReferencias)
+                            const rowInTable1 = document.querySelector(`#tableListaReferencias tbody tr[data-id="${idTabela}"]`);
+
+                            if (rowInTable1) {
+                                // Remove a seleção de outras linhas e adiciona a classe "selected" na linha correta
+                                document.querySelectorAll('#tableListaReferencias tbody tr').forEach(r => r.classList.remove('selected'));
+                                rowInTable1.classList.add('selected');
+
+                                // Atualiza as células da linha correspondente na tabela de retorno
+                                rowInTable1.cells[4].textContent = selectedRef;
+                                rowInTable1.cells[5].textContent = selectedPreco;
+                                rowInTable1.cells[6].textContent = selectedEstoque;
+                                rowInTable1.style.backgroundColor = '#D7C0DB'; // Define a cor da linha
+                            }
+                        } else {
+                            console.log("Nenhuma linha encontrada com o ID:", idTabela);
+                        }
+                    }, 500); // Ajusta o tempo necessário para a tabela ser recarregada, para pegar os dados da tabela
+                                        
+                    
+
+
+
                 }
             });
         }

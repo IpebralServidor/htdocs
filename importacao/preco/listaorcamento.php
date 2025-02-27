@@ -1,4 +1,5 @@
 <?php
+
 //inclui a coxão e valida usuário logado.
 include "../../conexaophp.php";
 require_once '../../App/auth.php';
@@ -9,6 +10,7 @@ $codUsuario = $_SESSION['idUsuario'];
 //Coloca os valores de orçamento e código do parceiro como nulo, para recarregar eles novamente no clique em uma linha ou na criação.
 $_SESSION['nuorcamento'] = null;
 $_SESSION['codParc'] = null;
+$_SESSION['codEmp'] = null;
 ?>
 
 <html>
@@ -42,10 +44,11 @@ $_SESSION['codParc'] = null;
         <table style="width: 100%;" id="tableListaOrcamento">
             <thead>
                 <tr>
-                    <th width="25%">Núm. Orçamento</th>
-                    <th width="25%">Parceiro</th>
-                    <th width="25%">Data Criação</th>
-                    <th width="25%">Status</th>
+                    <th width="20%">Núm. Orçamento</th>
+                    <th width="20%">Empresa</th>
+                    <th width="20%">Parceiro</th>
+                    <th width="20%">Data Criação</th>
+                    <th width="20%">Status</th>
                 </tr>
             </thead>
             
@@ -53,30 +56,34 @@ $_SESSION['codParc'] = null;
 
             <?php
 
+            //echo '<script> alert("'.$codUsuario.'") </script>';
             $tsql = "SELECT NUORCAMENTO,
                             CODPARC,
                             DTCRIACAO,
                             CASE WHEN STATUSORCAMENTO = 'A' THEN 'Em Andamento'
                                  WHEN STATUSORCAMENTO = 'C' THEN 'Concluído'
                             END AS STATUSORCAMENTO,
-                            CORLINHA
+                            CORLINHA,
+                            CODEMP
                      FROM AD_IMPORTACAO_TELEMARKETING_CAB
                      WHERE CODUSU = $codUsuario";
 
+            //echo $tsql;
             $stmt = sqlsrv_query($conn, $tsql);
 
             $listaConferencias = "";
 
-            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
 
-                $dataHora = $row[2]->format('d/m/Y H:i:s');
+                $dataHora = $row['DTCRIACAO']->format('d/m/Y H:i:s');
 
                 $listaConferencias .= "
-                        <tr id='linhaSelecionada' data-id='$row[0]' style='background-color: $row[4];'>
-                            <td style='width: 30px;'>$row[0] </td>
-                            <td style='width: 30px;'>$row[1] </td>
+                        <tr id='linhaSelecionada' data-id='{$row['NUORCAMENTO']}' style='background-color: {$row['CORLINHA']};'>
+                            <td style='width: 30px;'>{$row['NUORCAMENTO']} </td>
+                            <td style='width: 30px;'>{$row['CODEMP']} </td>
+                            <td style='width: 30px;'>{$row['CODPARC']} </td>
                             <td style='width: 30px;'>$dataHora </td>
-                            <td style='width: 30px;'>$row[3] </td>
+                            <td style='width: 30px;'>{$row['STATUSORCAMENTO']} </td>
                         </tr>
                 ";
             }
@@ -104,6 +111,7 @@ $_SESSION['codParc'] = null;
             <form action="importaplanilha.php" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
                 <!-- <span> Código do Parceiro </span> -->
                 <input type="text" name="codParc" id="codParc" placeholder="Digite o Cód. do Parceiro" required>
+                <input type="text" name="codEmp" id="codEmp" placeholder="Digite a Empresa (Código)" required>
                 <!-- <span> Arquivo para Upload </span> -->
                 <input type="file" name="excelFile" accept=".xls,.xlsx" id="escolherArquivo" required>
                 <button type="submit" id="uploadarquivo">Upload</button>
