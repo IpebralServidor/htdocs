@@ -43,10 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+            case 'autorizatrava':
+                if (isset($_GET['user']) && isset($_GET['senha'])) {
+                    $user = $_GET['user'];
+                    $senha = $_GET['senha'];
+
+                    autorizatrava($conn, $user,$senha);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             case 'verificaEmpresa':
-                if (isset($_GET['nunota'])) {
+                if (isset($_GET['nunota']) ) {
                     $nunota = $_GET['nunota'];
-                    verificaEmpresa($conn, $nunota);
+                    
+                    verificaEmpresa($conn, $nunota,$codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -111,6 +122,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $qtdseparar = $_POST['qtdseparar'];
 
                     atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }   
+                break;
+            case 'verificaFinalizaContagem':
+                if (isset($_POST['nunota']) && isset($_POST['tipo'])) {
+                    $nunota = $_POST['nunota'];
+                    $tipo = $_POST['tipo'];
+                    verificaFinalizaContagem($conn,$nunota,$tipo, $codusu);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }   
+                break;
+            case 'verificaFinalizaContagem':
+                if (isset($_POST['nunota']) && isset($_POST['tipo'])) {
+                    $nunota = $_POST['nunota'];
+                    $tipo = $_POST['tipo'];
+                    verificaFinalizaContagem($conn,$nunota,$tipo, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   

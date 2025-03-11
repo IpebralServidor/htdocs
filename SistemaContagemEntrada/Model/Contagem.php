@@ -225,7 +225,7 @@ function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont,
                     AD_TGFCONTSUB.DTCONT = GETDATE(),
                     AD_TGFCONTSUB.QTDSEPARAR = @QTDSEPARAR
                 FROM  AD_TGFCONTSUB  INNER JOIN 
-                        AD_TGFCONTITE ITE ON  ITE.NUCONTITE = AD_TGFCONTSUB.NUCONTITE
+                        AD_TGFCONTITE ITE  ON  ITE.NUCONTITE = AD_TGFCONTSUB.NUCONTITE
                 WHERE  ITE.NUCONTITE = @NUCONTITE
                    AND AD_TGFCONTSUB.NUCONTSUB = (SELECT MAX(NUCONTSUB)
                                                   FROM  sankhya.AD_TGFCONTSUB
@@ -305,21 +305,116 @@ function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont,
 }
 
 
-function finalizarContagem($conn,$nunota,$tipo, $codusu)
+function autorizatrava($conn,$user,$senha)
 {
     try {
+        $msg = '';
+        $params = array($user, $senha);            
+        $tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND CODUSU IN (1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100)";
+        $stmtAutorizaCorte = sqlsrv_query($conn, $tsqlAutorizaCorte, $params);
+        
+        $row = sqlsrv_fetch_array($stmtAutorizaCorte, SQLSRV_FETCH_NUMERIC);                
+
+        if (isset($row[0])) {
+            $msg = 'sucess';
+        } else {
+            $msg = 'erro';
+        }        
+        
+        $response = [
+            'success' => [
+               'msg' => $msg
+            ]
+        ];
+   
+        
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+
+
+function verificaFinalizaContagem($conn,$nunota,$tipo, $codusu)
+{
+    try {
+        $msg = '';
         $params = array($nunota,$tipo, $codusu);
-        $tsql = "EXEC AD_STP_FINALIZA_CONTAGEM_APP ?, ?, ?";
+        $tsql = "EXEC AD_STP_VERIFICA_FINALIZA_CONTAGEM_APP ?, ?, ?";
             
         $stmt = sqlsrv_query($conn, $tsql, $params);
+        
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
+            if ($errors !== null) {
+                foreach ($errors as $error) {
+                    $errorMessage = $error['message'];       
+                    $msg = preg_replace('/\[[^\]]*\]/', '', $errorMessage);
+                }
+            }
         }
 
         $response = [
             'success' => [
-                'msg' => 'APP: Contagem finalizada com sucesso!'
+               'msg' => $msg
+            ]
+        ];
+
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+
+function finalizarContagem($conn,$nunota,$tipo, $codusu)
+{
+    try {
+        $msg = '';
+        $params = array($nunota,$tipo, $codusu);
+        $tsql = "EXEC AD_STP_FINALIZA_CONTAGEM_APP ?, ?, ?";
+           
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        
+
+        if ($stmt === false) {
+            $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
+            
+            if ($errors !== null) {
+                foreach ($errors as $error) {
+                    $errorMessage = $error['message'];       
+                    $errorMessage = preg_replace('/\[[^\]]*\]/', '', $errorMessage);                           
+                        throw new Exception($errorMessage);
+                    
+                }
+            }
+        }
+
+       //Consulta para obter o número da transferência
+        $paramsCheck = array($nunota, $nunota);
+        $tsqlCheck = "SELECT NUTRANSF FROM AD_TGFCONTCAB 
+                      WHERE NUNOTA = $nunota 
+                      AND NUCONT = (SELECT MAX(nucont) 
+                                   FROM sankhya.AD_TGFCONTCAB 
+                                   WHERE nunota = $nunota)";
+        
+        $stmtCheck = sqlsrv_query($conn, $tsqlCheck);
+
+        if ($stmtCheck === false) {
+            throw new Exception("Erro ao buscar o número da transferência.");
+        }
+
+        $row = sqlsrv_fetch_array($stmtCheck, SQLSRV_FETCH_ASSOC);
+        $nutransf = $row['NUTRANSF'] ;
+
+        $msg = "APP: Contagem finalizada com sucesso! Transferência N° " . $nutransf;
+
+
+        $response = [
+            'success' => [
+                'msg' => $msg
             ]
         ];
 
