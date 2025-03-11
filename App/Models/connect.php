@@ -47,7 +47,7 @@
  		//echo "<script> alert('1'); </script>";
  		//header("Location: ../listaconferencia.php");
  		//$params = array($username);
- 		$this->query  = "select CODUSU, NOMEUSU, AD_SENHA from TSIUSU where NOMEUSU = '$username'";
+ 		$this->query  = "select CODUSU, NOMEUSU, AD_SENHA, CODGRUPO from TSIUSU where NOMEUSU = '$username'";
  		//$query = "SELECT senha FROM teste_leandro WHERE usuario = '$username'";
  		$this->result = sqlsrv_query($this->SQL, $this->query) or die(sqlsrv_errors($this->SQL));
  		//echo "<script> alert('1'); </script>";
@@ -84,10 +84,11 @@
  				$_SESSION['idUsuario'] = $this->dados['CODUSU'];
  				$_SESSION['usuario']   = $this->dados['NOMEUSU'];
  				//$_SESSION['perm']      = $this->dados['Permissao'];
+				$grupoUsuario = $this->dados['CODGRUPO'];
  				//$_SESSION['foto']      = $this->dados['imagem'];
  				
  				
- 				if($_SESSION['idUsuario'] == 3374 || $_SESSION['idUsuario'] == 4240) {
+ 				if($grupoUsuario == 4 || $_SESSION['idUsuario'] == 181) {
  					header("Location: ../importacao/preco/listaorcamento.php");
  				} else {
  					header("Location: ../menu.php");
