@@ -108,10 +108,11 @@ function buscaNotasContagem($conn)
 
 
 
-function verificaEmpresa ($conn, $nunota) {
+function verificaEmpresa ($conn, $nunota,$codusu) {
     try {
-        $params = array($nunota);
-        $tsql = "SELECT * FROM [AD_FNT_VERIFICA_EMPRESA_CONTAGEM](?)";
+        $params = array($nunota,$codusu);
+        $tsql = "SELECT * FROM [AD_FNT_VERIFICA_EMPRESA_CONTAGEM](?,?)";
+
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
@@ -123,7 +124,11 @@ function verificaEmpresa ($conn, $nunota) {
 
         if ($row['RESULT'] == 0) {            
             $msg = 'false';
-        } else {
+        }
+        else  if ($row['RESULT'] == 2){
+            $msg = 'pend '.$row['NUNOTA']; 
+        }
+        else {
             $msg = $row['NUNOTA'];
         }
 

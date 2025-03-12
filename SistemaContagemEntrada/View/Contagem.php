@@ -17,12 +17,38 @@
     <title>Contagem</title>
 </head>
 <body>
+
+<!-- POP UP ENVIAR EMAIL FOTO E AUTORIZA FINALZAR CONTAGEM -->
     <div class="page">
         <div id="emailFoto"></div>
         <div id="loader" style="display: none;">
             <img style="width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif" alt="Loading...">
         </div>
         
+
+        <div class="popup" id="popAutorizaTrava">
+            <div class="overlay"></div>
+            <div class="content">
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="abrirPopAutorizaContagem()">
+                        <i class="fa-solid fa-xmark" onclick="fecharPopAutorizaContagem()"></i>
+                    </div>
+
+                    <div class="form">
+                        <strong><label id="msg">A contagem está abaixo do esperado. Para finalizar, é necessária a autorização do gerente.</label></strong>
+                        <br>
+                        <label>Usuário:</label>
+                        <input type="text" id="user" required>
+
+                        <label>Senha:</label>
+                        <input type="password" id="senha" required>
+                        <button id="btn-autorizacorte" onclick="autorizaTrava();">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="modal fade" id="ocorrenciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -225,7 +251,7 @@
                     <button id="contarBtn" onclick="verificaRecontagem();" class="btn btn-primary w-100 fw-bold actionBtn">Contar/Parcial</button>
                 </div>
                 <div class="mt-5 w-100 d-flex justify-content-center align-items-center">
-                    <button id="finalizaContarBtn" onclick="finalizarContagem();" class="btn btn-primary w-100 fw-bold actionBtn">Finalizar Contagem</button>
+                    <button id="finalizaContarBtn" onclick="verificaFinalizaContagem();" class="btn btn-primary w-100 fw-bold actionBtn">Finalizar Contagem</button>
                 </div>
                 <div class="mt-5 w-100 d-flex justify-content-center align-items-center">
                     <button id="movimentarBtn" class="btn btn-primary w-100 fw-bold actionBtn" data-bs-toggle="modal" data-bs-target="#ocorrenciaModal">Ocorrência</button>

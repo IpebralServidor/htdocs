@@ -343,8 +343,50 @@ const verificaRecontagem = () => {
     }
 }
 
+const abrirPopAutorizaTrava = () => {
+    document.getElementById('popAutorizaTrava').classList.toggle("active");
+    document.getElementById('user').value = '';
+    document.getElementById('senha').value = '';
+}
 
-const finalizarContagem = () => {
+
+function fecharPopAutorizaContagem() {
+    document.getElementById("popAutorizaTrava").classList.remove("active");
+}
+
+
+const autorizaTrava = () => {
+
+
+    let user = document.getElementById('user').value;
+    let senha = document.getElementById('senha').value;
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            user: user,
+            senha: senha,
+            route: 'autorizatrava'
+        },
+        success: function(response) {
+           console.log(response);
+            if(response.success.msg == 'erro') {
+                alert('Não foi possível autorizar.');
+            } else {
+                finalizarContagem();
+            }
+        }
+    });
+}
+
+const verificaFinalizaContagem = () => {
     $.ajax({
         method: 'POST',
         url: '../routes/routes.php',
@@ -352,6 +394,43 @@ const finalizarContagem = () => {
         beforeSend: function() {
             $("#loader").show();
         },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+            nunota: nunota,
+            tipo : tipo,    
+            route: 'verificaFinalizaContagem'
+        },
+         success: function(response) {
+            if(response.success.msg == 'senha') {
+                abrirPopAutorizaTrava();                        
+            } 
+            else if (response.success.msg .includes('pend'))  {
+                alert('APP: Existem contagens com produção não finalizada, favor verificar: ' + response.success.msg);
+            }
+            else {
+                finalizarContagem();
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });   
+}
+
+
+
+const finalizarContagem = () => {
+    $.ajax({
+        method: 'POST',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
         complete: function() {
             $("#loader").hide();
         },
