@@ -141,7 +141,7 @@ const buscaInformacoesLocal = () => {
                 } else {
                     document.getElementById('qtdmax').value = response.success.qtdmax;
                 }
-
+                buscaLocalPadrao();
                 // Preencher o campo selectPadrao com o codemp retornado
                 document.getElementById('selectPadrao').value = response.success.codemp;
             } else {
