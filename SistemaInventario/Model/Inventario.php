@@ -82,7 +82,7 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
         if (!isset($row['NUNOTA'])) {
-            if (verificaSeisMil($conn, $codemp, $referencia) === 'N') {
+            if (verificaSeisMil($conn, $codemp, $referencia, 'N') === 'N') {
                 throw new Exception('Produto não existe no local.');
             }
         }
@@ -109,9 +109,19 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
 function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax)
 {
     try {
+        $paramsLote = array($referencia, $referencia, $controle);
+        $tsqlLote = "SELECT DISTINCT TGFPRO.TIPCONTEST AS TIPCONTEST
+                    FROM TGFPRO LEFT JOIN 
+                        TGFBAR ON TGFBAR.CODPROD = TGFPRO.CODPROD
+                    WHERE (REFERENCIA = ? OR TGFBAR.CODBARRA = ?)";
+        $stmtLote = sqlsrv_query($conn, $tsqlLote, $paramsLote);
+        $rowLote = sqlsrv_fetch_array($stmtLote, SQLSRV_FETCH_ASSOC);
+        if ($rowLote['TIPCONTEST'] == 'L' && $controle == '') {
+            throw new Exception('Produto controlado por lote, favor informar o lote.');
+        }
+
         $params = array($referencia, $referencia, $codemp, $codemp, $codlocal, $controle, $codlocal);
         $tsql = "
-
             DECLARE @CODEMP_ITEM INT
             DECLARE @CODPROD INT =  (SELECT DISTINCT TGFPRO.CODPROD 
                                     FROM TGFPRO LEFT JOIN 
@@ -203,7 +213,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                 echo json_encode($response);
             }
         } else {
-            if (verificaSeisMil($conn, $codemp, $referencia) === 'N') {
+            if (verificaSeisMil($conn, $codemp, $referencia, $controle) === 'N') {
                 echo json_encode(['error' => 'Produto/codigo de barra não existe']);
             } else {
                 echo contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quantidade, $idUsuario, $qtdmax);
@@ -233,18 +243,22 @@ function contaProduto($conn, $codemp, $codlocal, $referencia, $controle, $quanti
                     if (strpos($errorMessage, 'IPB GERAITE: Estoque insuficiente! Produto:' . $referencia) !== false) {
                         // Se for especificamente esta mensagem, é porque o GERAITE dá erro ao transferir itens do 6000000.
                         // Neste caso, ainda são gerados os dados, e este erro é ignorado.
+                        $response = [
+                            'success' => 'Produto inventariado com sucesso.'
+                        ];
+                        echo json_encode($response);
                     } else {
                         throw new Exception($errorMessage);
                     }
                 }
             }
+        } else {
+            $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+            $response = [
+                'success' => 'Produto inventariado com sucesso.' . $row[0]
+            ];
+            echo json_encode($response);
         }
-
-        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
-        $response = [
-            'success' => 'Produto inventariado com sucesso.' . $row[0]
-        ];
-        echo json_encode($response);
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
@@ -320,9 +334,9 @@ function transfereItem($conn, $codemp, $codlocal, $referencia, $controle, $quant
     }
 }
 
-function verificaSeisMil($conn, $codemp, $referencia)
+function verificaSeisMil($conn, $codemp, $referencia, $controle)
 {
-    $paramsSeisMil = array($codemp, $codemp, $referencia, $referencia);
+    $paramsSeisMil = array($codemp, $codemp, $referencia, $referencia, $controle);
 
     $tsqlSeisMil = "
     DECLARE @CODEMP_TEXT VARCHAR(100) = CASE 
@@ -330,12 +344,15 @@ function verificaSeisMil($conn, $codemp, $referencia)
                                             ELSE CAST(? AS VARCHAR(10))
                                         END
     DECLARE @CODPROD INT = (SELECT DISTINCT PRO.CODPROD FROM TGFPRO PRO INNER JOIN TGFBAR BAR ON PRO.CODPROD = BAR.CODPROD WHERE PRO.REFERENCIA = ? OR BAR.CODBARRA = ?)
+    DECLARE @CONTROLE VARCHAR(50) = ?
+
     SELECT TOP 1 ESTOQUE
     FROM TGFEST EST
     WHERE EST.CODPARC = 0 
     AND EST.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ','))
     AND EST.ESTOQUE <> 0
     AND CODPROD = @CODPROD
+    AND (CONTROLE = @CONTROLE OR @CONTROLE = 'N')
     AND CODLOCAL BETWEEN 6000000 AND 6000099
     ";
     $stmtSeisMil = sqlsrv_query($conn, $tsqlSeisMil, $paramsSeisMil);

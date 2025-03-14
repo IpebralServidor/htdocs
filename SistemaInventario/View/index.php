@@ -105,6 +105,32 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="mostraBloqueioEntradaMercadoria" tabindex="-1" role="dialog" aria-labelledby="mostraBloqueioEntradaMercadoriaLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="p-3">
+                        <div style=" overflow-x: auto; width: 100%; border: 1px solid #ddd;">
+                            <table width="100%" border="1px" id="table" class="tableEnderecos">
+                                <thead>
+                                    <tr>
+                                        <th width="12%">Confirmada</th>
+                                        <th width="12%">Nro Entrada</th>
+                                        <th width="12%">Dt. Entrada</th>
+                                        <th width="12%">Nro Único</th>
+                                        <th width="12%">Data</th>
+                                        <th width="12%">Referência</th>
+                                        <th width="12%">Controle</th>
+                                        <th width="12%">Qtd</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notasBloqueioEntradaMercadoria">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

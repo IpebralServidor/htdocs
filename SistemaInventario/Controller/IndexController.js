@@ -111,3 +111,37 @@ const mostraBloqueio = (codlocal) => {
         }
     });
 }
+
+const mostraBloqueioEntradaMercadoria = (codlocal) => {
+    let codemp = document.getElementById('empresaInventario').value;
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            codlocal: codlocal,
+            codemp: codemp,
+            route: 'mostraBloqueioEntradaMercadoria'
+        },
+        success: function(response) {
+            if(response.success) {
+                document.getElementById('notasBloqueioEntradaMercadoria').innerHTML = response.success;
+                let bloqueioModal = new bootstrap.Modal(document.getElementById('mostraBloqueioEntradaMercadoria'));
+                bloqueioModal.show();
+            } else {
+                alert('Erro: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
+}
