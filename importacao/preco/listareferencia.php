@@ -402,7 +402,7 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
 				},
 
 				success: function(response) {
-						alert('Nota Criada com Sucesso! Núm. Único: ' + response);
+						alert(response);
 						console.log(response);
 				},
 

@@ -66,7 +66,9 @@ $_SESSION['codEmp'] = null;
                             CORLINHA,
                             CODEMP
                      FROM AD_IMPORTACAO_TELEMARKETING_CAB
-                     WHERE CODUSU = $codUsuario";
+                     WHERE CODUSU = $codUsuario
+                     ORDER BY NUORCAMENTO DESC
+                     ";
 
             //echo $tsql;
             $stmt = sqlsrv_query($conn, $tsql);
