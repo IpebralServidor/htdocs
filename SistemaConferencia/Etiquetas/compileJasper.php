@@ -10,7 +10,7 @@ if ($funcao === 'compileJasper') {
 } else if ($funcao === 'fechaJanelaWcpp') {
     // Fechar a janela do WebClientPrint é tratado de forma diferente no Windows e no Linux.
     // Para o Linux, esperamos x segundos para não matar o processo antes que ele envie os dados para a impressora.
-    usleep(2500000);
+    usleep(5000000);
     fechaJanelaWcpp();
 }
 
@@ -47,13 +47,13 @@ function compileJasper()
         ],
         'db_connection' => [
             'driver' => 'generic',
-            'host' => '10.0.0.232',
+            'host' => '10.0.0.228',
             'port' => '1433',
-            'database' => 'SANKHYA_TESTE',
+            'database' => 'SANKHYA_PROD',
             'username' => 'sankhya',
             'password' => 'tecsis',
             'jdbc_driver' => 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
-            'jdbc_url' => 'jdbc:sqlserver://10.0.0.232:1433;SANKHYA_TESTE=SANKHYA_TESTE',
+            'jdbc_url' => 'jdbc:sqlserver://10.0.0.228:1433;SANKHYA_PROD=SANKHYA_PROD',
             'jdbc_dir' => $jdbc_dir
         ]
     ];

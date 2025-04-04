@@ -95,6 +95,8 @@ function buscaNotasContagem($conn)
             $tableHtml .= '<td>' . $row['DTNEG'] . '</td>';
             $tableHtml .= '<td>' . $row['CODTIPOPER'] . '</td>';
             $tableHtml .= '<td>' . $row['CODEMP'] . '</td>';
+            $tableHtml .= '<td>' . $row['NUTRANSF'] . '</td>';
+
 
 
             $tableHtml .= '</tr>';
@@ -117,16 +119,23 @@ function verificaEmpresa ($conn, $nunota,$codusu) {
         $stmt = sqlsrv_query($conn, $tsql, $params);
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
         $msg = '';
+        $usulogado = '';
+        $usunota = '';
    
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
         }
 
-        if ($row['RESULT'] == 0) {            
-            $msg = 'false';
+        if ($row['RESULT'] == 1) {            
+            $msg = 'prioridade: '. $row['NUNOTA'];
         }
         else  if ($row['RESULT'] == 2){
             $msg = 'pend '.$row['NUNOTA']; 
+        }
+        else  if ($row['RESULT'] == 3){
+            $msg = 'usuario '.$row['NUNOTA'];
+            $usulogado = $codusu;
+            $usunota  = $row['CODUSU'];
         }
         else {
             $msg = $row['NUNOTA'];
@@ -134,7 +143,9 @@ function verificaEmpresa ($conn, $nunota,$codusu) {
 
         $response = [
             'success' => [
-                'msg' => $msg
+                'msg' => $msg,
+                'codusulog' => $usulogado,
+                'codusunota' => $usunota
             ]
         ];
         

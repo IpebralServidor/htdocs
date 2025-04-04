@@ -1,6 +1,7 @@
 {
     "require": {
         "geekcom/phpjasper": "^3.4",
-        "phpseclib/phpseclib": "~3.0"
+        "phpseclib/phpseclib": "~3.0",
+        "phpoffice/phpspreadsheet": "^3.8"
     }
 }

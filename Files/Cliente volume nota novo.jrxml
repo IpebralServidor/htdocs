@@ -76,7 +76,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEBAI}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="149" y="71" width="10" height="19"/>
+				<reportElement x="198" y="71" width="10" height="19"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement>
 					<font size="14" isBold="true"/>
@@ -84,15 +84,15 @@
 				<text><![CDATA[/]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="187" y="74" width="64" height="30"/>
+				<reportElement x="222" y="74" width="64" height="30"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="16" isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODPARC}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="251" y="49" width="16" height="54"/>
+				<reportElement x="258" y="49" width="16" height="54"/>
 				<textElement rotation="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -127,7 +127,7 @@
 				<text><![CDATA[Remetente: IPEBRAL LTDA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="122" y="91" width="65" height="13"/>
+				<reportElement x="181" y="92" width="65" height="13"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -155,14 +155,14 @@
 				<text><![CDATA[Volume:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="134" y="71" width="27" height="20"/>
+				<reportElement x="181" y="71" width="27" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDVOL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="156" y="71" width="72" height="20"/>
+				<reportElement x="205" y="71" width="38" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>

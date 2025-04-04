@@ -157,12 +157,13 @@ require_once '../../App/auth.php';
 							</span>
 						</div>
 					</div>
-					<div style="margin-top: 10px; display: flex; justify-content: center">
+					<div style="margin-top: 10px; display: flex; justify-content: flex-start">
 						<table class="table">
 							<thead>
 								<tr>
 									<th>Usuário</th>
 									<th>Nunota</th>
+									<th>Emp</th>
 									<th>Cod TOP</th>
 									<th>Tipo</th>
 									<th>Qtd Itens</th>

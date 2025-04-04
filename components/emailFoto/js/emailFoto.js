@@ -16,7 +16,7 @@ function fecharPopupEmail() {
 }
 
 function enviaEmailSemFoto() {
-    let codigodebarra =  $("#codigodebarra").val();
+    let codigodebarra =  $("#referencia").val();
 
     if(codigodebarra != '') {
         $.ajax({

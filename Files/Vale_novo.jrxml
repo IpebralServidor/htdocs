@@ -1,67 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Etiqueta Clientes" language="groovy" pageWidth="205" pageHeight="842" columnWidth="205" leftMargin="0" rightMargin="0" topMargin="8" bottomMargin="0" isIgnorePagination="true">
-	<property name="ireport.zoom" value="8.57435524000001"/>
-	<property name="ireport.x" value="815"/>
-	<property name="ireport.y" value="471"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<property name="ireport.definition"/>
-	<parameter name="PK_NUNOTA" class="java.math.BigDecimal">
+	<parameter name="PK_NUNOTA" class="java.math.BigDecimal" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-ITE.SEQUENCIA AS AUTO_NUMERACAO,
-CAB.NUNOTA,
-CAB.VLRNOTA,
-CAB.DTNEG,
-CAB.CODVEND,
-ITE.CODPROD,
-ITE.QTDNEG,
-ITE.CODVOL,
-ITE.VLRUNIT,
-(ITE.VLRUNIT*QTDNEG) AS PRECOTOTAL ,
-PRO.DESCRPROD,
-pro.REFERENCIA,
-pro.APLICACAO,
-CID.NOMECID,
-BAI.NOMEBAI,
-PAR.CEP,
-PAR.RAZAOSOCIAL,
-CAB.AD_ENTREGA,
-LTRIM((PAR.RAZAOSOCIAL +  LTRIM(CONVERT(VARCHAR(100),PAR.CODPARC)))) AS PARC,
-par.codparc,
-(SELECT MAX(SEQUENCIA) FROM TGFITE WHERE NUNOTA = $P{PK_NUNOTA}) as maximo,
-cab.codvend,
-par.TIPPESSOA,
-par.TELEFONE,
-CONVERT(VARCHAR(100),PAR.AD_TIPOFAT) as AD_TIPOFAT,
-CONCAT(LGR.DESCRLOGRADOURO,' ', EN.NOMEEND,' - ',PAR.NUMEND) as endereco,
-cab.VOLUME,
-cab.QTDVOL
-FROM TGFCAB CAB INNER JOIN
-	 TGFITE ITE ON ITE.NUNOTA = CAB.NUNOTA INNER JOIN
-	 TGFPRO PRO ON PRO.CODPROD = ITE.CODPROD INNER JOIN
-	 TGFPAR PAR ON PAR.CODPARC = CAB.CODPARC INNER JOIN
-	 TSICID CID ON CID.CODCID = PAR.CODCID INNER JOIN
-	 TSIBAI BAI ON BAI.CODBAI = PAR.CODBAI INNER JOIN
-	 TSIEND EN ON EN.CODEND = PAR.CODEND INNER JOIN
-	 TFPLGR LGR ON LGR.CODLOGRADOURO = EN.CODLOGRADOURO
-	-- TSIREG REG ON REG.CODREG = BAI.CODREG
-WHERE CAB.NUNOTA = $P{PK_NUNOTA}
-ORDER BY SEQUENCIA]]>
+		<![CDATA[select * from sankhya.[AD_FNT_VALE_NOVO]($P{PK_NUNOTA})]]>
 	</queryString>
-	<field name="AUTO_NUMERACAO" class="java.lang.Short"/>
+	<field name="AUTO_NUMERACAO" class="java.lang.Integer"/>
 	<field name="NUNOTA" class="java.lang.Integer"/>
 	<field name="VLRNOTA" class="java.lang.Double"/>
-	<field name="DTNEG" class="java.sql.Timestamp"/>
-	<field name="CODVEND" class="java.lang.Short"/>
+	<field name="DTNEG" class="java.lang.String"/>
 	<field name="CODPROD" class="java.lang.Integer"/>
 	<field name="QTDNEG" class="java.lang.Double"/>
 	<field name="CODVOL" class="java.lang.String"/>
-	<field name="VLRUNIT" class="java.lang.Double"/>
+	<field name="vlrunit" class="java.lang.Double"/>
 	<field name="PRECOTOTAL" class="java.lang.Double"/>
 	<field name="DESCRPROD" class="java.lang.String"/>
 	<field name="REFERENCIA" class="java.lang.String"/>
-	<field name="APLICACAO" class="java.lang.Integer"/>
+	<field name="APLICACAO" class="java.lang.String"/>
 	<field name="NOMECID" class="java.lang.String"/>
 	<field name="NOMEBAI" class="java.lang.String"/>
 	<field name="CEP" class="java.lang.String"/>
@@ -70,6 +30,7 @@ ORDER BY SEQUENCIA]]>
 	<field name="PARC" class="java.lang.String"/>
 	<field name="codparc" class="java.lang.Integer"/>
 	<field name="maximo" class="java.lang.Short"/>
+	<field name="codvend" class="java.lang.Integer"/>
 	<field name="TIPPESSOA" class="java.lang.String"/>
 	<field name="TELEFONE" class="java.lang.String"/>
 	<field name="AD_TIPOFAT" class="java.lang.String"/>
@@ -127,20 +88,6 @@ ORDER BY SEQUENCIA]]>
 				</textElement>
 				<text><![CDATA[Vend:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="152" y="65" width="49" height="8"/>
-				<textElement>
-					<font size="6" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Short"><![CDATA[$F{CODVEND}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="163" y="5" width="38" height="10"/>
-				<textElement>
-					<font size="6" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTNEG}]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="-1" y="114" width="206" height="1"/>
 			</line>
@@ -207,6 +154,20 @@ ORDER BY SEQUENCIA]]>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDVOL}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="139" y="0" width="91" height="11"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DTNEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="65" width="40" height="10"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{codvend}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
@@ -254,26 +215,12 @@ ORDER BY SEQUENCIA]]>
 				<text><![CDATA[Prec Unit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="163" y="0" width="30" height="10"/>
+				<reportElement x="163" y="-1" width="38" height="10"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="6" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Preco Tot.]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="124" y="8" width="34" height="8"/>
-				<textElement>
-					<font size="6" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{VLRUNIT}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="163" y="8" width="24" height="8"/>
-				<textElement>
-					<font size="6" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{PRECOTOTAL}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="12" y="21" width="109" height="12"/>
 				<textElement>
@@ -293,7 +240,21 @@ ORDER BY SEQUENCIA]]>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Short"><![CDATA[$F{AUTO_NUMERACAO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{AUTO_NUMERACAO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="164" y="8" width="34" height="8"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{PRECOTOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="8" width="30" height="8"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{vlrunit}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -310,14 +271,14 @@ ORDER BY SEQUENCIA]]>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUNOTA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="78" y="206" width="54" height="14"/>
+				<reportElement x="78" y="216" width="54" height="14"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Assinatura]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="35" y="196" width="139" height="18"/>
+				<reportElement x="35" y="206" width="139" height="18"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="6" isBold="true" isItalic="false"/>
 				</textElement>
@@ -344,105 +305,91 @@ ORDER BY SEQUENCIA]]>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="128" y="101" width="30" height="11"/>
+				<reportElement x="128" y="111" width="30" height="11"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[VEND:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="126" y="78" width="22" height="12"/>
+				<reportElement x="126" y="88" width="22" height="12"/>
 				<textElement textAlignment="Center" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[CEP:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="182" y="90" width="24" height="12"/>
+				<reportElement x="182" y="100" width="24" height="12"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{AD_ENTREGA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="120" y="90" width="65" height="12"/>
+				<reportElement x="120" y="100" width="65" height="12"/>
 				<textElement textAlignment="Center" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ENTREGAR?]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="33" width="42" height="10"/>
-				<textElement>
-					<font size="6" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTNEG}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="163" y="101" width="38" height="11"/>
-				<textElement>
-					<font size="8" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Short"><![CDATA[$F{CODVEND}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="152" y="78" width="36" height="11"/>
+				<reportElement x="152" y="88" width="36" height="11"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CEP}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="97" width="99" height="25"/>
+				<reportElement x="8" y="107" width="99" height="25"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECID}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="44" y="29" width="113" height="15"/>
+				<reportElement x="44" y="32" width="113" height="15"/>
 				<textElement textAlignment="Center" rotation="None">
 					<font size="10" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Arquivo]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="164" y="148" width="47" height="11"/>
+				<reportElement x="164" y="159" width="47" height="11"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{VLRNOTA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="144" y="163" width="58" height="13"/>
+				<reportElement x="144" y="173" width="58" height="13"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUNOTA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="129" y="149" width="44" height="13"/>
+				<reportElement x="129" y="159" width="44" height="13"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="112" width="53" height="11"/>
+				<reportElement x="128" y="122" width="53" height="11"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[QTD ITENS:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="177" y="112" width="24" height="11"/>
+				<reportElement x="177" y="122" width="24" height="11"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Short"><![CDATA[$F{maximo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="26" y="85" width="83" height="12"/>
+				<reportElement x="26" y="95" width="83" height="12"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -456,74 +403,88 @@ ORDER BY SEQUENCIA]]>
 				<text><![CDATA[N°]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="127" y="163" width="17" height="12"/>
+				<reportElement x="127" y="173" width="17" height="12"/>
 				<textElement textAlignment="Center" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[N°]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="8" y="121" width="118" height="38"/>
+				<reportElement x="8" y="131" width="118" height="38"/>
 				<textElement>
 					<font size="6" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{endereco}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="159" y="44" width="17" height="9"/>
+				<reportElement x="144" y="53" width="17" height="9"/>
 				<textElement textAlignment="Center" rotation="None">
 					<font size="6" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[FAT:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="10" y="44" width="39" height="11"/>
+				<reportElement x="10" y="54" width="39" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{codparc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="54" width="191" height="24"/>
+				<reportElement x="10" y="64" width="191" height="24"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="176" y="44" width="25" height="8"/>
+				<reportElement x="163" y="53" width="25" height="8"/>
 				<textElement>
 					<font size="6" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{AD_TIPOFAT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="7" y="86" width="21" height="9"/>
+				<reportElement x="7" y="96" width="21" height="9"/>
 				<textElement textAlignment="Center" rotation="None">
 					<font size="6" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[TEL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="122" width="22" height="11"/>
+				<reportElement x="128" y="132" width="22" height="11"/>
 				<textElement textAlignment="Justified" rotation="None">
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Vol.]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="122" width="26" height="12"/>
+				<reportElement x="160" y="132" width="26" height="12"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{VOLUME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="148" y="122" width="15" height="12"/>
+				<reportElement x="148" y="132" width="15" height="12"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{QTDVOL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="36" width="84" height="11"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DTNEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="112" width="48" height="11"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{codvend}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

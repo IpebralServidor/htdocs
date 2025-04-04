@@ -310,7 +310,7 @@ function autorizatrava($conn,$user,$senha)
     try {
         $msg = '';
         $params = array($user, $senha);            
-        $tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND CODUSU IN (1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100)";
+        $tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND CODUSU IN (4046,3,1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100,30)";
         $stmtAutorizaCorte = sqlsrv_query($conn, $tsqlAutorizaCorte, $params);
         
         $row = sqlsrv_fetch_array($stmtAutorizaCorte, SQLSRV_FETCH_NUMERIC);                
@@ -486,7 +486,7 @@ function mostraContagens ($conn, $nucontite) {
 }
 
 
- 
+  
 function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$tipo, $lote, $qtdseparar)
 {
     try {
@@ -521,14 +521,22 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
             END 
             ELSE IF(@TIPO = 'O')
             BEGIN
-                SELECT TPRIPA.QTDPRODUZIR as QTDNEG,
+                SELECT (TPRIPA.QTDPRODUZIR - ISNULL(SUM(tprapa.QTDAPONTADA),0) - (select ISNULL((QTDCONT),0) from sankhya.AD_TGFCONTITE WHERE NUCONT= (SELECT MAX(NUCONT)
+                                                                                    FROM sankhya.AD_TGFCONTCAB
+                                                                                    WHERE NUNOTA = @NUNOTA
+                                                                                    AND TIPO = 'O'
+                                                                                    AND STATUS = 'A'))) as QTDNEG,
                        ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA
-                FROM TPRIPA INNER JOIN 
-                     TPRIPROC ON TPRIPA.idiproc = TPRIPROC.IDIPROC  inner join
-                     TGFPRO PRO ON PRO.CODPROD = TPRIPA.CODPRODPA 
+                FROM TPRIPA INNER join
+                    TPRIPROC ON TPRIPA.idiproc = TPRIPROC.IDIPROC  inner join
+                    TGFPRO PRO ON PRO.CODPROD = TPRIPA.CODPRODPA  INNER JOIN
+                    tpriatv ON tpriatv.idiproc = tpriproc.idiproc LEFT JOIN
+                    tprapo ON tprapo.IDIATV = tpriatv.IDIATV LEFT JOIN
+                    tprapa ON tprapa.nuapo = tprapo.nuapo
                 WHERE TPRIPROC.IDIPROC = @NUNOTA
                   AND TPRIPA.CODPRODPA = @CODPROD
                   AND ((PRO.TIPCONTEST = 'L' AND TPRIPA.CONTROLEPA = @LOTE) OR PRO.TIPCONTEST <> 'L')
+                group by TPRIPA.QTDPRODUZIR
             END
                 ";
 
@@ -540,7 +548,9 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
         if (isset($row['QTDNEG'])) {
             $tolerance = 0.000001;
-            if (abs($qtdcont == $row['QTDNEG']) || $row['CODBALANCA'] !== 0) {
+            if ($qtdcont > $row['QTDNEG'] && $tipo == 'O'){
+                throw new Exception('APP: Contagem acima do esperado! Verifique com gerente se já existem apontamentos pra essa op!');
+            } else if (abs($qtdcont == $row['QTDNEG']) || $row['CODBALANCA'] !== 0) {
                 echo atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote, $qtdseparar);
             } else {
                 $params = array($referencia,$referencia,$tipo,$nunota, $lote, $qtdcont);
@@ -614,9 +624,12 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
                 $stmt = sqlsrv_query($conn, $tsql, $params);
                 if ($stmt === false) {
                     throw new Exception(var_dump(sqlsrv_errors(SQLSRV_ERR_ERRORS)));
-                }
+                } 
+
+
                 $response = [
-                    'recontagem' => 'Recontagem'
+                    'recontagem' => 'Recontagem',
+                    'qtdneg' => $row['QTDNEG']
                 ];
                 echo json_encode($response);
             }
@@ -632,76 +645,48 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
 }
 
 
+
+function retornaQtdContada ($conn,$nunota) {
+    try {
+        $params = array($nunota);
+        $tsql = "select QTDCONT
+                 from ad_tgfcontite 
+                 where nucont = ((SELECT MAX(NUCONT)
+                                  FROM sankhya.AD_TGFCONTCAB
+                                  WHERE NUNOTA = ?
+                                    AND TIPO = 'O'
+                                    AND STATUS = 'A'))
+                ";
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        if ($stmt === false) {
+            throw new Exception('Erro na consulta.');
+        }
+        
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        echo json_encode([
+            'success' => $row['QTDCONT']
+        ]);
+
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
 function editaSubContagem ($conn, $nucontsub, $qtd, $nunota, $tipo) {
     try {
         $params = array($nucontsub, $nunota, $tipo, $qtd);
-        $tsql = "DECLARE @NUCONTSUB INT = ?
-                DECLARE @NUNOTA INT = ?
-                DECLARE @TIPO CHAR(1) = ?
-
-                UPDATE AD_TGFCONTSUB
-                SET QTDCONT = ?,
-                    DTCONT = GETDATE()
-                WHERE NUCONTSUB = @NUCONTSUB
-                
-                DECLARE @NUCONTITE INT = (SELECT NUCONTITE FROM AD_TGFCONTSUB WHERE NUCONTSUB = @NUCONTSUB)
-
-                UPDATE AD_TGFCONTITE
-                SET AD_TGFCONTITE.QTDCONT =  (SELECT SUM(QTDCONT) FROM AD_TGFCONTSUB SUB WHERE SUB.NUCONTITE = AD_TGFCONTITE.NUCONTITE)
-                FROM AD_TGFCONTITE
-                WHERE NUCONTITE = @NUCONTITE
-
-                IF(@TIPO = 'O')
-                BEGIN
-                    UPDATE TPRAPA
-                    SET TPRAPA.AD_QTDCONTADA = (
-                                        SELECT CASE WHEN QTDCONT - (SELECT ISNULL(SUM(QTDAPONTADA), 0)
-                                                        FROM tpriatv ATV INNER JOIN
-                                                                TPRAPO APO ON APO.IDIATV = ATV.IDIATV INNER join
-                                                                TPRAPA APA ON APA.NUAPO= APO.NUAPO INNER JOIN
-                                                                TPREFX EFX  ON EFX.IDEFX = ATV.IDEFX
-                                                            WHERE ATV.IDIPROC = @NUNOTA
-                                                            AND APO.SITUACAO = 'C'
-                                                            AND EFX.DESCRICAO LIKE '%1152%') < 0 
-                                                    THEN 0
-                                                    ELSE QTDCONT - (SELECT ISNULL(SUM(QTDAPONTADA), 0)
-                                                        FROM tpriatv ATV INNER JOIN
-                                                                TPRAPO APO ON APO.IDIATV = ATV.IDIATV INNER join
-                                                                TPRAPA APA ON APA.NUAPO= APO.NUAPO INNER JOIN
-                                                                TPREFX EFX  ON EFX.IDEFX = ATV.IDEFX
-                                                            WHERE ATV.IDIPROC = @NUNOTA
-                                                            AND APO.SITUACAO = 'C'
-                                                            AND EFX.DESCRICAO LIKE '%1152%')
-
-                                                END
-                                        FROM AD_TGFCONTCAB INNER JOIN
-                                            AD_TGFCONTITE ON AD_TGFCONTCAB.NUCONT = AD_TGFCONTITE.NUCONT
-                                        WHERE NUNOTA = @NUNOTA
-                                            AND AD_TGFCONTITE.NUCONT = (SELECT MAX(NUCONT) 
-                                                                        FROM AD_TGFCONTCAB CC
-                                                                        WHERE CC.NUNOTA = AD_TGFCONTCAB.NUNOTA))
-                    FROM TPRIPROC INNER JOIN
-                        TPRIATV ON TPRIPROC.IDIPROC = TPRIATV.IDIPROC INNER JOIN
-                        TPREFX ON TPREFX.IDEFX = TPRIATV.IDEFX
-                            AND TPREFX.IDPROC = TPRIPROC.IDPROC INNER JOIN
-                        TPRAPO ON TPRAPO.IDIATV = TPRIATV.IDIATV INNER JOIN
-                        TPRAPA ON TPRAPO.NUAPO = TPRAPA.NUAPO
-                    WHERE TPRIPROC.IDIPROC = @NUNOTA
-                    AND TPREFX.DESCRICAO LIKE '%1152%'
-                    AND TPRAPA.NUAPO = (SELECT MAX(A.NUAPO)
-                                        FROM TPRAPA A INNER JOIN
-                                            TPRAPO O ON O.NUAPO = A.NUAPO INNER JOIN
-                                            TPRIATV TV ON TV.IDIATV = O.IDIATV 
-                                        WHERE TV.IDIPROC = @NUNOTA 
-                                            AND O.SITUACAO <> 'C')
-                END
+        $tsql = "exec [AD_STP_EDITA_CONTAGENS_APP] ?,?,?,?
                 ";
-
         $stmt = sqlsrv_query($conn, $tsql, $params);
-
         if ($stmt === false) {
             throw new Exception('Erro ao executar o update SQL.');
         }
+        $rowEditSubContagem = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        if($rowEditSubContagem['RET'] == 1) {
+            throw new Exception('Contagem acima do esperado! Verifique com gerente se já existem apontamentos e digite a quantidade novamente');
+        }
+        
 
         $paramsSelect = array($nucontsub);
         $tsqlSelect = "SELECT FORMAT(DTCONT, 'dd/MM/yyyy HH:mm:ss') AS DATAATUAL FROM AD_TGFCONTSUB WHERE NUCONTSUB = ?";

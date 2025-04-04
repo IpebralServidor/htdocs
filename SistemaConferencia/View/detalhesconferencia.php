@@ -836,7 +836,7 @@ $qtdVolume = $rowStatusVolume[1];
 				
 				<!-- Pop-up -->
 				<div id="popupEmail" class= "popupEmail" >
-					<p >Você gostaria de enviar um e-mail informando que está sem foto ou inválida?</p>
+					<p >Enviar e-mail informando que item está sem foto / foto errada?</p>
 					<button class ="bntEmail-sim"  onclick="enviaEmailSemFoto()">Sim</button>
 					<button class ="bntEmail-nao"  onclick="fecharPopupEmail()">Nao</button>
 					

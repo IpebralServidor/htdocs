@@ -10,7 +10,7 @@ $params = array($nunota,$codusu);
 
 
 // A consulta SQL
-$tsql = "exec [AD_STP_libera_produtos_zerados] ?,?";
+$tsql = "exec [AD_STP_libera_produtos_zerados]?,?";
   
 // Executando a consulta
 $stmt = sqlsrv_query($conn, $tsql, $params);

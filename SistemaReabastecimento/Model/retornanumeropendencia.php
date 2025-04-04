@@ -11,7 +11,7 @@ try {
             SELECT TOP 1 CAB.NUNOTA AS NUNOTA,
                          CONCAT(PAR.CODPARC, ' - ', PAR.RAZAOSOCIAL) AS PARCEIRO,
                          CASE 
-                            WHEN CAB.CODPARCTRANSP = 11506 THEN 'S' 
+                            WHEN CAB.CODPARCTRANSP = 12092 THEN 'S' 
                             ELSE 'N'
                          END AS BALCAO
             FROM AD_TGFABSTITE ABSTITE INNER JOIN

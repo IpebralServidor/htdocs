@@ -53,6 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+            case 'retornaQtdContada':
+                if (isset($_GET['nunota']) ) {
+                    $nunota = $_GET['nunota'];
+                    retornaQtdContada($conn,$nunota);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             case 'verificaEmpresa':
                 if (isset($_GET['nunota']) ) {
                     $nunota = $_GET['nunota'];

@@ -78,10 +78,14 @@ $(document).ready(function() {
         success: function(tipos) {
             let tipoTransf = tipos.split("~")[0];
             let tipoNota = tipos.split("~")[1];
+            let vinculo = tipos.split("~")[2];
             var tr = document.getElementById('productsTable').tHead.children[0];
-            if((tipoTransf == 'TRANSFPROD_ENTRADA' || tipoTransf.startsWith('TRANSF_ABAST_FILIAL')) && tipoNota == 'S') {
+            if((tipoTransf.startsWith('TRANSF_ABAST_FILIAL')) && tipoNota == 'S') {
                 tr.insertCell(3).outerHTML = 
                 "<th><button class='btnEntregaPegaTudo' data-toggle='modal' data-target='#entregaModal'>Entregar</button></th>";
+            } else if(tipoTransf == 'TRANSFPROD_ENTRADA' && tipoNota == 'S'){
+                tr.insertCell(3).outerHTML = 
+                "<th>Guarda: " + vinculo + "</th>";
             } else {
                 tr.insertCell(3).outerHTML = "<th></th>";
             }

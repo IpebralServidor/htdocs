@@ -51,6 +51,8 @@ $codusu = $_SESSION["idUsuario"];
 			$fornecedores = $row2['OBSETIQUETA'];
 			$volume = $row2['VOLUME'];
 			$COMPLDESC = $row2['COMPLDESC'];
+			$STATUSPROD = $row2['STATUSPROD'];
+
 			
 
 
@@ -64,6 +66,8 @@ $codusu = $_SESSION["idUsuario"];
 						<h6>Preço venda: R$<?php echo str_replace('.', ',', $precovenda); ?></h6>
 						<h6>Ref. Fornecedores: <?php echo str_replace('.', ',', $fornecedores); ?></h6>
 						<h6>Complemento: <?php echo $COMPLDESC; ?></h6>
+						<h6>Produção: <?php echo $STATUSPROD; ?></h6>
+
 					</div>
 					<div class="infos-2">
 						<h6>Media venda: <?php echo $mediavenda; ?></h6>
@@ -155,6 +159,7 @@ $codusu = $_SESSION["idUsuario"];
 						</td>
 						<td><?php echo $row2['CONTROLE'] ?></td>
 						<td><?php echo $row2['STATUSCONT']; ?></td>
+						
 					</tr>
 				<?php } ?>
 			</table>

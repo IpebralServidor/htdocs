@@ -5,13 +5,13 @@ function abrir() {
             type: 'POST', //Método que está sendo utilizado.
             dataType: 'html', //É o tipo de dado que a página vai retornar.
             url: '../Model/buscarcodtipoper.php', //Indica a página que está sendo solicitada.
-            async: false,
-            beforeSend: function() {
-                $("#loader").show();
-            },
-            complete: function() {
-                $("#loader").hide();
-            },
+            // async: false,
+            // beforeSend: function() {
+            //     $("#loader").show();
+            // },
+            // complete: function() {
+            //     $("#loader").hide();
+            // },
             data: {
                 numeroNota: nunota
             }, //Dados para consulta
@@ -20,7 +20,8 @@ function abrir() {
                 
                 if(msg == -1) {
                     alert('Nota não existe ou já confirmada.');
-                } else if (msg == -2) {
+                } else 
+                if (msg == -2) {
                     alert('Esta nota não é uma transferência');
                 } else if(msg == -3) {
                     $.ajax({

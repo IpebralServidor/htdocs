@@ -50,6 +50,8 @@
                         <th width="20%">Dt.Neg.</th>
                         <th width="20%">TOP</th>
                         <th width="20%">Empresa</th>
+                        <th width="20%">N° Transf</th>
+
                     </tr>
                 </thead>
                 <tbody id="listaNotas" style="cursor: pointer"></tbody>

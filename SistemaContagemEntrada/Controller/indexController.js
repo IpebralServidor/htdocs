@@ -55,7 +55,7 @@ const confirmaAbrirContagem= (row) => {
                 route: 'verificaEmpresa'
             },
             success: function(response) {
-                if(response.success.msg == 'false') {
+                if((response.success.msg.includes('prioridade') && status == 'D')) {
                     alert('Existem notas empresa 1 para esse parceiro que são prioridade! Contar eles primeiro Notas: ' + response.success.msg)
                     return;
                 } else {
@@ -103,6 +103,11 @@ const confirmaAbrirContagem= (row) => {
                 //     alert('APP: Existem contagens com produção não finalizada, favor verificar. ' + response.success.msg);                  
                 // } 
                 // else{
+
+                if ((response.success.msg.includes('usuario') && (response.success.codusulog != response.success.codusunota  ) && status == 'A' )){
+                    alert('Nota já em andamento pelo ' + response.success.msg)
+                    return;
+                }
                     let confirmMsg;
                     if(status === 'D') {
                         confirmMsg = `Deseja abrir contagem o N° ${nunota}?`;
@@ -126,6 +131,7 @@ const confirmaAbrirContagem= (row) => {
         });                                                                
     } 
 }
+
 
 const confirmaAbrirContagemFiltro= () => {
     const nunota = document.getElementById('searchInput').value; 

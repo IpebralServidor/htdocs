@@ -1,11 +1,4 @@
 /vendor
 /node_modules
-/SistemaConferencia/Etiquetas/nunotas
-/SistemaConferencia/.idea
-/SistemaConferencia/App
 /conexaophp.php
 conexaophp.php
-Files/Cliente volume nota novo.jrxml
-package-lock.json
-package.json
-testeArduino.php

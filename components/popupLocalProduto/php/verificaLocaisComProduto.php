@@ -25,9 +25,6 @@ $tsql = "DECLARE @CODPROD INT = (SELECT DISTINCT TGFPRO.CODPROD
             AND CODLOCAL NOT LIKE '60000%'
             AND CODLOCAL NOT LIKE '507%'
             AND CODLOCAL NOT LIKE '%990000'
-            AND CODLOCAL > CASE WHEN @CODEMP = 6 THEN 1000000
-                                ELSE 1999999
-                            END
             UNION
             SELECT DISTINCT ITE.CODLOCALORIG, 0, ITE.CONTROLE, MAX(CAB.DTNEG) AS DTNEG
             FROM TGFCAB CAB INNER JOIN
@@ -44,9 +41,6 @@ $tsql = "DECLARE @CODPROD INT = (SELECT DISTINCT TGFPRO.CODPROD
             AND ITE.CODLOCALORIG NOT LIKE '60000%'
             AND ITE.CODLOCALORIG NOT LIKE '507%'
             AND ITE.CODLOCALORIG NOT LIKE '%990000'
-            AND ITE.CODLOCALORIG > CASE WHEN @CODEMP = 6 THEN 1000000
-                                        ELSE 1999999
-                                    END
             GROUP BY ITE.CODLOCALORIG, ITE.CONTROLE
         )
 

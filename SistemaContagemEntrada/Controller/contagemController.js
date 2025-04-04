@@ -164,10 +164,10 @@ const atualizarDimensoes = () => {
     const comprimento = document.getElementById('comprimento').value;
 
     // Validação para evitar valores inválidos
-    if (peso == 0 || largura == 0 || altura == 0 || comprimento == 0) {
-        alert('Favor preencher com valores válidos as medidas e peso.');
-        return; // Interrompe a execução da função
-    }
+    // if (peso == 0 || largura == 0 || altura == 0 || comprimento == 0) {
+    //     alert('Favor preencher com valores válidos as medidas e peso.');
+    //     return; // Interrompe a execução da função
+    // }
 
     $.ajax({
         method: 'POST',
@@ -277,8 +277,6 @@ const atualizaContagem = (qtdcont) => {
     });   
 }
 
-
-
 const verificaRecontagem = () => {
     const referencia = document.getElementById('referencia').value;
     const codbalanca = document.getElementById('codbalanca').value;
@@ -292,11 +290,11 @@ const verificaRecontagem = () => {
     const comprimento = document.getElementById('comprimento').value;
 
     // Verifica se peso, largura ou altura são nulos, vazios ou iguais a zero
-    if (!peso || peso == 0 || !largura || largura == 0 || !altura || altura == 0 || !comprimento || comprimento == 0) {
-        alert('Verifique se as dimensões foram preenchidas corretamente.');
-    } else if (quantidade < 0 || referencia === '' || (!lote.disabled && lote.value === '')) {
-        alert('Informe os campos corretamente.');
-    } else {
+    // if (!peso || peso == 0 || !largura || largura == 0 || !altura || altura == 0 || !comprimento || comprimento == 0) {
+    //     alert('Verifique se as dimensões foram preenchidas corretamente.');
+    // } else if (quantidade < 0 || referencia === '' || (!lote.disabled && lote.value === '')) {
+    //     alert('Informe os campos corretamente.');
+    // } else {
         $.ajax({
             method: 'POST',
             url: '../routes/routes.php',
@@ -322,9 +320,13 @@ const verificaRecontagem = () => {
                     alert(response.success.msg);
                     location.reload();
                 } else if(response.recontagem) {
+                    let qtdneg = response.qtdneg;
                     let quantidadeRecont;
                     do {
                         quantidadeRecont = prompt(`O item ${referencia.trim()} deu divergência em relação a nota. Favor recontar e digite a quantidade novamente: `);
+                        while(quantidadeRecont > qtdneg) {
+                            quantidadeRecont = prompt(`Contagem acima do esperado! Verifique com gerente se já existem apontamentos e digite a quantidade novamente: `);
+                        } 
                     }  while(quantidadeRecont == null || quantidadeRecont.trim() === ""); 
                     
                     if(isNaN(Number(quantidadeRecont))) {
@@ -340,10 +342,34 @@ const verificaRecontagem = () => {
                 alert('Erro na requisição AJAX: ' + error);
             }
         });
-    }
+   // }
 }
 
+
 const abrirPopAutorizaTrava = () => {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+            nunota: nunota,
+            route: 'retornaQtdContada'
+        },
+        success: function(response) {
+
+            document.getElementById("msg").textContent =   document.getElementById("msg").textContent + " Quantidade contata: " + response.success;
+                                                                                  
+        }
+    });
+
+
+
     document.getElementById('popAutorizaTrava').classList.toggle("active");
     document.getElementById('user').value = '';
     document.getElementById('senha').value = '';
@@ -364,12 +390,12 @@ const autorizaTrava = () => {
         type: 'GET',
         dataType: 'json',
         url: '../routes/routes.php',
-        beforeSend: function() {
-            $("#loader").show();
-        },
-        complete: function() {
-            $("#loader").hide();
-        },
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
         data: {
             user: user,
             senha: senha,
@@ -394,9 +420,9 @@ const verificaFinalizaContagem = () => {
         beforeSend: function() {
             $("#loader").show();
         },
-        // complete: function() {
-        //     $("#loader").hide();
-        // },
+        complete: function() {
+            $("#loader").hide();
+        },
         data: {
             nunota: nunota,
             tipo : tipo,    
@@ -406,9 +432,6 @@ const verificaFinalizaContagem = () => {
             if(response.success.msg == 'senha') {
                 abrirPopAutorizaTrava();                        
             } 
-            else if (response.success.msg .includes('pend'))  {
-                alert('APP: Existem contagens com produção não finalizada, favor verificar: ' + response.success.msg);
-            }
             else {
                 finalizarContagem();
             }
@@ -428,9 +451,9 @@ const finalizarContagem = () => {
         method: 'POST',
         url: '../routes/routes.php',
         dataType: 'json',
-        // beforeSend: function() {
-        //     $("#loader").show();
-        // },
+        beforeSend: function() {
+            $("#loader").show();
+        },
         complete: function() {
             $("#loader").hide();
         },
@@ -547,6 +570,7 @@ const editQtd = (nucontsub) => {
     editButton.setAttribute('onclick', 'saveQtd(' + nucontsub + ')'); 
 }
 
+
 const saveQtd = (nucontsub) => {
     let input = document.getElementById('input_' + nucontsub);
     let newValue = input.value;
@@ -577,6 +601,9 @@ const saveQtd = (nucontsub) => {
                 editButton.setAttribute('onclick', 'editQtd(' + nucontsub + ')');
                 buscaItensContagem(nunota, tipo)
             }
+            else if (response.error){
+                alert(response.error)
+            }
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
@@ -586,3 +613,6 @@ const saveQtd = (nucontsub) => {
     });
 }
 
+ 
+
+ 

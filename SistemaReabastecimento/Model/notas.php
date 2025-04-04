@@ -21,6 +21,7 @@ while ($rowProdutos = sqlsrv_fetch_array($stmtProdutos, SQLSRV_FETCH_ASSOC)) {
     echo '<tr onclick="atribuirDataBotao(this)" data-id="' . $rowProdutos['NUNOTA'] . '">';
     echo '<td style="' . $style . '">' . $rowProdutos['NOMEUSU'] . '</td>';
     echo '<td style="' . $style . '">' . $rowProdutos['NUNOTA'] . '</td>';
+    echo '<td style="' . $style . '">' . $rowProdutos['CODEMP'] . '</td>';
     echo '<td style="' . $style . '">' . $rowProdutos['CODTIPOPER'] . '</td>';
     echo '<td style="' . $style . '">' . $rowProdutos['TIPOTRANSF'] . '</td>';
     echo '<td style="' . $style . '">' . $rowProdutos['QTD_ITENS'] . '</td>';
