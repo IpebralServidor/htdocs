@@ -1,0 +1,108 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-button {
+    margin-bottom: 20px;
+}
+
+/* .upload-button input {
+    display: none;
+} */
+
+.upload-button button {
+    background-color:rgb(227, 235, 243);
+    color: BLACK;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.account-selection {
+    margin-bottom: 7%;
+}
+
+.account-selection label {
+    margin-right: 10px;
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.button-group button {
+    padding: 30px;
+    /* background-color: #28a745; */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    /* font-weight: bold; */
+}
+
+.button-group button:hover {
+    background-color: black;
+}
+
+.insereRecebimentos{
+    background-color: #704f96;
+}
+
+.insereMovBancaria{
+    background-color: #ad3431;
+}
+
+.insereMovCielo{
+    background-color: #f68930;
+}
+
+.insereLiberacoes{
+    background-color: #34a9c9;
+}
+
+.insereReclamacoes{
+    background-color: #3974be;
+}
+
+.insereExtratoInter{
+    background-color: #92b844;
+}
+
+
+#loader{
+	position: fixed;
+	z-index: 99999;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	background: 50% 50% no-repeat rgb(15 10 10/50%);
+}
+
+#loader img{
+	position: absolute;
+  	top: 30%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+}

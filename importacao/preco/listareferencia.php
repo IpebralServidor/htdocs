@@ -23,7 +23,7 @@ $nuorcamento = $_SESSION['nuorcamento'];
 			<?php
 
 			
-			$tsql2 = "SELECT REFERENCIAFABRICANTE, REFERENCIAINTERNA, DESCRPROD, PRECOVENDA, ESTOQUE, CODPROD
+			$tsql2 = "SELECT REFERENCIAFABRICANTE, REFERENCIAINTERNA, DESCRPROD, PRECOVENDA, ESTOQUE, CODPROD, AGRUPMIN
 					  FROM AD_IMPORTACAO_TELEMARKETING_ITE
 					  WHERE REFERENCIAFABRICANTE = '{$id}'
 						AND NUORCAMENTO = $nuorcamento";
@@ -35,7 +35,9 @@ $nuorcamento = $_SESSION['nuorcamento'];
 														   data-ref="<?php echo $row2['REFERENCIAINTERNA'] ?>" 
 														   data-price = "<?php echo $row2['PRECOVENDA'] ?>" 
 														   data-est="<?php echo $row2['ESTOQUE'] ?>"
-														   data-codprod = "<?php echo $row2['CODPROD'] ?>">
+														   data-codprod = "<?php echo $row2['CODPROD'] ?>"
+														   data-agrupmin = "<?php echo $row2['AGRUPMIN'] ?>" 
+														   >
 					<td width="20%"><?php echo $id; ?>&nbsp;</td>
 					<td width="25%"><?php echo $row2['REFERENCIAINTERNA']; ?>&nbsp;</td>
 					<td width="40%"><?php echo mb_convert_encoding($row2['DESCRPROD'], 'UTF-8', mb_detect_encoding($row2['DESCRPROD'], 'UTF-8, ISO-8859-1', true)); ?>&nbsp;</td>
@@ -125,7 +127,7 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
                 const selectedRef = this.getAttribute('data-ref'); // Valor selecionado
                 const selectedPreco = this.getAttribute('data-price'); // Valor selecionado
 				const selectedEstoque = this.getAttribute('data-est'); // Valor selecionado
-                
+                const selectedAgrupmin = this.getAttribute('data-agrupmin'); // Valor selecionado
 
                 // Atualizar linha correspondente na primeira tabela
                 const rowInTable1 = document.querySelector(`#tableListaReferencias tbody tr[data-id="${selectedId}"]`);
@@ -135,7 +137,8 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
                     rowInTable1.classList.add('selected');
 
                     // Atualizar conteúdo da célula quando se clica em uma linha e escolhe a mesma.
-                    rowInTable1.cells[4].textContent = selectedRef; 
+					rowInTable1.cells[3].textContent = selectedAgrupmin; 
+					rowInTable1.cells[4].textContent = selectedRef; 
                     rowInTable1.cells[5].textContent = selectedPreco;
                     rowInTable1.cells[6].textContent = selectedEstoque;
                 }

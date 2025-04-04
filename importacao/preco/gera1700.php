@@ -34,29 +34,15 @@
             }
         }
 
-        
-        // echo $query;
-
-        
-        //echo $params;
-        // foreach ($params as $item) {
-        //     // Faça algo com os dados, como salvar no banco de dados
-        //     echo "Parametro: $item\n";
-            
-            
-        // }
+  
         $query = "EXEC AD_STP_INSERE1700_IMPORTACAO_TELEMARKETING ?";
         $params = array($nuorcamento);
         $stmt = sqlsrv_query($conn, $query, $params);
 
-        // Defina o tipo de conteúdo como JSON
-        //header('Content-Type: application/json');
-
-        
+          
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
             $retorno = $row[0];
-            //echo $retorno;
-            echo $retorno;
+            echo utf8_encode($retorno);
         }
         
 

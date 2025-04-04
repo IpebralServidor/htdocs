@@ -1,0 +1,2357 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">
+<Worksheet ss:Name="export-activities">
+<Table>
+<Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="110"/>
+<Row>
+<Cell><Data ss:Type="String">Data da compra (date_created)</Data></Cell>
+
+<Cell><Data ss:Type="String">Data de creditação (date_approved)</Data></Cell>
+
+<Cell><Data ss:Type="String">Data de liberação do dinheiro (date_released)</Data></Cell>
+
+<Cell><Data ss:Type="String">Nome da contraparte (counterpart_name)</Data></Cell>
+
+<Cell><Data ss:Type="String">Apelido da contraparte no Mercado Livre (counterpart_nickname)</Data></Cell>
+
+<Cell><Data ss:Type="String">E-mail da contraparte (counterpart_email)</Data></Cell>
+
+<Cell><Data ss:Type="String">Telefone da contraparte (counterpart_phone_number)</Data></Cell>
+
+<Cell><Data ss:Type="String">Documento da contraparte (buyer_document)</Data></Cell>
+
+<Cell><Data ss:Type="String">Código do produto (item_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Descrição da operação (reason)</Data></Cell>
+
+<Cell><Data ss:Type="String">Código de referência (external_reference)</Data></Cell>
+
+<Cell><Data ss:Type="String">SKU do produto (seller_custom_field)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da transação do Mercado Pago (operation_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Status da operação (status)</Data></Cell>
+
+<Cell><Data ss:Type="String">Detalhe do status da operação (status_detail)</Data></Cell>
+
+<Cell><Data ss:Type="String">Tipo de operação (operation_type)</Data></Cell>
+
+<Cell><Data ss:Type="String">Valor do produto (transaction_amount)</Data></Cell>
+
+<Cell><Data ss:Type="String">Tarifa do Mercado Pago (mercadopago_fee)</Data></Cell>
+
+<Cell><Data ss:Type="String">Tarifa pelo uso da plataforma de terceiros (marketplace_fee)</Data></Cell>
+
+<Cell><Data ss:Type="String">Frete (shipping_cost)</Data></Cell>
+
+<Cell><Data ss:Type="String">Desconto para a sua contraparte (coupon_fee)</Data></Cell>
+
+<Cell><Data ss:Type="String">Valor total recebido (net_received_amount)</Data></Cell>
+
+<Cell><Data ss:Type="String">Parcelas (installments)</Data></Cell>
+
+<Cell><Data ss:Type="String">Meio de pagamento (payment_type)</Data></Cell>
+
+<Cell><Data ss:Type="String">Valor devolvido (amount_refunded)</Data></Cell>
+
+<Cell><Data ss:Type="String">Operador que devolveu o dinheiro (refund_operator)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da reclamação (claim_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da contestação (chargeback_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Plataforma (marketplace)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da venda no Mercado Livre (order_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da venda no seu negócio online (merchant_order_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da campanha de desconto (campaign_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Nome da campanha de desconto (campaign_name)</Data></Cell>
+
+<Cell><Data ss:Type="String">Detalhe da venda no Mercado Pago (activity_url)</Data></Cell>
+
+<Cell><Data ss:Type="String">Mercado Pago Point (id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Status do envio (shipment_status)</Data></Cell>
+
+<Cell><Data ss:Type="String">Endereço do comprador (buyer_address)</Data></Cell>
+
+<Cell><Data ss:Type="String">Código de rastreamento (tracking_number)</Data></Cell>
+
+<Cell><Data ss:Type="String">Operador de multibanco (operator_name)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número da loja (store_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número do caixa (pos_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Número de caixa externa (external_id)</Data></Cell>
+
+<Cell><Data ss:Type="String">Custos de parcelamento (financing_fee)</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">28/02/2025 20:32:01</Data></Cell>
+
+<Cell><Data ss:Type="String">28/02/2025 20:32:03</Data></Cell>
+
+<Cell><Data ss:Type="String">29/03/2025 20:32:03</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB5098366906</Data></Cell>
+
+<Cell><Data ss:Type="String">Macaco Hidraulico Garrafa 4 Toneladas Universal</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010892846722</Data></Cell>
+
+<Cell><Data ss:Type="String">10097</Data></Cell>
+
+<Cell><Data ss:Type="String">103771643648</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">149.50</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.77</Data></Cell>
+
+<Cell><Data ss:Type="String">-15.17</Data></Cell>
+
+<Cell><Data ss:Type="String">-28.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">103.11</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">credit_card</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010892846722</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">shipped</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44548506699LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">28/02/2025 08:23:55</Data></Cell>
+
+<Cell><Data ss:Type="String">28/02/2025 08:23:55</Data></Cell>
+
+<Cell><Data ss:Type="String">05/03/2025 22:07:20</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4174281104</Data></Cell>
+
+<Cell><Data ss:Type="String">Kit Amortecedor Dianteiro Nissan Livina/tiida</Data></Cell>
+
+<Cell><Data ss:Type="String">44546009998</Data></Cell>
+
+<Cell><Data ss:Type="String">41646/41647/22270/22272/26870</Data></Cell>
+
+<Cell><Data ss:Type="String">103694315540</Data></Cell>
+
+<Cell><Data ss:Type="String">refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">bpp_refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">1440.51</Data></Cell>
+
+<Cell><Data ss:Type="String">-95.61</Data></Cell>
+
+<Cell><Data ss:Type="String">-149.28</Data></Cell>
+
+<Cell><Data ss:Type="String">-44.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">1151.17</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">1440.51</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010887019622</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">cancelled</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44546009998FMDOF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">21/02/2025 10:37:20</Data></Cell>
+
+<Cell><Data ss:Type="String">21/02/2025 10:37:20</Data></Cell>
+
+<Cell><Data ss:Type="String">06/03/2025 13:31:25</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB5098366906</Data></Cell>
+
+<Cell><Data ss:Type="String">Macaco Hidraulico Garrafa 4 Toneladas Universal</Data></Cell>
+
+<Cell><Data ss:Type="String">44517565796</Data></Cell>
+
+<Cell><Data ss:Type="String">10097</Data></Cell>
+
+<Cell><Data ss:Type="String">103033754404</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">149.50</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.77</Data></Cell>
+
+<Cell><Data ss:Type="String">-15.17</Data></Cell>
+
+<Cell><Data ss:Type="String">-28.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">103.11</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010823611016</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44517565796LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">18/02/2025 17:56:49</Data></Cell>
+
+<Cell><Data ss:Type="String">18/02/2025 17:56:50</Data></Cell>
+
+<Cell><Data ss:Type="String">20/02/2025 07:52:16</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3727300943</Data></Cell>
+
+<Cell><Data ss:Type="String">Rolamento Roda Dianteira Argo/novo Palio/mobi/cronos Com Abs</Data></Cell>
+
+<Cell><Data ss:Type="String">44505336295</Data></Cell>
+
+<Cell><Data ss:Type="String">46913</Data></Cell>
+
+<Cell><Data ss:Type="String">102370021043</Data></Cell>
+
+<Cell><Data ss:Type="String">refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">169.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-11.26</Data></Cell>
+
+<Cell><Data ss:Type="String">-17.60</Data></Cell>
+
+<Cell><Data ss:Type="String">-44.90</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">96.04</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">169.80</Data></Cell>
+
+<Cell><Data ss:Type="String">IPEBRAL IRMAOS PEDROSA BRAGA L IPEBRAL IRMAOS PEDROSA BRAGA L </Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010797090806</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">cancelled</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44505336295FMDOF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">17/02/2025 21:37:03</Data></Cell>
+
+<Cell><Data ss:Type="String">17/02/2025 21:38:08</Data></Cell>
+
+<Cell><Data ss:Type="String">28/02/2025 10:08:04</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3735799801</Data></Cell>
+
+<Cell><Data ss:Type="String">Retentor Volante Motor (flange) Vw Gol | Parati 1.0 At 8/16v</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010788558110</Data></Cell>
+
+<Cell><Data ss:Type="String">50920</Data></Cell>
+
+<Cell><Data ss:Type="String">102685839268</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">60.00</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.16</Data></Cell>
+
+<Cell><Data ss:Type="String">-11.79</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">46.05</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">bank_transfer</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010788558110</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44501407923LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">15/02/2025 22:11:38</Data></Cell>
+
+<Cell><Data ss:Type="String">15/02/2025 22:11:39</Data></Cell>
+
+<Cell><Data ss:Type="String">28/02/2025 11:03:04</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3727300943</Data></Cell>
+
+<Cell><Data ss:Type="String">Rolamento Roda Dianteira Argo/novo Palio/mobi/cronos Com Abs</Data></Cell>
+
+<Cell><Data ss:Type="String">44493785250</Data></Cell>
+
+<Cell><Data ss:Type="String">46913</Data></Cell>
+
+<Cell><Data ss:Type="String">102508827992</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">169.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-11.26</Data></Cell>
+
+<Cell><Data ss:Type="String">-17.60</Data></Cell>
+
+<Cell><Data ss:Type="String">-44.90</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">96.04</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010770532630</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44493785250LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">14/02/2025 00:25:11</Data></Cell>
+
+<Cell><Data ss:Type="String">14/02/2025 00:25:11</Data></Cell>
+
+<Cell><Data ss:Type="String">25/02/2025 10:15:01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4762045324</Data></Cell>
+
+<Cell><Data ss:Type="String">Filtro De Ar Do Motor Original - Filtros Brasil</Data></Cell>
+
+<Cell><Data ss:Type="String">44486634101</Data></Cell>
+
+<Cell><Data ss:Type="String">48475</Data></Cell>
+
+<Cell><Data ss:Type="String">102307495258</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">48.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.91</Data></Cell>
+
+<Cell><Data ss:Type="String">-10.46</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">36.53</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010755234130</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">14/02/2025 00:25:08</Data></Cell>
+
+<Cell><Data ss:Type="String">14/02/2025 00:25:08</Data></Cell>
+
+<Cell><Data ss:Type="String">25/02/2025 10:14:14</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4735795112</Data></Cell>
+
+<Cell><Data ss:Type="String">Filtro De Ar Condicionado Cabine Original - Filtros Brasil</Data></Cell>
+
+<Cell><Data ss:Type="String">44486634101</Data></Cell>
+
+<Cell><Data ss:Type="String">48195</Data></Cell>
+
+<Cell><Data ss:Type="String">101916725921</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">25.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.45</Data></Cell>
+
+<Cell><Data ss:Type="String">-7.91</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">16.54</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010755230256</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">14/02/2025 00:25:06</Data></Cell>
+
+<Cell><Data ss:Type="String">14/02/2025 00:25:06</Data></Cell>
+
+<Cell><Data ss:Type="String">25/02/2025 10:14:55</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3744442893</Data></Cell>
+
+<Cell><Data ss:Type="String">Triangulo P/ Carro Sinalização De Segurança Plástico Base Branca</Data></Cell>
+
+<Cell><Data ss:Type="String">44486634101</Data></Cell>
+
+<Cell><Data ss:Type="String">10757</Data></Cell>
+
+<Cell><Data ss:Type="String">102307546634</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">21.40</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.36</Data></Cell>
+
+<Cell><Data ss:Type="String">-7.46</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">12.58</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010755230254</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44486634101LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">13/02/2025 11:51:04</Data></Cell>
+
+<Cell><Data ss:Type="String">13/02/2025 11:52:31</Data></Cell>
+
+<Cell><Data ss:Type="String">26/02/2025 17:01:12</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3727300943</Data></Cell>
+
+<Cell><Data ss:Type="String">Rolamento Roda Dianteira Argo/novo Palio/mobi/cronos Com Abs</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010748134556</Data></Cell>
+
+<Cell><Data ss:Type="String">46913</Data></Cell>
+
+<Cell><Data ss:Type="String">101850720409</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">84.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-5.63</Data></Cell>
+
+<Cell><Data ss:Type="String">-8.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-22.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">48.02</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">bank_transfer</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010748134556</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44483433153LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">12/02/2025 14:39:17</Data></Cell>
+
+<Cell><Data ss:Type="String">12/02/2025 14:39:18</Data></Cell>
+
+<Cell><Data ss:Type="String">22/02/2025 16:38:54</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4735795112</Data></Cell>
+
+<Cell><Data ss:Type="String">Filtro De Ar Condicionado Cabine Original - Filtros Brasil</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010735761316</Data></Cell>
+
+<Cell><Data ss:Type="String">48202</Data></Cell>
+
+<Cell><Data ss:Type="String">102118926542</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">25.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.45</Data></Cell>
+
+<Cell><Data ss:Type="String">-7.91</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">16.54</Data></Cell>
+
+<Cell><Data ss:Type="String">2</Data></Cell>
+
+<Cell><Data ss:Type="String">digital_currency</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010735761316</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44479200859LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">12/02/2025 11:40:40</Data></Cell>
+
+<Cell><Data ss:Type="String">12/02/2025 11:40:42</Data></Cell>
+
+<Cell><Data ss:Type="String">23/02/2025 13:17:47</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3522765605</Data></Cell>
+
+<Cell><Data ss:Type="String">Par Amortecedor Traseiro Aircross 10/16 - Perfect</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010733724182</Data></Cell>
+
+<Cell><Data ss:Type="String">41677</Data></Cell>
+
+<Cell><Data ss:Type="String">101718392203</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">440.61</Data></Cell>
+
+<Cell><Data ss:Type="String">-29.24</Data></Cell>
+
+<Cell><Data ss:Type="String">-45.66</Data></Cell>
+
+<Cell><Data ss:Type="String">-28.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">337.26</Data></Cell>
+
+<Cell><Data ss:Type="String">8</Data></Cell>
+
+<Cell><Data ss:Type="String">credit_card</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010733724182</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44478457300LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">11/02/2025 00:31:12</Data></Cell>
+
+<Cell><Data ss:Type="String">11/02/2025 00:32:22</Data></Cell>
+
+<Cell><Data ss:Type="String">20/02/2025 18:36:45</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3727300943</Data></Cell>
+
+<Cell><Data ss:Type="String">Rolamento Roda Dianteira Argo/novo Palio/mobi/cronos Com Abs</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010719108562</Data></Cell>
+
+<Cell><Data ss:Type="String">46913</Data></Cell>
+
+<Cell><Data ss:Type="String">101580449725</Data></Cell>
+
+<Cell><Data ss:Type="String">in_mediation</Data></Cell>
+
+<Cell><Data ss:Type="String">pending</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">84.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-5.63</Data></Cell>
+
+<Cell><Data ss:Type="String">-8.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-22.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">48.02</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">bank_transfer</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010719108562</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44471621035LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">10/02/2025 17:04:30</Data></Cell>
+
+<Cell><Data ss:Type="String">10/02/2025 17:04:31</Data></Cell>
+
+<Cell><Data ss:Type="String">22/02/2025 11:46:33</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3583509219</Data></Cell>
+
+<Cell><Data ss:Type="String">Suporte E Calço Fixação Radiador Fiat Palio 4 Peças Kit</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010714417198</Data></Cell>
+
+<Cell><Data ss:Type="String">2132292 / 21161</Data></Cell>
+
+<Cell><Data ss:Type="String">101540582795</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">49.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.93</Data></Cell>
+
+<Cell><Data ss:Type="String">-10.56</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">37.41</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">credit_card</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010714417198</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44469804712LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">10/02/2025 16:57:45</Data></Cell>
+
+<Cell><Data ss:Type="String">10/02/2025 16:59:46</Data></Cell>
+
+<Cell><Data ss:Type="String">21/02/2025 15:33:41</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB5098366906</Data></Cell>
+
+<Cell><Data ss:Type="String">Macaco Hidraulico Garrafa 4 Toneladas Universal</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010714329888</Data></Cell>
+
+<Cell><Data ss:Type="String">10097</Data></Cell>
+
+<Cell><Data ss:Type="String">101539885883</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">149.50</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.77</Data></Cell>
+
+<Cell><Data ss:Type="String">-15.17</Data></Cell>
+
+<Cell><Data ss:Type="String">-28.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">103.11</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">bank_transfer</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010714329888</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44469769394LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">08/02/2025 08:12:56</Data></Cell>
+
+<Cell><Data ss:Type="String">08/02/2025 08:12:57</Data></Cell>
+
+<Cell><Data ss:Type="String">19/02/2025 19:06:48</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3727300943</Data></Cell>
+
+<Cell><Data ss:Type="String">Rolamento Roda Dianteira Argo/novo Palio/mobi/cronos Com Abs</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010692757248</Data></Cell>
+
+<Cell><Data ss:Type="String">46913</Data></Cell>
+
+<Cell><Data ss:Type="String">101308584047</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">84.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-5.63</Data></Cell>
+
+<Cell><Data ss:Type="String">-8.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-22.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">48.02</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">digital_currency</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010692757248</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44460316331LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">06/02/2025 17:27:35</Data></Cell>
+
+<Cell><Data ss:Type="String">06/02/2025 17:27:35</Data></Cell>
+
+<Cell><Data ss:Type="String">18/02/2025 14:51:56</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4408329736</Data></Cell>
+
+<Cell><Data ss:Type="String">Tubo Conexão Saída Do Coletor Admissão 10 Mm Fiat 147 Uno</Data></Cell>
+
+<Cell><Data ss:Type="String">44453786487</Data></Cell>
+
+<Cell><Data ss:Type="String">23625</Data></Cell>
+
+<Cell><Data ss:Type="String">101140207245</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">39.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.68</Data></Cell>
+
+<Cell><Data ss:Type="String">-14.60</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">22.52</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010678037738</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44453786487LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">06/02/2025 11:37:34</Data></Cell>
+
+<Cell><Data ss:Type="String">06/02/2025 11:39:08</Data></Cell>
+
+<Cell><Data ss:Type="String">19/02/2025 14:32:24</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4834995794</Data></Cell>
+
+<Cell><Data ss:Type="String">Kit Anel Centralizador Para Roda - Peugeot (4uni)</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010674209036</Data></Cell>
+
+<Cell><Data ss:Type="String">40972</Data></Cell>
+
+<Cell><Data ss:Type="String">101483234526</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">18.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.30</Data></Cell>
+
+<Cell><Data ss:Type="String">-7.12</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">10.48</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">bank_transfer</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010674209036</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44452222540LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">06/02/2025 05:09:54</Data></Cell>
+
+<Cell><Data ss:Type="String">06/02/2025 05:09:54</Data></Cell>
+
+<Cell><Data ss:Type="String">11/02/2025 11:35:05</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4762045324</Data></Cell>
+
+<Cell><Data ss:Type="String">Filtro De Ar Do Motor Original - Filtros Brasil</Data></Cell>
+
+<Cell><Data ss:Type="String">44450960459</Data></Cell>
+
+<Cell><Data ss:Type="String">48592</Data></Cell>
+
+<Cell><Data ss:Type="String">101075903615</Data></Cell>
+
+<Cell><Data ss:Type="String">refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">bpp_refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">48.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.91</Data></Cell>
+
+<Cell><Data ss:Type="String">-10.46</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">36.53</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">48.90</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010672003602</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">06/02/2025 05:09:53</Data></Cell>
+
+<Cell><Data ss:Type="String">06/02/2025 05:09:53</Data></Cell>
+
+<Cell><Data ss:Type="String">11/02/2025 11:35:05</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB4735795112</Data></Cell>
+
+<Cell><Data ss:Type="String">Filtro De Ar Condicionado Cabine Original - Filtros Brasil</Data></Cell>
+
+<Cell><Data ss:Type="String">44450960459</Data></Cell>
+
+<Cell><Data ss:Type="String">48155</Data></Cell>
+
+<Cell><Data ss:Type="String">101454166916</Data></Cell>
+
+<Cell><Data ss:Type="String">refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">bpp_refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">25.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.45</Data></Cell>
+
+<Cell><Data ss:Type="String">-7.91</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">16.54</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">25.90</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010672005404</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44450960459LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">06/02/2025 00:37:27</Data></Cell>
+
+<Cell><Data ss:Type="String">06/02/2025 00:37:28</Data></Cell>
+
+<Cell><Data ss:Type="String">16/02/2025 11:36:05</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3735799801</Data></Cell>
+
+<Cell><Data ss:Type="String">Retentor Volante Motor (flange) Vw Gol | Parati 1.0 At 8/16v</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010671217560</Data></Cell>
+
+<Cell><Data ss:Type="String">50920</Data></Cell>
+
+<Cell><Data ss:Type="String">101447190678</Data></Cell>
+
+<Cell><Data ss:Type="String">refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">bpp_refunded</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">60.00</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.16</Data></Cell>
+
+<Cell><Data ss:Type="String">-11.79</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">46.05</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">77.66</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010671217560</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44450643009LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">04/02/2025 16:11:37</Data></Cell>
+
+<Cell><Data ss:Type="String">04/02/2025 16:11:37</Data></Cell>
+
+<Cell><Data ss:Type="String">18/02/2025 11:08:46</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB5098366906</Data></Cell>
+
+<Cell><Data ss:Type="String">Macaco Hidraulico Garrafa 4 Toneladas Universal</Data></Cell>
+
+<Cell><Data ss:Type="String">44443728504</Data></Cell>
+
+<Cell><Data ss:Type="String">10097</Data></Cell>
+
+<Cell><Data ss:Type="String">100923155051</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">299.00</Data></Cell>
+
+<Cell><Data ss:Type="String">-5.54</Data></Cell>
+
+<Cell><Data ss:Type="String">-30.34</Data></Cell>
+
+<Cell><Data ss:Type="String">-56.90</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">132.64</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010655253536</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44443728504LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">03/02/2025 21:49:47</Data></Cell>
+
+<Cell><Data ss:Type="String">03/02/2025 21:49:50</Data></Cell>
+
+<Cell><Data ss:Type="String">16/02/2025 14:17:27</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3727300943</Data></Cell>
+
+<Cell><Data ss:Type="String">Rolamento Roda Dianteira Argo/novo Palio/mobi/cronos Com Abs</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010647947156</Data></Cell>
+
+<Cell><Data ss:Type="String">46913</Data></Cell>
+
+<Cell><Data ss:Type="String">100855761371</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">84.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-5.63</Data></Cell>
+
+<Cell><Data ss:Type="String">-8.80</Data></Cell>
+
+<Cell><Data ss:Type="String">-22.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">48.02</Data></Cell>
+
+<Cell><Data ss:Type="String">5</Data></Cell>
+
+<Cell><Data ss:Type="String">credit_card</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010647947156</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44440440054LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">03/02/2025 13:04:47</Data></Cell>
+
+<Cell><Data ss:Type="String">03/02/2025 13:05:44</Data></Cell>
+
+<Cell><Data ss:Type="String">15/02/2025 13:42:19</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3584302829</Data></Cell>
+
+<Cell><Data ss:Type="String">Suporte E Calço Fixação Radiador Fiat Palio 4 Peças Kit Behr</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010642219738</Data></Cell>
+
+<Cell><Data ss:Type="String">21161</Data></Cell>
+
+<Cell><Data ss:Type="String">100808863131</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">49.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.93</Data></Cell>
+
+<Cell><Data ss:Type="String">-10.56</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">37.41</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">bank_transfer</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010642219738</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44437910588LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">03/02/2025 11:23:46</Data></Cell>
+
+<Cell><Data ss:Type="String">03/02/2025 11:23:47</Data></Cell>
+
+<Cell><Data ss:Type="String">13/02/2025 14:38:13</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB3583509219</Data></Cell>
+
+<Cell><Data ss:Type="String">Suporte E Calço Fixação Radiador Fiat Palio 4 Peças Kit</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010641176590</Data></Cell>
+
+<Cell><Data ss:Type="String">2132292 / 21161</Data></Cell>
+
+<Cell><Data ss:Type="String">101175390280</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">49.90</Data></Cell>
+
+<Cell><Data ss:Type="String">-1.93</Data></Cell>
+
+<Cell><Data ss:Type="String">-10.56</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">37.41</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">credit_card</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010641176590</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44437433966LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+<Row>
+<Cell><Data ss:Type="String">01/02/2025 08:24:59</Data></Cell>
+
+<Cell><Data ss:Type="String">01/02/2025 08:24:59</Data></Cell>
+
+<Cell><Data ss:Type="String">13/02/2025 13:13:07</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MLB5098366906</Data></Cell>
+
+<Cell><Data ss:Type="String">Macaco Hidraulico Garrafa 4 Toneladas Universal</Data></Cell>
+
+<Cell><Data ss:Type="String">44430026165</Data></Cell>
+
+<Cell><Data ss:Type="String">10097</Data></Cell>
+
+<Cell><Data ss:Type="String">100993176666</Data></Cell>
+
+<Cell><Data ss:Type="String">approved</Data></Cell>
+
+<Cell><Data ss:Type="String">accredited</Data></Cell>
+
+<Cell><Data ss:Type="String">regular_payment</Data></Cell>
+
+<Cell><Data ss:Type="String">149.50</Data></Cell>
+
+<Cell><Data ss:Type="String">-2.77</Data></Cell>
+
+<Cell><Data ss:Type="String">-15.17</Data></Cell>
+
+<Cell><Data ss:Type="String">-28.45</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String">103.11</Data></Cell>
+
+<Cell><Data ss:Type="String">1</Data></Cell>
+
+<Cell><Data ss:Type="String">account_money</Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MELI</Data></Cell>
+
+<Cell><Data ss:Type="String">2000010623944900</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">delivered</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">MEL44430026165LMXDF01</Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String"></Data></Cell>
+
+<Cell><Data ss:Type="String">0.00</Data></Cell>
+</Row>
+</Table>
+</Worksheet>
+</Workbook>

@@ -50,9 +50,9 @@ $_SESSION['codEmp'] = $codEmp;
             <thead>
                 <tr>
                     <th width="15%">Referência</th>
-                    <th width="10%">Fabricante</th>
                     <th width="30%">Descrição</th>
                     <th width="10%">Quantidade</th>
+                    <th width="10%">Agrup. Mín.</th>
                     <th width="15%">Referência Interna</th>
                     <th width="10%">Preço Venda</th>
                     <th width="10%">Estoque</th>
@@ -73,7 +73,8 @@ $_SESSION['codEmp'] = $codEmp;
                             CORLINHA,
                             DESCRICAO,
                             QUANTIDADE,
-                            ESTOQUE
+                            ESTOQUE,
+                            AGRUPMIN
                      FROM AD_IMPORTACAO_TELEMARKETING
                      WHERE NUORCAMENTO = $nuorcamento";
 
@@ -87,9 +88,9 @@ $_SESSION['codEmp'] = $codEmp;
                 $listaConferencias .= "
                         <tr id='linhaSelecionada' data-id='$row[REFERENCIAFABRICANTE]' style='background-color: $row[CORLINHA];'>
                             <td style='width: 15%;'>$row[REFERENCIAFABRICANTE] </td>
-                            <td style='width: 10%;'>$row[FABRICANTE] </td>
                             <td style='width: 30%;'>$row[DESCRICAO] </td>
                             <td style='width: 10%;'><input class='quantidade' style='width: 100%;' type='number' value='$row[QUANTIDADE]' min='0'> </td>
+                            <td style='width: 10%;'>$row[AGRUPMIN] </td>
                             <td style='width: 15%;'>$row[REFERENCIAINTERNA] </td>
                             <td style='width: 10%;'>$row[PRECOVENDA] </td>
                             <td style='width: 10%;'>$row[ESTOQUE] </td>
@@ -123,12 +124,7 @@ $_SESSION['codEmp'] = $codEmp;
 					<tbody>
                         <?php
                              //Retorna os dados da tabela para ser exibida na tela. As referências que tem na importação.
-                            $tsql = "SELECT REFERENCIAINTERNA,
-                                            DESCRICAO,
-                                            QUANTIDADE
-                                     FROM AD_IMPORTACAO_TELEMARKETING
-                                     WHERE NUORCAMENTO =$nuorcamento
-                                       AND REFERENCIAINTERNA IS NOT NULL";
+                            $tsql = "SELECT * FROM [AD_FNT_PRODUTOSPARAGERAR1700_IMPORTACAO_TELEMARKETING]($nuorcamento)";
 
                             $stmt = sqlsrv_query($conn, $tsql);
 
@@ -136,11 +132,13 @@ $_SESSION['codEmp'] = $codEmp;
 
                             while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
 
+                                $descricao = utf8_encode($row['DESCRICAO']);
+
                                 $listaItnes1700 .= "
                                         <tr data-referencia = '$row[REFERENCIAINTERNA]'>
                                             <td width='5%'><input type='checkbox' class='itemCheckbox'></td>
                                             <td width='20%' style='text-align: center;'>$row[REFERENCIAINTERNA]</td>
-                                            <td width='60%' style='text-align: center;'>$row[DESCRICAO]</td>
+                                            <td width='60%' style='text-align: center;'>$descricao</td>
                                             <td width='15%' style='text-align: center;'>$row[QUANTIDADE]</td>
                                         </tr>
                                 ";
