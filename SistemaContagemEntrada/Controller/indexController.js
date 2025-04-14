@@ -1,6 +1,9 @@
+const urlParams = new URLSearchParams(window.location.search);
+const tipo = urlParams.get('tipo');
+
 $(document).ready(function() {
     let nunota = document.getElementById('searchInput').value;    
-    buscaNotasContagem(nunota);
+    buscaNotasContagem(nunota,tipo);
 });
 
 const buscaNotasContagem = () => {
@@ -15,7 +18,8 @@ const buscaNotasContagem = () => {
             $("#loader").hide();
         },
         data: {            
-            route: 'buscaNotasContagem'
+            route: 'buscaNotasContagem',
+            tipo: tipo
         },
         success: function(response) {
             
