@@ -1,11 +1,11 @@
 <?php
 
 
-function buscaNotasContagem($conn)
+function buscaNotasContagem($conn,$tipo)
 {
     try {
-        $params = array();
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_CONTAGEM_ENTRADA_MERCADORIAS] () ";
+        $params = array($tipo);
+        $tsql = "SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_CONTAGEM_ENTRADA_MERCADORIAS] (?) ";
         $stmt = sqlsrv_query($conn, $tsql, $params);
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');

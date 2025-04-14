@@ -15,7 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         switch ($route) {
             case 'buscaNotasContagem':                                
-                    buscaNotasContagem($conn);                
+                if ( isset($_GET['tipo']) ) {
+                $tipo = $_GET['tipo'];
+                    buscaNotasContagem($conn,$tipo);   
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }              
                 break;
             case 'buscaInformacoesProduto':
                 if (isset($_GET['nunota']) && isset($_GET['referencia']) && isset($_GET['tipo']) ) {

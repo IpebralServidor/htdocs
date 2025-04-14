@@ -241,7 +241,8 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 							<span>Dashboard Pendências</span>
 						</div>
 					</a>
-					<a href="./SistemaContagemEntrada/View/index.php" class="cardStyle">
+					<a href="#" onclick="abrirPopEntradaMercadorias()" class="cardStyle">
+					<!-- <a href="./SistemaContagemEntrada/View/index.php" class="cardStyle"> -->
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-scale-unbalanced" style="background-color:rgb(255, 59, 245)"></i>
@@ -349,6 +350,28 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 		</div>
 	</div>
 
+	<div class="popup" id="PopEntradaMercadorias">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopEntradaMercadorias()">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+
+				<div class="div-form">
+					<div class="form">
+					<label>Empresa:</label>
+						<select id="filtroTipo" name="status" class="form-control">
+							<option value="N">Nota</option>
+							<option value="O">OP</option>
+						</select>
+						<button name="confirmaFiltroRetirarCaixa" id="confirmaFiltroRetirarCaixa" onclick="confirmaFiltroEntradaMercadorias()">Confirmar</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	<div class="popup" id="popLeitorQRCode">
 		<div class="overlay"></div>
@@ -401,6 +424,10 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 			document.getElementById('popRetirarCaixa').classList.toggle("active");
 		}
 
+		function abrirPopEntradaMercadorias() {
+			document.getElementById('PopEntradaMercadorias').classList.toggle("active");
+		}
+
 		function abrirLeitorQRCode() {
 			document.getElementById('popLeitorQRCode').classList.toggle("active");
 		}
@@ -414,7 +441,10 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 		function confirmaFiltroRetirarCaixa() {
 			window.location.href = 'DesativaProdutoEndereco/View/index.php?codemp=' + document.getElementById('filtroEmpresa').value;
 		}
-
+		function confirmaFiltroEntradaMercadorias() {
+			window.location.href = 'SistemaContagemEntrada/View/index.php?tipo=' + document.getElementById('filtroTipo').value;
+		}
+		
 		function menuM() {
 			mobile.style.display = "block";
 		}
