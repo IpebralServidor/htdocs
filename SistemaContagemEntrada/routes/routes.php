@@ -22,12 +22,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }              
                 break;
+             case 'buscaAtribuirNotas':                                
+                if ( isset($_GET['tipo']) ) {
+                $tipo = $_GET['tipo'];
+                    buscaAtribuirNotas($conn,$tipo);   
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }              
+                break;
             case 'buscaInformacoesProduto':
                 if (isset($_GET['nunota']) && isset($_GET['referencia']) && isset($_GET['tipo']) ) {
                     $nunota = $_GET['nunota'];
                     $referencia = $_GET['referencia'];
                     $tipo = $_GET['tipo'];
                     buscaInformacoesProduto($conn, $nunota, $referencia,$tipo);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+             case 'buscaInfoCodUsu':
+                if (isset($_GET['codusu'])) {
+                    
+                    $codusu = $_GET['codusu'];
+                    buscaInfoCodUsu($conn, $codusu);
+
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+            case 'buscaInfoNomeUsu':
+                if (isset($_GET['nomeusu']) ) {
+                    
+                    $nomeusu = $_GET['nomeusu'];
+                    buscaInfoNomeUsu($conn,$nomeusu);
+
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -74,6 +102,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
+                break;
+            case 'verificaProximo':
+               if ( isset($_GET['tipo']) ) {
+                    $tipo = $_GET['tipo'];
+                    verificaProximo($conn, $tipo,$codusu);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }   
+                break;
+            case 'pegaProximaNota':
+                if (isset($_GET['tipo']) ) {
+                    $tipo = $_GET['tipo'];
+                
+                    pegaProximaNota($conn, $tipo,$codusu);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }   
+                break;
+            case 'verificaGerente':
+                
+                verificaGerente($conn,$codusu);
+                
                 break;
             default:
                 echo json_encode(['error' => 'Rota não reconhecida']);
@@ -178,6 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
                 break;
+             
             case 'editaSubContagem':
                 if (isset($_POST['nucontsub']) && isset($_POST['qtd']) && isset($_POST['nunota']) && isset($_POST['tipo'])) {
                     $nucontsub = $_POST['nucontsub'];
@@ -185,6 +236,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $nunota = $_POST['nunota'];
                     $tipo = $_POST['tipo'];
                     editaSubContagem($conn, $nucontsub, $qtd, $nunota, $tipo);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }   
+                break;
+            case 'atribuirNotaUsuario':
+                if (isset($_POST['tipo']) && isset($_POST['notas']) && isset($_POST['usuario']) ) {
+                    $tipo = $_POST['tipo'];
+                    $notas = $_POST['notas'];
+                    $usuario = $_POST['usuario'];
+                    atribuirNotaUsuario($conn, $tipo, $notas, $usuario);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
