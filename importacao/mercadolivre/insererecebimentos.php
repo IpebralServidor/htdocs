@@ -44,20 +44,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $linhaDados[] = $celula->getValue(); // Adicionar o valor da célula ao array
             }
 
-            // Adicionar as colunas desejadas (exemplo: A e B)
-            $dados[] = [
-                'DATACOMPRA' => $linhaDados[0] ?? null, // Coluna A
-                'DATALIBERACAO' => $linhaDados[2] ?? null,  // Coluna C 
-                'REFERENCIAML' => $linhaDados[10] ?? null,  // Coluna K 
-                'SKUPRODUTO' => $linhaDados[11] ?? null,  // Coluna L 
-                'STATUSOPERACAO' => $linhaDados[13] ?? null,  // Coluna N 
-                'VALORPRODUTO' => $linhaDados[16] ?? null,  // Coluna Q 
-                'TARIFAMERCLIVRE' => $linhaDados[17] ?? null,  // Coluna R
-                'TARIFAMKTPLACE' => $linhaDados[18] ?? null,  // Coluna S
-                'VALORFRETE' => $linhaDados[19] ?? null,  // Coluna T
-                'REFERENCIAML2' => $linhaDados[29] ?? null,  // Coluna AD
-                'STATUSFRETE' => $linhaDados[35] ?? null  // Coluna AJ
-            ];
+            IF($linhaDados[10] != null || $linhaDados[10] != ''){      
+            
+                // Adicionar as colunas desejadas (exemplo: A e B)
+                $dados[] = [
+                    'DATACOMPRA' => $linhaDados[0] ?? null, // Coluna A
+                    'DATALIBERACAO' => $linhaDados[2] ?? null,  // Coluna C 
+                    'REFERENCIAML' => $linhaDados[10] ?? null,  // Coluna K 
+                    'SKUPRODUTO' => $linhaDados[11] ?? null,  // Coluna L 
+                    'STATUSOPERACAO' => $linhaDados[13] ?? null,  // Coluna N 
+                    'VALORPRODUTO' => $linhaDados[16] ?? null,  // Coluna Q 
+                    'TARIFAMERCLIVRE' => $linhaDados[17] ?? null,  // Coluna R
+                    'TARIFAMKTPLACE' => $linhaDados[18] ?? null,  // Coluna S
+                    'VALORFRETE' => $linhaDados[19] ?? null,  // Coluna T
+                    'REFERENCIAML2' => $linhaDados[29] ?? null,  // Coluna AD
+                    'STATUSFRETE' => $linhaDados[35] ?? null  // Coluna AJ
+                ];
+            }
         }
 
         $sql = "EXEC AD_STP_INSERE_VENDAS_MERCADOLIVRE ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
