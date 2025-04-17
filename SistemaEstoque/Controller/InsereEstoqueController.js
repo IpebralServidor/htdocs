@@ -331,6 +331,7 @@ function insereItensTempITE(nunota, endereco) {
             enderecoBipado = '';
             enderecoTempBipado = '';
             if (msg.includes("IPB: Itens Inseridos com Sucesso!")) {
+                alert(msg);
                 fecharInsereEndereco();
             } else if (msg != "") {
                 alert(msg);
