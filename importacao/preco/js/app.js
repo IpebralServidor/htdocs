@@ -3,7 +3,11 @@ $(document).ready(function () {
     // Captura o clique em uma linha da Tabela 1
     $('#tableListaReferencias tr').on('click', function () {
 
-        
+        // Remove a classe 'selected' de todas as linhas
+        document.querySelectorAll('#tableListaReferencias tr').forEach(r => r.classList.remove('selected'));
+         
+        // Adiciona a classe 'selected' apenas na linha clicada
+        this.classList.add('selected');
 
         const id = $(this).data('id'); // Obtém o ID da linha clicada
 
@@ -169,3 +173,4 @@ document.getElementById("selectAll").addEventListener("change", function() {
         checkbox.checked = this.checked;
     });
 });
+

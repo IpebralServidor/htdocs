@@ -322,3 +322,51 @@
     right: -15px; 
     z-index: 1001;
 }
+
+
+#tableListaReferencias .selected {
+    background-color: #fded06 !important; /* cor escura tipo bg-dark */
+    color: rgb(0, 0, 0);
+}
+
+
+
+/*Configurações da Seta para voltar na tela*/
+.img-voltar{
+	padding: 10px;
+    left: 0;
+    float: left;
+    position: absolute;
+}
+/* .img-voltar img{
+	width: 35px;
+	background-color: #2d4a57;
+	border-radius: 100%;
+}
+
+.img-voltar-detalhes{
+	padding: 0 !important;
+	margin-left: 0.1%; 	
+	padding-top: 1.5% !important;
+	margin-right: 9% !important;
+	max-width: 4.4%;
+	float: left;
+}
+.img-voltar-detalhes img{
+	width: 35px;
+	float: left;
+	background-color: #2d4a57;
+	border-radius: 100%;
+}
+.img-voltar-detalhes a{
+	border: none !important;
+	margin-bottom: 20px !important;
+	text-decoration: none !important;
+	color: #363b48;
+} */
+
+
+
+/* #tableListaReferencias thead th{
+    position: sticky;
+} */

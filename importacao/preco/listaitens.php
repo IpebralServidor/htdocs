@@ -43,6 +43,57 @@ $_SESSION['codEmp'] = $codEmp;
     <br>
     <br>
 
+<div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: absolute; ">
+
+    <?php
+    
+          //Retorna os dados da tabela para ser exibida na tela. As referências que tem na importação.
+               $tsql = "SELECT NUORCAMENTO, 
+                            CODEMP, 
+                            CODPARC, 
+                            (SELECT RAZAOSOCIAL
+                                FROM TGFPAR 
+                                WHERE TGFPAR.CODPARC = AD_IMPORTACAO_TELEMARKETING_CAB.CODPARC) AS RAZAOSOCIAL
+                        FROM AD_IMPORTACAO_TELEMARKETING_CAB
+                        WHERE NUORCAMENTO = $nuorcamento";
+
+            $stmt = sqlsrv_query($conn, $tsql);
+
+            $listaConferencias = "";
+
+
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+
+                $codemp = $row['CODEMP'];
+                $codparc = $row['CODPARC'];
+                $razaosocial = $row['RAZAOSOCIAL'];
+            
+            }
+            
+
+
+
+    ?>
+    
+    <table style="width: 100%; background-color: black;" id="table">
+        <thead>
+            <tr class="bg-dark text-white">
+                <th>Núm. Orçamento: <?php echo $nuorcamento; ?></th>
+                <th>Empresa: <?php echo $codemp; ?></th>
+                <th>Cód. Parc.: <?php echo $codparc; ?></th>
+                <th>Razão Social: <?php echo $razaosocial; ?></th>
+            </tr>
+        </thead>
+    </table>
+    
+    <div class="img-voltar">
+        <a href="listaorcamento.php">
+            <img src="../../images/216446_arrow_left_icon.png">
+        </a>
+	</div>
+
+</div>
+
 <div style="display: flex;">
     <div style="height: 80%; width: 60%; float: left; margin-left: 4%; float: left;" id="ListaConferencia" class="listaconferencia">
         <table style="width: 100%;" id="tableListaReferencias">
@@ -167,11 +218,9 @@ $_SESSION['codEmp'] = $codEmp;
 
     <!-- Itens que aparecerem na pesquisa -->
     <div style="height: 80%; width: 30%; position: fixed; right: 0; text-align: center; margin-right: 3%;" id="listaReferencia">
-        <table style="width: 100%;" id="tableListaItens" class="listaconferencia">
-            <tbody>
+        
                 <!-- Itens são mostrados via AJAX, baseado na linha que é clicada. -->
-            </tbody>
-        </table>
+        
     </div>
 
 </div>

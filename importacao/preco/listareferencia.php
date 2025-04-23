@@ -26,7 +26,8 @@ $nuorcamento = $_SESSION['nuorcamento'];
 			$tsql2 = "SELECT REFERENCIAFABRICANTE, REFERENCIAINTERNA, DESCRPROD, PRECOVENDA, ESTOQUE, CODPROD, AGRUPMIN
 					  FROM AD_IMPORTACAO_TELEMARKETING_ITE
 					  WHERE REFERENCIAFABRICANTE = '{$id}'
-						AND NUORCAMENTO = $nuorcamento";
+						AND NUORCAMENTO = $nuorcamento
+					  ORDER BY SEQUENCIA";
 
 			$stmt2 = sqlsrv_query($conn, $tsql2);
 			while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC)) {
