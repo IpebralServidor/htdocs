@@ -86,13 +86,23 @@
 /* Container para ambos os botões */
 #floating-container {
     position: fixed;
-    bottom: 20px;
+    bottom: 70px;
     right: 20px; /* Posição geral no canto inferior direito */
     display: flex;
     gap: 10px; /* Espaçamento entre os botões */
     align-items: center; /* Centraliza verticalmente */
 }
 
+
+/* Container para os botões do Lista de Itens*/
+#floating-container-listaitens {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Posição geral no canto inferior direito */
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    align-items: center; /* Centraliza verticalmente */
+}
 
 /* Container para botões na geração da 1700 */
 #floating-container-1700 {

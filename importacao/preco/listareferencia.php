@@ -51,24 +51,11 @@ $nuorcamento = $_SESSION['nuorcamento'];
 			?>
 		</table>
 
-		<!-- Fim da tabela de Possíveos Itens, baseado na linha que foi clicada da referência -->
-
-			<?php
-				$tsql = "SELECT sankhya.AD_FN_STATUS_IMPORTACAO_TELEMARKETING($nuorcamento)";
-				$stmt = sqlsrv_query($conn, $tsql);
-				while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
-					$status = $row[0];
-				}
-
-
-			?>
+		<!-- Fim da tabela de Possíveis Itens, baseado na linha que foi clicada da referência -->
 
 			<!-- Botões de Finalização e Inclusão -->
 			<div id="floating-container">
 				<div id="limparlinha-button" class="floating-button">Limpar</div>
-				<div id="gera1700-button" class="floating-button">Gera 1700</div>
-				<div id="finalizar-button" class="floating-button">Finalizar</div>
-				<div id="exportarPlanilha" class="floating-button">Exportar</div>
 				<div id="floating-button-item" class="floating-button-item" onclick="openSidebar()">+</div>
 			</div>
 			<div id="search-container">
@@ -107,17 +94,6 @@ $nuorcamento = $_SESSION['nuorcamento'];
 </section>
 
 <script >
-
-//Função que atualiza os botões para não aparecerem
-var statusfinalizacao = '<?php echo $status; ?>';
-
-if(statusfinalizacao == 'C') {
-	document.getElementById('finalizar-button').style.display = 'none';
-	document.getElementById('gera1700-button').style.display = 'block';
-} else {
-	document.getElementById('finalizar-button').style.display = 'block';
-	document.getElementById('gera1700-button').style.display = 'none';
-}
 
 //Função que faz a atualização dos dados, assim que é clicado em uma linha da tabela de Itens das referências que foram encontradas.
 document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
@@ -228,204 +204,6 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
 			});
 		}
 	});
-
-
-	//Processo de exportar a Planilha já com os campos prontos
-	$('#exportarPlanilha').click(function() {
-		
-
-		 nuorcamento = <?php echo $nuorcamento; ?>;
-
-	     if (confirm("Tem certeza que deseja exportar a planilha novamente para Excel?")) {
-		 	
-		 	//alert('teste');
-		 	//alert(nuorcamento);
-		 	exportarPlanilha(nuorcamento); 	  
-
-		 } 
-
-		//Função via AJAX que faz a exportação da planilha.
-		function exportarPlanilha(nuorcamento) {
-			//O método $.ajax(); é o responsável pela requisição
-			$.ajax({
-				//Configurações
-				type: 'POST', //Método que está sendo utilizado.
-				dataType: 'html', //É o tipo de dado que a página vai retornar.
-				url: './exportarplanilha.php', //Indica a página que está sendo solicitada.
-				//função que vai ser executada assim que a requisição for enviada
-				beforeSend: function() {
-					//$("#loader").show();
-				},
-				complete: function() {
-					//$("#loader").hide();
-				},
-				data: {
-					nuorcamento: nuorcamento
-				}, //Dados para consulta
-				//função que será executada quando a solicitação for finalizada.
-				success: function(msg) {
-					
-					//Redireciona para a página do orçamento que foi criado.
-					window.location.href = window.location.origin + msg;
-
-				},
-			    error: function(xhr, status, error) {
-			        console.log('Erro AJAX:', error);
-			    }
-
-			});
-		}
-
-
-	});	
-
-
-	//Processo para finalizar a cotação, marcar como finalizado e mostrar que já está concluída
-	$('#finalizar-button').click(function() {
-		
-		 nuorcamento = <?php echo $nuorcamento; ?>;
-
-		 onclick="confirm('Você tem certeza que deseja finalizar?')"
-	     if (confirm('Você tem certeza que deseja marcar essa cotação como finalizada?')) {
-		 	
-		 	finalizarCotacao(nuorcamento); 	  
-
-		 } 
-
-
-		//Função que marca a cotação como finalizada.
-		function finalizarCotacao(nuorcamento) {
-			//O método $.ajax(); é o responsável pela requisição
-			$.ajax({
-				//Configurações
-				type: 'POST', //Método que está sendo utilizado.
-				dataType: 'html', //É o tipo de dado que a página vai retornar.
-				url: './finalizarcotacao.php', //Indica a página que está sendo solicitada.
-				//função que vai ser executada assim que a requisição for enviada
-				beforeSend: function() {
-					//$("#loader").show();
-				},
-				complete: function() {
-					//$("#loader").hide();
-				},
-				data: {
-					nuorcamento: nuorcamento
-				}, //Dados para consulta
-				//função que será executada quando a solicitação for finalizada.
-				success: function(msg) {
-					
-					alert('Cotação Finalizada com Sucesso!');
-					window.location.href = 'listaorcamento.php';
-
-				},
-			    error: function(xhr, status, error) {
-			        console.log('Erro AJAX:', error);
-			    }
-
-			});
-		}
-
-
-	});	
-
-	//Abre o POPUP para abrir as notas de geração da 1700
-	$('#gera1700-button').click(function() {
-
-		nuorcamento = <?php echo $nuorcamento; ?>;
-		if (confirm('Você tem certeza que deseja criar a 1700?')) {
-			
-			abrirMarcacaoitens(nuorcamento);
-			//finalizarCotacao(nuorcamento); 	  
-
-		} 
-
-
-		function abrirMarcacaoitens(nuorcamento) {
-			document.getElementById('popupitens1700').style.display = 'block';
-	   	}
-
-	});
-
-	$('#gerar1700-button').click(function() {
-		
-		nuorcamento = <?php echo $nuorcamento; ?>;
-
-		var checkboxes = document.querySelectorAll('.itemCheckbox:checked');
-    	var selecionados = [];
-
-		
-		checkboxes.forEach(function(checkbox) {
-			var linha = checkbox.closest('tr'); // Encontra a linha (tr) do checkbox
-			var referencia = linha.getAttribute('data-referencia'); // Pega o valor de data-referencia
-			//var descricao = linha.querySelector('td:nth-child(3)').innerText; // Pega o valor da coluna Descrição
-			//var quantidade = linha.querySelector('td:nth-child(4)').innerText; // Pega o valor da coluna Quantidade
-
-			// Adiciona os dados da linha ao array de selecionados
-			selecionados.push({
-				referencia: referencia//,
-				//descricao: descricao,
-				//quantidade: quantidade
-			});
-    	});
-
-		if (selecionados.length > 0) {
-			
-			
-			// // Enviar os dados via AJAX
-			// var xhr = new XMLHttpRequest();
-			// xhr.open('POST', 'gera1700.php', true);
-			// xhr.setRequestHeader('Content-Type', 'application/json');
-			// xhr.onreadystatechange = function() {
-			// 	if (xhr.readyState === 4 && xhr.status === 200) {
-			// 		var mensagem = 'Nota Criada com Sucesso! Núm. Único: ' + xhr.responseText;
-			// 		alert(mensagem);
-
-			// 		console.log(xhr.responseText); // Exibe a resposta do servidor
-			// 	} else {
-			// 		alert('Erro ao criar nota.');
-			// 	}
-			// };
-			// xhr.send(JSON.stringify({ selecionados: selecionados })); // Envia os dados como JSON
-
-
-			$.ajax({
-				type: 'POST', // Método HTTP
-				dataType: 'html', // Espera-se um JSON de resposta
-				url: 'gera1700.php', // URL do arquivo PHP
-				contentType: 'application/json', // Enviando os dados como JSON
-				data: JSON.stringify({ selecionados: selecionados }), // Dados enviados para o PHP
-
-				beforeSend: function() {
-					// Você pode exibir um loader aqui, se quiser
-					$("#loader").show();
-				},
-
-				complete: function() {
-					// Aqui você pode esconder o loader
-					$("#loader").hide();
-				},
-
-				success: function(response) {
-						alert(response);
-						console.log(response);
-				},
-
-				error: function(xhr, status, error) {
-					// Caso ocorra algum erro na requisição
-					console.error('Erro AJAX:', error);
-					alert('Erro ao enviar os dados.');
-				}
-			});
-
-
-		} else {
-			alert('Nenhum item selecionado.');
-		}
-
-
-	} );
-
-		
 
 		
 
