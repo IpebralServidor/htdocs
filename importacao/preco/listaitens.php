@@ -220,8 +220,8 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
 			
             <!-- Botão para gerar 1700 depois que todos os itens estiverem selecionados. -->
             <div id="floating-container-1700">
-				<div id="gerar1700-button" class="floating-button">Gerar 1700</div>
-				<div id="cancelar1700-button" class="floating-button" onclick="fechargera1700();">Cancelar</div>
+				<div id="gerar1700-button" class="floating-button-listaitens">Gerar 1700</div>
+				<div id="cancelar1700-button" class="floating-button-listaitens" onclick="fechargera1700();">Cancelar</div>
 			</div>
 
 		</div>
@@ -237,9 +237,9 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
     </div>
 
     <div id="floating-container-listaitens">
-        <div id="gera1700-button" class="floating-button">Gera 1700</div>
-        <div id="finalizar-button" class="floating-button">Finalizar</div>
-        <div id="exportarPlanilha" class="floating-button">Exportar</div>
+        <div id="gera1700-button" class="floating-button-listaitens">Gera 1700</div>
+        <div id="finalizar-button" class="floating-button-listaitens">Finalizar</div>
+        <div id="exportarPlanilha" class="floating-button-listaitens">Exportar</div>
     </div>
 
 </div>

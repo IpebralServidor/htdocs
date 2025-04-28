@@ -55,7 +55,7 @@ $nuorcamento = $_SESSION['nuorcamento'];
 
 			<!-- Botões de Finalização e Inclusão -->
 			<div id="floating-container">
-				<div id="limparlinha-button" class="floating-button">Limpar</div>
+				<div id="limparlinha-button" class="floating-button-listaitens">Limpar</div>
 				<div id="floating-button-item" class="floating-button-item" onclick="openSidebar()">+</div>
 			</div>
 			<div id="search-container">

@@ -75,23 +75,15 @@ function listaReferencia(id) {
 
 
 $(document).ready(function () {
-    // Captura o clique em uma linha da Tabela 1
-    $('#tableListaOrcamento tr').on('click', function () {
+    // Pega o clique duplo para abrir o orçamento
+    $('#tableListaOrcamento tr').on('dblclick', function () {
 
 
         const nuorcamento = $(this).data('id'); // Obtém o ID da linha clicada
         const orcamento = $(this).find('td:eq(0)').text(); // Primeira coluna
         const empresa = $(this).find('td:eq(1)').text(); // Segunda coluna
-        const parceiro = $(this).find('td:eq(1)').text(); // Terceira coluna
+        const parceiro = $(this).find('td:eq(2)').text(); // Terceira coluna
 
-        //alert(nuorcamento + ' / ' + coluna1 + ' / ' + coluna2);
-
-        // window.idSelecionado = id; // Alternativa global
-
-        // if (!id) return; // Ignora cliques no cabeçalho ou linhas sem ID
-
-
-        // listaReferencia(id);
 
         // Exemplo de uso
         const url = "listaitens.php"; // URL de destino
@@ -104,6 +96,39 @@ $(document).ready(function () {
 
 
     });
+
+    
+    // Quando a página carrega, salva a cor original de cada linha
+    $('#tableListaOrcamento tbody tr').each(function () {
+        const originalColor = $(this).css('background-color');
+        $(this).attr('data-original-color', originalColor); // Armazena a cor original no atributo 'data-original-color'
+    });
+
+    // Clique simples para marcar linha
+    $('#tableListaOrcamento').on('click', 'tbody tr', function () {
+        
+        // Restaura a cor de todas as linhas, exceto a linha clicada
+        $('#tableListaOrcamento tbody tr').each(function () {
+            const originalColor = $(this).attr('data-original-color');
+            if (originalColor) {
+                $(this).css('background-color', originalColor); // Restaura a cor original
+            }
+            $(this).removeClass('selecionada'); // Remove a classe 'selecionada' de todas as linhas
+        });
+
+        // Pinta de amarelo a linha clicada e adiciona a classe "selecionada"
+        $(this).addClass('selecionada');
+        $(this).css('background-color', '#fded06'); // Cor amarela para a linha selecionada
+
+        // Salva o nuorcamento para exclusão
+        const nuorcamento = $(this).data('id');
+        window.nuorcamentoSelecionado = nuorcamento;
+
+        //alert(nuorcamento);
+        console.log('Selecionado: ' + nuorcamento);
+    });
+
+ 
 });
 
 
@@ -174,3 +199,35 @@ document.getElementById("selectAll").addEventListener("change", function() {
     });
 });
 
+
+
+// Função para excluir o orçamento
+function excluirOrcamento() {
+    // Verifica se há um orçamento selecionado
+    if (window.nuorcamentoSelecionado) {
+        const nuorcamento = window.nuorcamentoSelecionado;
+
+        //alert(nuorcamento);
+
+        // Exclui a linha da tabela (remover do DOM)
+        $('#tableListaOrcamento tr[data-id="' + nuorcamento + '"]').remove();
+
+        // Envia a requisição para excluir o orçamento no PHP
+        $.ajax({
+            url: 'excluiOrcamento.php', // O arquivo PHP que vai tratar a exclusão
+            method: 'POST',
+            data: {
+                nuorcamento: nuorcamento // Passa o ID do orçamento a ser excluído
+            },
+            success: function(response) {
+                // Retorna a mensagem que veio do Banco de Dados
+                alert(response); 
+            },
+            error: function() {
+                alert('Erro ao se comunicar com o servidor.');
+            }
+        });
+    } else {
+        alert('Selecione um orçamento para excluir.');
+    }
+}

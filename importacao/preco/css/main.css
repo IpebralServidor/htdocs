@@ -260,7 +260,7 @@
 
 
 /* Botão Flutuante (Estilo para todos os botões usados) */
-#floating-button {
+#floating-button-listaitens {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -277,7 +277,7 @@
     transition: all 0.3s;
 }
 
-#floating-button:hover {
+#floating-button-listaitens:hover {
     transform: scale(1.1);
 }
 
@@ -339,6 +339,11 @@
     color: rgb(0, 0, 0);
 }
 
+.selected-row {
+    background-color: #fded06 !important;
+    color: rgb(0, 0, 0);
+}
+
 
 
 /*Configurações da Seta para voltar na tela*/
@@ -380,3 +385,54 @@
 /* #tableListaReferencias thead th{
     position: sticky;
 } */
+
+
+
+#floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.floating-button {
+    width: 60px;
+    height: 60px;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    font-size: 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-button.delete {
+    background-color: #dc3545; /* Vermelho para excluir */
+}
+
+.button-label {
+    display: none;
+    margin-left: 10px;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.floating-button:hover {
+    width: 140px;
+    border-radius: 30px;
+    padding-left: 10px;
+    justify-content: flex-start; /* Alinha ícone e texto à esquerda */
+}
+
+.floating-button:hover .button-label {
+    display: inline-block;
+}
