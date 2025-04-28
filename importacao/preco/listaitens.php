@@ -87,7 +87,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
 
     ?>
     
-    <table style="width: 100%; background-color: black;" id="table">
+    <table style="width: 100%; position: fixed;" id="table">
         <thead>
             <tr class="bg-dark text-white">
                 <th>Núm. Orçamento: <?php echo $nuorcamento; ?></th>
@@ -108,7 +108,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
 </div>
 
 <div style="display: flex;">
-    <div style="height: 80%; width: 60%; float: left; margin-left: 4%; float: left;" id="ListaConferencia" class="listaconferencia">
+    <div style="height: 90%; width: 60%; float: left; margin-left: 4%; float: left; position: fixed;" id="ListaConferencia" class="listaconferencia">
         <table style="width: 100%;" id="tableListaReferencias">
             <!-- Monta o cabeçalho da tabela -->
             <thead>
