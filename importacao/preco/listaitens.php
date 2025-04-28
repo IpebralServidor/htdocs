@@ -62,7 +62,9 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
                             CODPARC, 
                             (SELECT RAZAOSOCIAL
                                 FROM TGFPAR 
-                                WHERE TGFPAR.CODPARC = AD_IMPORTACAO_TELEMARKETING_CAB.CODPARC) AS RAZAOSOCIAL
+                                WHERE TGFPAR.CODPARC = AD_IMPORTACAO_TELEMARKETING_CAB.CODPARC) AS RAZAOSOCIAL,
+                            'Total: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_TELEMARKETING WHERE AD_IMPORTACAO_TELEMARKETING.NUORCAMENTO = AD_IMPORTACAO_TELEMARKETING_CAB.NUORCAMENTO)) 
+	                        + ' / Prenchidos: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_TELEMARKETING_ITE WHERE AD_IMPORTACAO_TELEMARKETING_ITE.NUORCAMENTO = AD_IMPORTACAO_TELEMARKETING_CAB.NUORCAMENTO AND MARCADO = 'S')) AS QTD
                         FROM AD_IMPORTACAO_TELEMARKETING_CAB
                         WHERE NUORCAMENTO = $nuorcamento";
 
@@ -76,6 +78,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
                 $codemp = $row['CODEMP'];
                 $codparc = $row['CODPARC'];
                 $razaosocial = $row['RAZAOSOCIAL'];
+                $qtd = $row['QTD'];
             
             }
             
@@ -91,6 +94,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
                 <th>Empresa: <?php echo $codemp; ?></th>
                 <th>Cód. Parc.: <?php echo $codparc; ?></th>
                 <th>Razão Social: <?php echo $razaosocial; ?></th>
+                <th id="contadorItens"><?php echo $qtd; ?> </th>
             </tr>
         </thead>
     </table>

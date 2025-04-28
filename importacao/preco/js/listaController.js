@@ -98,7 +98,7 @@ document.addEventListener('click', function(event) {
                     console.log('Item inserido com sucesso!');
                     alert('Item inserido!');
                     listaReferencia(idTabela);
-
+                    atualizarContadorItens();
                     
                     // Aguarda um tempo para garantir que a tabela foi recarregada antes de buscar a última linha
                     setTimeout(() => {
@@ -127,6 +127,7 @@ document.addEventListener('click', function(event) {
                                 rowInTable1.cells[5].textContent = selectedPreco;
                                 rowInTable1.cells[6].textContent = selectedEstoque;
                                 rowInTable1.style.backgroundColor = '#D7C0DB'; // Define a cor da linha
+
                             }
                         } else {
                             console.log("Nenhuma linha encontrada com o ID:", idTabela);
@@ -149,4 +150,16 @@ function openSidebar() {
 
 function closeSidebar() {
     document.getElementById('search-container').classList.remove('open');
+}
+
+
+function atualizarContadorItens() {
+    $.ajax({
+        url: './buscarContadorItens.php',
+        method: 'POST',
+        success: function(data) {
+            //alert(data);
+            $('#contadorItens').text(data); // atualiza o valor na tela
+        }
+    });
 }

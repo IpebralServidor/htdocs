@@ -147,6 +147,7 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
 
 
 					updateDados(selectedId, selectedRef, selectedPreco, selectedEstoque);
+					atualizarContadorItens();
 
 
 				// Encontra a linha correspondente na segunda tabela
@@ -180,6 +181,7 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
 			rowToColor.style.backgroundColor = ''; // Remove a cor de fundo
 
 			limparDados('<?php echo $id; ?>');
+			atualizarContadorItens();
 		}
 
 
