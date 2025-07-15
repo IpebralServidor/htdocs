@@ -437,3 +437,71 @@
 .floating-button:hover .button-label {
     display: inline-block;
 }
+
+
+
+/* Área preta onde a imagem vai ficar */
+.informacoes-produto {
+    width: 100%;
+    height: 30%;
+    background-color: #E9F1F5;
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    overflow: hidden; /* Garante que nada ultrapasse */
+}
+
+/* Div que contém a imagem */
+.img-prod {
+    margin-left: 20px; /* Espaço da esquerda */
+    cursor: pointer; /* Mostra que é clicável */
+}
+
+/* Estilo da imagem */
+.img-prod img {
+    vertical-align: middle;
+    max-width: 280px;
+    max-height: 90%;
+}
+
+.img-prod:hover {
+    transform: scale(1.2); /* Aumenta 10% ao passar o mouse */
+}
+
+
+
+
+/*DIV da tabela de descontos*/
+#ItemDesconto {
+    border-collapse: collapse;
+    width: auto;
+    table-layout: fixed;
+    font-size: 16px; /* Fonte pequena geral */
+    margin-left: 40px;
+}
+
+#ItemDesconto th,
+#ItemDesconto td {
+    height: 20px;              /* Altura exata da linha */
+    line-height: 1.2;            /* Reduz espaço interno vertical */
+    padding: 2px 4px;            /* Remove padding vertical */
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    justify-content: center;
+}
+
+#ItemDesconto tr {
+    background-color: white;
+}
+
+#ItemDesconto tr:hover{
+    background-color: rgb(189, 212, 218);
+}
+
+#ItemDesconto th {
+    background-color: #2c5b6d; /* azul escuro do print */
+    color: white;
+    font-weight: bold;
+}

@@ -96,7 +96,7 @@ document.addEventListener('click', function(event) {
                     // $("#imagemproduto").html(msg);
                     //alert(msg);
                     console.log('Item inserido com sucesso!');
-                    alert('Item inserido!');
+                    alert(msg);
                     listaReferencia(idTabela);
                     atualizarContadorItens();
                     

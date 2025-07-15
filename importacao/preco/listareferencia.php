@@ -8,10 +8,10 @@ $nuorcamento = $_SESSION['nuorcamento'];
 ?>
 
 <section class="produtosconferencia">
-	<div style="height: 90%; width: 30%; position: fixed; right: 0; text-align: center; margin-right: 3%;" id="listaReferencia">
+	<div style="height: 90%; width: 30%; position: fixed; right: 0; text-align: center; margin-right: 3%; display: flex; flex-direction: column;" id="listaReferencia">
 
 		<!-- Tabela de Possíveos Itens, baseado na linha que foi clicada da referência -->
-		<table id="tableListaItens" class="listaconferencia" style="width: 100%;">
+		<table id="tableListaItens" class="listaconferencia" style="width: 100%; height: 55%;">
 			<tr>
 				<th>Ref. Fabricante</th>
 				<th>Referência Interna</th>
@@ -23,11 +23,8 @@ $nuorcamento = $_SESSION['nuorcamento'];
 			<?php
 
 			
-			$tsql2 = "SELECT REFERENCIAFABRICANTE, REFERENCIAINTERNA, DESCRPROD, PRECOVENDA, ESTOQUE, CODPROD, AGRUPMIN
-					  FROM AD_IMPORTACAO_TELEMARKETING_ITE
-					  WHERE REFERENCIAFABRICANTE = '{$id}'
-						AND NUORCAMENTO = $nuorcamento
-					  ORDER BY SEQUENCIA";
+			$tsql2 = "SELECT * 
+					  FROM SANKHYA.AD_FNT_ListaReferencias_CotacaoTelemarketing('$id', $nuorcamento)";
 
 			$stmt2 = sqlsrv_query($conn, $tsql2);
 			while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC)) {
@@ -50,6 +47,33 @@ $nuorcamento = $_SESSION['nuorcamento'];
 			}
 			?>
 		</table>
+		<!-- DIV para produtos em promoção -->
+		<div class="informacoes-produto">
+
+			<div class= "img-prod"  id="imagemproduto" onclick="confirmarEnvioEmail()">
+				
+					
+				<?php
+				$tsql2 = "SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000 ";
+				$stmt2 = sqlsrv_query($conn, $tsql2);
+				if ($stmt2) {
+					$row_count = sqlsrv_num_rows($stmt2);
+					while ($row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_NUMERIC)) {
+						echo '<img style="vertical-align: middle;  max-width: 280px; margin: auto; max-height: 90%;" src="data:image/jpeg;base64,' . base64_encode($row2[0]) . '"/>';
+					}
+				}
+				?>
+			</div> <!-- Parte da Imagem -->
+
+			<div>
+					<!-- Tabela de Possíveos Itens, baseado na linha que foi clicada da referência -->
+					<table id="ItemDesconto">
+						
+					</table>
+			</div> <!-- Parte da da promoção -->
+
+		</div>
+
 
 		<!-- Fim da tabela de Possíveis Itens, baseado na linha que foi clicada da referência -->
 
@@ -82,6 +106,7 @@ $nuorcamento = $_SESSION['nuorcamento'];
 						<tr>
 							<th width="33%" style="text-align: center;">Referência</th>
 							<th width="67%" style="text-align: center;">Descrição do Produto</th>
+							<th width="22%" style="text-align: center;">Estoque</th>
 						</tr>
 					</thead>
 					<tbody id="produtos">
@@ -105,6 +130,9 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
                 const selectedPreco = this.getAttribute('data-price'); // Valor selecionado
 				const selectedEstoque = this.getAttribute('data-est'); // Valor selecionado
                 const selectedAgrupmin = this.getAttribute('data-agrupmin'); // Valor selecionado
+                const selectedCodProd = this.getAttribute('data-codprod'); // Valor selecionado
+				const nuorcamento = "<?php echo $nuorcamento; ?>"; 
+				
 
                 // Atualizar linha correspondente na primeira tabela
                 const rowInTable1 = document.querySelector(`#tableListaReferencias tbody tr[data-id="${selectedId}"]`);
@@ -147,6 +175,8 @@ document.querySelectorAll('#tableListaItens tbody tr').forEach(row => {
 
 
 					updateDados(selectedId, selectedRef, selectedPreco, selectedEstoque);
+					imagemproduto(selectedRef);
+					ItemDesconto(nuorcamento, selectedRef);
 					atualizarContadorItens();
 
 

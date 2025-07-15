@@ -29,22 +29,41 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-  // Evento de mudança no input
-  $(".quantidade").on("change", function () {    
-    
-    // Encontrando a linha (tr) do input que está sendo alterado
+  $(".quantidade").on("change", function () {
     const row = $(this).closest("tr");
-    
-    // Capturando o ID da linha e a quantidade digitada no input
     const id = row.data("id");
-    const quantidade = $(this).val(); // Pega o valor atualizado
+    const quantidade = $(this).val();
 
-    //alert(quantidade + ' / ' +id);
+    // Atualiza a quantidade no back-end
     updateQuantidade(id, quantidade);
 
+    // Atualiza a lista de referências (tabela com os preços)
+    listaReferencia(id);
 
+    // Aguarda a tabela atualizar antes de pegar e aplicar o novo preço
+    setTimeout(() => {
+      // Seleciona a linha na tabela que contém o atributo data-id correspondente
+      const rowAtualizada = document.querySelector(`#tableListaItens tbody tr[data-id="${id}"]`);
+      const rowAtualizar = document.querySelector(`#tableListaReferencias tbody tr[data-id="${id}"]`);
+
+      if (rowAtualizada) {
+        // Lê o novo preço atualizado da linha (após listaReferencia atualizar os dados)
+        const precoAtualizado = rowAtualizada.getAttribute('data-price');
+
+        console.log("Preço atualizado:", precoAtualizado);
+
+        // Atualiza o próprio atributo data-price da linha
+       rowAtualizar.cells[5].textContent = precoAtualizado;
+
+      } else {
+        console.warn("Linha com data-id", id, "não encontrada em #tableListaItens");
+      }
+    }, 900); // Ajuste esse tempo se necessário
   });
 });
+
+
+
 
 
 
@@ -69,6 +88,28 @@ function listaReferencia(id) {
     });
 }
 
+
+function ItemDesconto(nuorcamento, referenciaprod) {
+    //O método $.ajax(); é o responsável pela requisição
+    $.ajax({
+        //Configurações
+        type: 'POST', //Método que está sendo utilizado.
+        dataType: 'html', //É o tipo de dado que a página vai retornar.
+        url: './descontoItem.php', //Indica a página que está sendo solicitada.
+        //função que vai ser executada assim que a requisição for enviada
+        beforeSend: function() {
+            $("#ItemDesconto").html("Carregando...");
+        },
+        data: {
+            nuorcamento: nuorcamento,
+            referenciaprod: referenciaprod
+        }, //Dados para consulta
+        //função que será executada quando a solicitação for finalizada.
+        success: function(msg) {
+            $("#ItemDesconto").html(msg);
+        }
+    });
+}
 
 
 
@@ -230,4 +271,26 @@ function excluirOrcamento() {
     } else {
         alert('Selecione um orçamento para excluir.');
     }
+}
+
+
+function imagemproduto(codigodebarra) {
+    //O método $.ajax(); é o responsável pela requisição
+    $.ajax({
+        //Configurações
+        type: 'POST', //Método que está sendo utilizado.
+        dataType: 'html', //É o tipo de dado que a página vai retornar.
+        url: './imagemproduto.php', //Indica a página que está sendo solicitada.
+        //função que vai ser executada assim que a requisição for enviada
+        beforeSend: function() {
+            $("#imagemproduto").html("Carregando...");
+        },
+        data: {
+            codigodebarra: codigodebarra
+        }, //Dados para consulta
+        //função que será executada quando a solicitação for finalizada.
+        success: function(msg) {
+            $("#imagemproduto").html(msg);
+        }
+    });
 }
