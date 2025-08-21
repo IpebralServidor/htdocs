@@ -153,7 +153,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
                         <tr id='linhaSelecionada' data-id='$row[REFERENCIAFABRICANTE]' style='background-color: $row[CORLINHA];'>
                             <td style='width: 15%;'>$row[REFERENCIAFABRICANTE] </td>
                             <td style='width: 30%;'>$row[DESCRICAO] </td>
-                            <td style='width: 10%;'><input class='quantidade' style='width: 100%;' type='number' value='$row[QUANTIDADE]' min='0' step='0.01'> </td>
+                            <td style='width: 10%;'><input class='quantidade' style='width: 100%;' type='number' value='$row[QUANTIDADE]' min='0' step='1'> </td>
                             <td style='width: 10%;'>$row[AGRUPMIN] </td>
                             <td style='width: 15%;'>$row[REFERENCIAINTERNA] </td>
                             <td style='width: 10%;'>$row[PRECOVENDA] </td>
