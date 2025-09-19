@@ -50,7 +50,7 @@ if ($varStatusNota == 'L') {
 </head>
 
 <body id="body">
-
+    <div id="emailFoto"></div>
     <div id="loader" class="" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
     </div>
@@ -232,6 +232,22 @@ if ($varStatusNota == 'L') {
             if (statusPausa == 'P') {
                 pausarIniciarContagem('P', document.getElementById("botaoTimer").getAttribute('data-id'));
             }
+            $('input').on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Impede envio do form
+        
+                    // Pega todos os inputs visíveis e habilitados
+                    const inputs = $('input:visible:enabled');
+                    const index = inputs.index(this);
+                    
+                    if (index > -1 && index + 1 < inputs.length) {
+                        inputs.eq(index + 1).focus();
+                    } else {
+                        // Último input: perde o foco
+                        $(this).blur();
+                    }
+                }
+            });
         };
 
         function checkboxChange(checkbox) {
@@ -283,6 +299,7 @@ if ($varStatusNota == 'L') {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="../../components/emailFoto/js/emailFoto.js"></script>
 </body>
 
 </body>

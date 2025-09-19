@@ -6,8 +6,79 @@ $(document).ready(function() {
     buscaNotasContagem(nunota,tipo);
     buscaAtribuirNotas(nunota,tipo);
     verificaGerente();
+    buscaLiberaPaletes(nunota,tipo);
+    buscaPaletesPendentes(nunota,tipo);
+    verificaTipo(tipo);
+
 
 });
+
+const buscaLiberaPaletes = () => {
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {            
+            route: 'buscaLiberaPaletes',
+            tipo: tipo
+        },
+        success: function(response) {
+            
+          
+            if(response.success || response.success === '') {
+                document.getElementById('listaPaletes').innerHTML = response.success;
+            } else {
+                alert('Erro: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
+}
+
+
+const buscaPaletesPendentes = () => {
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {            
+            route: 'buscaPaletesPendentes',
+            tipo: tipo
+        },
+        success: function(response) {
+            
+          
+            if(response.success || response.success === '') {
+                document.getElementById('listaPaletesPendentes').innerHTML = response.success;
+            } else {
+                alert('Erro: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
+}
+
+
 
 const verificaGerente = () => {
     $.ajax({
@@ -107,49 +178,7 @@ const confirmaAbrirContagem= (row) => {
     const nunota = row.id;
     const tipo = row.getAttribute('data-tipo');
     const status = row.getAttribute('data-status');   
-    if(tipo == 'N') {
-        $.ajax({
-            method: 'GET',
-            url: '../routes/routes.php',
-            dataType: 'json',
-            beforeSend: function() {
-                $("#loader").show();
-            },
-            complete: function() {
-                $("#loader").hide();
-            },
-            data: {            
-                nunota : nunota,
-                route: 'verificaEmpresa'
-            },
-            success: function(response) {
-                if((response.success.msg.includes('prioridade') && status == 'D')) {
-                    alert('Existem notas empresa 1 para esse parceiro que são prioridade! Contar eles primeiro Notas: ' + response.success.msg)
-                    return;
-                } else {
-                    
-                    let confirmMsg;
-                    if(status === 'D') {
-                        confirmMsg = `Deseja abrir contagem o N° ${nunota}?`;
-                    } else if(status.includes('C')) {
-                    alert('Não é possível abrir contagem concluída sem pedido de recontagem.');
-                    return;
-                    }
-                    const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
-                    if(confirmacao) {
-                        window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;
-                    }        
-                }
-                
-                   
-            },
-            error: function(xhr, status, error) {
-                alert('Erro na requisição AJAX: ' + error);
-                console.log(xhr);
-                console.log(status);
-            }
-        });
-    } else {
+    
        
        
         $.ajax({
@@ -164,12 +193,17 @@ const confirmaAbrirContagem= (row) => {
             },
             data: {            
                 nunota : nunota,
+                tipo: tipo,
                 route: 'verificaEmpresa'
             },
             success: function(response) {
                 if (response.success.msg.includes('pend') && status == 'D'){                    
                     alert('APP: Existem contagens atribuidas em abertas para voce: ' + response.success.msg);                  
                 } 
+                else if ((response.success.msg.includes('prioridade'))){
+                    alert('Existem contagens  que são prioridade! Clique em próximo ou peça ao Gerente pra atribuir essa contagem se necessário: ')
+                    return;
+                }
                 else{
 
                 if ((response.success.msg.includes('usuario') && (response.success.codusulog != response.success.codusunota  ) && status == 'A' )){
@@ -197,7 +231,6 @@ const confirmaAbrirContagem= (row) => {
                 console.log(status);
             }
         });                                                                
-    } 
 }
 
 
@@ -275,9 +308,12 @@ const pegaProximaNota = () => {
                 let confirmMsg;
                 let nunota = response.success.nunota;
                 let status = response.success.status;
+                let referencia = response.success.referencia;
+                let endereco = response.success.endereco;
+
 
                 if(status === 'D') {
-                    confirmMsg = `Deseja abrir contagem o N° ${nunota}?`;
+                    confirmMsg = `Deseja abrir contagem o N° ${nunota}? ref: ${referencia} local: ${endereco}  `;
                 } 
                 const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
                 if(confirmacao) {
@@ -298,16 +334,158 @@ const pegaProximaNota = () => {
                                                                    
     } 
 
+
+
+    
+const getReferenciaOp = (row) => {
+    const nunota = row;
+
+
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {            
+            
+            nunota: nunota,
+            route: 'getReferenciaOp'
+        },
+        success: function(response) {
+            if (response.success.msg){                    
+                return response.success.msg;
+            } 
+           
+          
+               
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
+}
+
     //Scrip's de atribuir contagem aos usuarios
     
     //abre e fecha o pop up
     function abrirAtribuir() {
         document.getElementById("popup-overlay").style.display = "flex";
+        document.getElementById('codUsu').value  = ''; //esvazio campos
+        document.getElementById('nomeUsu').value  = '';
+        const checkboxes = document.querySelectorAll('.linha-checkbox');
+        checkboxes.forEach(cb => cb.checked = false);
+
+
+
+
     }
     
     function fecharAtribuir() {
         document.getElementById("popup-overlay").style.display = "none";
+
     }
+
+
+    function abrirPallet() {
+        document.getElementById("popup-overlay-pallet").style.display = "flex";
+        document.getElementById('codUsu').value  = ''; //esvazio campos
+        document.getElementById('nomeUsu').value  = '';
+        const checkboxes = document.querySelectorAll('.linha-checkbox');
+        checkboxes.forEach(cb => cb.checked = false);
+
+
+
+
+    }
+    
+    function fecharPallet() {
+        document.getElementById("popup-overlay-pallet").style.display = "none";
+        document.getElementById("popup-overlay-pallet2").style.display = "none";
+
+
+    }
+
+
+    function verificaTipo(){
+        if (tipo == 'N') {
+            
+            document.getElementById("botaoExpandir").style.display = "none";
+        } else if (tipo == 'O'){
+            document.getElementById("botaoExpandir").style.display = "flex";
+
+        };
+
+    }
+
+
+    //armazeno as notas seleciondas pelo gerente que serao atribuidas
+    function getEnderecoSelecionado() {
+        const selecionado = document.querySelector('.linha-checkbox:checked');
+        if (selecionado) {
+            const row = selecionado.closest('tr');
+            const nroUnico = row.querySelector('.endereco')?.textContent.trim();
+            console.log('Selecionado:', nroUnico);
+            return nroUnico;
+        }
+        return '';
+    }
+
+    const transferirPaletes = () => {
+
+        const resultadoTexto = getEnderecoSelecionado(); // sem "s" no final
+
+        // Para desmarcar o radio manualmente:
+        const radios = document.querySelectorAll('.linha-checkbox');
+        radios.forEach(radio => radio.checked = false);
+
+
+        $.ajax({
+            method: 'POST',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            data: {            
+                route: 'transferirPaletes',
+                notas :resultadoTexto,
+            },
+            success: function(response) {
+                    
+            if(response.success.msg == 'true') {
+               
+                alert('Itens transferidos com sucesso!')
+                location.reload()
+            
+            } else if(response.success.msg == 'pend') {
+
+             alert('ERRO: JA EXISTEM PALETES PENDENTES PARA ESTE LOCAL, FINALIZAR GUARDA DELES PARA QUE POSSA GERAR OUTRO')
+
+            }
+             else {
+                alert('Erro: ' + response.error);
+            }                            
+                   
+            },
+            error: function(xhr, status, error) {
+                alert('Erro na requisição AJAX: ' + error);
+                console.log(xhr);
+                console.log(status);
+            }
+        });
+
+    }
+
 
     //armazeno as notas seleciondas pelo gerente que serao atribuidas
     function getNrosUnicosSelecionados() {
@@ -321,7 +499,6 @@ const pegaProximaNota = () => {
         });
     
         const resultadoTexto = valores.join(", ");
-        console.log('Selecionados:', resultadoTexto);
         return resultadoTexto;
     }
     
@@ -330,7 +507,8 @@ const pegaProximaNota = () => {
 
         const resultadoTexto  = getNrosUnicosSelecionados();
         const usuario = document.getElementById('codUsu').value;
-
+        const checkboxes = document.querySelectorAll('.linha-checkbox');
+        checkboxes.forEach(cb => cb.checked = false);
         
         if (!usuario) {
             alert('App: preencha os campos corretamente!.');
@@ -364,6 +542,48 @@ const pegaProximaNota = () => {
                 alert('Erro: ' + response.error);
             }                            
                    
+            },
+            error: function(xhr, status, error) {
+                alert('Erro na requisição AJAX: ' + error);
+                console.log(xhr);
+                console.log(status);
+            }
+        });
+
+    }
+
+    
+    const desatribuirNota= () => {
+
+        const resultadoTexto  = getNrosUnicosSelecionados();
+        const usuario = document.getElementById('codUsu').value;
+        const checkboxes = document.querySelectorAll('.linha-checkbox');
+        checkboxes.forEach(cb => cb.checked = false);
+        
+       
+
+        $.ajax({
+            method: 'POST',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            data: {            
+                tipo: tipo,
+                route: 'desatribuirNota',
+                notas :resultadoTexto,
+                usuario: usuario
+            },
+            success: function(response) {
+                if(response.success.msg == 'ok') {
+                    alert('Contagem removida com sucesso!')
+                } else {
+                    alert('Erro. Favor procurar o TI.');
+                }                            
             },
             error: function(xhr, status, error) {
                 alert('Erro na requisição AJAX: ' + error);
@@ -423,6 +643,21 @@ const buscaInfoNomeUsu = () => {
             console.log(status);
         }
     });   
+}
+
+
+function alternarMenuFlutuante() {
+    const menu = document.querySelector('.menu-flutuante');
+    menu.classList.toggle('ativo');
+}
+
+function adicionarItem() {
+    document.getElementById("popup-overlay-pallet2").style.display = "flex";
+    document.getElementById('codUsu').value  = ''; //esvazio campos
+    document.getElementById('nomeUsu').value  = '';
+    const checkboxes = document.querySelectorAll('.linha-checkbox');
+    checkboxes.forEach(cb => cb.checked = false);
+
 }
 
 

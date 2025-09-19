@@ -11,6 +11,7 @@ $tsqlTipoNota = "SELECT [sankhya].[AD_FN_TIPO_NOTA_REABASTECIMENTO] ($nunota2)";
 $stmtTipoNota = sqlsrv_query($conn, $tsqlTipoNota);
 $rowTipoNota = sqlsrv_fetch_array($stmtTipoNota, SQLSRV_FETCH_NUMERIC);
 
+
 $tipoNota = $rowTipoNota[0];
 
 $_SESSION['tipoNota'] = $tipoNota;
@@ -19,8 +20,8 @@ if ($tipoNota == 'A') {
     $enderecoInit = 0;
     $enderecoFim = 0;
 } else {
-    $enderecoInit = $_SESSION['enderecoInit'];
-    $enderecoFim = $_SESSION['enderecoFim'];
+    $enderecoInit = $_SESSION['enderecoInit'] ?? 0;
+$enderecoFim  = $_SESSION['enderecoFim']  ?? 0;
 }
 
 echo $enderecoInit;
@@ -30,9 +31,13 @@ $tsqlNotaVinculo = "SELECT [sankhya].[AD_FN_VINCULO_NOTA_REABASTECIMENTO] ($nuno
 $stmtNotaVinculo = sqlsrv_query($conn, $tsqlNotaVinculo);
 $rowNotaVinculo = sqlsrv_fetch_array($stmtNotaVinculo, SQLSRV_FETCH_NUMERIC);
 
-$tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO] ($nunota2, $enderecoInit, $enderecoFim)";
+
+// Comentado por Assis dia 30/04/2025 para usar procedure ao invés de função escalar, para resolver problema de lentidão.
+//$tsql = "SELECT [sankhya].[AD_FNT_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO] ($nunota2, $enderecoInit, $enderecoFim)";
+$tsql = "EXEC AD_STP_PROXIMO_PRODUTO_SEM_USUARIO_REABASTECIMENTO $nunota2, $enderecoInit, $enderecoFim";
 $stmt = sqlsrv_query($conn, $tsql);
 $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+
 
 $tsqlPdtAtual = "SELECT [sankhya].[AD_FN_PRODUTO_ATUAL_REABASTECIMENTO] ($nunota2, $codusu)";
 $stmtPdtAtual = sqlsrv_query($conn, $tsqlPdtAtual);
@@ -120,16 +125,24 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
     <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
-
+    <script src="../../components/emailFoto/js/emailFoto.js"></script>
 </head>
 
-<body class="body" <?php if ($fila == "S") { ?> <?php if ($rowStatus[0] == "P") { ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), 
-            iniciarpausa('P', <?php echo $nunota2; ?>),
-            produtos(<?php echo $nunota2; ?>),
-            retornaMovimentacoes()" <?php } else { ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
-            produtos(<?php echo $nunota2; ?>),
-            retornaMovimentacoes()" <?php } ?> <?php } else { ?> onload="produtos(<?php echo $nunota2; ?>), endereco()" <?php } ?>>
-
+<body class="body" <?php if ($fila == "S")
+                     { ?> 
+                        <?php if ($rowStatus[0] == "P") { 
+                            ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'), 
+                                iniciarpausa('P', <?php echo $nunota2; ?>),
+                                produtos(<?php echo $nunota2; ?>),
+                                retornaMovimentacoes()" <?php }
+                                
+                                else { ?> onload="retornainfoprodutos(<?php echo $nunota2; ?>, 'N'),
+                                        produtos(<?php echo $nunota2; ?>),
+                                        retornaMovimentacoes()" <?php } ?> <?php
+                     } else { 
+                        ?> onload="produtos(<?php echo $nunota2; ?>), endereco()" <?php 
+                            } ?>>
+    <div id="emailFoto"></div>
     <div id="modalLocalProduto"></div>
     <div id="loader" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
@@ -731,6 +744,22 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             $("#navbar-toggler").click(function() {
                 $(this).toggleClass("rotated");
             });
+            $('input').on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Impede envio do form
+        
+                    // Pega todos os inputs visíveis e habilitados
+                    const inputs = $('input:visible:enabled');
+                    const index = inputs.index(this);
+                    
+                    if (index > -1 && index + 1 < inputs.length) {
+                        inputs.eq(index + 1).focus();
+                    } else {
+                        // Último input: perde o foco
+                        $(this).blur();
+                    }
+                }
+            });
             if ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') {
                 $.ajax({
                     method: 'POST',
@@ -987,11 +1016,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             var qtdDigitada = $("#qtdneg").val();
             var qtdRetornada = document.getElementById("qtdneg").getAttribute("data-qtdRetornada");
             var enderecoClick = document.getElementById("endereco").value;
-            var qtdLocal = document.getElementById('qtdlocalInput').value;
+            var disponivel = document.getElementById('disponivel').textContent;
             qtdDigitada = parseFloat(qtdDigitada);
             qtdRetornada = parseFloat(qtdRetornada);
-            qtdLocal = parseFloat(qtdLocal);
-            if (qtdDigitada > qtdLocal && '<?php echo $tipoNota ?>' == 'S') {
+            disponivel = parseFloat(disponivel);
+            if (qtdDigitada > disponivel && '<?php echo $tipoNota ?>' == 'S') {
                 alert('Quantidade a mais do que existente no estoque!');
             } else if ((qtdDigitada > qtdRetornada) && ('<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP' &&
                     '<?php echo $rowEhTransf[0] ?>' != 'TRANSF_PENDENCIA' &&
@@ -1273,6 +1302,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 });
             }
 
+
             document.getElementById("endereco").addEventListener("focus", function() {
                 retornainfoprodutos(<?php echo $nunota2; ?>, $("#referencia").val());
             }, {
@@ -1346,7 +1376,9 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                             if (('<?php echo $tipoNota ?>' == "A") &&
                                 ('<?php echo $fila ?>' == 'N') &&
                                 (('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA' && '<?php echo $rowProdutosParaLocalpad[0] ?>' == 'N') ||
-                                    ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') || (/^TRANSF_ABAST(?!.*MAX$)(?!.*FILIAL)/.test('<?php echo $rowEhTransf[0] ?>')))) {
+                                    ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_PENDENCIA') || 
+                                    ('<?php echo $rowEhTransf[0] ?>' == 'TRANSF_ABAST_103_MAX') ||
+                                    (/^TRANSF_ABAST(?!.*MAX$)(?!.*FILIAL)/.test('<?php echo $rowEhTransf[0] ?>')))) {
                                 document.getElementById("endereco").placeholder = '';
                                 if (('<?php echo $rowEhTransf[0] ?>' != 'TRANSF_PENDENCIA')) {
                                     verificaLocaisComProduto(referencia, retorno[15]);
@@ -1583,7 +1615,11 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 }, //Dados para consulta
                 //função que será executada quando a solicitação for finalizada.
                 success: function(msg) {
-                    location.reload();
+                    if (msg == 'Concluido') {
+                        location.reload();
+                    } else {
+                        alert(msg);
+                    }
                 }
             });
         }

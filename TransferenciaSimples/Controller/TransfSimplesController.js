@@ -14,6 +14,26 @@ let enderecoChegadaBipado = '';
 // Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
 const tempoMaximoDigitacao = 250;
 const regex = /^[18]/;
+const ignorar = ['1980101', '1980102', '1181001','1981001'];
+
+$(document).ready(function () {
+    $('input').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede envio do form
+  
+            // Pega todos os inputs visíveis e habilitados
+            const inputs = $('input:visible:enabled');
+            const index = inputs.index(this);
+            
+            if (index > -1 && index + 1 < inputs.length) {
+                inputs.eq(index + 1).focus();
+            } else {
+                // Último input: perde o foco
+                $(this).blur();
+            }
+        }
+    });
+});
 
 const desabilitaSelectPadrao = () => {
     document.getElementById("selectPadrao").disabled = true;
@@ -232,7 +252,7 @@ const validaParametros = () => {
                 if(response.success) {
                     // Verifica se o endereco de chegada e de saida começam com 1 ou 8
                     let localPadraoText = '';
-                    if(regex.test(endsaida) && regex.test(endchegada)) {
+                    if(regex.test(endsaida) && regex.test(endchegada) && !ignorar.includes(endsaida) && !ignorar.includes(endchegada)) {
                         localPadraoText = 'O local padrão será alterado. '
                     } 
                     const confirmacao = confirm(localPadraoText + `Confirma a transferência do item ${referencia} do local ${endsaida} para o local ${endchegada}?`);
@@ -426,7 +446,7 @@ const habilitaQuantidade = () => {
     let endchegada = document.getElementById('endchegada').value;
     let qtdneg = document.getElementById('qtdneg');
     if(endsaida != '' && endchegada != '') {
-        if(regex.test(endsaida) && regex.test(endchegada)) {
+        if(regex.test(endsaida) && regex.test(endchegada) && !ignorar.includes(endsaida) && !ignorar.includes(endchegada)) {
             qtdneg.disabled = true;
             qtdneg.value = '';
         } else {
@@ -437,4 +457,18 @@ const habilitaQuantidade = () => {
         qtdneg.disabled = true;
         qtdneg.value = '';
     }
+}
+
+const preencheEnderecoChegada = () => {
+    document.getElementById('endchegada').value = document.getElementById('localpadrao').innerHTML;
+    enderecoChegadaBipado = 'N';
+    buscaQtdMax();
+    habilitaQuantidade();
+}
+
+const preencheEnderecoChegadaPalete = () => {
+    document.getElementById('endchegada').value = '1980102';
+    enderecoChegadaBipado = 'N';
+    buscaQtdMax();
+    habilitaQuantidade();
 }

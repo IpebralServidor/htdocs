@@ -48,6 +48,22 @@
             </div>
         </div>
 
+        <div class="popup" id="popQtdContada">
+            <div class="overlay"></div>
+            <div class="content">
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="abrirPopAutorizaContagem()">
+                        <i class="fa-solid fa-xmark" onclick="fecharPopAutorizaContagem()"></i>
+                    </div>
+
+                    <div class="form">
+                        <strong><label id="msg2">Deseja finalizar essa contagem? </label></strong> 
+                        <strong><label id="msg3">Deseja finalizar essa contagem? </label></strong> 
+                        <button id="btn-autorizacorte" onclick="verificaQtdSeparar();">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="ocorrenciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -154,7 +170,7 @@
 
         <header class="header">
             <div class="img-voltar">
-            <a href="index.php" style="background"><img src="../../../images/216446_arrow_left_icon.png" alt="Voltar"></a></div>
+            <a style="background"><img src="../../../images/216446_arrow_left_icon.png" alt="Voltar" onclick = "setaVoltar();"></a></div>
             <div class="nota fw-bold">
                 <span id="notaAtual"></span>
             </div>
@@ -170,7 +186,10 @@
                 <div style="width: 100%">
                     <div class="row">
                         <div class="mb-1 col-6">
-                            <label for="referencia" class="form-label">Referência <span style="color: red">*</span></label>
+                        <span >
+            <i class="fa fa-search"  onclick="popupAplicacao()"></i> <!-- Altere o ícone aqui -->
+        </span> <span style="color: red">*</span>
+                            <label for="referencia" class="form-label">Referência </label>
                             <input type="text" class="form-control" id="referencia" oninput="iniciarMedicaoReferencia();" onchange="finalizarMedicaoReferencia();">
                         </div>
                         <div class="mb-1 col-6">
@@ -180,17 +199,28 @@
                     </div>
                     <div class="row">
                         <div class="mb-1 col-6">
-                            <label for="codbalanca" class="form-label">Cod. Balança</label>
-                            <input type="number" class="form-control" id="codbalanca" >
-                        </div>
-                        <div class="mb-1 col-6">
                             <label for="quantidade" class="form-label">Qtd. Total Contada</label>
                             <input type="number" class="form-control" id="quantidade">
                         </div>
+                        <div class="mb-1 col-6">
+                            <label for="codbalanca" class="form-label">Cod. Balança</label>
+                            <input type="number" class="form-control" id="codbalanca" >
+                    </div>
+                        
                     </div>
                 </div>
                 <div class="mt-3 col-12">
                     <div class="form-control" style="font-size: 12px !important;">
+                    <div>
+                            <span class="fw-bold" style="color: red; ">
+                          
+                            </span>
+                            <span id="primeiraentrada"></span>
+
+                        </div>
+                        <div>
+                        <span class="fw-bold">Ref. IPEBRAL: </span><span id="referenciaipb"></span>
+                        </div>
                         <div>
                             <span class="fw-bold">Descrição: </span><span id="descrprod"></span>
                         </div>
@@ -200,9 +230,16 @@
                         <div>
                             <span class="fw-bold">Ref. fornecedores: </span><span id="obsetiqueta"></span>
                         </div>
+                        <div>
+                            <span class="fw-bold">Volume: </span><span id="codvol"></span>
+                        </div>
                         <div class="special-item total">
                             <span class="fw-bold">Qtd. Separar: </span><span id="qtdseparar"></span><br>
                             <!-- <span class="fw-bold">Total: </span><span id="total"></span> -->
+                      
+                        <div class="special-item total">
+                            <span class="fw-bold">Est./Max. CD1 </span><span id="CD1"></span><br>
+                            <span class="fw-bold">Est./Max. CD3 </span><span id="CD3"></span><br>
                         </div>
                     </div>
                 </div>
@@ -242,9 +279,21 @@
                         <img id="imagemcaixa" style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="../../images/dimensoes.png" />
                     </div>
                 </div>    
-                
-
             </div>
+        
+		
+            <div class = "popup" id="popupConfirmacao" style=" display:none; font-size: 1rem; font-weight: bold; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            background: white; border: 1px solid #ccc; padding: 30px; z-index: 1000; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3); text-align: center; width: 300px;">
+            <p style="font-size: 18px; margin-bottom: 20px;">Preencha com as quantidades</p>
+            <button  class="btn btn-primary w-100 fw-bold actionBtn" id="btnSim" style="background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 5px;
+                font-size: 16px; margin: 10px; cursor: pointer;">Confirmar</button>
+           
+            </div>
+
+           
+
+        <div id="overlay" onclick="ocultaoverlay()" style="display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999;" ></div>
 
             <div class="buttonsRow"> 
                 <div class="mt-5 w-100 d-flex justify-content-center align-items-center"> 
@@ -261,6 +310,7 @@
             <div id="progress-container">
                 <div id="progress-bar"></div>
             </div>
+
         </main>
     </div>
 </body>

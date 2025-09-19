@@ -33,7 +33,7 @@ $tipoNota = $row[0];
 </head>
 
 <body onload="endereco()">
-
+	<div id="emailFoto"></div>
 	<div id="modalLocalProduto"></div>
 	<!-- Ícone para carregamento de certos botões -->
 	<div id="loader" style="display: none;">
@@ -236,6 +236,7 @@ $tipoNota = $row[0];
 								Marcar Vários</span> <!--Retorno do resultado checkbox-->
 						</div>
 						<input type="text" id="produto" class="form-control" oninput="iniciarMedicaoProduto();" onchange="finalizarMedicaoProduto();" style="color: #86B7FE !important;" placeholder="">
+						<input type="hidden" id="referencia">
 					</div>
 					<!-- Fim do INPUT de Produto -->
 
@@ -315,6 +316,7 @@ $tipoNota = $row[0];
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="../Controller/InsereEstoqueController.js"></script>
 	<script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
+	<script src="../../components/emailFoto/js/emailFoto.js"></script>    
 </body>
 
 </html>

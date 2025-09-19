@@ -1,5 +1,5 @@
 <?php
-
+	
 	$stmt ="";
 
 	//Configuracoes do servidor SQL Server 

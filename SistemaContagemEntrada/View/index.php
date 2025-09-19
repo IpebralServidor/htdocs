@@ -46,16 +46,20 @@
             <table width="100%" border="1px" id="table" class="tableNotas">
                 <thead>
                     <tr>
-                        <th width="20%">Tipo</th>
+                        <th width="20%">Ref.</th>
+                        <th width="20%">Empresa</th>
                         <th width="20%">Nro. Único</th>
-                        <th width="20%">Qtd Itens</th>
-                        <th width="20%">Status</th>
-                        <th width="20%">Usuário</th>
+                        <th width="20%">Nro. Nota</th>
+                        <th width="20%">Volume</th>
                         <th width="20%">Parceiro</th>
+                        <th width="20%">Usuário</th>
+                        <th width="20%">Endereco</th>
                         <th width="20%">Dt.Neg.</th>
                         <th width="20%">TOP</th>
-                        <th width="20%">Empresa</th>
                         <th width="20%">N° Transf</th>
+
+                        
+
 
                     </tr>
                 </thead>
@@ -76,7 +80,7 @@
             </select> -->
 
             <div class="input-duplo">
-            <input type="text" id="nomeUsu" class="input-letras"  onchange="buscaInfoNomeUsu();" placeholder="NOMEUSU"
+            <input type="" id="nomeUsu" class="input-letras"  onchange="buscaInfoNomeUsu();" placeholder="NOMEUSU"
                 oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ú\s]/g, '')">
              
             <span class="icone-lupa"><i class="fa fa-search" aria-hidden="true"></i></span>
@@ -84,6 +88,8 @@
             <input type="text" id="codUsu" class="input-numeros"  onchange="buscaInfoCodUsu();" placeholder="CODUSU"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '') ">
             </div>
+
+            
 
         </div><br>
             <div class="tabela-scroll">
@@ -93,6 +99,7 @@
                             <th><input type="checkbox" id="selectAll" onclick="selecionarTodos(this)"></th> 
                             <th width="20%">Nro. Único</th>
                             <th width="20%">Referência</th>
+                            <th width="20%">Qtd.Op</th>
                             <th width="20%">Dt.Neg.</th>
                             <th width="20%">Empresa</th>
                         </tr>
@@ -103,11 +110,81 @@
             </div>
             <div class="btn-container">
                 <button class="btn btn-primary w-50 fw-bold actionBtn" onclick="atribuirNotaUsuario()">Atribuir</button>
+                <button class="btn btn-primary w-50 fw-bold actionBtn" onclick="desatribuirNota()"><i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+
             </div>
         </div>
     </div>
 
 
+    <div class="menu-flutuante" id ="botaoExpandir">
+        <!-- Botões que aparecem ao expandir -->
+        <button class="botao-flutuante item-menu" id="botaoAdicionar" onclick="adicionarItem()">
+            <i class="fa-solid fa-clipboard"></i>
+        </button>
+        <button class="botao-flutuante item-menu" id="botaoPallet" onclick="abrirPallet()">
+            <i class="fa-solid fa-boxes-stacked"></i>
+        </button>
+
+        <!-- Botão principal para expandir/recolher -->
+        <button id="botaoToggleMenu" class="botao-flutuante" onclick="alternarMenuFlutuante()">
+            <i class="fa-solid fa-chevron-up"></i>
+        </button>
+    </div>
+
+ <!-- POP UP LIMPAR PALETES -->
+
+ <div id="popup-overlay-pallet" class="popup-overlay" onclick="fecharPallet()">
+        <div id="popupconferentes" class="popupconferentes" onclick="event.stopPropagation()">
+            <h4>Liberar Paletes</h4>
+            <div class="input-busca">
+        </div><br>
+            <div class="tabela-scroll">
+                <table width="100%"  id="table" class="tableNotas">
+                    <thead>
+                        <tr>
+                            <th width="20%"></th>
+                            <th width="20%">Pallet</th>
+                            <th width="20%">Empresa</th>
+                            <th width="20%">Endereco</th>
+                            <th width="20%">Qtd Itens</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPaletes" style="cursor: pointer"></tbody>
+                    <!-- <button onclick="getNrosUnicosSelecionados()">Obter Nros. Únicos Selecionados</button> -->
+                </table>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-primary w-50 fw-bold actionBtn" onclick="transferirPaletes()">Transferir Itens</button>
+            </div>
+            </div>
+         </div>
+
+
+
+         <div id="popup-overlay-pallet2" class="popup-overlay" onclick="fecharPallet()">
+        <div id="popupconferentes" class="popupconferentes" onclick="event.stopPropagation()">
+            <h4>Transferencias Palete Pendentes</h4>
+            <div class="input-busca">
+        </div><br>
+            <div class="tabela-scroll">
+                <table width="100%"  id="table" class="tableNotas">
+                    <thead>
+                        <tr>
+                            <th width="20%">N°unico</th>
+                            <th width="20%">Empresa</th>
+                            <th width="20%">Endereco</th>
+                            <th width="20%">Qtd Itens</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPaletesPendentes" style="cursor: pointer"></tbody>
+                    <!-- <button onclick="getNrosUnicosSelecionados()">Obter Nros. Únicos Selecionados</button> -->
+                </table>
+            </div>
+            
+            </div>
+         </div>
 
 
         <!--        

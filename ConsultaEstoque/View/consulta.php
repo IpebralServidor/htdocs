@@ -19,11 +19,19 @@ $codusu = $_SESSION["idUsuario"];
 	<link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../components/emailFoto/js/emailFoto.js"></script>    
 	<script src="../Controller/ConsultaController.js"></script>
 	<title>Consulta Estoque</title>
 </head>
 
 <body>
+
+<div class="page">
+        <div id="emailFoto"></div>
+        <div id="loader" style="display: none;">
+            <img style="width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif" alt="Loading...">
+        </div>
+
 	<div class="img-voltar">
 		<a href="./">
 			<img src="../images/216446_arrow_left_icon.png" />
@@ -52,6 +60,7 @@ $codusu = $_SESSION["idUsuario"];
 			$volume = $row2['VOLUME'];
 			$COMPLDESC = $row2['COMPLDESC'];
 			$STATUSPROD = $row2['STATUSPROD'];
+			$ULTBIP = $row2['ULTBIP'];
 
 			
 
@@ -63,9 +72,11 @@ $codusu = $_SESSION["idUsuario"];
 					<div class="informacoes">
 						<h6 id="codProduto" data-codprod=<?php echo $produto; ?>>Produto: <?php echo $produto; ?></h6>
 						<h6>Referência: <?php echo $codreferencia; ?></h6>
+						<input type="hidden" id="referencia" value="<?php echo $codreferencia; ?>">
 						<h6>Preço venda: R$<?php echo str_replace('.', ',', $precovenda); ?></h6>
 						<h6>Ref. Fornecedores: <?php echo str_replace('.', ',', $fornecedores); ?></h6>
 						<h6>Complemento: <?php echo $COMPLDESC; ?></h6>
+						<h6>Último Bip: <?php echo $ULTBIP; ?></h6>
 						<h6>Produção: <?php echo $STATUSPROD; ?></h6>
 
 					</div>
@@ -92,7 +103,7 @@ $codusu = $_SESSION["idUsuario"];
 		</div>
 
 
-		<div class="image d-flex justify-content-center">
+		<div class="image d-flex justify-content-center" id="imagemproduto">
 			<?php
 			if ($codprod != '') {
 				$tsql2 = " select ISNULL(IMAGEM,(SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000))
@@ -116,7 +127,7 @@ $codusu = $_SESSION["idUsuario"];
 					<th>Estoque</th>
 					<th>Reserv.</th>
 					<th>
-						Pad./Máx.
+						Max./Padrão
 					</th>
 					<th class="border-top-right-radius">Controle</th>
 					<th class="border-top-right-radius">Status Contagem</th>

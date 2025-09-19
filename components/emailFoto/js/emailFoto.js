@@ -7,6 +7,7 @@ $(document).ready(function() {
 });
 
 function confirmarEnvioEmail() {
+    document.getElementById("item").innerHTML = $("#referencia").val();
     document.getElementById('popupEmail').style.display = 'block';
 }
 

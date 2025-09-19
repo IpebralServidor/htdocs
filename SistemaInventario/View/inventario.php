@@ -13,11 +13,13 @@
     <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../Controller/InventarioController.js?v=<?php time() ?>"></script>
+    <script src="../../components/emailFoto/js/emailFoto.js"></script>
     <title>Inventário</title>
 </head>
 
 <body>
     <div class="page">
+        <div id="emailFoto"></div>
         <div id="loader" style="display: none;">
             <img style=" width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif">
         </div>
@@ -114,6 +116,15 @@
                             </div>
                             <div>
                                 <span class="fw-bold">Ref. fornecedores: </span><span id="obsetiqueta"></span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Referência: </span><span id="ref"></span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Média 6 EMP 1: </span><span id="media6"></span>
+                            </div>
+                            <div>
+                                <span class="fw-bold">Volume: </span><span id="volume"></span>
                             </div>
                         </div>
                     </div>

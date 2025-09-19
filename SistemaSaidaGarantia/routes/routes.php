@@ -3,7 +3,6 @@
 require_once "../../conexaophp.php";
 require_once '../../App/auth.php';
 require_once '../Model/index.php';
-require_once '../Model/Contagem.php';
 
 $codusu = $_SESSION["idUsuario"];
 
@@ -12,31 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Verifica se o parâmetro 'route' foi enviado
     if (isset($_GET['route'])) {
         $route = $_GET['route'];
-
+        
         switch ($route) {
-            case 'buscaNotasContagem':                                
-                if ( isset($_GET['tipo']) ) {
-                $tipo = $_GET['tipo'];
-                    buscaNotasContagem($conn,$tipo);   
-                } else {
-                    echo json_encode(['error' => 'Parâmetros não enviados']);
-                }              
-                break;
-            case 'buscaLiberaPaletes':                                
-                if ( isset($_GET['tipo']) ) {
-                $tipo = $_GET['tipo'];
-                    buscaLiberaPaletes($conn,$tipo);   
-                } else {
-                    echo json_encode(['error' => 'Parâmetros não enviados']);
-                }              
-                break;
-            case 'buscaPaletesPendentes':                                
-                if ( isset($_GET['tipo']) ) {
-                $tipo = $_GET['tipo'];
-                    buscaPaletesPendentes($conn,$tipo);   
-                } else {
-                    echo json_encode(['error' => 'Parâmetros não enviados']);
-                }              
+            case 'buscaItensGarantia':                                
+             
+                    buscaItensGarantia($conn);   
+                        
                 break;
              case 'buscaAtribuirNotas':                                
                 if ( isset($_GET['tipo']) ) {
@@ -46,15 +26,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }              
                 break;
-            case 'getReferenciaOp':                                
-                if (isset($_GET['nunota']))  {
-                    $nunota = $_GET['nunota'];
-
-                    getReferenciaOp($conn,$nunota);   
+            case 'buscaLiberaPaletes':                                
+                if ( isset($_GET['tipo']) ) {
+                $tipo = $_GET['tipo'];
+                  buscaLiberaPaletes($conn,$tipo);   
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }              
                 break;
+            case 'buscaPaletesPendentes':                                
+                if ( isset($_GET['tipo']) ) {
+                $tipo = $_GET['tipo'];
+                  buscaPaletesPendentes($conn,$tipo);   
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }              
+                break;
+
+              
             case 'buscaInformacoesProduto':
                 if (isset($_GET['nunota']) && isset($_GET['referencia']) && isset($_GET['tipo']) ) {
                     $nunota = $_GET['nunota'];
@@ -120,19 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }
                 break;
             case 'verificaEmpresa':
-                if (isset($_GET['nunota']) && isset($_GET['tipo']) ) {
+                if (isset($_GET['nunota']) && isset($_GET['tipo'])) {
                     $nunota = $_GET['nunota'];
                     $tipo = $_GET['tipo'];
-                    verificaEmpresa($conn, $nunota,$codusu,$tipo);
-                } else {
-                    echo json_encode(['error' => 'Parâmetros não enviados']);
-                }
-                break;
-            case 'verificaQtdSeparar':
-                if (isset($_GET['nunota']) && isset($_GET['tipo']) ) {
-                    $nunota = $_GET['nunota'];
-                    $tipo = $_GET['tipo'];
-                    verificaQtdSeparar($conn, $nunota,$codusu,$tipo);
+                    
+                    verificaEmpresa($conn, $nunota,$tipo, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -159,7 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 verificaGerente($conn,$codusu);
                 
                 break;
-                
             default:
                 echo json_encode(['error' => 'Rota não reconhecida']);
                 break;
@@ -183,14 +163,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }
                 break;
             case 'atualizarDimensoes':
-                if (isset($_POST['referencia']) && isset($_POST['peso']) && isset($_POST['largura']) && isset($_POST['altura']) && isset($_POST['comprimento']) && isset($_POST['tipo'])) {
+                if (isset($_POST['referencia']) && isset($_POST['peso']) && isset($_POST['largura']) && isset($_POST['altura']) && isset($_POST['comprimento']) ) {
                     $referencia = $_POST['referencia'];
                     $peso = $_POST['peso'];
                     $largura = $_POST['largura'];
                     $altura = $_POST['altura'];
                     $comprimento = $_POST['comprimento'];
-                    $tipo = $_POST['tipo'];
-                    atualizarDimensoes($conn, $referencia,$peso,$largura,$altura,$comprimento,$tipo);
+
+                    atualizarDimensoes($conn, $referencia,$peso,$largura,$altura,$comprimento);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
@@ -204,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $tipo = $_POST['tipo'];
                     $lote = $_POST['lote'];
                     $qtdseparar = $_POST['qtdseparar'];
-                    verificaRecontagem($conn, $nunota, $referencia,$qtdcont,$codbalanca,$tipo, $lote, $qtdseparar,$codusu);
+                    verificaRecontagem($conn, $nunota, $referencia,$qtdcont,$codbalanca,$tipo, $lote, $qtdseparar);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -219,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $lote = $_POST['lote'];
                     $qtdseparar = $_POST['qtdseparar'];
 
-                    atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar,$codusu);
+                    atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
@@ -242,29 +222,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
                 break;
-                case 'finalizarContagem':
-                    if (isset($_POST['nunota']) && isset($_POST['tipo']) && isset($_POST['separar'])) {
-                        $nunota = $_POST['nunota'];
-                        $tipo = $_POST['tipo'];
-                        $separar = $_POST['separar'];
-                        finalizarContagem($conn,$nunota,$tipo, $codusu,$separar);
-                    } else {
-                        echo json_encode(['error' => 'Parâmetros não enviados']);
-                    }   
-                    break;
-                case 'finalizarContagemSeparar':
-                if (isset($_POST['nunota']) && isset($_POST['tipo'])  && isset($_POST['qtdCD3EMP3'])
-                     && isset($_POST['qtdCD5EMP3']) && isset($_POST['QTDGONDOLA']) && isset($_POST['qtdCD5EMP1']) && isset($_POST['qtdCD5EMP10']) && isset($_POST['QTDCONT'])) {
+            case 'finalizarContagem':
+                if (isset($_POST['nunota']) && isset($_POST['tipo']) && isset($_POST['separar'])) {
                     $nunota = $_POST['nunota'];
-                     $tipo = $_POST['tipo'];
-                    $qtdCD3EMP3 = $_POST['qtdCD3EMP3'];
-                    $qtdCD5EMP3 = $_POST['qtdCD5EMP3'];
-                    $QTDGONDOLA = $_POST['QTDGONDOLA'];
-                    $qtdCD5EMP1 = $_POST['qtdCD5EMP1'];
-                    $qtdCD5EMP10 = $_POST['qtdCD5EMP10'];
-                    $QTDCONT= $_POST['QTDCONT'];
-
-                    finalizarContagemSeparar($conn,$nunota,$tipo, $codusu,$qtdCD3EMP3,$qtdCD5EMP3,$QTDGONDOLA,$qtdCD5EMP1,$qtdCD5EMP10,$QTDCONT);
+                    $tipo = $_POST['tipo'];
+                    $separar = $_POST['separar'];
+                    finalizarContagem($conn,$nunota,$tipo, $codusu,$separar);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
@@ -303,24 +266,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
                 break;
-            case 'transferirPaletes':
-                if ( isset($_POST['notas']) ) {
-                    $notas = $_POST['notas'];
-                    transferirPaletes($conn, $notas);
-                } else {
+             case 'transferirGarantia':
+                     if (isset($_POST['notas'])) {         
+                       
+                         $notas = $_POST['notas'];
+                         transferirGarantia($conn, $notas);
+
+                 }else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
-                }   
+                 } 
+                    
+
+               
                 break;
-                case 'desatribuirNota':
-                    if (isset($_POST['tipo']) && isset($_POST['notas']) && isset($_POST['usuario']) ) {
-                        $tipo = $_POST['tipo'];
-                        $notas = $_POST['notas'];
-                        $usuario = $_POST['usuario'];
-                        desatribuirNota($conn, $tipo, $notas, $usuario);
-                    } else {
-                        echo json_encode(['error' => 'Parâmetros não enviados']);
-                    }   
-                    break;
             default:
                 echo json_encode(['error' => 'Rota não reconhecida']);
                 break;

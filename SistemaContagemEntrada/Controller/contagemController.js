@@ -17,6 +17,40 @@ $(document).ready(function() {
     buscaItensContagem(nunota, tipo);
     desabilitaFinalizaCont(); //libero ou nao o botao de finalizar contagem
 
+    $('input').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede envio do form
+
+            // Pega todos os inputs visíveis e habilitados
+            const inputs = $('input:visible:enabled');
+            const index = inputs.index(this);
+
+            if (index > -1 && index + 1 < inputs.length) {
+                inputs.eq(index + 1).focus();
+            } else {
+                // Último input: perde o foco
+                $(this).blur();
+            }
+        }
+    });
+
+    $('input').on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede envio do form
+
+            // Pega todos os inputs visíveis e habilitados
+            const inputs = $('input:visible:enabled');
+            const index = inputs.index(this);
+
+            if (index > -1 && index + 1 < inputs.length) {
+                inputs.eq(index + 1).focus();
+            } else {
+                // Último input: perde o foco
+                $(this).blur();
+            }
+        }
+    });
+
     $('#ocorrenciaModal').on('show.bs.modal', function () {
         // Desmarca os botões de rádio
         $('input[name="ocorrencia"]').prop('checked', false);
@@ -140,12 +174,24 @@ const buscaInformacoesProduto = () => {
                 document.getElementById('comprimento').value  = response.success.espessura;
                 document.getElementById('obsetiqueta').innerHTML  = response.success.obsetiqueta;
                 document.getElementById('qtdseparar').innerHTML  = response.success.qtdseparar;
+                document.getElementById('referenciaipb').innerHTML  = response.success.referencia;
+                document.getElementById('CD1').innerHTML  = response.success.CD1;
+                document.getElementById('CD3').innerHTML  = response.success.CD3;
+                document.getElementById('codvol').innerHTML  = response.success.CODVOL;
+
+
                 //document.getElementById('total').textContent = response.success.qtdseparar;
             } else {
                 document.getElementById('referencia').value = '';
                 document.getElementById('lote').value = '';
                 document.getElementById('referencia').focus();
                 alert('Erro: ' + response.error);
+            }
+
+            if(response.success.PRIMEIRAENTRADACODVOL == 'S') {
+
+                document.getElementById('primeiraentrada').innerHTML ='<span style="color:red;">*PRIMEIRA ENTRADA DO FORNECEDOR: FAVOR SEPARAR</span>';
+
             }
         },
         error: function(xhr, status, error) {
@@ -163,11 +209,11 @@ const atualizarDimensoes = () => {
     const altura = document.getElementById('altura').value;
     const comprimento = document.getElementById('comprimento').value;
 
-    // Validação para evitar valores inválidos
-    // if (peso == 0 || largura == 0 || altura == 0 || comprimento == 0) {
-    //     alert('Favor preencher com valores válidos as medidas e peso.');
-    //     return; // Interrompe a execução da função
-    // }
+    //Validação para evitar valores inválidos
+    if (peso == 0 || largura == 0 || altura == 0 || comprimento == 0) {
+        alert('Favor preencher com valores válidos as medidas e peso.');
+        return; // Interrompe a execução da função
+    }
 
     $.ajax({
         method: 'POST',
@@ -184,7 +230,8 @@ const atualizarDimensoes = () => {
             peso: peso,
             largura: largura,
             altura: altura,
-            comprimento: comprimento,            
+            comprimento: comprimento,       
+            tipo: tipo,     
             route: 'atualizarDimensoes'
         },
         success: function(response) {
@@ -289,12 +336,13 @@ const verificaRecontagem = () => {
     const altura = document.getElementById('altura').value;
     const comprimento = document.getElementById('comprimento').value;
 
-    // Verifica se peso, largura ou altura são nulos, vazios ou iguais a zero
-    // if (!peso || peso == 0 || !largura || largura == 0 || !altura || altura == 0 || !comprimento || comprimento == 0) {
-    //     alert('Verifique se as dimensões foram preenchidas corretamente.');
-    // } else if (quantidade < 0 || referencia === '' || (!lote.disabled && lote.value === '')) {
-    //     alert('Informe os campos corretamente.');
-    // } else {
+   // Verifica se peso, largura ou altura são nulos, vazios ou iguais a zero
+   
+    if ((!peso || peso == 0 || !largura || largura == 0 || !altura || altura == 0 || !comprimento || comprimento == 0)) {
+        alert('Verifique se as dimensões foram preenchidas corretamente.');
+    } else if (quantidade < 0 || referencia.trim() === '' || (!lote.disabled && lote.value === '')) { //tirado trim() olhar caso do lote com diego 
+        alert('Informe os campos corretamente.');
+    } else {
         $.ajax({
             method: 'POST',
             url: '../routes/routes.php',
@@ -318,6 +366,7 @@ const verificaRecontagem = () => {
             success: function(response) {
                 if(response.success) {
                     alert(response.success.msg);
+                    atualizarDimensoes();
                     location.reload();
                 } else if(response.recontagem) {
                     let qtdneg = response.qtdneg;
@@ -342,9 +391,8 @@ const verificaRecontagem = () => {
                 alert('Erro na requisição AJAX: ' + error);
             }
         });
-   // }
+    }
 }
-
 
 const abrirPopAutorizaTrava = () => {
     $.ajax({
@@ -363,7 +411,7 @@ const abrirPopAutorizaTrava = () => {
         },
         success: function(response) {
 
-            document.getElementById("msg").textContent =   document.getElementById("msg").textContent + " Quantidade contata: " + response.success;
+            document.getElementById("msg").textContent =   document.getElementById("msg").textContent 
                                                                                   
         }
     });
@@ -375,9 +423,40 @@ const abrirPopAutorizaTrava = () => {
     document.getElementById('senha').value = '';
 }
 
+const abrirPopQtdContada = () => {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+            nunota: nunota,
+            route: 'retornaQtdContada'
+        },
+        success: function(response) {
+
+            document.getElementById("msg3").textContent = response.success;
+                                                                                  
+        }
+    });
+
+
+    document.getElementById("popAutorizaTrava").classList.remove("active");
+    document.getElementById('popQtdContada').classList.toggle("active");
+    
+}
+
+
 
 function fecharPopAutorizaContagem() {
     document.getElementById("popAutorizaTrava").classList.remove("active");
+    document.getElementById("popQtdContada").classList.remove("active");
+
 }
 
 
@@ -406,13 +485,18 @@ const autorizaTrava = () => {
             if(response.success.msg == 'erro') {
                 alert('Não foi possível autorizar.');
             } else {
-                finalizarContagem();
+                abrirPopQtdContada();
+                //finalizarContagem();
             }
         }
     });
 }
 
+
+
 const verificaFinalizaContagem = () => {
+    
+
     $.ajax({
         method: 'POST',
         url: '../routes/routes.php',
@@ -432,8 +516,8 @@ const verificaFinalizaContagem = () => {
             if(response.success.msg == 'senha') {
                 abrirPopAutorizaTrava();                        
             } 
-            else {
-                finalizarContagem();
+            else  {
+                 verificaQtdSeparar() ;
             }
         },
         error: function(xhr, status, error) {
@@ -445,10 +529,14 @@ const verificaFinalizaContagem = () => {
 }
 
 
+ 
 
-const finalizarContagem = () => {
+ 
+
+function verificaQtdSeparar()  {
+
     $.ajax({
-        method: 'POST',
+        method: 'GET',
         url: '../routes/routes.php',
         dataType: 'json',
         beforeSend: function() {
@@ -460,15 +548,279 @@ const finalizarContagem = () => {
         data: {
             nunota: nunota,
             tipo : tipo,    
-            route: 'finalizarContagem'
+            route: 'verificaQtdSeparar'
         },
-        success: function(response) {
-            if(response.success) {
-                alert(response.success.msg);
-                window.location.href = '../View/index.php';
-            } else {
-                alert('Erro: ' + response.error);
-            }
+         success: function(response) {
+            if(response.success.codemp == '3' && tipo == 'O' && response.success.qtdgondola != 0 ) {
+               
+                $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+                // $('#popupConfirmacao').prepend('<p class="mensagem-qtd">  Palete CD3 Emp.3: ' + response.success.qtdseparar + '</p>' 
+                //                                 + '<p class="mensagem-qtd">  Palete CD5 Emp.3: ' + response.success.qtdresto + '</p>'
+                //                                 + '<p class="mensagem-qtd">  Palete Gondola: ' + response.success.qtdgondola + '</p>'
+
+                // );
+                
+                  $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSeparar">Palete CD3 Emp.3:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSeparar" 
+                        placeholder="${response.success.qtdseparar}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto"> Palete CD5 Emp.3:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+               
+            `);
+
+                $('#overlay, #popupConfirmacao').show();
+ 
+                $('#btnSim').off('click').on('click', function () {
+                const qtdseparar = $('#inputQtdSeparar').val(); // <-- valor digitado
+                const qtdResto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+                    $('#overlay, #popupConfirmacao').hide();
+                   finalizarContagemSeparar(qtdseparar,qtdResto,0,0,0,response.success.qtdcont);
+                });
+                            
+            } 
+
+           else if (response.success.codemp == '3' && tipo == 'O' && response.success.qtdgondola == 0 ){
+              
+               $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+                // $('#popupConfirmacao').prepend('<p class="mensagem-qtd">  Palete CD3 Emp.3: ' + response.success.qtdseparar + '</p>' 
+                //                                 + '<p class="mensagem-qtd">  Palete CD5 Emp.3: ' + response.success.qtdresto + '</p>'
+                // );
+                
+                  $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSeparar">Palete CD3 Emp.3:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSeparar" 
+                        placeholder="${response.success.qtdseparar}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto"> Palete CD5 Emp.3:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+            `);
+
+                $('#overlay, #popupConfirmacao').show();
+ 
+                $('#btnSim').off('click').on('click', function () {
+                const qtdresto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+                const qtdseparar = $('#inputQtdSeparar').val(); // <-- valor digitado
+
+                    $('#overlay, #popupConfirmacao').hide();
+                finalizarContagemSeparar(qtdseparar,qtdresto,0,0,0,response.success.qtdcont);
+                });
+              
+            
+            // se tiver preenchido qtdgondola
+                //     mostra o campo qtdgondola
+                // se tiver preenchido qtdseparar
+                //     mostra o campo qtdseparar
+                // caso nao seja o caso de mandar tudo pra gondola    
+                //     mostra o campo campo qtdpadrao 
+           }
+           else if(response.success.codemp == '1' && tipo == 'O' && response.success.qtdgondola != 0 ){
+
+              $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+                // $('#popupConfirmacao').prepend('<p class="mensagem-qtd">  Palete CD5 Emp.1: ' + response.success.qtdseparar + '</p>' 
+                //                                 + '<p class="mensagem-qtd">  Palete Gondola: ' + response.success.qtdgondola + '</p>'
+
+                // );
+
+                  $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto">Palete CD5 Emp.1:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararGondola">Palete Gondola:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararGondola" 
+                        placeholder="${response.success.qtdgondola}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>`);
+
+
+                $('#overlay, #popupConfirmacao').show();
+ 
+                $('#btnSim').off('click').on('click', function () {
+                const qtdresto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+                const qtdgondola = $('#inputQtdSepararGondola').val(); // <-- valor digitado
+
+                    $('#overlay, #popupConfirmacao').hide();
+                finalizarContagemSeparar(0,0,qtdgondola,qtdresto,0,response.success.qtdcont);
+
+                });
+            
+             
+
+           }
+            else if(response.success.codemp == '1' && tipo == 'O' && response.success.qtdgondola == 0 ){
+
+             $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+
+            $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto">Palete CD5 Emp.1:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+            `);
+
+            $('#overlay, #popupConfirmacao').show();
+
+            $('#btnSim').off('click').on('click', function () {
+                const qtdresto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+
+                const qtdDigitada = $('#inputQtdSeparar').val() || response.success.qtdseparar; // Usa valor digitado ou placeholder
+                 finalizarContagemSeparar(0,0,0,qtdresto,0,response.success.qtdcont);
+                $('#overlay, #popupConfirmacao').hide();
+            });
+
+
+           }
+             else if(response.success.codemp == '10' && tipo == 'O' && response.success.qtdgondola != 0 ) {
+
+              $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+               
+                   $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto">Palete CD5 Emp.10:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararQtdgondola">Palete Gondola:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararQtdgondola" 
+                        placeholder="${response.success.qtdgondola}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+            `);
+
+                $('#overlay, #popupConfirmacao').show();
+ 
+                $('#btnSim').off('click').on('click', function () {
+
+                    const qtdresto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+                    const qtdgondola = $('#inputQtdSepararQtdgondola').val(); // <-- valor digitado
+
+                    $('#overlay, #popupConfirmacao').hide();
+                 finalizarContagemSeparar(0,0,qtdgondola,0,qtdresto,response.success.qtdcont);
+
+                });
+
+           }  
+              else if(response.success.codemp == '10' && tipo == 'O' && response.success.qtdgondola == 0 ) {
+
+              $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+               
+
+                   $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto">Palete CD5 Emp.10:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+            `);
+
+                $('#overlay, #popupConfirmacao').show();
+ 
+                $('#btnSim').off('click').on('click', function () {
+
+                    const qtdresto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+
+                    $('#overlay, #popupConfirmacao').hide();
+                    finalizarContagemSeparar(0,0,0,0,qtdresto,response.success.qtdcont);
+
+                });
+            
+              
+           }
+           
+           else if(response.success.codemp == '1' && tipo == 'O' && response.success.qtdgondola == 0 ){
+
+              $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
+                $('#popupConfirmacao').prepend('<p class="mensagem-qtd">  Palete CD5 Emp.1: ' + response.success.qtdseparar + '</p>' 
+
+                );
+
+                    $('#popupConfirmacao').prepend(`
+                <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararResto">Palete CD5 Emp.1:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararResto" 
+                        placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+            `);
+
+                $('#overlay, #popupConfirmacao').show();
+ 
+                $('#btnSim').off('click').on('click', function () {
+                     
+                    const qtdresto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+
+                    $('#overlay, #popupConfirmacao').hide();
+                    finalizarContagemSeparar(0,0,0,qtdresto,0,response.success.qtdcont);
+
+                });
+           }   
+            
+           else  {
+                //window.alert("nao entrou")
+                finalizarContagem('N');
+                 }
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
@@ -476,7 +828,102 @@ const finalizarContagem = () => {
             console.log(status);
         }
     });   
-}
+  }
+ 
+ 
+ 
+ const finalizarContagem = (separar) => {
+     $.ajax({
+         method: 'POST',
+         url: '../routes/routes.php',
+         dataType: 'json',
+         beforeSend: function() {
+             $("#loader").show();
+         },
+         complete: function() {
+             $("#loader").hide();
+         },
+         data: {
+             nunota: nunota,
+             tipo : tipo,    
+             route: 'finalizarContagem',
+             separar : separar
+         },
+         success: function(response) {
+             if(response.success) {
+                 alert(response.success.msg);
+                 window.location.href = '../View/index.php?tipo=' + tipo ;
+             } else {
+                 alert('Erro: ' + response.error);
+             }
+         },
+         error: function(xhr, status, error) {
+             alert('Erro na requisição AJAX: ' + error);
+             console.log(xhr);
+             console.log(status);
+         }
+     });   
+ }
+
+ 
+ 
+ const finalizarContagemSeparar = (qtdCD3EMP3,qtdCD5EMP3,QTDGONDOLA,qtdCD5EMP1,qtdCD5EMP10,QTDCONT) => {
+    
+    if( Number(qtdCD3EMP3) +
+        Number(qtdCD5EMP3) +
+        Number(QTDGONDOLA) +
+        Number(qtdCD5EMP1) +
+        Number(qtdCD5EMP10) !== Number(QTDCONT)){
+        
+        window.alert("APP: Quantidade(s) digitada(s) divergentes com o total contado!");
+        verificaQtdSeparar();
+        return;
+     }
+    
+    $.ajax({
+         method: 'POST',
+         url: '../routes/routes.php',
+         dataType: 'json',
+         beforeSend: function() {
+             $("#loader").show();
+         },
+         complete: function() {
+             $("#loader").hide();
+         },
+         data: {
+             nunota: nunota,
+             tipo : tipo,    
+             route: 'finalizarContagemSeparar',
+             qtdCD3EMP3: qtdCD3EMP3,
+             qtdCD5EMP3: qtdCD5EMP3,
+             QTDGONDOLA: QTDGONDOLA,
+             qtdCD5EMP1:qtdCD5EMP1,
+             qtdCD5EMP10:qtdCD5EMP10,
+             QTDCONT:QTDCONT
+
+         },
+         success: function(response) {
+             if(response.success) {
+                 alert(response.success.msg);
+                 window.location.href = '../View/index.php?tipo=' + tipo ;
+             } else {
+                 alert('Erro: ' + response.error);
+             }
+         },
+         error: function(xhr, status, error) {
+             alert('Erro na requisição AJAX: ' + error);
+             console.log(xhr);
+             console.log(status);
+         }
+     });   
+ }
+ 
+ function ocultaoverlay() {
+        document.getElementById("popupConfirmacao").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+
+
+    }
 
 const mostraContagens = (nucontite) => {
     $.ajax({
@@ -600,19 +1047,22 @@ const saveQtd = (nucontsub) => {
                 editButton.className = 'fa-solid fa-pen';
                 editButton.setAttribute('onclick', 'editQtd(' + nucontsub + ')');
                 buscaItensContagem(nunota, tipo)
+
             }
             else if (response.error){
                 alert(response.error)
             }
         },
+
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
             console.log(xhr);
             console.log(status);
         }
+        
     });
 }
 
- 
-
- 
+function setaVoltar()  {
+    window.location.href = 'index.php'+ '?tipo=' +  tipo
+ }
