@@ -11,8 +11,8 @@
 		<![CDATA[select *  from AD_FNT_ETQ_CLIENTE_VOL_NOTA($P{PK_NUNOTA})]]>
 	</queryString>
 	<field name="RAZAOSOCIAL" class="java.lang.String"/>
-	<field name="CODPARC" class="java.math.BigDecimal"/>
-	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="CODPARC" class="java.lang.Integer"/>
+	<field name="NUNOTA" class="java.lang.Integer"/>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="NOMEEND" class="java.lang.String"/>
 	<field name="NUMEND" class="java.lang.String"/>
@@ -21,11 +21,13 @@
 	<field name="UF" class="java.lang.String"/>
 	<field name="TELEFONE" class="java.lang.String"/>
 	<field name="CEP" class="java.lang.String"/>
-	<field name="QTDVOL" class="java.math.BigDecimal"/>
+	<field name="QTDVOL" class="java.lang.Integer"/>
 	<field name="NOMEUSU" class="java.lang.String"/>
-	<field name="CODUSU" class="java.lang.Short"/>
+	<field name="CODUSU" class="java.lang.Integer"/>
 	<field name="REPETE" class="java.lang.String"/>
 	<field name="MAXVOL" class="java.lang.Integer"/>
+	<field name="dataimpressao" class="java.lang.String"/>
+	<field name="dtneg" class="java.lang.String"/>
 	<title>
 		<band height="101" splitType="Stretch">
 			<printWhenExpression><![CDATA[$F{REPETE}.equals("S")]]></printWhenExpression>
@@ -167,6 +169,13 @@
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{MAXVOL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="51" width="87" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dtneg}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -63,8 +63,12 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
                 PRO.OBSETIQUETA,
                 ISNULL(IMAGEM, (SELECT IMAGEM FROM TGFPRO WHERE CODPROD = 1000)) AS IMAGEM,
                 INVITE.NUNOTA,
-                ISNULL(CONVERT(VARCHAR(100), PEM.AD_QTDMAXLOCAL), '') AS QTDMAX
-        FROM TGFPRO PRO LEFT JOIN
+                ISNULL(CONVERT(VARCHAR(100), PEM.AD_QTDMAXLOCAL), '') AS QTDMAX,
+                PRO.REFERENCIA AS REF,
+                (SELECT ROUND(MD.MEDIA6, 2) FROM AD_MEDIAVENDAEMP MD WHERE MD.CODEMP = 1 AND MD.CODPROD = PRO.CODPROD) AS MEDIA6,
+                CONCAT(PRO.CODVOL, ' - ', VOL.DESCRVOL) AS VOLUME
+        FROM TGFPRO PRO INNER JOIN
+             TGFVOL VOL ON PRO.CODVOL = VOL.CODVOL LEFT JOIN
              AD_INVENTARIOITE INVITE ON INVITE.CODPROD = PRO.CODPROD
                                     AND INVITE.CODLOCAL = ?
                                     AND INVITE.CODEMP IN (SELECT VALUE FROM STRING_SPLIT(@CODEMP_TEXT, ',')) LEFT JOIN
@@ -96,7 +100,10 @@ function buscaInformacoesProduto($conn, $codemp, $referencia, $codlocal)
                 'obsetiqueta' => $row['OBSETIQUETA'],
                 'imagem' => base64_encode($row['IMAGEM']),
                 'nunota' => $row['NUNOTA'],
-                'qtdmax' => $row['QTDMAX']
+                'qtdmax' => $row['QTDMAX'],
+                'ref' => $row['REF'],
+                'media6' => $row['MEDIA6'],
+                'volume' => $row['VOLUME']
             ]
         ];
 
@@ -116,7 +123,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
                     WHERE (REFERENCIA = ? OR TGFBAR.CODBARRA = ?)";
         $stmtLote = sqlsrv_query($conn, $tsqlLote, $paramsLote);
         $rowLote = sqlsrv_fetch_array($stmtLote, SQLSRV_FETCH_ASSOC);
-        if ($rowLote['TIPCONTEST'] == 'L' && $controle == '') {
+        if ($rowLote['TIPCONTEST'] == 'L' && trim($controle) == '') {
             throw new Exception('Produto controlado por lote, favor informar o lote.');
         }
 

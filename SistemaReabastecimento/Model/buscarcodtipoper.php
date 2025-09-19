@@ -6,7 +6,7 @@ session_start();
 $codusu = $_SESSION["idUsuario"];
 $request = $_POST["numeroNota"];
 
-$tsqlTipoper = "SELECT CODTIPOPER, AD_PEDIDOECOMMERCE, AD_GARANTIAVERIFICADA FROM TGFCAB WHERE NUNOTA = $request AND (STATUSNOTA <> 'L' OR NUNOTA IN (3960452, 3960456, 3960448))";
+$tsqlTipoper = "SELECT CODTIPOPER, AD_PEDIDOECOMMERCE, AD_GARANTIAVERIFICADA FROM TGFCAB WHERE NUNOTA = $request AND (STATUSNOTA <> 'L' OR NUNOTA IN (3960452, 3960456, 3960448, 4158514, 4158424))";
 $stmtTipoper = sqlsrv_query($conn, $tsqlTipoper);
 $rowTipoper = sqlsrv_fetch_array($stmtTipoper, SQLSRV_FETCH_ASSOC);
 if (!isset($rowTipoper)) {

@@ -27,6 +27,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray();
 
+        // Função para limpar o texto, tirando os caracteres especiais para não dar erro na inserção no banco
+        function limparTexto($valor) {
+            if ($valor === null) return null;
+
+            // Remove espaços extras
+            $valor = trim($valor);
+
+            // Substitui "/" por espaço
+            $valor = str_replace("/", " ", $valor);
+
+            // Remove caracteres especiais indesejados
+            $valor = preg_replace('/[^A-Za-z0-9\s\-]/u', '', $valor);
+
+            return $valor;
+        }
+
         // Ler as colunas desejadas
         $dados = [];
 
@@ -42,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Adicionar as colunas desejadas (exemplo: A e B)
             $dados[] = [
-                'REFERENCIA' => $linhaDados[0] ?? null, // Coluna A (índice 0)
-                'FABRICANTE' => $linhaDados[1] ?? null,  // Coluna B (índice 1)
+                'REFERENCIA' => limparTexto($linhaDados[0]) ?? null, // Coluna A (índice 0)
+                'FABRICANTE' => limparTexto($linhaDados[1]) ?? null,  // Coluna B (índice 1)
                 'QUANTIDADE' => $linhaDados[2] ?? null,  // Coluna C (índice 2)
-                'DESCRICAO' => $linhaDados[3] ?? null  // Coluna D (índice 3)
+                'DESCRICAO' => limparTexto($linhaDados[3]) ?? null  // Coluna D (índice 3)
             ];
         }
 

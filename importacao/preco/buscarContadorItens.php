@@ -1,0 +1,16 @@
+<?php
+include "../../conexaophp.php";
+session_start();
+
+$nuorcamento = $_SESSION['nuorcamento'];
+
+$sql = "SELECT 'Total: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_TELEMARKETING WHERE AD_IMPORTACAO_TELEMARKETING.NUORCAMENTO = AD_IMPORTACAO_TELEMARKETING_CAB.NUORCAMENTO)) 
+	         + ' / Prenchidos: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_TELEMARKETING_ITE WHERE AD_IMPORTACAO_TELEMARKETING_ITE.NUORCAMENTO = AD_IMPORTACAO_TELEMARKETING_CAB.NUORCAMENTO AND MARCADO = 'S')) AS QTD
+       FROM AD_IMPORTACAO_TELEMARKETING_CAB
+       WHERE NUORCAMENTO = ?";
+$params = array($nuorcamento);
+$stmt = sqlsrv_query($conn, $sql, $params);
+$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+echo $row['QTD'];
+?>

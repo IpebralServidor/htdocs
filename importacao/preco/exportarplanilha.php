@@ -22,13 +22,8 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
 // Consulta ao banco de dados
-$sql = "SELECT REFERENCIAFABRICANTE, 
-               FABRICANTE, 
-               ISNULL(REFERENCIAINTERNA, '') AS REFERENCIAINTERNA, 
-               ISNULL(PRECOVENDA, 0) AS PRECOVENDA,
-               ISNULL(QUANTIDADE,0) AS QUANTIDADE
-        FROM AD_IMPORTACAO_TELEMARKETING
-        WHERE NUORCAMENTO = ?
+$sql = "SELECT * 
+        FROM SANKHYA.AD_FNT_EXPORTA_PLANILHA_COTACAO_TELEMARKETING (?)
         ORDER BY ORDEM";
 $params = [$nuorcamento];
 $stmt = sqlsrv_query($conn, $sql, $params);
@@ -44,8 +39,10 @@ $sheet->setCellValue('A1', 'Referência');
 $sheet->setCellValue('B1', 'Fabricante');
 $sheet->setCellValue('C1', 'Referência Interna');
 $sheet->setCellValue('D1', 'Quantidade');
-$sheet->setCellValue('E1', 'Preço Unit.');
-$sheet->setCellValue('F1', 'Preço Total');
+$sheet->setCellValue('E1', 'Agrup. Mín.');
+$sheet->setCellValue('F1', 'Preço Unit.');
+$sheet->setCellValue('G1', 'Preço Total');
+$sheet->setCellValue('H1', 'Promoção?');
 
 
 // Preencher os dados
@@ -56,8 +53,10 @@ while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     $sheet->setCellValue('B' . $row, $data['FABRICANTE']);
     $sheet->setCellValue('C' . $row, $data['REFERENCIAINTERNA']);
     $sheet->setCellValue('D' . $row, $data['QUANTIDADE']);
-    $sheet->setCellValue('E' . $row, $data['PRECOVENDA']);
-    $sheet->setCellValue('F' . $row, ($data['PRECOVENDA'] * $data['QUANTIDADE']));
+    $sheet->setCellValue('E' . $row, $data['AGRUPMIN']);
+    $sheet->setCellValue('F' . $row, $data['PRECOVENDA']);
+    $sheet->setCellValue('G' . $row, ($data['PRECOVENDA'] * $data['QUANTIDADE']));
+    $sheet->setCellValue('H' . $row, ($data['PROMOCAO']));
     $row++;
 
 }

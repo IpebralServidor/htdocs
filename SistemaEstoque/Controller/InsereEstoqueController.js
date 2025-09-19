@@ -24,6 +24,22 @@ let enderecoTempBipado = '';
 const tempoMaximoDigitacao = 250;
 
 $(document).ready(function() {
+    $('input').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede envio do form
+  
+            // Pega todos os inputs visíveis e habilitados
+            const inputs = $('input:visible:enabled');
+            const index = inputs.index(this);
+            
+            if (index > -1 && index + 1 < inputs.length) {
+                inputs.eq(index + 1).focus();
+            } else {
+                // Último input: perde o foco
+                $(this).blur();
+            }
+        }
+    });
     //O método $.ajax(); é o responsável pela requisição
     $.ajax({
         //Configurações
@@ -51,6 +67,7 @@ $(document).ready(function() {
 document.getElementById("quantidade").addEventListener("focus", function() {
     imagemproduto($("#produto").val());
     retornainfoprodutos($("#produto").val(), document.getElementById('codparc').innerHTML);
+    document.getElementById('referencia').value = $("#produto").val();
 });
 
 function abrir() {
@@ -331,6 +348,7 @@ function insereItensTempITE(nunota, endereco) {
             enderecoBipado = '';
             enderecoTempBipado = '';
             if (msg.includes("IPB: Itens Inseridos com Sucesso!")) {
+                alert(msg);
                 fecharInsereEndereco();
             } else if (msg != "") {
                 alert(msg);

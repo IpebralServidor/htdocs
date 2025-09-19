@@ -14,11 +14,13 @@
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../Controller/TransfSimplesController.js?v=<?php time() ?>"></script>
     <script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
+    <script src="../../components/emailFoto/js/emailFoto.js"></script>
     <title>Transferência Simples</title>
 </head>
 
 <body>
     <div class="page">
+        <div id="emailFoto"></div>
         <div id="modalLocalProduto"></div>
         <div id="loader" style="display: none;">
             <img style=" width: 150px; margin-top: 5%;" src="../../images/soccer-ball-joypixels.gif">
@@ -151,10 +153,23 @@
                             <div>
                                 <span class="fw-bold">Qtd.local retirada: </span><span id="qtdlocal">0</span>
                             </div>
-                            <div>
-                                <span class="fw-bold">Local padrão: </span><span id="localpadrao"></span>
+                            <div style="text-align: right;">
+                                <span class="fw-bold" style="display: inline-block; cursor: pointer;" onclick="preencheEnderecoChegadaPalete();">
+                                    Palete Pendencia
+                                </span>
+                                <br />
+                                <span class="fw-bold" style="display: inline-block; cursor: pointer;" onclick="preencheEnderecoChegadaPalete();">
+                                    de Conferencia
+                                </span>
+                                <span id="localpalete"></span>
                             </div>
+
+                            <div>
+                                <span class="fw-bold">Local padrão: </span><span id="localpadrao" onclick="preencheEnderecoChegada();"></span>
+                            </div>
+                           
                         </div>
+                          
                     </div>
 
                 </div>

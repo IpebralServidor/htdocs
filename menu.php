@@ -10,7 +10,7 @@ $stmtNomeUsu = sqlsrv_query($conn, $tsqlNomeUsu);
 $rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
 $a = array(2, 100, 3266, 42, 7257, 106, 692);
-$b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 3711, 36, 25, 3782, 82, 4041, 3370, 3149, 3254, 602, 605, 608, 603, 3320, 3563, 139, 196,12789,141,3930,12728, 7129, 195, 7125);
+$b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 3711, 36, 25, 3782, 82, 4041, 3370, 3149, 3254, 602, 605, 608, 603, 3320, 3563, 139, 196,12789,141,3930,12728, 7129, 195, 7125, 3311, 181, 3258,3329);
 
 $tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 $stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
@@ -123,7 +123,14 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 							<span>Conferência</span>
 						</div>
 					</a>
-
+					<a href="./SistemaSaidaGarantia/View" class="cardStyle">
+						<div class="padding">
+							<div class="icon-card">
+								<i class="fa fa-shopping-basket" style="background-color:rgb(25, 0, 255)"></i>
+							</div>
+							<span>Saida de Garantia</span>
+						</div>
+					</a>
 					<a href="./SistemaEstoque/View" class="cardStyle">
 						<div class="padding">
 							<div class="icon-card">
@@ -241,7 +248,8 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 							<span>Dashboard Pendências</span>
 						</div>
 					</a>
-					<a href="./SistemaContagemEntrada/View/index.php" class="cardStyle">
+					<a href="#" onclick="abrirPopEntradaMercadorias()" class="cardStyle">
+					<!-- <a href="./SistemaContagemEntrada/View/index.php" class="cardStyle"> -->
 						<div class="padding">
 							<div class="icon-card">
 								<i class="fa-solid fa-scale-unbalanced" style="background-color:rgb(255, 59, 245)"></i>
@@ -349,6 +357,28 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 		</div>
 	</div>
 
+	<div class="popup" id="PopEntradaMercadorias">
+		<div class="overlay"></div>
+		<div class="content">
+			<div style="width: 100%;">
+				<div class="close-btn" onclick="abrirPopEntradaMercadorias()">
+					<i class="fa-solid fa-xmark"></i>
+				</div>
+
+				<div class="div-form">
+					<div class="form">
+					<label>Empresa:</label>
+						<select id="filtroTipo" name="status" class="form-control">
+							<option value="O">OP</option>
+							<option value="N">Nota</option>
+						</select>
+						<button name="confirmaFiltroRetirarCaixa" id="confirmaFiltroRetirarCaixa" onclick="confirmaFiltroEntradaMercadorias()">Confirmar</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	<div class="popup" id="popLeitorQRCode">
 		<div class="overlay"></div>
@@ -401,6 +431,10 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 			document.getElementById('popRetirarCaixa').classList.toggle("active");
 		}
 
+		function abrirPopEntradaMercadorias() {
+			document.getElementById('PopEntradaMercadorias').classList.toggle("active");
+		}
+
 		function abrirLeitorQRCode() {
 			document.getElementById('popLeitorQRCode').classList.toggle("active");
 		}
@@ -415,6 +449,10 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 			window.location.href = 'DesativaProdutoEndereco/View/index.php?codemp=' + document.getElementById('filtroEmpresa').value;
 		}
 
+		function confirmaFiltroEntradaMercadorias() {
+			window.location.href = 'SistemaContagemEntrada/View/index.php?tipo=' + document.getElementById('filtroTipo').value;
+		}
+		
 		function menuM() {
 			mobile.style.display = "block";
 		}

@@ -9,7 +9,7 @@ function buscaInformacoesProduto($conn, $referencia)
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            throw new Exception('Erro ao executar a consulta SQL 1.');
         }
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
         if (!isset($row['IMAGEM'])) {
@@ -42,7 +42,7 @@ function buscaLocalPadrao($conn, $referencia, $codemp)
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            throw new Exception('Erro ao executar a consulta SQL 2 .');
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
@@ -70,7 +70,7 @@ function buscaInformacoesLocal($conn, $codemp, $referencia, $endsaida, $lote)
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            throw new Exception('Erro ao executar a consulta SQL 3.');
         }
 
         $rows = []; // Armazena todas as linhas retornadas
@@ -122,7 +122,7 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            throw new Exception('Erro ao executar a consulta SQL 4.');
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
@@ -156,7 +156,7 @@ function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endche
             $errors = sqlsrv_errors();
 
             // Cria uma mensagem de erro detalhada
-            $errorMessage = "Erro ao executar a consulta SQL: ";
+            $errorMessage = "Erro ao executar a consulta SQL 5: ";
             foreach ($errors as $error) {
                 $errorMessage .= "Código: " . $error['code'] . ", Mensagem: " . $error['message'] . "; ";
             }
@@ -201,7 +201,7 @@ function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endch
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
         if ($stmt === false) {
-            throw new Exception('Erro ao executar a consulta SQL.');
+            throw new Exception('Erro ao executar a consulta SQL 6.');
             // $errors = sqlsrv_errors();
 
             // // Cria uma mensagem de erro detalhada

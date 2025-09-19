@@ -28,6 +28,9 @@ if (isset($id) && isset($codprod)) {
         die(print_r(sqlsrv_errors(), true));
     }
 
+    $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
+
+    echo utf8_encode($row[0]);
     
 } 
 

@@ -17,7 +17,29 @@
 
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		    $pedido = test_input($_POST["f-pedido"]); 
-		    
+
+			// Função para limpar o texto, tirando os caracteres especiais para não dar erro na inserção no banco
+			function limparTexto($valor) {
+				if ($valor === null) return null;
+
+				// Remove espaços extras
+				//$valor = trim($valor);
+
+				// Substitui "/" por espaço
+				$valor = str_replace("/", "", $valor);
+				$valor = str_replace("¢", "", $valor);
+				$valor = str_replace("£", "", $valor);
+				// Se NÃO começar com "Empresa:", aplica substituição
+				if (strpos($valor, "Empresa:") !== 0) {
+					$valor = str_replace("§", "", $valor);
+				}
+
+				return $valor;
+			}
+
+
+
+
 		    $textAr = explode("\n", $pedido);
 		    $textAr = array_filter($textAr, 'trim'); // remove any extra \r characters left behind
 
@@ -30,6 +52,8 @@
 			$empresa = "";
 		    
 			foreach ($textAr as $line) {
+				$line = limparTexto($line);
+
 				if (strpos($line, "## Catálogo IPEBRAL ##") !== FALSE  ) {
 			   		$inicio = true;
 				} elseif (strpos($line, "############################") !== FALSE ) {

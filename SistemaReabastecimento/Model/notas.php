@@ -11,7 +11,7 @@ $referencia = $_POST["referencia"];
 $params = array($referencia, $tipoTransf, $cdTransf, $tipoNota);
 
 $tsqlProdutos = "
-select * from [AD_FNT_LISTA_TRANSF_SANKHYA_APP](?,?,?,?)";
+select * from [AD_FNT_LISTA_TRANSF_SANKHYA_APP](?,?,?,?) ORDER BY NUNOTA";
 
 $stmtProdutos = sqlsrv_query($conn, $tsqlProdutos, $params);
 

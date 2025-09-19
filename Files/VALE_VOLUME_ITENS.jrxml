@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Etiqueta Clientes" language="groovy" pageWidth="205" pageHeight="842" columnWidth="205" leftMargin="0" rightMargin="0" topMargin="8" bottomMargin="0" isIgnorePagination="true">
+	<property name="ireport.zoom" value="3.7974983358324197"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.definition"/>
+	<parameter name="PK_NUNOTA" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from sankhya.[AD_FNT_VALE_VOLUME_NOTA]($P{PK_NUNOTA})]]>
+	</queryString>
+	<field name="NUNOTA" class="java.lang.Integer"/>
+	<field name="DTNEG" class="java.lang.String"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
+	<field name="QTDNEG" class="java.lang.Double"/>
+	<field name="CODVOL" class="java.lang.String"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="REFERENCIA" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="codparc" class="java.lang.Integer"/>
+	<field name="parc" class="java.lang.String"/>
+	<field name="TIPPESSOA" class="java.lang.String"/>
+	<field name="QTDVOL" class="java.lang.Integer"/>
+	<field name="AD_VOLUME" class="java.lang.String"/>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="44" y="-4" width="113" height="21"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Itens]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-1" y="84" width="206" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="15" y="9" width="39" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{codparc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="19" width="177" height="23"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="0" width="91" height="11"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DTNEG}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="45" y="0" width="52" height="10"/>
+				<textElement textAlignment="Justified" rotation="None">
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Ref/Desc prod.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="53" y="8" width="74" height="13"/>
+				<textElement>
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="125" y="0" width="16" height="10"/>
+				<textElement textAlignment="Justified" rotation="None">
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[QTD]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="127" y="8" width="14" height="8"/>
+				<textElement>
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{QTDNEG}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="144" y="0" width="14" height="10"/>
+				<textElement textAlignment="Justified" rotation="None">
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[UN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="48" y="21" width="109" height="12"/>
+				<textElement>
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRPROD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="8" width="14" height="8"/>
+				<textElement textAlignment="Justified">
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODVOL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="0" width="39" height="10"/>
+				<textElement textAlignment="Justified" rotation="None">
+					<font size="6" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Volume]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="7" y="8" width="40" height="25"/>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{AD_VOLUME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="-1" y="0" width="206" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="22" y="3" width="58" height="13"/>
+				<textElement>
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{NUNOTA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="3" width="17" height="12"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -16,6 +16,22 @@ $(document).ready(function() {
     document.getElementById('enderecoAtual').innerHTML = 'Endereço: ' + codlocal;
     codlocal.startsWith('1') || codlocal.startsWith('8') ? document.getElementById('qtdmax').disabled = false : document.getElementById('qtdmax').disabled = true;
     buscaItensInventario(codemp, codlocal);
+    $('input').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Impede envio do form
+  
+            // Pega todos os inputs visíveis e habilitados
+            const inputs = $('input:visible:enabled');
+            const index = inputs.index(this);
+            
+            if (index > -1 && index + 1 < inputs.length) {
+                inputs.eq(index + 1).focus();
+            } else {
+                // Último input: perde o foco
+                $(this).blur();
+            }
+        }
+    });
 });
 
 const buscaItensInventario = (codemp, codlocal) => {
@@ -122,10 +138,14 @@ const buscaInformacoesProduto = () => {
                         document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
                         document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
                         document.getElementById('qtdmax').value = response.success.qtdmax;
+                        document.getElementById('ref').innerHTML = response.success.ref;
+                        document.getElementById('media6').innerHTML = response.success.media6;
+                        document.getElementById('volume').innerHTML = response.success.volume;
                     } else {
                         document.getElementById('referencia').value = '';
                         document.getElementById('lote').value = '';
                         document.getElementById('qtdmax').value = '';
+                        document.getElementById('media6').value = '';
                         document.getElementById('referencia').focus();
                     }
                 } else {
@@ -136,6 +156,9 @@ const buscaInformacoesProduto = () => {
                     document.getElementById('agrupmin').innerHTML = response.success.agrupmin;
                     document.getElementById('obsetiqueta').innerHTML = response.success.obsetiqueta;
                     document.getElementById('qtdmax').value = response.success.qtdmax;
+                    document.getElementById('ref').innerHTML = response.success.ref;
+                    document.getElementById('media6').innerHTML = response.success.media6;
+                    document.getElementById('volume').innerHTML = response.success.volume;
                 }
             } else {
                 document.getElementById('referencia').value = '';

@@ -142,6 +142,7 @@ $qtdVolume = $rowStatusVolume[1];
 	<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
 	<script src="../Etiquetas/impressao.js"></script>
 	<script src="../Controller/DetalhesConferenciaController.js"></script>
+	<script src="../../components/emailFoto/js/emailFoto.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 	<link href="../css/style.css?v=<?= time() ?>" rel="stylesheet" type="text/css" media="all" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
@@ -249,6 +250,7 @@ $qtdVolume = $rowStatusVolume[1];
 </head>
 
 <body style="margin: 0;" onload="executarUmaVez(); <?php if ($adseparador == null && $codemp == 7) { ?> abrirconferentes(); <?php } ?> scrollToRow(<?php echo $linhamarcada; ?>)">
+	<div id="emailFoto"></div>
 	<div id="loader" style="display: none;">
 		<img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
 	</div>
@@ -316,11 +318,13 @@ $qtdVolume = $rowStatusVolume[1];
 			<aabr title="Voltar"><img style="width: 35px; float: left; padding-right: 20px" src="../images/Seta%20Voltar.png" /></aabr>
 		</a>
 		Cód. Barras: <input type="text" name="CODBAR" size="13" class="text" id='codigodebarra' required>
+		<input type="hidden" id="referencia">
 		Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" size="1" style="text-align: left;">
 		Controle: <input type="text" name="CONTROLE" size="6" id="controle" class="text">
 		Volume: <input type="text" name="VOLUMEITEM" size="1" id="volumeItem" class="text">
 		<button name="conferir" id="conferir" type="submit" value="" style="margin-left: 30px;">Conferir</button>
 		<?php
+		
 		if ($rowStatus[0] == "A") {
 			$colorStatus = "green";
 			$valueStatus = "Em andamento";
@@ -818,7 +822,7 @@ $qtdVolume = $rowStatusVolume[1];
 		<!-- Imagem e Consulta de Produtos -->
 		<div id="Imagem do Produto" style="width: 48%; height: 50%; /*background-color: #D9DAFA;*/ display: inline-block; margin-left: 1%; ">
 			<h4 style="margin-top: 0px; margin-left: 0; margin-bottom: 0; background-color: #ADADC7;padding-top: 2px; width: 100%;">Informações do Produto</h4>
-			<div class= "img-prod"  id="imagemproduto" onclick="confirmarEnvioEmail()">
+			<div class= "img-prod"  id="imagemproduto">
 			
 				
 				<?php
@@ -832,17 +836,6 @@ $qtdVolume = $rowStatusVolume[1];
 				}
 				?>
 			</div> <!-- Parte da Imagem -->
-
-				
-				<!-- Pop-up -->
-				<div id="popupEmail" class= "popupEmail" >
-					<p >Enviar e-mail informando que item está sem foto / foto errada?</p>
-					<button class ="bntEmail-sim"  onclick="enviaEmailSemFoto()">Sim</button>
-					<button class ="bntEmail-nao"  onclick="fecharPopupEmail()">Nao</button>
-					
-				</div>
-
-
 
 			<!-- Parte das Características -->
 			<div style=" display: inline-block; height: 90%; width: 49%; overflow-y: hidden; overflow-x: hidden; margin-top: 10px;">
@@ -1409,6 +1402,7 @@ $qtdVolume = $rowStatusVolume[1];
 			caracteristica($("#codigodebarra").val());
 			imagemproduto($("#codigodebarra").val());
 			produtoconferencia($("#codigodebarra").val(), <?php echo $nunota2; ?>);
+			document.getElementById('referencia').value = $("#codigodebarra").val();
 		});
 
 		function produtoconferencia(codigodebarra, nunota) {
@@ -1453,39 +1447,6 @@ $qtdVolume = $rowStatusVolume[1];
 				}
 			});
 		}
-
-	
-	
-
-
-
-	function enviaEmailSemFoto() {
-		let codigodebarra =  $("#codigodebarra").val();
-		let usuconf =  $("#codigodebarra").val();
-
-		if(codigodebarra != '') {
-			$.ajax({
-				type: 'POST',
-				dataType: 'html',
-				url: '../Model/emailSemFoto.php',
-				data: {
-					codigodebarra: codigodebarra
-				
-				},
-				success: function(msg) {					
-					fecharPopupEmail(); // Fecha o pop-up após enviar o e-mail
-				
-
-				}
-			});
-		}
-		else{
-			fecharPopupEmail(); // Fecha o pop-up após enviar o e-mail
-			}
-	}
-
-	
-
 		function deletaproduto(nunota, codprod, controle) {
 			//O método $.ajax(); é o responsável pela requisição
 			$.ajax({

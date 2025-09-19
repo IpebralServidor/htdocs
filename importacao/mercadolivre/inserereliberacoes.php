@@ -44,15 +44,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $linhaDados[] = $celula->getValue(); // Adicionar o valor da célula ao array
             }
 
-            // Adicionar as colunas desejadas (exemplo: A e B)
-            $dados[] = [
-                'DATALIBERACAO' => $linhaDados[0] ?? null,  // Coluna A
-                'REFERENCIAML' => $linhaDados[2] ?? null,  // Coluna C
-                'DESCRICAOSTATUS' => $linhaDados[4] ?? null,  // Coluna E
-                'VALORBRUTO' => $linhaDados[7] ?? null,  // Coluna H
-                'CUSTOENVIO' => $linhaDados[11] ?? null,  // Coluna L
-                'PACKID' => $linhaDados[30] ?? ''  // Coluna AE
-            ];
+            IF($linhaDados[2] != null || $linhaDados[2] != ''){      
+                // Adicionar as colunas desejadas (exemplo: A e B)
+                $dados[] = [
+                    'DATALIBERACAO' => $linhaDados[0] ?? null,  // Coluna A
+                    'REFERENCIAML' => $linhaDados[2] ?? null,  // Coluna C
+                    'DESCRICAOSTATUS' => $linhaDados[4] ?? null,  // Coluna E
+                    'VALORBRUTO' => $linhaDados[7] ?? null,  // Coluna H
+                    'CUSTOENVIO' => $linhaDados[11] ?? null,  // Coluna L
+                    'PACKID' => $linhaDados[30] ?? ''  // Coluna AE
+                ];
+            }
         }
 
         $sql = "EXEC AD_STP_INSERE_LIBERACOES_MERCADOLIVRE ?, ?, ?, ?, ?, ?, ?";

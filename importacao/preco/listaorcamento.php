@@ -80,7 +80,7 @@ $_SESSION['codEmp'] = null;
                 $dataHora = $row['DTCRIACAO']->format('d/m/Y H:i:s');
 
                 $listaConferencias .= "
-                        <tr id='linhaSelecionada' data-id='{$row['NUORCAMENTO']}' style='background-color: {$row['CORLINHA']};'>
+                        <tr id='linhaSelecionada' data-id='{$row['NUORCAMENTO']}' data-original-color='{$row['CORLINHA']}' style='background-color: {$row['CORLINHA']};'>
                             <td style='width: 30px;'>{$row['NUORCAMENTO']} </td>
                             <td style='width: 30px;'>{$row['CODEMP']} </td>
                             <td style='width: 30px;'>{$row['CODPARC']} </td>
@@ -101,7 +101,18 @@ $_SESSION['codEmp'] = null;
 
 </div>
         <!-- Botão que abre a barra lateral de pesquisa -->
-        <div id="floating-button" onclick="openSidebar()">+</div>
+        <div id="floating-buttons">
+            <div class="floating-button delete" onclick="excluirOrcamento()">
+                🗑️ 
+                <span class="button-label">Excluir</span>
+            </div>
+            <div class="floating-button" onclick="openSidebar()">
+                + 
+                <span class="button-label">Adicionar</span>
+            </div>
+        </div>
+
+
         <div id="search-container">
 
             <div class="sidebar-header">
