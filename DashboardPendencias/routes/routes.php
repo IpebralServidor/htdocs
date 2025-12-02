@@ -1,8 +1,16 @@
 <?php
 
+header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Desliga exibição de erros na tela
+ini_set('log_errors', 1);     // Loga erros no arquivo de log
+set_time_limit(300);        // PHP: 5 minutos
+ini_set('max_execution_time', 300);
+
 require_once "../../conexaophp.php";
 require_once '../../App/auth.php';
 require_once '../Model/Index.php';
+
 
 // Verifica se foi feita uma requisição GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -30,3 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } else {
     echo json_encode(['error' => 'Método de requisição não suportado']);
 }
+
+
+?>

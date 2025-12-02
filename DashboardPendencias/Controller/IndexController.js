@@ -1,16 +1,16 @@
 // Função executada quando o DOM estiver pronto
 $(function() {
-    buscaPendencias(null, null);
+    // Removido: buscaPendencias(null, null);
+    // Agora não carrega nada ao iniciar
+
     const nunotaInput = document.getElementById('nunota');
     const codparcInput = document.getElementById('codparc');
     
-    // Adiciona um evento de escuta para a tecla 'Enter'
     nunotaInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             confirmaFiltroPendencia();
         }
     });
-
     codparcInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             confirmaFiltroPendencia();
@@ -22,10 +22,7 @@ const recarregarPagina = () => {
     location.reload();
 }
 
-// Define um tempo aleatório entre 60 e 120 segundos (60000 a 120000 milissegundos)
 const tempoRecarregar = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
-
-// Chama a função recarregarPagina após o tempo definido
 setTimeout(recarregarPagina, tempoRecarregar);
 
 const buscaPendencias = (nunota, codparc) => {
@@ -68,11 +65,11 @@ const abrirPopFiltroPendencia = () => {
 const confirmaFiltroPendencia = () => {
     let nunota = document.getElementById('nunota').value;
     let codparc = document.getElementById('codparc').value;
-    if((nunota !== '' && !isNaN(nunota)) || (codparc !== '' && !isNaN(codparc))) {
-        buscaPendencias(nunota !== '' ? nunota : null, codparc !== '' ? codparc : null);
-        abrirPopFiltroPendencia();
-    } else {
-        buscaPendencias(null, null);
-        abrirPopFiltroPendencia();
-    }
+    
+    // Busca com ou sem filtros
+    buscaPendencias(
+        nunota !== '' ? nunota : null, 
+        codparc !== '' ? codparc : null
+    );
+    abrirPopFiltroPendencia();
 }

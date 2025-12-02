@@ -4,7 +4,7 @@ function buscaPendencias($conn, $nunota, $codparc)
 {
     try {
         $params = array($nunota, $codparc);
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_DASHBOARD_PENDENCIAS_APP] (?, ?)";
+        $tsql = "EXEC [sankhya].[AD_STP_DASHBOARD_PENDENCIAS_APP] ?, ?";
         $stmt = sqlsrv_query($conn, $tsql, $params);
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
@@ -29,6 +29,8 @@ function buscaPendencias($conn, $nunota, $codparc)
             $tableHtml .= '<td>' . $row['QTDPENDENTE'] . '</td>';
             $tableHtml .= '<td>' . $row['CONTROLE'] . '</td>';
             $tableHtml .= '<td>' . $row['ESTOQUEPOSSIVEL'] . '</td>';
+            $tableHtml .= '<td>' . $row['NUNOTA'] . '</td>';
+            $tableHtml .= '<td>' . $row['CODPARC'] . '</td>';
             // $tableHtml .= '<td>' . $row['CORLINHA'] . '</td>';
             $tableHtml .= '</tr>';
         }
