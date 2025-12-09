@@ -1,10 +1,18 @@
 // Função executada quando o DOM estiver pronto
 $(function() {
-    // Removido: buscaPendencias(null, null);
-    // Agora não carrega nada ao iniciar
+    
+    //Função para salvar os filtros caso esteja filtrado
+    const filtroSalvo = JSON.parse(sessionStorage.getItem('filtroPendencia')) || {};
+    
+    buscaPendencias(
+        filtroSalvo.nunota || null, 
+        filtroSalvo.codparc || null, 
+        filtroSalvo.codemp || null
+    );
 
     const nunotaInput = document.getElementById('nunota');
     const codparcInput = document.getElementById('codparc');
+    const codempInput = document.getElementById('codemp');
     
     nunotaInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
@@ -16,16 +24,28 @@ $(function() {
             confirmaFiltroPendencia();
         }
     });
+
+    codempInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            confirmaFiltroPendencia();
+        }
+    });
 });
 
 const recarregarPagina = () => {
     location.reload();
 }
 
-const tempoRecarregar = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
-setTimeout(recarregarPagina, tempoRecarregar);
+setTimeout(recarregarPagina, 15000);
 
-const buscaPendencias = (nunota, codparc) => {
+const buscaPendencias = (nunota, codparc, codemp) => {
+    // Salva os filtros antes de buscar
+    sessionStorage.setItem('filtroPendencia', JSON.stringify({
+        nunota: nunota,
+        codparc: codparc,
+        codemp: codemp
+    }));
+
     $.ajax({
         method: 'GET',
         url: '../routes/routes.php',
@@ -39,6 +59,7 @@ const buscaPendencias = (nunota, codparc) => {
         data: {
             nunota: nunota,
             codparc: codparc,
+            codemp: codemp,
             route: 'buscaPendencias'
         },
         success: function(response) {
@@ -57,19 +78,26 @@ const buscaPendencias = (nunota, codparc) => {
 }
 
 const abrirPopFiltroPendencia = () => {
-    document.getElementById('nunota').value = '';
-    document.getElementById('codparc').value = '';
+    
+    const filtroSalvo = JSON.parse(sessionStorage.getItem('filtroPendencia')) || {};
+    
+    document.getElementById('nunota').value = filtroSalvo.nunota || '';
+    document.getElementById('codparc').value = filtroSalvo.codparc || '';
+    document.getElementById('codemp').value = filtroSalvo.codemp || '';
+
     document.getElementById('popFiltroPendencia').classList.toggle("active");
 }
 
 const confirmaFiltroPendencia = () => {
     let nunota = document.getElementById('nunota').value;
     let codparc = document.getElementById('codparc').value;
+    let codemp = document.getElementById('codemp').value;
     
     // Busca com ou sem filtros
     buscaPendencias(
         nunota !== '' ? nunota : null, 
-        codparc !== '' ? codparc : null
+        codparc !== '' ? codparc : null,
+        codemp !== '' ? codemp : null
     );
     abrirPopFiltroPendencia();
 }

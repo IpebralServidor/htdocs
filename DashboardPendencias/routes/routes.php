@@ -20,10 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         switch ($route) {
             case 'buscaPendencias':
-                if (isset($_GET['nunota']) && isset($_GET['codparc'])) {
+                if (isset($_GET['nunota']) && isset($_GET['codparc']) && isset($_GET['codemp'])) {
                     $nunota = $_GET['nunota'] === '' ? NULL : $_GET['nunota'];
                     $codparc = $_GET['codparc'] === '' ? NULL : $_GET['codparc'];
-                    buscaPendencias($conn, $nunota, $codparc);
+                    $codemp = $_GET['codemp'] === '' ? NULL : $_GET['codemp'];
+                    buscaPendencias($conn, $nunota, $codparc, $codemp);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }

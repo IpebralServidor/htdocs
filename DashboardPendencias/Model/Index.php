@@ -1,10 +1,10 @@
 <?php
 
-function buscaPendencias($conn, $nunota, $codparc)
+function buscaPendencias($conn, $nunota, $codparc, $codemp)
 {
     try {
-        $params = array($nunota, $codparc);
-        $tsql = "EXEC [sankhya].[AD_STP_DASHBOARD_PENDENCIAS_APP] ?, ?";
+        $params = array($nunota, $codparc, $codemp);
+        $tsql = "EXEC [sankhya].[AD_STP_DASHBOARD_PENDENCIAS_APP] ?, ?, ?";
         $stmt = sqlsrv_query($conn, $tsql, $params);
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
