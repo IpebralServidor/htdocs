@@ -66,8 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "EXEC AD_STP_INSERE_BANCO_DE_HORAS ?, ?, ?, ?, ?";
 
         foreach ($dados as $linha) {
+            
+            $nome = mb_convert_encoding($linha['NOME'], 'UTF-8', 'UTF-8');
+
             $params = [$dataInicial, $dataFinal, $linha['CODIGO'], 
-                       $linha['NOME'], $linha['TOTALBANCO']];
+                       $nome, $linha['TOTALBANCO']];
             //$teste =  implode(', ',$params);
             $stmt = sqlsrv_query($conn, $sql, $params);
 
