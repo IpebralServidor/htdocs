@@ -40,6 +40,9 @@ require_once '../../App/auth.php';
 							<strong>Empresa:</strong>
 							<input type="number" id="codemp">
 
+							<strong>Referência:</strong>
+							<input type="string" id="referencia">
+
 							<button id="confirmaFiltroPendencia" onclick="confirmaFiltroPendencia()">Confirmar</button>
 						</div>
 					</div>

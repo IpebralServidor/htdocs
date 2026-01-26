@@ -7,12 +7,14 @@ $(function() {
     buscaPendencias(
         filtroSalvo.nunota || null, 
         filtroSalvo.codparc || null, 
-        filtroSalvo.codemp || null
+        filtroSalvo.codemp || null,
+        filtroSalvo.referencia || ''
     );
 
     const nunotaInput = document.getElementById('nunota');
     const codparcInput = document.getElementById('codparc');
     const codempInput = document.getElementById('codemp');
+    const referenciaInput = document.getElementById('referencia');
     
     nunotaInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
@@ -30,6 +32,12 @@ $(function() {
             confirmaFiltroPendencia();
         }
     });
+
+    referenciaInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            confirmaFiltroPendencia();
+        }
+    });
 });
 
 const recarregarPagina = () => {
@@ -38,12 +46,13 @@ const recarregarPagina = () => {
 
 setTimeout(recarregarPagina, 15000);
 
-const buscaPendencias = (nunota, codparc, codemp) => {
+const buscaPendencias = (nunota, codparc, codemp, referencia) => {
     // Salva os filtros antes de buscar
     sessionStorage.setItem('filtroPendencia', JSON.stringify({
         nunota: nunota,
         codparc: codparc,
-        codemp: codemp
+        codemp: codemp,
+        referencia: referencia  
     }));
 
     $.ajax({
@@ -60,6 +69,7 @@ const buscaPendencias = (nunota, codparc, codemp) => {
             nunota: nunota,
             codparc: codparc,
             codemp: codemp,
+            referencia: referencia,
             route: 'buscaPendencias'
         },
         success: function(response) {
@@ -84,6 +94,7 @@ const abrirPopFiltroPendencia = () => {
     document.getElementById('nunota').value = filtroSalvo.nunota || '';
     document.getElementById('codparc').value = filtroSalvo.codparc || '';
     document.getElementById('codemp').value = filtroSalvo.codemp || '';
+    document.getElementById('referencia').value = filtroSalvo.referencia || '';
 
     document.getElementById('popFiltroPendencia').classList.toggle("active");
 }
@@ -92,12 +103,15 @@ const confirmaFiltroPendencia = () => {
     let nunota = document.getElementById('nunota').value;
     let codparc = document.getElementById('codparc').value;
     let codemp = document.getElementById('codemp').value;
+    let referencia = document.getElementById('referencia').value;
     
     // Busca com ou sem filtros
     buscaPendencias(
         nunota !== '' ? nunota : null, 
         codparc !== '' ? codparc : null,
-        codemp !== '' ? codemp : null
+        codemp !== '' ? codemp : null,
+        referencia !== '' ? referencia : null
     );
     abrirPopFiltroPendencia();
 }
+

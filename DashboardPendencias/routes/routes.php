@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $nunota = $_GET['nunota'] === '' ? NULL : $_GET['nunota'];
                     $codparc = $_GET['codparc'] === '' ? NULL : $_GET['codparc'];
                     $codemp = $_GET['codemp'] === '' ? NULL : $_GET['codemp'];
-                    buscaPendencias($conn, $nunota, $codparc, $codemp);
+                    $referencia = $_GET['referencia'] === '' ? NULL : $_GET['referencia'];
+                    buscaPendencias($conn, $nunota, $codparc, $codemp,$referencia);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
