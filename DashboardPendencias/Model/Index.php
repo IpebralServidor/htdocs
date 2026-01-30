@@ -26,6 +26,7 @@ function buscaPendencias($conn, $nunota, $codparc, $codemp, $referencia)
             $tableHtml .= "<td>" . $row['REFERENCIA'] . '</td>';
             $tableHtml .= '<td>' . $row['DESCRPROD'] . '</td>';
             $tableHtml .= '<td>' . $row['CODLOCALORIG'] . '</td>';
+            $tableHtml .= '<td>' . $row['DESCRICAOLOCAL'] . '</td>';
             $tableHtml .= '<td>' . $row['QTDPENDENTE'] . '</td>';
             $tableHtml .= '<td>' . $row['CONTROLE'] . '</td>';
             $tableHtml .= '<td>' . $row['ESTOQUEPOSSIVEL'] . '</td>';

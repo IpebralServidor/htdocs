@@ -71,6 +71,7 @@ require_once '../../App/auth.php';
 						<th>Referência</th>
 						<th>Descrição</th>
 						<th>Cód. Local</th>
+						<th>Descrição Local</th>
 						<th>Qtd. Pendente</th>
 						<th>Controle</th>
 						<th>Estoque Possível</th>
