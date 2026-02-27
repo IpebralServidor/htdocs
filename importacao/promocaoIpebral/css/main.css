@@ -1,0 +1,121 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.titulo {
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 22px;
+}
+
+.upload-button {
+    margin-bottom: 20px;
+}
+
+.campo-promocao {
+    margin-bottom: 20px;
+}
+
+.campo-promocao label {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.campo-promocao input {
+    padding: 8px 12px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 150px;
+    text-align: center;
+}
+
+.campo-promocao input:focus {
+    border-color: #5a3d7a;
+    outline: none;
+}
+
+.account-selection {
+    margin-bottom: 25px;
+}
+
+.account-selection label {
+    margin-right: 10px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+}
+
+.button-group button {
+    padding: 15px 40px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.button-group button:hover {
+    background-color: #333;
+}
+
+.inserePromocoes {
+    background-color: #5a3d7a;
+}
+
+#loader {
+    position: fixed;
+    z-index: 99999;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    background: 50% 50% no-repeat rgb(15 10 10 / 50%);
+}
+
+#loader img {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.download-modelo {
+    margin-bottom: 20px;
+}
+
+.btnModelo {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btnModelo:hover {
+    background-color: #333;
+}
