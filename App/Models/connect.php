@@ -20,7 +20,9 @@
 	public function __construct() {
 	$connectionInfo = array( "UID"=>$this->uid,                            
 	                         "PWD"=>$this->pwd,                            
-	                         "Database"=>$this->databaseName); 
+	                         "Database"=>$this->databaseName,
+							 "Encrypt" => false,
+    						 "TrustServerCertificate" => true); 
 	/* Conexao com SQL Server usando autenticacao. */  
 	$this->SQL = sqlsrv_connect( $this->serverName, $connectionInfo); 
 
