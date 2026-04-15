@@ -142,12 +142,12 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
     }
 }
 
-function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax)
+function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario)
 {
     try {
-        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax);
+        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario);
 
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?, ?)";
+        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP2](?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
