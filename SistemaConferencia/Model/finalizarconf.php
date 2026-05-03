@@ -8,6 +8,7 @@ $volume = $_POST['volume'];
 $pesobruto = $_POST['pesobruto'];
 $nunota = $_POST['nunota'];
 $observacao = $_POST['observacao'];
+$observacao = str_replace("'", "", $observacao);
 $frete = $_POST['frete'];
 $codusulib = $_POST['codusulib'];
 $params = array($nunota);
