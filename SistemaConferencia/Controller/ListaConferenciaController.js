@@ -202,6 +202,7 @@ function confirmarPopImpressao() {
 
 function abrirPopSeparador() {
     document.getElementById('popSeparador').classList.toggle("active");
+    document.getElementById('codSeparador').focus();
 }
 
 function confirmarPopSeparador(codusu) {

@@ -140,8 +140,8 @@ $qtdVolume = $rowStatusVolume[1];
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
-	<script src="../Etiquetas/impressao.js"></script>
-	<script src="../Controller/DetalhesConferenciaController.js"></script>
+	<script src="../Etiquetas/impressao.js?v=<?php echo time(); ?>"></script>
+	<script src="../Controller/DetalhesConferenciaController.js?v=<?php echo time(); ?>"></script>
 	<script src="../../components/emailFoto/js/emailFoto.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 	<link href="../css/style.css?v=<?= time() ?>" rel="stylesheet" type="text/css" media="all" />
@@ -320,7 +320,7 @@ $qtdVolume = $rowStatusVolume[1];
 		Cód. Barras: <input type="text" name="CODBAR" size="13" class="text" id='codigodebarra' required>
 		<input type="hidden" id="referencia">
 		Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" size="1" style="text-align: left;">
-		Controle: <input type="text" name="CONTROLE" size="6" id="controle" class="text">
+		Lote: <input type="text" name="CONTROLE" size="6" id="controle" class="text">
 		Volume: <input type="text" name="VOLUMEITEM" size="1" id="volumeItem" class="text">
 		<button name="conferir" id="conferir" type="submit" value="" style="margin-left: 30px;">Conferir</button>
 		<?php
@@ -356,6 +356,7 @@ $qtdVolume = $rowStatusVolume[1];
 						<button style="font-size: 13px;" onclick="confirmar_conf();">Finalizar Conferência</button>
 						<button style="font-size: 13px;" onclick="abrirdivergencias();">Produtos Divergentes</button>
 						<button style="font-size: 13px;" onclick="abrirImpressaoEtiqueta();">Imprimir etiqueta</button>
+						<button style="font-size: 13px;" onclick="abrirImpressaoReferencia();">Imprimir Referência</button>
 
 						<?php
 						$tsql2 = "select count(1) as contador from [sankhya].[AD_FN_pendencias_CONFERENCIA]($nunota2)";
@@ -376,7 +377,7 @@ $qtdVolume = $rowStatusVolume[1];
 					<br>Qtd. Volume: <input type="text" name="qtdvol" id="qtdvol" class="text" value="<?php echo $qtdVolume ?>" style="margin-top: 5px;">
 					<br>Volume: <br><input type="text" name="volume" id="volume" class="text" style="margin-top: 5px;">
 					<br>Peso Bruto: <input type="text" minlength="1" name="pesobruto" id="pesobruto" class="text" style="margin-top: 5px;">
-					<br>Valor frete: <input type="text" name="frete" id="frete" class="text" style="margin-top: 5px;" value="<?php echo $VLRFRETE; ?>"><br>
+					<!-- <br>Valor frete: <input type="text" name="frete" id="frete" class="text" style="margin-top: 5px;" value="<?php /*echo $VLRFRETE;*/ ?>"><br> -->
 					<br>Motivo da divergência:<br>
 					<select name="mtvdivergencia" id="mtvdivergencia" class="form-control" <?php if ($QtdDivergencias == 0 && $QtdPendente == 0) {
 																								echo 'disabled';
@@ -416,7 +417,7 @@ $qtdVolume = $rowStatusVolume[1];
 							<th width="10.6%">Referência</th>
 							<th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 							<th width="10.6%" align="center">Complemento</th>
-							<th width="12.6%" align="center">Controle</th>
+							<!-- <th width="12.6%" align="center">Controle</th> -->
 							<th width="12.6%" align="center">Qtd. Conferida</th>
 							<th width="16.6%" align="center">Volume</th>
 						</tr>
@@ -432,7 +433,7 @@ $qtdVolume = $rowStatusVolume[1];
 								<td width="10.6%"><?php echo $row2[1]; ?>&nbsp;</td>
 								<td width="36.6%"><?php echo $row2[2]; ?>&nbsp;</td>
 								<td width="10.6%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
-								<td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
+								<!-- <td width="12.6%" align="center"></td> -->
 								<td width="12.6%" align="center"><?php echo $row2[5]; ?></td>
 								<td width="16.6%" align="center"><?php echo $row2[6]; ?></td>
 							</tr></a>
@@ -536,6 +537,13 @@ $qtdVolume = $rowStatusVolume[1];
 				<button style="cursor: hand; cursor: pointer; display: block; width: 50%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="validaNumeroInserido();">Imprimir</button>
 				<button class="fechar" onclick="fecharImpressaoEtiqueta();">X</button>
 			</div>
+
+			<div id="popupreferencia" class="popupetiqueta">
+				<h4 style="text-align: center; margin-top: 8%;">Imprimir Referências: </h4>
+				<input type="text" id="referenciaImpressao" value="" style="display: block; width: 50%; margin-left: auto; margin-right: auto; margin-top: 3%;"></td>
+				<button style="cursor: hand; cursor: pointer; display: block; width: 50%; margin-left: auto; margin-right: auto; margin-top: 3%;" onclick="imprimeReferencia();">Imprimir</button>
+				<button class="fechar" onclick="fecharImpressaoReferencia();">X</button>
+			</div>
 			<!--
 				POP UP Para Conferência Finalizada com Divergência (Corte)
 			-->
@@ -555,12 +563,12 @@ $qtdVolume = $rowStatusVolume[1];
 					<table id="tableRecontagem" border="3px" bordercolor="black" style="margin-top: 5px;">
 						<tr>
 							<th width="1%" style="margin-right: 0; "></th>
-							<th style="width: 25%">Referência</th>
-							<th style="width: 25%">Controle</th>
-							<th style="width: 25%">Qtd Conferida</th>
+							<th style="width: 50%">Referência</th>
+							<!-- <th style="width: 25%">Controle</th> -->
+							<th style="width: 50%">Qtd Conferida</th>
 						</tr>
 						<?php
-						$tsqlDivergenciaValor = "SELECT ITE.CODPROD, PRO.REFERENCIA, ITE.CONTROLE, 
+						$tsqlDivergenciaValor = "SELECT ITE.CODPROD, PRO.REFERENCIA, 
 												ISNULL(COI2.QTDCONF, 0) AS QTDCONFERIDA, 'D'
 												FROM TGFITE ITE 
 												INNER JOIN TGFCAB CAB
@@ -572,20 +580,19 @@ $qtdVolume = $rowStatusVolume[1];
 												AND COI2.CODPROD = ITE.CODPROD
 												AND COI2.CONTROLE = ITE.CONTROLE
 												WHERE ITE.NUNOTA = $nunota2
-												GROUP BY ITE.CODPROD, COI2.QTDCONF, ITE.CONTROLE, PRO.REFERENCIA
+												GROUP BY ITE.CODPROD, COI2.QTDCONF, PRO.REFERENCIA
 												HAVING SUM(ITE.QTDNEG) <> ISNULL(COI2.QTDCONF, 0)
 												UNION ALL
-												SELECT NULL, CONCAT(TRIM(REFERENCIA),' (',QTDPENDENTE,' pendente)'), CONTROLE, NULL, 'P' FROM [sankhya].[AD_FN_pendencias_CONFERENCIA] ($nunota2)";
+												SELECT NULL, CONCAT(TRIM(REFERENCIA),' (',QTDPENDENTE,' pendente)'), NULL, 'P' FROM [sankhya].[AD_FN_pendencias_CONFERENCIA] ($nunota2)";
 						$stmtDivergenciaValor = sqlsrv_query($conn, $tsqlDivergenciaValor);
 						$i = 1;
 						while ($rowDivergenciaValor = sqlsrv_fetch_array($stmtDivergenciaValor, SQLSRV_FETCH_NUMERIC)) {
 						?>
-							<tr id="recont<?php echo $i ?>" style="cursor: hand; cursor: pointer; <?php echo $rowDivergenciaValor[4] == 'P' ?  "background-color: #FF4D4D" : "background-color: white"; ?>">
+							<tr id="recont<?php echo $i ?>" style="cursor: hand; cursor: pointer; <?php echo $rowDivergenciaValor[3] == 'P' ?  "background-color: #FF4D4D" : "background-color: white"; ?>">
 								<td style="display: none;" class="codprod"><?php echo $rowDivergenciaValor[0] ?></td>
-								<td align="center" width="1%"><input type="checkbox" class="checkbox" <?php echo $rowDivergenciaValor[4] == 'P' ?  "disabled" : ""; ?> /></td>
-								<td width="25%"><?php echo $rowDivergenciaValor[1]; ?></td>
-								<td class="controle" width="25%"><?php echo $rowDivergenciaValor[2]; ?></td>
-								<td width="25%"><?php echo $rowDivergenciaValor[3]; ?></td>
+								<td align="center" width="1%"><input type="checkbox" class="checkbox" <?php echo $rowDivergenciaValor[3] == 'P' ?  "disabled" : ""; ?> /></td>
+								<td width="50%"><?php echo $rowDivergenciaValor[1]; ?></td>
+								<td width="50%"><?php echo $rowDivergenciaValor[2]; ?></td>
 							</tr></a>
 						<?php
 							$i++;
@@ -606,15 +613,15 @@ $qtdVolume = $rowStatusVolume[1];
 					<table id="tableCorte" border="3px" bordercolor="black" style="margin-top: 5px;">
 						<tr>
 							<th width="1%" style="margin-right: 0; "></th>
-							<th style="width: 12%">Referência</th>
-							<th style="width: 25%">Descrição</th>
-							<th style="width: 8%">Controle</th>
-							<th style="width: 10%">Conferência atual</th>
-							<th style="width: 10%">Primeira Conferência</th>
-							<th style="width: 10%">Qtd Recontagem</th>
+							<th style="width: 14%">Referência</th>
+							<th style="width: 28%">Descrição</th>
+							<!-- <th style="width: 8%">Controle</th> -->
+							<th style="width: 11%">Conferência atual</th>
+							<th style="width: 11%">Primeira Conferência</th>
+							<th style="width: 11%">Qtd Recontagem</th>
 						</tr>
 						<?php
-						$tsqlRecontCorte = "SELECT ITE.CODPROD, PRO.REFERENCIA, PRO.DESCRPROD, ITE.CONTROLE, 
+						$tsqlRecontCorte = "SELECT ITE.CODPROD, PRO.REFERENCIA, PRO.DESCRPROD,
 											ISNULL(COI2.QTDCONF, 0) AS CONFATUAL,
 											ISNULL(PRIMEIRA_CONF.QTDCONF, 0) AS PRIMEIRACONF,
 											ISNULL(QTDRECONTADA.NRO_RECONTAGEM, 0) AS QTDRECONTAGEM,
@@ -651,24 +658,23 @@ $qtdVolume = $rowStatusVolume[1];
 											ON QTDRECONTADA.CODPROD = ITE.CODPROD
 											AND QTDRECONTADA.CONTROLE = ITE.CONTROLE
 											WHERE ITE.NUNOTA = $nunota2
-											GROUP BY ITE.CODPROD, COI2.QTDCONF, ITE.CONTROLE, PRO.REFERENCIA, PRIMEIRA_CONF.QTDCONF, PRO.DESCRPROD, QTDRECONTADA.NRO_RECONTAGEM
+											GROUP BY ITE.CODPROD, COI2.QTDCONF, PRO.REFERENCIA, PRIMEIRA_CONF.QTDCONF, PRO.DESCRPROD, QTDRECONTADA.NRO_RECONTAGEM
 											HAVING SUM(ITE.QTDNEG) <> ISNULL(COI2.QTDCONF, 0)
 											UNION ALL
-											SELECT NULL, CONCAT(TRIM(REFERENCIA),' (',QTDPENDENTE,' pendente)'), DESCRPROD, CONTROLE, NULL, NULL, NULL, 'P' FROM [sankhya].[AD_FN_pendencias_CONFERENCIA] ($nunota2)
+											SELECT NULL, CONCAT(TRIM(REFERENCIA),' (',QTDPENDENTE,' pendente)'), DESCRPROD, NULL, NULL, NULL, 'P' FROM [sankhya].[AD_FN_pendencias_CONFERENCIA] ($nunota2)
 													";
 						$stmtRecontCorte = sqlsrv_query($conn, $tsqlRecontCorte);
 						$i = 1;
 						while ($rowRecontCorte = sqlsrv_fetch_array($stmtRecontCorte, SQLSRV_FETCH_NUMERIC)) {
 						?>
-							<tr id="recont<?php echo $i ?>" style="cursor: hand; cursor: pointer; <?php echo $rowRecontCorte[7] == 'P' ?  "background-color: #FF4D4D" : "background-color: white"; ?>">
+							<tr id="recont<?php echo $i ?>" style="cursor: hand; cursor: pointer; <?php echo $rowRecontCorte[6] == 'P' ?  "background-color: #FF4D4D" : "background-color: white"; ?>">
 								<td style="display: none;" class="codprod"><?php echo $rowRecontCorte[0] ?></td>
-								<td align="center" width="1%"><input type="checkbox" class="checkbox" <?php echo $rowRecontCorte[7] == 'P' ?  "disabled" : ""; ?> /></td>
-								<td width="10%"><?php echo $rowRecontCorte[1]; ?></td>
-								<td width="25%"><?php echo $rowRecontCorte[2]; ?></td>
-								<td class="controle" width="10%"><?php echo $rowRecontCorte[3]; ?></td>
-								<td width="10%"><?php echo $rowRecontCorte[4]; ?></td>
-								<td width="10%"><?php echo $rowRecontCorte[5]; ?></td>
-								<td width="10%"><?php echo $rowRecontCorte[6]; ?></td>
+								<td align="center" width="1%"><input type="checkbox" class="checkbox" <?php echo $rowRecontCorte[6] == 'P' ?  "disabled" : ""; ?> /></td>
+								<td width="14%"><?php echo $rowRecontCorte[1]; ?></td>
+								<td width="28%"><?php echo $rowRecontCorte[2]; ?></td>
+								<td width="11%"><?php echo $rowRecontCorte[3]; ?></td>
+								<td width="11%"><?php echo $rowRecontCorte[4]; ?></td>
+								<td width="11%"><?php echo $rowRecontCorte[5]; ?></td>
 							</tr></a>
 						<?php
 							$i++;
@@ -749,7 +755,7 @@ $qtdVolume = $rowStatusVolume[1];
 							<th width="10.6%">Produto</th>
 							<th width="36.6%" style="text-align: center;">Descrição do Produto</th>
 							<th width="10.6%" align="center">UN</th>
-							<th width="12.6%" align="center">Controle</th>
+							<!-- <th width="12.6%" align="center">Controle</th> -->
 							<th width="12.6%" align="center">Ref. do Forn.</th>
 							<th width="16.6%" align="center">Código de Barras</th>
 						</tr>
@@ -1211,7 +1217,7 @@ $qtdVolume = $rowStatusVolume[1];
 			}
 		});
 
-		function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao, frete, mtvdivergencia, codusulib) {
+		function finalizar(nunota, usuconf, pesobruto, qtdvol, volume, observacao, mtvdivergencia, codusulib) {
 			//O método $.ajax(); é o responsável pela requisição
 			$.ajax({
 				//Configurações
@@ -1232,7 +1238,6 @@ $qtdVolume = $rowStatusVolume[1];
 					qtdvol: qtdvol,
 					volume: volume,
 					observacao: observacao,
-					frete: frete,
 					mtvdivergencia: mtvdivergencia,
 					codusulib: codusulib
 				}, //Dados para consulta
@@ -1250,7 +1255,7 @@ $qtdVolume = $rowStatusVolume[1];
 		}
 
 		$('#confirmar').click(function() {
-			finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#frete").val(), $("#mtvdivergencia").val(), $("#codusulib").val());
+			finalizar(<?php echo $nunota2; ?>, <?php echo $usuconf; ?>, $("#pesobruto").val(), $("#qtdvol").val(), $("#volume").val(), $("#observacao").val(), $("#mtvdivergencia").val(), $("#codusulib").val());
 		});
 
 		function complemento(primeiro) {

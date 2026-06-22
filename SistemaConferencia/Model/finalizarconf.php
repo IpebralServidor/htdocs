@@ -9,7 +9,7 @@ $pesobruto = $_POST['pesobruto'];
 $nunota = $_POST['nunota'];
 $observacao = $_POST['observacao'];
 $observacao = str_replace("'", "", $observacao);
-$frete = $_POST['frete'];
+// $frete = $_POST['frete'];
 $codusulib = $_POST['codusulib'];
 $params = array($nunota);
 // Simula o corte dos itens para saber se algum problema vai ocorrer
@@ -54,9 +54,9 @@ if ($checkCorte[0] == 'ERRO') {
         $row2 = sqlsrv_fetch_array($stmt5, SQLSRV_FETCH_NUMERIC);
         $linhas = $row2[0];
         if ($linhas > 0 || $linhasPendente > 0) {
-            $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', $frete, '$mtvdivergencia', '$codusulib' ";
+            $tsql4 = "EXEC [sankhya].[AD_STP_CORTAITENS_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '$mtvdivergencia', '$codusulib' ";
         } else {
-            $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '', $frete, '$codusulib' ";
+            $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '', '$codusulib' ";
         }
         $stmt4 = sqlsrv_query($conn, $tsql4);
         $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);

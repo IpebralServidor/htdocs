@@ -1,212 +1,116 @@
 <?php
-// ============================================================
-//  processa.php — Importação de Excel para AD_MIGRACAOPRECO
-//  Requer: PhpSpreadsheet (composer require phpoffice/phpspreadsheet)
-// ============================================================
 
-// ----- Autoload do Composer -----
-// Ajuste o caminho se o vendor estiver em outro lugar
-require_once __DIR__ . '/../../vendor/autoload.php';
+$erro = false;
+	 
+$stmt ="";
 
-use PhpOffice\PhpSpreadsheet\IOFactory;
+//Configuracoes do servidor SQL Server 
+$serverName = "10.0.0.229"; 
+$uid = "sankhya";   
+$pwd = "tecsis";  
+$databaseName = "SANKHYA_PROD"; 
 
-// ----- Conexão SQL Server -----
-$serverName     = "10.0.0.229";
-$uid            = "sankhya";
-$pwd            = "tecsis";
-$databaseName   = "SANKHYA_PROD";
-$connectionInfo = [
-    "UID"      => $uid,
-    "PWD"      => $pwd,
-    "Database" => $databaseName,
-    "CharacterSet" => "UTF-8",
-];
+$connectionInfo = array( "UID"=>$uid,                            
+                         "PWD"=>$pwd,                            
+                         "Database"=>$databaseName); 
 
-$conn = sqlsrv_connect($serverName, $connectionInfo);
+/* Conexao com SQL Server usando autenticacao. */  
+$conn = sqlsrv_connect( $serverName, $connectionInfo);  
 
-if (!$conn) {
-    die("<p style='color:red;font-family:Arial'>Erro ao conectar ao SQL Server:<br>" .
-        print_r(sqlsrv_errors(), true) . "</p>");
+//Verifica se a conexao foi estabelecida com sucesso
+if( $conn ) {
+     echo "";
+	//   echo "Conexão estabelecida.<br />";
+}else{
+     echo "Não foi possível conectar ao SQL Server.<br />";
+     die( print_r( sqlsrv_errors(), true));
 }
 
-// ----- Valida o upload -----
-if (empty($_FILES['arquivo']['tmp_name']) || $_FILES['arquivo']['error'] !== UPLOAD_ERR_OK) {
-    die("<p style='color:red;font-family:Arial'>Nenhum arquivo recebido ou erro no upload.</p>");
-}
+   $dados = $_FILES['arquivo'];
+    //var_dump($dados);
 
-$extensaoPermitida = ['xlsx', 'xls'];
-$nomeOriginal      = $_FILES['arquivo']['name'];
-$extensao          = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+// zera tabela
+$result_usuario = "DELETE FROM AD_MIGRACAOPRECO";
+$resultado_usuario =  sqlsrv_query($conn, $result_usuario);  
+      
+	  ?>
 
-if (!in_array($extensao, $extensaoPermitida)) {
-    die("<p style='color:red;font-family:Arial'>Formato inválido. Envie um arquivo .xlsx ou .xls.</p>");
-}
+<h1><font face="Arial, Helvetica, sans-serif" color="#0000CC">Resultado da Importação</font></h1>
+<br />
 
-// ----- Lê a planilha -----
-try {
-    $spreadsheet = IOFactory::load($_FILES['arquivo']['tmp_name']);
-} catch (\Exception $e) {
-    die("<p style='color:red;font-family:Arial'>Erro ao ler o arquivo Excel: " .
-        htmlspecialchars($e->getMessage()) . "</p>");
-}
+<br />
+<!-- 
+<table width="900" border="0"   bgcolor="#0000CC" bordercolor="#FFFFFF">
+  <tr>
+    <td width="20%" align="center"><font face="Arial, Helvetica, sans-serif"><font color="#FFFFFF">CODPROPARC</font></td>
+    <td width="50%" align="center"><font face="Arial, Helvetica, sans-serif"><font color="#FFFFFF">DESCPROPARC</font></td>
+    <td width="15%" align="center"><font face="Arial, Helvetica, sans-serif"><font color="#FFFFFF">PRECO</font></td>	
+    <td width="15%" align="center"><font face="Arial, Helvetica, sans-serif"><font color="#FFFFFF">CODPARC</font></td>	
+  </tr>
+</table	>   -->
+<?php
+	 if (!empty( $_FILES['arquivo']['tmp_name'])){
+	   $arquivo = new DomDocument();
+	   $arquivo->load( $_FILES['arquivo']['tmp_name']);
+	   ///var_dump($arquivo);
+	   $linhas = $arquivo->getElementsByTagName("Row");
+  
+	  $primeira_linha = true;  
+	  foreach($linhas as $linha){
+		  if($primeira_linha == false){
+		  
+		  $codproparc= $linha->getElementsByTagName("Data")->item(0)->nodeValue;
+          $descrproparc= $linha->getElementsByTagName("Data")->item(1)->nodeValue;		  
+          $preco= $linha->getElementsByTagName("Data")->item(2)->nodeValue;				  
+          $codparc= $linha->getElementsByTagName("Data")->item(3)->nodeValue;	
 
-$sheet = $spreadsheet->getActiveSheet();
-$rows  = $sheet->toArray(null, true, true, false); // índice numérico, a partir de 0
+	
+		  
+		
+	 ?>
+	 <!--
+<table width="900" border="1"  bordercolor="#EAEAEA" cellspacing="0">
+  <tr><font size="-1" face="Arial, Helvetica, sans-serif" >
+    <td width="15%"  align="center" ><font  face="Arial, Helvetica, sans-serif" color="#0000FF"><?php echo $codproparc ?></font></td>
+   <td width="55%"  align="center" ><font  face="Arial, Helvetica, sans-serif" color="#0000FF"><?php echo $descrproparc ?></font></td>
+    <td width="15%"  align="center" ><font  face="Arial, Helvetica, sans-serif" color="#0000FF"><?php echo $preco ?></font></td>
+    <td width="15%"  align="center" ><font  face="Arial, Helvetica, sans-serif" color="#0000FF"><?php echo $codparc ?></font></td>		
+  </tr>
+</table> -->
+<?php
+		  		//Inserir o usuário no BD
+				$result_usuario = "INSERT INTO AD_MIGRACAOPRECO (CODPROPARC,DESCPROPARC,PRECO,CODPARC) VALUES ('$codproparc', '$descrproparc','$preco','$codparc')";
+		 	   $resultado_usuario =  sqlsrv_query($conn, $result_usuario);  
+			   
+		  }
+		  
+		    $primeira_linha = false;
+	  }
+	
+	
+	}
 
-// ----- Zera a tabela -----
-$sqlDelete = "DELETE FROM AD_MIGRACAOPRECO";
-if (!sqlsrv_query($conn, $sqlDelete)) {
-    die("<p style='color:red;font-family:Arial'>Erro ao limpar a tabela:<br>" .
-        print_r(sqlsrv_errors(), true) . "</p>");
-}
-
-// ----- Importa as linhas (pula a primeira — cabeçalho) -----
-$importados = 0;
-$erros      = [];
-
-foreach ($rows as $idx => $row) {
-    if ($idx === 0) continue; // pula cabeçalho (linha 1 da planilha)
-
-    // Colunas: A=0 B=1 C=2 D=3 E=4
-    $codproparc  = isset($row[0]) ? trim((string)$row[0]) : '';
-    $descrproparc= isset($row[1]) ? trim((string)$row[1]) : '';
-    $preco       = isset($row[2]) ? trim((string)$row[2]) : '';
-    $codparc     = isset($row[3]) ? trim((string)$row[3]) : '';
-    $codbarra    = isset($row[4]) ? trim((string)$row[4]) : '';
-
-    // Pula linhas completamente vazias
-    if ($codproparc === '' && $descrproparc === '' && $preco === '') continue;
-
-    // Usa parâmetros para evitar SQL Injection e problemas com aspas
-    $sqlInsert = "INSERT INTO AD_MIGRACAOPRECO
-                    (CODPROPARC, DESCPROPARC, PRECO, CODPARC, CODBARRA)
-                  VALUES (?, ?, ?, ?, ?)";
-
-    $params = [
-        [$codproparc,   SQLSRV_PARAM_IN],
-        [$descrproparc, SQLSRV_PARAM_IN],
-        [$preco,        SQLSRV_PARAM_IN],
-        [$codparc,      SQLSRV_PARAM_IN],
-        [$codbarra,     SQLSRV_PARAM_IN],
-    ];
-
-    $result = sqlsrv_query($conn, $sqlInsert, $params);
-
-    if ($result === false) {
-        $erros[] = "Linha " . ($idx + 1) . " ($codproparc): " .
-                   print_r(sqlsrv_errors(), true);
-    } else {
-        $importados++;
-    }
-}
-
-// ----- Libera recursos -----
-sqlsrv_close($conn);
-
-// ============================================================
-//  Saída de resultado
-// ============================================================
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resultado da Importação — Ipebral</title>
-  <link rel="stylesheet" href="themes/css/bootstrap.min.css" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f5f7;
-      color: #1a1a1a;
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 2.5rem 1rem;
-    }
-    .page-wrap { width: 100%; max-width: 620px; }
+<br />
+<table>
+  <tr
+			<?php  var_dump($linhas->length -1);   ?>
+  <font face="Arial, Helvetica, sans-serif" color="#0000CC"> &nbsp&nbsplinhas importadas com sucesso!</font>
+  </tr>
+</table>
+<br />
 
-    .header {
-      display: flex; align-items: center; gap: 16px;
-      background: #fff; border: 1px solid #e2e4e8;
-      border-radius: 12px; padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .header img { height: 40px; display: block; }
-    .header-title { font-size: 17px; font-weight: 700; color: #111; }
-    .header-sub   { font-size: 12px; color: #666; }
 
-    .result-card {
-      background: #fff; border: 1px solid #e2e4e8;
-      border-radius: 12px; padding: 1.5rem;
-      margin-bottom: 1.25rem;
-    }
-    .result-success {
-      display: flex; align-items: center; gap: 14px;
-      padding: 1rem 1.25rem;
-      background: #e8f5e9; border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-    .result-success-icon { font-size: 28px; }
-    .result-success-count { font-size: 22px; font-weight: 700; color: #1b5e20; }
-    .result-success-label { font-size: 13px; color: #2e7d32; }
 
-    .error-list {
-      background: #fff3e0; border: 1px solid #ffe0b2;
-      border-radius: 8px; padding: 1rem 1.25rem;
-    }
-    .error-list h3 { font-size: 13px; font-weight: 700; color: #e65100; margin-bottom: 8px; }
-    .error-list ul { margin: 0; padding-left: 18px; }
-    .error-list li { font-size: 12px; color: #bf360c; margin-bottom: 4px; }
+<?php
+//Libera os recursos do SQL server
+if ($stmt) {
 
-    .btn-back {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 20px; border-radius: 8px;
-      background: #1a1a1a; color: #fff;
-      text-decoration: none; font-size: 14px; font-weight: 700;
-      transition: opacity 0.15s;
-    }
-    .btn-back:hover { opacity: 0.82; color: #fff; text-decoration: none; }
-  </style>
-</head>
-<body>
-  <div class="page-wrap">
+sqlsrv_free_stmt( $stmt);  
+} 
 
-    <div class="header">
-      <img src="themes/img/logo40.png" alt="Ipebral" />
-      <div>
-        <div class="header-title">Ipebral</div>
-        <div class="header-sub">Resultado da importação</div>
-      </div>
-    </div>
+unset($erro);
+unset($dados);
+unset($arquivo);
 
-    <div class="result-card">
-
-      <div class="result-success">
-        <span class="result-success-icon">&#10003;</span>
-        <div>
-          <div class="result-success-count"><?= $importados ?> <?= $importados === 1 ? 'linha importada' : 'linhas importadas' ?></div>
-          <div class="result-success-label">Arquivo: <?= htmlspecialchars($nomeOriginal) ?></div>
-        </div>
-      </div>
-
-      <?php if (!empty($erros)): ?>
-      <div class="error-list">
-        <h3>&#9888; <?= count($erros) ?> linha(s) com erro:</h3>
-        <ul>
-          <?php foreach ($erros as $erro): ?>
-            <li><?= htmlspecialchars($erro) ?></li>
-          <?php endforeach; ?>
-        </ul>
-      </div>
-      <?php endif; ?>
-
-    </div>
-
-    <a class="btn-back" href="index.php">&#8592; Voltar</a>
-
-  </div>
-</body>
-</html>
+?>
