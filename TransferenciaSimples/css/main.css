@@ -56,7 +56,7 @@ main{
 }
 
 .form-label{
-    width: 10rem !important;
+    width: 10rem;
     font-weight: bold !important;
     font-size: 15px;
 	white-space: nowrap;
