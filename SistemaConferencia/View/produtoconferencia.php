@@ -11,7 +11,7 @@ $nunota = $_POST['nunota'];
 			<th>Produto</th>
 			<th>Descrição do Produto</th>
 			<th>UN</th>
-			<th>Controle</th>
+			<!-- <th>Controle</th> -->
 			<th>Ref. do Forn.</th>
 			<th>Código de Barras</th>
 		</tr>
@@ -47,7 +47,7 @@ $nunota = $_POST['nunota'];
 				<td width="10.6%"><?php echo $row2[0]; ?>&nbsp;</td>
 				<td width="36.6%"><?php echo $row2[1]; ?>&nbsp;</td>
 				<td width="10.6%" align="center"><?php echo $row2[2]; ?>&nbsp;</td>
-				<td width="12.6%" align="center"><?php echo $row2[3]; ?></td>
+				<!-- <td width="12.6%" align="center"></td> -->
 				<td width="12.6%" align="center"><?php echo $row2[4]; ?></td>
 				<td width="16.6%" align="center"><?php echo $row2[5]; ?></td>
 			</tr>

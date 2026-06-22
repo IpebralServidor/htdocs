@@ -10,9 +10,12 @@ $_POST["nunotaFiltro"] === '' ? $nunota = -1 : $nunota = $_POST["nunotaFiltro"];
 $_POST["parceiroFiltro"] === '' ? $parceiro = -1 : $parceiro = $_POST["parceiroFiltro"];
 $status = $_POST["statusFiltro"];
 
-$params = array($nunota, $numnota, $parceiro, $status, $usuarioLogado);
+$params = array($nunota, $numnota, $parceiro, $status, $usuarioLogado, $usuarioLogado, $usuarioLogado);
 
-$tsql = "SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_CONFERENCIA](?, ?, ?, ?, ?) ORDER BY NUNOTA DESC";
+$tsql = "SELECT *
+         FROM [sankhya].[AD_FNT_LISTANOTAS_CONFERENCIA](?, ?, ?, ?, ?) 
+         ORDER BY CASE WHEN ? IN (3302,14902) THEN CODPARC END ASC,
+                  CASE WHEN ? NOT IN (3302,14902) THEN NUNOTA END DESC";
 $tsqlTiposConferencia = "SELECT CODTIPOPER FROM [SANKHYA].[AD_FNT_TOP_PORTIPO]('Conferencia', NULL, NULL, NULL, NULL)";
 
 $stmt = sqlsrv_query($conn, $tsql, $params);
