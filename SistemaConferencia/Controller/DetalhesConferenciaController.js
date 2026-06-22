@@ -2,6 +2,8 @@ addEventListener("load", function() {
     setTimeout(hideURLbar, 0);
 }, false);
 
+let ultimoClique = 0;
+
 function hideURLbar() {
     window.scrollTo(0, 1);
 } 
@@ -182,6 +184,11 @@ function abrirImpressaoEtiqueta() {
     document.getElementById('popupetiqueta').style.display = 'block';
 }
 
+function abrirImpressaoReferencia() {
+    document.getElementById('referenciaImpressao').value = '';
+    document.getElementById('popupreferencia').style.display = 'block';
+}
+
 function abrirpopupprodmultiploslocais() {
     document.getElementById('popupprodmultiploslocais').style.display = 'block';
 }
@@ -227,10 +234,36 @@ function validaNumeroInserido() {
     }
 }
 
+function imprimeReferencia() {
+    let referencia = document.getElementById('referenciaImpressao').value;
+    console.log(referencia);
+    console.log('detalhes conf');
+    const urlParams = new URLSearchParams(window.location.search);
+    const nunota = urlParams.get('nunota');
+    $.ajax({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Model/validaReferencia.php',
+        data: {
+            referencia: referencia
+        },
+        success: function(response) {
+            if ($.trim(response) !== '') {
+                alert('Os seguintes produtos não foram encontrados:\n\n' + response);
+            } else {
+                impressaoReferencia(referencia);
+            }
+        }
+    });
+}
+
 function fecharImpressaoEtiqueta() {
     document.getElementById('popupetiqueta').style.display = 'none';
 }
 
+function fecharImpressaoReferencia() {
+    document.getElementById('popupreferencia').style.display = 'none';
+}
 
 function abrirconferentes() {
     document.getElementById('popupconferentes').style.display = 'block';
@@ -300,6 +333,18 @@ function autorizaCorte() {
 }
 
 function abrirVolumeBtn () {
+    const agora = Date.now();
+    const btn = document.getElementById('abrirVolumeBtn');
+
+    btn.disabled = true;
+    btn.disabled = false;
+    if (agora - ultimoClique < 200) {
+        return;
+    }
+
+    ultimoClique = agora;
+    
+
     const urlParams = new URLSearchParams(window.location.search);
     const nunota = urlParams.get('nunota');
     $.ajax({
