@@ -14,7 +14,114 @@ let enderecoChegadaBipado = '';
 // Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
 const tempoMaximoDigitacao = 250;
 const regex = /^[18]/;
-const ignorar = ['1980101', '1980102', '1181001','1981001'];
+const locaisPalet = ['5980501', '5980201', '5980101', '3980101', '5980199', '2980201', '3980107'];
+const enderecosSemBip = ['2980201', '3980101', '5980101', '5980201', '5980501', '5980199', '7980101'];
+const ignorar = ['1980101', '1980102', '1181001','1981001','1378888','1390703'
+    ,'1390101'
+,'1390102'
+,'1390103'
+,'1390104'
+,'1390200'
+,'1390201'
+,'1390202'
+,'1390203'
+,'1390204'
+,'1390300'
+,'1390301'
+,'1390302'
+,'1390303'
+,'1390304'
+,'1390400'
+,'1390401'
+,'1390402'
+,'1390403'
+,'1390404'
+,'1390500'
+,'1390501'
+,'1390502'
+,'1390503'
+,'1390504'
+,'1390600'
+,'1390601'
+,'1390602'
+,'1390603'
+,'1390604'
+,'1390700'
+,'1390701'
+,'1390702'
+,'1390703'
+,'1390704'
+,'1390800'
+,'1390801'
+,'1390802'
+,'1390803'
+,'1390804'
+,'1390900'
+,'1390901'
+,'1390902'
+,'1390903'
+,'1390904'
+,'1391000'
+,'1391001'
+,'1391002'
+,'1391003'
+,'1391004'
+,'1391100'
+,'1391101'
+,'1391102'
+,'1391103'
+,'1391104'
+,'1391200'
+,'1391201'
+,'1391202'
+,'1391203'
+,'1391204'
+,'1980101'
+,'1980102'
+,'1980201'
+,'1980202'
+,'1980203'
+,'1980301'
+,'1980306'
+,'1980501'
+,'1980502'
+,'1980503'
+,'1980506'
+,'1980701'
+,'1980801'
+,'1981001'
+,'1981002'
+,'1981003'
+,'1981004'
+,'1981005'
+,'1981006'
+,'1981101'
+,'1981102'
+,'1981103'
+,'1981104'
+,'1981105'
+,'1981106'
+,'1981201'
+,'1981202'
+,'1981203'
+,'1981204'
+,'1981205'
+,'1981206'
+,'1981301'
+,'1981302'
+,'1981303'
+,'1981304'
+,'1981305'
+,'1981306'
+,'1981601'
+,'1981602'
+,'1981603'
+,'1981604'
+,'1981605'
+,'1981606'
+,'1986401'
+,'1988001'
+];
 
 $(document).ready(function () {
     $('input').on('keydown', function (e) {
@@ -235,9 +342,6 @@ const validaParametros = () => {
             beforeSend: function() {
                 $("#loader").show();
             },
-            complete: function() {
-                $("#loader").hide();
-            },
             data: {
                 codemp: codemp,
                 referencia: referencia,
@@ -258,6 +362,8 @@ const validaParametros = () => {
                     const confirmacao = confirm(localPadraoText + `Confirma a transferência do item ${referencia} do local ${endsaida} para o local ${endchegada}?`);
                     if(confirmacao) {
                         transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdneg, qtdmax);
+                    } else {
+                        $("#loader").hide();
                     }
                 } else {
                     alert('Erro: ' + response.error);
@@ -280,9 +386,6 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
         method: 'POST',
         url: '../routes/routes.php',
         dataType: 'json',
-        beforeSend: function() {
-            $("#loader").show();
-        },
         complete: function() {
             $("#loader").hide();
         },
@@ -300,7 +403,6 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
             route: 'transferirProduto'
         },
         success: function(response) {
-            console.log(response);
             if(response.success) {
                 alert('Produto transferido com sucesso!');
                 location.reload();
@@ -368,12 +470,17 @@ const finalizarMedicaoEndSaida = () => {
     let tempoFinalEndSaida = Date.now();
     if(tempoFinalEndSaida - tempoInicialEndSaida > tempoMaximoDigitacao) {
         inputInicialEndSaida = document.getElementById('endsaida').value;
-        togglePopupConfirmarEndSaida();
+        if(enderecosSemBip.includes(inputInicialEndSaida)) {
+            alert('Favor bipar endereço ' + inputInicialEndSaida);
+        } else {
+            togglePopupConfirmarEndSaida();
+        }
         limpaCampo('endsaida');
     } else {
         enderecoSaidaBipado = 'S';
         buscaInformacoesLocal();
         habilitaQuantidade();
+        travaSaidaPalet();
     }
 }
 
@@ -394,6 +501,7 @@ const confirmaEndSaida = () => {
             enderecoSaidaBipado = 'N';
             buscaInformacoesLocal();
             habilitaQuantidade();
+            travaSaidaPalet();
         }
     } else {
         alert('Digite um valor.');
@@ -408,7 +516,11 @@ const finalizarMedicaoEndChegada = () => {
     let tempoFinalEndChegada = Date.now();
     if(tempoFinalEndChegada - tempoInicialEndChegada > tempoMaximoDigitacao) {
         inputInicialEndChegada = document.getElementById('endchegada').value;
-        togglePopupConfirmarEndChegada();
+        if(enderecosSemBip.includes(inputInicialEndChegada)) {
+            alert('Favor bipar endereço ' + inputInicialEndChegada);
+        } else {
+            togglePopupConfirmarEndChegada();
+        }
         limpaCampo('endchegada');
     } else {
         enderecoChegadaBipado = 'S';
@@ -448,7 +560,7 @@ const habilitaQuantidade = () => {
     if(endsaida != '' && endchegada != '') {
         if(regex.test(endsaida) && regex.test(endchegada) && !ignorar.includes(endsaida) && !ignorar.includes(endchegada)) {
             qtdneg.disabled = true;
-            qtdneg.value = '';
+            qtdneg.value = document.getElementById('qtdlocal').innerHTML;
         } else {
             qtdneg.disabled = false;
             qtdneg.focus();
@@ -460,15 +572,36 @@ const habilitaQuantidade = () => {
 }
 
 const preencheEnderecoChegada = () => {
-    document.getElementById('endchegada').value = document.getElementById('localpadrao').innerHTML;
-    enderecoChegadaBipado = 'N';
-    buscaQtdMax();
-    habilitaQuantidade();
+    let endsaida = document.getElementById('endsaida').value;
+    if(locaisPalet.indexOf(endsaida) == -1) {
+        document.getElementById('endchegada').value = document.getElementById('localpadrao').innerHTML;
+        enderecoChegadaBipado = 'N';
+        buscaQtdMax();
+        habilitaQuantidade();
+    }
 }
 
 const preencheEnderecoChegadaPalete = () => {
-    document.getElementById('endchegada').value = '1980102';
-    enderecoChegadaBipado = 'N';
-    buscaQtdMax();
-    habilitaQuantidade();
+    let endsaida = document.getElementById('endsaida').value;
+    if(locaisPalet.indexOf(endsaida) == -1) {
+        document.getElementById('endchegada').value = '1980102';
+        enderecoChegadaBipado = 'N';
+        buscaQtdMax();
+        habilitaQuantidade();        
+    }
+}
+
+const travaSaidaPalet = () => {
+    let endsaida = document.getElementById('endsaida').value;
+    if(locaisPalet.indexOf(endsaida) !== -1) {
+        let endchegada = document.getElementById('endchegada');
+        endchegada.value = '1988001';
+        endchegada.disabled = true;
+        enderecoChegadaBipado = 'S';
+        buscaQtdMax();
+        habilitaQuantidade();
+    } else {
+        endchegada.value = '';
+        endchegada.disabled = false;
+    }
 }

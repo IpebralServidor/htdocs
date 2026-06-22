@@ -114,7 +114,7 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
         $params = array($referencia, $codemp, $endchegada);
         $tsql = "SELECT ISNULL(AD_QTDMAXLOCAL, 0) AS QTDMAX
                  FROM TGFPEM 
-                 WHERE CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+                 WHERE CODPROD = (SELECT DISTINCT CODPROD FROM TGFBAR WHERE CODBARRA = ?)
                  AND CODEMP = ?
                  AND (CODLOCALPAD = ? OR CODLOCALPAD = 1990000)
         ";
@@ -142,12 +142,12 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
     }
 }
 
-function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax)
+function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario)
 {
     try {
-        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax);
+        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario);
 
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?, ?)";
+        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 

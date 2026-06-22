@@ -6,19 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="../css/main.css?v=<?php time() ?>">
+    <link rel="stylesheet" type="text/css" href="../css/main.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../Controller/TransfSimplesController.js?v=<?php time() ?>"></script>
-    <script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php time() ?>"></script>
+    <script src="../Controller/TransfSimplesController.js?v=<?php echo time(); ?>"></script>
+    <script src="../../components/popupLocalProduto/js/popupLocalProduto.js?v=<?php echo time(); ?>"></script>
     <script src="../../components/emailFoto/js/emailFoto.js"></script>
     <title>Transferência Simples</title>
 </head>
 
 <body>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="p-3">
+                    <div class="modal-body fw-bold">
+                        Editar valor máximo: <span style="color: red">*</span><span id="prodDelete"></span>
+                    </div>
+                    <div class="mb-1">
+                        <input type="number" class="form-control" id="novoMax" step="0.01" value="">
+                    </div>
+                    <div class="mt-3">
+                        <button id="atualizaValorBtn" onclick='document.getElementById("qtdmax").value = document.getElementById("novoMax").value;' type="button" class="btn btn-primary fw-bold w-100" style="background-color: #3a6070 !important; border-color: #3a6070 !important" data-bs-dismiss="modal">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="page">
         <div id="emailFoto"></div>
         <div id="modalLocalProduto"></div>
@@ -140,8 +158,11 @@
                         <input type="number" class="form-control" id="qtdneg" disabled value="" style="color: #86B7FE !important;">
                     </div>
                     <div class="mb-1 col-6">
-                        <label for="qtdMax" class="form-label">Qtd Máx Local <span style="color: red">*</span></label>
-                        <input type="number" class="form-control" id="qtdmax" style="color: #86B7FE !important;">
+                        <label for="qtdMax" class="form-label" style="width: auto">Qtd Máx Local <span style="color: red">*</span></label>
+                        <span id='editMaxBtn' data-bs-toggle='modal' data-bs-target='#editModal' onclick='document.getElementById("novoMax").value = document.getElementById("qtdmax").value;'>
+                            <i class='fa-solid fa-pen' style='color: #d80e0e;'></i>
+                        </span>
+                        <input type="number" class="form-control" id="qtdmax" style="color: #86B7FE !important;" disabled>
                     </div>
                 </div>
                 <div class="row">
