@@ -925,6 +925,9 @@ $qtdVolume = $rowStatusVolume[1];
 							<th width="25%" style="text-align: center;">
 								<font face="Arial, Helvetica, sans-serif">Descrição (Produto)</font>
 							</th>
+							<th width="25%" style="text-align: center;">
+								<font face="Arial, Helvetica, sans-serif">Observação</font>
+							</th>
 							<th width="10%" align="center">
 								<font face="Arial, Helvetica, sans-serif">Nro. Único</font>
 							</th>
@@ -950,6 +953,7 @@ $qtdVolume = $rowStatusVolume[1];
 					?>
 						<tr style="cursor: hand; cursor: pointer;">
 							<td width="10%"><?php echo $row2[0]; ?>&nbsp;</td>
+							<td width="10%" align="left"><?php echo $row2[6]; ?></td>
 							<td width="5%"><?php echo $row2[1]; ?>&nbsp;</td>
 							<td width="10%"><?php echo $row2[2]; ?>&nbsp;</td>
 							<td width="5%" align="center"><?php echo $row2[3]; ?>&nbsp;</td>
