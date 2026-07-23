@@ -8,7 +8,7 @@ require_once '../../App/auth.php';
 $codUsuario = $_SESSION['idUsuario'];
 
 //Coloca os valores de orçamento e código do parceiro como nulo, para recarregar eles novamente no clique em uma linha ou na criação.
-$_SESSION['nuImportacao'] = null;
+$_SESSION['nuimportacao'] = null;
 $_SESSION['codParc'] = null;
 $_SESSION['codCotacao'] = null;
 ?>
@@ -68,7 +68,6 @@ $_SESSION['codCotacao'] = null;
                             END AS STATUSIMPORTACAO,
                             CORLINHA
                      FROM AD_IMPORTACAO_COTACAO_CAB
-                     WHERE CODUSU = $codUsuario
                      ORDER BY NUIMPORTACAO DESC
                      ";
 

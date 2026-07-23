@@ -120,7 +120,7 @@ $(document).ready(function () {
     $('#tableListaOrcamento tr').on('dblclick', function () {
 
 
-        const nuorcamento = $(this).data('id'); // Obtém o ID da linha clicada
+        const nuimportacao = $(this).data('id'); // Obtém o ID da linha clicada
         const orcamento = $(this).find('td:eq(0)').text(); // Primeira coluna
         const empresa = $(this).find('td:eq(1)').text(); // Segunda coluna
         const parceiro = $(this).find('td:eq(2)').text(); // Terceira coluna
@@ -129,7 +129,7 @@ $(document).ready(function () {
         // Exemplo de uso
         const url = "listaitens.php"; // URL de destino
         const data = {
-            nuorcamento: nuorcamento,
+            nuimportacao: nuimportacao,
             codParc: parceiro,
             codEmp: empresa
         };

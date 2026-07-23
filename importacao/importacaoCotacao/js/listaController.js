@@ -139,7 +139,7 @@ document.addEventListener('click', function(event) {
                         } else {
                             console.log("Nenhuma linha encontrada com o ID:", idTabela);
                         }
-                    }, 500); // Ajusta o tempo necessário para a tabela ser recarregada, para pegar os dados da tabela
+                    }, 1000); // Ajusta o tempo necessário para a tabela ser recarregada, para pegar os dados da tabela
                                         
                     
 

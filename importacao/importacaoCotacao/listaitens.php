@@ -10,7 +10,7 @@ $codUsuario = $_SESSION['idUsuario'];
 
 //Se foi feito através do clique em uma das tabelas no cabeçalho, cria variáveis de sessão para usar no AJAX
 $_SESSION['codParc'] = $codParc;
-$_SESSION['nuImportacao'] = $nuimportacao;
+$_SESSION['nuimportacao'] = $nuimportacao;
 
 
 

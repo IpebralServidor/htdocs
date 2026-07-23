@@ -58,13 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Adicionar as colunas desejadas (exemplo: A e B)
             $dados[] = [
-                'REFERENCIAFORN' => limparTexto($linhaDados[0]) ?? null, // Coluna A (índice 0)
-                'DESCRICAOFORN' => limparTexto($linhaDados[1]) ?? null,  // Coluna B (índice 1)
+                'REFERENCIAFORN' => $linhaDados[0] ?? null, // Coluna A (índice 0)
+                'DESCRICAOFORN' => $linhaDados[1] ?? null,  // Coluna B (índice 1)
                 'UNIDADEFORN' => limparTexto($linhaDados[2]) ?? null,  // Coluna C (índice 2)
                 'UNIDADESANKHYA' => limparTexto($linhaDados[3]) ?? null,  // Coluna D (índice 3)
                 'FATOR' => limparTexto($linhaDados[4]) ?? null,  // Coluna E (índice 4)
-                'QUANTIDADE' => limparTexto($linhaDados[5]) ?? null,  // Coluna F (índice 5)
-                'PRECO' => limparTexto($linhaDados[6]) ?? null  // Coluna G (índice 6)
+                'QUANTIDADE' => $linhaDados[5] ?? null,  // Coluna F (índice 5)
+                'PRECO' => $linhaDados[6] ?? null  // Coluna G (índice 6)
             ];
         }
 

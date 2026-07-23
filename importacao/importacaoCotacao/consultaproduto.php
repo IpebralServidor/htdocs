@@ -3,9 +3,9 @@ include "../../conexaophp.php";
 session_start();
 
 $codprod = $_POST['referencia'];
-$nuorcamento = $_SESSION['nuorcamento'];
+$nuimportacao = $_SESSION['nuimportacao'];
 
-$params = array($codprod,$nuorcamento);
+$params = array($codprod,$nuimportacao);
 
 $tsql = "SELECT * FROM [sankhya].[AD_FNT_ConsultaProduto_ConsultaEstoque_COTACAO](?,?)";
 
