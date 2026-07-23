@@ -195,13 +195,13 @@
 
 
 /* Botão para Limpar Linha*/
-#limparlinha-button {
+#excluirlinha-button {
     display: flex; /* Define o botão como um container flex */
     justify-content: center; /* Centraliza o texto horizontalmente */
     align-items: center; /* Centraliza o texto verticalmente */
     padding: 10px 20px; /* Espaço interno para ajustar o tamanho do botão */
-    background-color: #e9b2a5;
-    color: rgb(0, 0, 0);
+    background-color: #bf4023;
+    color: rgb(249, 245, 245);
     font-size: 16px;
     border-radius: 30px; /* Cantos bem arredondados */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -515,7 +515,7 @@
     transform: translateY(-50%);
     z-index: 9999;
 
-    background-color: #000000;
+    background-color: #2c5f6f;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -534,4 +534,77 @@
 
 #btnProximaPagina:active {
     transform: translateY(-50%) scale(0.97);
+}
+
+
+.rodape-acoes {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    padding: 15px 30px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+
+    z-index: 9999;
+}
+
+#btnPaginaAnterior,
+#btnFinalizar {
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+/* Botão de voltar - segue o tom do header (teal escuro) */
+#btnPaginaAnterior {
+    background-color: #2c5f6f;
+    color: #fff;
+}
+
+#btnPaginaAnterior:hover {
+    background-color: #1e4753;
+    transform: scale(1.03);
+}
+
+/* Botão de finalizar - verde, para destacar como ação de conclusão */
+#btnFinalizar {
+    background-color: #2e7d32;
+    color: #fff;
+}
+
+#btnFinalizar:hover {
+    background-color: #1b5e20;
+    transform: scale(1.03);
+}
+
+#btnPaginaAnterior:active,
+#btnFinalizar:active {
+    transform: scale(0.97);
+}
+
+/*Marca a linha na lista de referências para poder excluir*/
+#tableListaItens tr.linha-selecionada {
+    background-color: #ffe082 !important;
+    outline: 2px solid #f9a825;
+}
+
+#tableListaItens tr {
+    cursor: pointer;
+}
+
+#tableListaItens tr:hover {
+    background-color: #f0f0f0;
 }

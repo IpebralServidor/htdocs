@@ -1,4 +1,6 @@
 
+
+
 $(document).ready(function () {
     // Captura o clique em uma linha da Tabela 1
     $('#tableListaReferencias tr').on('click', function () {
@@ -23,6 +25,8 @@ $(document).ready(function () {
         listaReferencia(id);
 
     });
+
+    
 
 });
 
@@ -233,12 +237,12 @@ function showLoading() {
 }
 
 
-document.getElementById("selectAll").addEventListener("change", function() {
-    let checkboxes = document.querySelectorAll(".itemCheckbox");
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = this.checked;
-    });
-});
+// document.getElementById("selectAll").addEventListener("change", function() {
+//     let checkboxes = document.querySelectorAll(".itemCheckbox");
+//     checkboxes.forEach(checkbox => {
+//         checkbox.checked = this.checked;
+//     });
+// });
 
 
 
@@ -294,3 +298,83 @@ function imagemproduto(codigodebarra) {
         }
     });
 }
+
+
+function irParaProximaPagina() {
+    // Redireciona para a próxima página passando os parâmetros necessários, se houver
+    window.location.href = "listaitens_2.php";
+
+    // Se precisar passar parâmetros (ex: ID, filtros, página atual), use algo assim:
+    // const params = new URLSearchParams(window.location.search);
+    // window.location.href = "listaitens_2.php?" + params.toString();
+}
+
+function irParaPaginaAnterior() {
+    window.location.href = "listaitens.php";
+
+    // Se precisar manter parâmetros (num. importação, cotação, parceiro etc.):
+    // const params = new URLSearchParams(window.location.search);
+    // window.location.href = "listaitens.php?" + params.toString();
+}
+
+
+
+let linhaSelecionadaExcluir = null;
+
+document.addEventListener('click', function(event) {
+    const linha = event.target.closest('#tableListaItens tr[data-codprod]');
+    if (!linha) return;
+
+    // Remove seleção anterior
+    document.querySelectorAll('#tableListaItens tr.linha-selecionada').forEach(function(tr) {
+        tr.classList.remove('linha-selecionada');
+    });
+
+    // Marca a linha atual
+    linha.classList.add('linha-selecionada');
+    linhaSelecionadaExcluir = linha;
+
+    console.log('Linha selecionada:', linha.dataset.codprod, linha.dataset.ref);
+});
+
+
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.id === 'excluirlinha-button') {
+
+        if (!linhaSelecionadaExcluir) {
+            alert('Selecione uma linha da lista antes de excluir.');
+            return;
+        }
+
+        if (!confirm('Deseja realmente excluir este item da lista?')) {
+            return;
+        }
+
+        const referenciaForn = linhaSelecionadaExcluir.dataset.id;
+        const codprod = linhaSelecionadaExcluir.dataset.codprod;
+
+        // Trava o botão pra evitar duplo clique enquanto a requisição roda
+        const botao = event.target;
+        botao.style.pointerEvents = 'none';
+        botao.style.opacity = '0.6';
+
+        fetch('excluir_referencia.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'id=' + encodeURIComponent(referenciaForn) + '&codprod=' + encodeURIComponent(codprod)
+        })
+        .then(response => response.json())
+        .then(data => {
+            botao.style.pointerEvents = 'auto';
+            botao.style.opacity = '1';
+
+            if (data.sucesso) {
+                linhaSelecionadaExcluir.remove();
+                linhaSelecionadaExcluir = null;
+                alert(data.mensagem); // exibe "Item excluido com sucesso!"
+            } else {
+                alert('Erro ao excluir: ' + (data.mensagem || 'Erro desconhecido.'));
+            }
+        });
+    }
+});

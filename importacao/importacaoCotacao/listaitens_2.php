@@ -32,7 +32,7 @@ $_SESSION['nuImportacao'] = $nuimportacao;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- <script src="../../Controller/ListaConferenciaController.js"></script> -->
     <!-- <script src="./listaController.js"> </script> -->
-</head>    
+</head>
 
 <body class="background-lista">
 
@@ -46,15 +46,15 @@ $_SESSION['nuImportacao'] = $nuimportacao;
 <div style="width:100%; top: 0; height: 25px; padding-left: 30px; background-color: #3a6070; position: absolute; ">
 
     <?php
-    
+
           //Retorna os dados da tabela para ser exibida na tela. As referências que tem na importação.
-               $tsql = " SELECT NUIMPORTACAO, 
-                                NUMCOTACAO, 
-                                CODPARC, 
+               $tsql = " SELECT NUIMPORTACAO,
+                                NUMCOTACAO,
+                                CODPARC,
                                 (SELECT RAZAOSOCIAL
-                                    FROM TGFPAR 
+                                    FROM TGFPAR
                                     WHERE TGFPAR.CODPARC = AD_IMPORTACAO_COTACAO_CAB.CODPARC) AS RAZAOSOCIAL,
-                                'Total: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_COTACAO_ITE WHERE AD_IMPORTACAO_COTACAO_ITE.NUIMPORTACAO = AD_IMPORTACAO_COTACAO_CAB.NUIMPORTACAO)) 
+                                'Total: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_COTACAO_ITE WHERE AD_IMPORTACAO_COTACAO_ITE.NUIMPORTACAO = AD_IMPORTACAO_COTACAO_CAB.NUIMPORTACAO))
                                 + ' / Prenchidos: ' + CONVERT(VARCHAR(MAX),(SELECT COUNT(*) FROM AD_IMPORTACAO_COTACAO_ITE WHERE AD_IMPORTACAO_COTACAO_ITE.NUIMPORTACAO = AD_IMPORTACAO_COTACAO_CAB.NUIMPORTACAO)) AS QTD
                             FROM AD_IMPORTACAO_COTACAO_CAB
                             WHERE NUIMPORTACAO =  $nuimportacao";
@@ -70,14 +70,14 @@ $_SESSION['nuImportacao'] = $nuimportacao;
                 $codparc = $row['CODPARC'];
                 $razaosocial = $row['RAZAOSOCIAL'];
                 $qtd = $row['QTD'];
-            
+
             }
-            
+
 
 
 
     ?>
-    
+
     <table style="width: 100%; position: fixed;" id="table">
         <thead>
             <tr class="bg-dark text-white">
@@ -89,7 +89,7 @@ $_SESSION['nuImportacao'] = $nuimportacao;
             </tr>
         </thead>
     </table>
-    
+
     <div class="img-voltar">
         <a href="listaImportacoes.php">
             <img src="../../images/216446_arrow_left_icon.png">
@@ -99,21 +99,23 @@ $_SESSION['nuImportacao'] = $nuimportacao;
 </div>
 
 <div style="display: flex;">
-    <div style="height: 90%; width: 60%; float: left; margin-left: 4%; float: left; position: fixed;" id="ListaConferencia" class="listaconferencia">
+    <div style="height: 85%; width: 95%; float: left; margin-left: 4%; float: left; position: fixed;" id="ListaConferencia" class="listaconferencia">
         <table style="width: 100%;" id="tableListaReferencias">
             <!-- Monta o cabeçalho da tabela -->
             <thead>
                 <tr>
                     <th width="10%">Referência Forn.</th>
-                    <th width="25%">Descrição Fornecedor</th>
+                    <th width="20%">Descrição Fornecedor</th>
                     <th width="10%">Quantidade</th>
                     <th width="10%">Preço Orçamento</th>
-                    <th width="10%">Cód. Produto</th>
                     <th width="10%">Referência Interna</th>
-                    <th width="25%">Descrição Interna</th>
+                    <th width="20%">Descrição Interna</th>
+                    <th width="10%">Unidade Forn.</th>
+                    <th width="10%">Unidade Sankhya</th>
+
                 </tr>
             </thead>
-            
+
 
             <tbody>
 
@@ -150,12 +152,13 @@ $_SESSION['nuImportacao'] = $nuimportacao;
                 $listaConferencias .= "
                         <tr id='linhaSelecionada' data-id='$row[CODPROPARC]' style='background-color: $row[CORLINHA];'>
                             <td style='width: 10%;'>$row[CODPROPARC] </td>
-                            <td style='width: 25%;'>$row[DESCRICAO_FORNECEDOR] </td>
-                            <td style='width: 10%;'><input class='quantidade' style='width: 100%;' type='number' value='$row[QUANTIDADE]' min='0' step='1'> </td>
+                            <td style='width: 20%;'>$row[DESCRICAO_FORNECEDOR] </td>
+                            <td style='width: 10%;'>$row[QUANTIDADE] </td>
                             <td style='width: 10%;'>$row[PRECO_ORCAMENTO] </td>
-                            <td style='width: 10%;'>$row[CODPROD] </td>
                             <td style='width: 10%;'>$row[REFERENCIA] </td>
-                            <td style='width: 10%;'>$row[DESCRPROD] </td>
+                            <td style='width: 20%;'>$row[DESCRPROD] </td>
+                            <td style='width: 10%;'><input class='unidade' style='width: 100%;' type='text' value='$row[UNIDADE_PARC]'> </td>
+                            <td style='width: 10%;'><input class='unidade' style='width: 100%;' type='text' value='$row[UNIDADE_SANKHYA]'> </td>
                         </tr>
                 ";
             }
@@ -171,12 +174,7 @@ $_SESSION['nuImportacao'] = $nuimportacao;
 
     </div>
 
-    <!-- Itens que aparecerem na pesquisa -->
-    <div style="height: 80%; width: 30%; position: fixed; right: 0; text-align: center; margin-right: 3%;" id="listaReferencia">
-        
-                <!-- Itens são mostrados via AJAX, baseado na linha que é clicada. -->
-        
-    </div>
+
 
     <!-- <div id="floating-container-listaitens">
         <div id="gera1700-button" class="floating-button-listaitens">Gera 1700</div>
@@ -186,7 +184,17 @@ $_SESSION['nuImportacao'] = $nuimportacao;
 
 </div>
 
-    
+<!-- Rodapé com botões de ação -->
+<div class="rodape-acoes">
+    <button id="btnPaginaAnterior" onclick="irParaPaginaAnterior()">
+        &laquo; Página Anterior
+    </button>
+
+    <button id="btnFinalizar" onclick="finalizarConferencia()">
+        Finalizar &check;
+    </button>
+</div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./js/app.js"></script>

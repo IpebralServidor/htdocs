@@ -192,6 +192,19 @@ $_SESSION['nuimportacao'] = $nuimportacao;
     Próxima &raquo;
 </button>
 
+    <script>
+
+            function irParaProximaPagina() {
+                // Redireciona para a próxima página passando os parâmetros necessários, se houver
+                window.location.href = "listaitens_2.php";
+
+                // Se precisar passar parâmetros (ex: ID, filtros, página atual), use algo assim:
+                // const params = new URLSearchParams(window.location.search);
+                // window.location.href = "listaitens_2.php?" + params.toString();
+            }
+
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./js/app.js"></script>
     <script src="./js/listaController.js"> </script>
