@@ -3,7 +3,8 @@ $(document).ready(function () {
     $('#insereTGFPAP').click(function () {
 
         var fileInput = $('#escolherArquivo')[0].files[0];
-        var codigoParceiro = $('#codigoParceiro').val();
+        var codigoParceiroOrigem = $('#codigoParceiroOrigem').val();
+        var codigoParceiroDestino = $('#codigoParceiroDestino').val();
         var codigoUsuario = $('#codigoUsuario').val();
 
         // Validações
@@ -12,17 +13,18 @@ $(document).ready(function () {
             return;
         }
 
-        if (!codigoParceiro || codigoParceiro.trim() === '') {
-            alert('Informe o Código do Parceiro.');
-            $('#codigoParceiro').focus();
+        if (!codigoParceiroDestino || codigoParceiroDestino.trim() === '') {
+            alert('Informe o Código do Parceiro Destino.');
+            $('#codigoParceiroDestino').focus();
             return;
         }
 
         var formData = new FormData();
         formData.append('excelFile', fileInput);
-        formData.append('codigoParceiro', codigoParceiro);
+        formData.append('codigoParceiroDestino', codigoParceiroDestino);
+        formData.append('codigoParceiroOrigem', codigoParceiroOrigem);
         formData.append('codigoUsuario', codigoUsuario);
-        
+
         $.ajax({
             url: 'insereTGFPAP.php',
             type: 'POST',

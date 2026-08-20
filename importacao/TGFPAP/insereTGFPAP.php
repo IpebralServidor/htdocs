@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $uploadFilePath = 'uploads/' . basename($_FILES['excelFile']['name']);
         move_uploaded_file($_FILES['excelFile']['tmp_name'], $uploadFilePath);
 
-        $codigoParceiro = $_POST['codigoParceiro'];
+        $codigoParceiroDestino = $_POST['codigoParceiroDestino'];
+        $codigoParceiroOrigem = $_POST['codigoParceiroOrigem'];
         $codigoUsuario = $_POST['codigoUsuario'];
 
         // Ler o arquivo Excel
@@ -51,25 +52,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             // Só adiciona se tiver referência preenchida (coluna D = índice 3)
-            if (!empty($linhaDados[0])) {
+            if (!empty($linhaDados[0]) || !empty($linhaDados[1]) || !empty($linhaDados[2]) || !empty($linhaDados[3])) {
                 $dados[] = [
                     'CODPROD'  => $linhaDados[0] ?? null,           // Coluna A
                     'REFERENCIA'       => converteSql($linhaDados[1] ?? null),  // Coluna B
-                    'CODREFFORN'        => $linhaDados[2] ?? null           // Coluna C
+                    'CODREFFORNORIG'        => $linhaDados[2] ?? null,           // Coluna C
+                    'CODREFFORNDEST'        => $linhaDados[3] ?? null           // Coluna D
                 ];
             }
         }
 
         // Chama a procedure passando os dados linha a linha + número da promoção
-        $sql = "EXEC SANKHYA.AD_STP_INSERE_TEMP_TGFPAP_IPEBRAL ?, ?, ?, ?, ?";
+        $sql = "EXEC SANKHYA.AD_STP_INSERE_TEMP_TGFPAP_IPEBRAL ?, ?, ?, ?, ?, ?, ?";
     
         foreach ($dados as $linha) {
             $params = [
-                $codigoParceiro,
+                $codigoParceiroOrigem,
+                $codigoParceiroDestino,
                 $codigoUsuario,
                 $linha['CODPROD'],
                 $linha['REFERENCIA'],
-                $linha['CODREFFORN']
+                $linha['CODREFFORNORIG'],
+                $linha['CODREFFORNDEST']
             ];
 
             $stmt = sqlsrv_query($conn, $sql, $params);
@@ -79,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        // Chama a procedure de validação e captura a mensagem de retorno
+        ////Chama a procedure de validação e captura a mensagem de retorno
         $sqlValidacao = "EXEC SANKHYA.AD_STP_INSERE_TGFPAP_IPEBRAL";
         $stmtValidacao = sqlsrv_query($conn, $sqlValidacao);
 
@@ -87,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die(print_r(sqlsrv_errors(), true));
         }
 
-        // Pega a mensagem retornada pela procedure (SELECT ou PRINT)
+        ////Pega a mensagem retornada pela procedure (SELECT ou PRINT)
         $mensagem = "";
         if (sqlsrv_has_rows($stmtValidacao)) {
             while ($row = sqlsrv_fetch_array($stmtValidacao, SQLSRV_FETCH_ASSOC)) {
@@ -97,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Se a procedure não retornou nada, mensagem padrão
         if (empty(trim($mensagem))) {
-            $mensagem = "Promoções inseridas e validadas com sucesso! (" . count($dados) . " registros)";
+            $mensagem = "TGFPAP inseridas e validadas com sucesso! (" . count($dados) . " registros)";
         }
 
         echo mb_convert_encoding($mensagem, 'UTF-8', 'Windows-1252');

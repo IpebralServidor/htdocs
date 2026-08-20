@@ -34,10 +34,12 @@
         </div>
 
         <div class="campo-promocao">
-            <label for="codigoParceiro">Código do Parceiro:</label>            
-            <input type="number" id="codigoParceiro" placeholder="Ex: 12321" required> <br><br>
+            <label for="codigoParceiroDestino">Código do Parceiro Destino:</label>            
+            <input type="number" id="codigoParceiroDestino" placeholder="Ex: 12321" required> <br><br>
+            <label for="codigoParceiroOrigem">Código do Parceiro Origem:</label>            
+            <input type="number" id="codigoParceiroOrigem" placeholder="Ex: 12321" required> <br><br>
             <label for="codigoUsuario">Código do Usuário:</label>
-            <input type="number" id="codigoUsuario" placeholder="Ex: 181" required>
+            <input type="number" id="codigoUsuario" placeholder="Ex: 134" required>
         </div>
 
 
