@@ -14,6 +14,8 @@ let enderecoChegadaBipado = '';
 // Variável que guarda o tempo de input para ser considerado digitação ou leitor de código de barras
 const tempoMaximoDigitacao = 250;
 const regex = /^[18]/;
+const locaisPalet = ['5980501', '5980201', '5980101', '3980101', '5980199', '2980201', '3980107'];
+const enderecosSemBip = ['2980201', '3980101', '5980101', '5980201', '5980501', '5980199', '7980101'];
 const ignorar = ['1980101', '1980102', '1181001','1981001','1378888','1390703'
     ,'1390101'
 ,'1390102'
@@ -111,6 +113,12 @@ const ignorar = ['1980101', '1980102', '1181001','1981001','1378888','1390703'
 ,'1981304'
 ,'1981305'
 ,'1981306'
+,'1981601'
+,'1981602'
+,'1981603'
+,'1981604'
+,'1981605'
+,'1981606'
 ,'1986401'
 ,'1988001'
 ];
@@ -334,9 +342,6 @@ const validaParametros = () => {
             beforeSend: function() {
                 $("#loader").show();
             },
-            complete: function() {
-                $("#loader").hide();
-            },
             data: {
                 codemp: codemp,
                 referencia: referencia,
@@ -357,6 +362,8 @@ const validaParametros = () => {
                     const confirmacao = confirm(localPadraoText + `Confirma a transferência do item ${referencia} do local ${endsaida} para o local ${endchegada}?`);
                     if(confirmacao) {
                         transferirProduto(codemp, referencia, lote, endsaida, endchegada, qtdneg, qtdmax);
+                    } else {
+                        $("#loader").hide();
                     }
                 } else {
                     alert('Erro: ' + response.error);
@@ -379,9 +386,6 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
         method: 'POST',
         url: '../routes/routes.php',
         dataType: 'json',
-        beforeSend: function() {
-            $("#loader").show();
-        },
         complete: function() {
             $("#loader").hide();
         },
@@ -399,9 +403,14 @@ const transferirProduto = (codemp, referencia, lote, endsaida, endchegada, qtdne
             route: 'transferirProduto'
         },
         success: function(response) {
-            console.log(response);
             if(response.success) {
                 alert('Produto transferido com sucesso!');
+                document.getElementById('referencia').value = '';
+                document.getElementById('endsaida').value = '';
+                document.getElementById('endchegada').value = '';
+                document.getElementById('qtdneg').value = '';
+                document.getElementById('lote').value = '';
+                document.getElementById('qtdmax').value = '';
                 location.reload();
             } else {
                 alert('Erro: ' + response.error);
@@ -467,12 +476,17 @@ const finalizarMedicaoEndSaida = () => {
     let tempoFinalEndSaida = Date.now();
     if(tempoFinalEndSaida - tempoInicialEndSaida > tempoMaximoDigitacao) {
         inputInicialEndSaida = document.getElementById('endsaida').value;
-        togglePopupConfirmarEndSaida();
+        if(enderecosSemBip.includes(inputInicialEndSaida)) {
+            alert('Favor bipar endereço ' + inputInicialEndSaida);
+        } else {
+            togglePopupConfirmarEndSaida();
+        }
         limpaCampo('endsaida');
     } else {
         enderecoSaidaBipado = 'S';
         buscaInformacoesLocal();
         habilitaQuantidade();
+        travaSaidaPalet();
     }
 }
 
@@ -493,6 +507,7 @@ const confirmaEndSaida = () => {
             enderecoSaidaBipado = 'N';
             buscaInformacoesLocal();
             habilitaQuantidade();
+            travaSaidaPalet();
         }
     } else {
         alert('Digite um valor.');
@@ -507,7 +522,11 @@ const finalizarMedicaoEndChegada = () => {
     let tempoFinalEndChegada = Date.now();
     if(tempoFinalEndChegada - tempoInicialEndChegada > tempoMaximoDigitacao) {
         inputInicialEndChegada = document.getElementById('endchegada').value;
-        togglePopupConfirmarEndChegada();
+        if(enderecosSemBip.includes(inputInicialEndChegada)) {
+            alert('Favor bipar endereço ' + inputInicialEndChegada);
+        } else {
+            togglePopupConfirmarEndChegada();
+        }
         limpaCampo('endchegada');
     } else {
         enderecoChegadaBipado = 'S';
@@ -547,7 +566,7 @@ const habilitaQuantidade = () => {
     if(endsaida != '' && endchegada != '') {
         if(regex.test(endsaida) && regex.test(endchegada) && !ignorar.includes(endsaida) && !ignorar.includes(endchegada)) {
             qtdneg.disabled = true;
-            qtdneg.value = '';
+            qtdneg.value = document.getElementById('qtdlocal').innerHTML;
         } else {
             qtdneg.disabled = false;
             qtdneg.focus();
@@ -559,15 +578,70 @@ const habilitaQuantidade = () => {
 }
 
 const preencheEnderecoChegada = () => {
-    document.getElementById('endchegada').value = document.getElementById('localpadrao').innerHTML;
-    enderecoChegadaBipado = 'N';
-    buscaQtdMax();
-    habilitaQuantidade();
+    let endsaida = document.getElementById('endsaida').value;
+    if(locaisPalet.indexOf(endsaida) == -1) {
+        document.getElementById('endchegada').value = document.getElementById('localpadrao').innerHTML;
+        enderecoChegadaBipado = 'N';
+        buscaQtdMax();
+        habilitaQuantidade();
+    }
 }
 
 const preencheEnderecoChegadaPalete = () => {
-    document.getElementById('endchegada').value = '1980102';
-    enderecoChegadaBipado = 'N';
-    buscaQtdMax();
-    habilitaQuantidade();
+    let endsaida = document.getElementById('endsaida').value;
+    if(locaisPalet.indexOf(endsaida) == -1) {
+        document.getElementById('endchegada').value = '1980102';
+        enderecoChegadaBipado = 'N';
+        buscaQtdMax();
+        habilitaQuantidade();        
+    }
+}
+
+const travaSaidaPalet = () => {
+    let endsaida = document.getElementById('endsaida').value;
+    if(locaisPalet.indexOf(endsaida) !== -1) {
+        let endchegada = document.getElementById('endchegada');
+        endchegada.value = '1988001';
+        endchegada.disabled = true;
+        enderecoChegadaBipado = 'S';
+        buscaQtdMax();
+        habilitaQuantidade();
+    } else {
+        endchegada.value = '';
+        endchegada.disabled = false;
+    }
+}
+
+const atualizaValorMaximo = () => {
+    const novoMax = document.getElementById("novoMax").value;
+    document.getElementById("qtdmax").value = novoMax;
+    const inputReferencia = document.getElementById("referencia").value;
+    const codemp = document.getElementById("empresas").value;
+
+    const endereco = document.getElementById("endereco");
+    if (inputReferencia == '') {
+        alert('IPB: Favor bipar um item.')
+        document.getElementById("qtdmax").value = '';
+    } else if (codemp != '') {
+        $.ajax({
+            method: 'GET',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#loader").show();
+            },
+            complete: function() {
+                $("#loader").hide();
+            },
+            data: {
+                referencia: inputReferencia,
+                codemp: codemp,
+                qtdneg: novoMax,
+                route: 'atualizaValorMaximo'
+            },
+            success: function() {
+
+            }
+        });
+    }
 }

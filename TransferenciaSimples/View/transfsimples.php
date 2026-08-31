@@ -30,7 +30,7 @@
                         <input type="number" class="form-control" id="novoMax" step="0.01" value="">
                     </div>
                     <div class="mt-3">
-                        <button id="atualizaValorBtn" onclick='document.getElementById("qtdmax").value = document.getElementById("novoMax").value;' type="button" class="btn btn-primary fw-bold w-100" style="background-color: #3a6070 !important; border-color: #3a6070 !important" data-bs-dismiss="modal">Salvar</button>
+                        <button id="atualizaValorBtn" onclick='atualizaValorMaximo();' type="button" class="btn btn-primary fw-bold w-100" style="background-color: #3a6070 !important; border-color: #3a6070 !important" data-bs-dismiss="modal">Salvar</button>
                     </div>
                 </div>
             </div>

@@ -63,6 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+            case 'atualizaValorMaximo':
+                if (isset($_GET['codemp']) && isset($_GET['qtdneg']) && isset($_GET['codemp'])) {
+                    $codemp = $_GET['codemp'];
+                    $referencia = $_GET['referencia'];
+                    $qtdneg = $_GET['qtdneg'];
+                    atualizaValorMaximo($conn, $codemp, $referencia, $qtdneg);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             default:
                 echo json_encode(['error' => 'Rota não reconhecida']);
                 break;
