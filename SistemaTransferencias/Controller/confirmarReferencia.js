@@ -11,7 +11,6 @@ document.getElementById("referencia").addEventListener("input", () =>{
 document.getElementById("referencia").addEventListener("change", () =>{
     tempoFinalRef = new Date();
     var tempoDecorrido = tempoFinalRef - tempoInicialRef;
-
     if(tempoDecorrido > 250){
         inputInicialReferencia = document.getElementById('referencia').value;
         document.getElementById("btnConfirmaReferencia").click()

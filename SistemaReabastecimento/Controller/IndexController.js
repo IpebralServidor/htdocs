@@ -18,7 +18,7 @@ function abrir() {
             //função que será executada quando a solicitação for finalizada.
             success: function(msg) {
                 
-                if(msg == -1 && nunota != 4128365) {
+                if(msg == -1 && nunota != 5017802) {
                     alert('Nota não existe ou já confirmada.');
                 } else 
                 if (msg == -2) {

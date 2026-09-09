@@ -178,9 +178,10 @@ $qtdVolume = $rowStatusVolume[1];
 					referencia = checkedCheckboxes[i].getAttribute('data-codbarra').trim();
 					qtdInserir = checkedCheckboxes[i].getAttribute('data-insert');
 					local = checkedCheckboxes[i].getAttribute('data-local');
+					controle = checkedCheckboxes[i].getAttribute('data-controle').trim();
 					let codlocal = Number(local);
 					if (qtdInserir > 0 && !isNaN(codlocal)) {
-						array.push([<?php echo $nunota2 ?>, referencia, qtdInserir, codlocal]);
+						array.push([<?php echo $nunota2 ?>, referencia, qtdInserir, codlocal, controle]);
 					} else if (isNaN(codlocal)) {
 						alert('Produto ' + referencia + ' indisponivel.');
 					} else {
@@ -500,7 +501,7 @@ $qtdVolume = $rowStatusVolume[1];
 							?>
 								<tr style="cursor: hand; cursor: pointer;">
 								<tr>
-									<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox" data-codbarra="<?php echo $row2[0]; ?>" id="<?php echo 'pendenciasTr' . $i ?>" data-insert="<?php echo $row2[5] ?>" data-local="<?php echo $row2[2]; ?>" /></td>
+									<td align="center" width="1%"><input type="checkbox" name="id[<?php echo "$row2[0]/$nunota2"; ?>]" class="checkbox" data-codbarra="<?php echo $row2[0]; ?>" id="<?php echo 'pendenciasTr' . $i ?>" data-insert="<?php echo $row2[5] ?>" data-local="<?php echo $row2[2]; ?>" data-controle="<?php echo $row2[4]; ?>" /></td>
 									<td><?php echo $row2[0]; ?></td>
 									<td><?php echo $row2[1]; ?></td>
 									<td align="center"><?php echo $row2[2]; ?></td>

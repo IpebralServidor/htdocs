@@ -33,7 +33,7 @@
 
  
     
-    <div class="menu-flutuante" id ="botaoExpandir">
+    <div class="menu-flutuante" id ="botaoExpandir" >
         <!-- Botões que aparecem ao expandir -->
         <!-- <button class="botao-flutuante item-menu" id="botaoAdicionar" onclick="adicionarItem()">
             <i class="fa-solid fa-clipboard"></i>
@@ -57,8 +57,12 @@
                     <tr>
                         <th><input type="checkbox" id="selectAll" onclick="selecionarTodos(this)"></th> 
                         <th width="20%">Referencia</th>
+                        <th width="20%">Descricao</th>
                         <th width="20%">Qtd</th>
                         <th width="20%">Empresa</th>
+                        <th width="20%">Data</th>
+                        <th width="20%">Usuário</th>
+                        <th width="20%">Nome</th>
                         <th width="20%">Codlocal</th>
 
                     </tr>
@@ -74,7 +78,7 @@
             <div class="input-busca">
         </div><br>
             
-            <div class="btn-container">
+            <div class="btn-container" >
                 <button class="btn btn-primary w-50 fw-bold actionBtn" onclick="transferirGarantia()">Transferir Itens</button>
             </div>
             </div>

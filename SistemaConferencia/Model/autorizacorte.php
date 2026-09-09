@@ -5,10 +5,11 @@ include "../../conexaophp.php";
 
 $user = $_POST['user'];
 $senha = $_POST['senha'];
+$usucorte = $_SESSION["idUsuario"];
 
-$params = array($user, $senha, 'A');
+$params = array($user, $senha, 'A', $usucorte);
 
-$tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND AD_PERMISSAO_CONFERENCIA = ?";
+$tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND AD_PERMISSAO_CONFERENCIA = ? AND CODUSU <> ?";
 $stmtAutorizaCorte = sqlsrv_query($conn, $tsqlAutorizaCorte, $params);
 
 $row = sqlsrv_fetch_array($stmtAutorizaCorte, SQLSRV_FETCH_NUMERIC);

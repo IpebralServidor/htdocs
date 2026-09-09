@@ -42,14 +42,35 @@ if ($varStatusNota == 'L') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="../css/style.css?v=<? time() ?>">
+    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <link rel="stylesheet" href="../css/style.css?v=<? echo time(); ?>">
+    <link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../../node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <title>Document</title>
 </head>
 
 <body id="body">
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="p-3">
+                    <div class="modal-body fw-bold">
+                        Editar valor máximo: <span style="color: red">*</span><span id="prodDelete"></span>
+                    </div>
+                    <div class="mb-1">
+                        <input type="number" class="form-control" id="novoMax" step="0.01" value="">
+                    </div>
+                    <div class="mt-3">
+                        <button id="atualizaValorBtn" onclick='atualizaValorMaximo();' type="button" class="btn btn-primary fw-bold w-100" style="background-color: #3a6070 !important; border-color: #3a6070 !important" data-bs-dismiss="modal">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="emailFoto"></div>
     <div id="loader" class="" style="display: none;">
         <img style=" width: 150px; margin-top: 5%;" src="../images/soccer-ball-joypixels.gif">
@@ -74,8 +95,8 @@ if ($varStatusNota == 'L') {
                     Deseja excluir da lista de locais vazios?
                 </div>
                 <div class="modal-footer flex-nowrap">
-                    <button type="button" class="btn btn-primary btnAlterarMaxLocal fw-bold" id="btnDeletaLocal" data-dismiss="modal" onclick="deletaLocal(this)">Sim</button>
-                    <button type="button" class="btn btn-secondary closePopUp fw-bold" id="fechaModalDeletaLocal" data-dismiss="modal">Não</button>
+                    <button type="button" class="btn btn-primary btnAlterarMaxLocal fw-bold" id="btnDeletaLocal" data-bs-dismiss="modal" onclick="deletaLocal(this)">Sim</button>
+                    <button type="button" class="btn btn-secondary closePopUp fw-bold" id="fechaModalDeletaLocal" data-bs-dismiss="modal">Não</button>
                 </div>
             </div>
         </div>
@@ -105,7 +126,7 @@ if ($varStatusNota == 'L') {
 
     <div class="page">
         <header>
-            <div id="setaDownDiv" class="setaDown fw-bold" data-toggle="collapse" data-target="#tableCollapse" aria-expanded="false" aria-controls="tableCollapse">
+            <div id="setaDownDiv" class="setaDown fw-bold" data-bs-toggle="collapse" data-bs-target="#tableCollapse" aria-expanded="false" aria-controls="tableCollapse">
                 <span>
                     <i id="setaDown" class="fa-solid fa-caret-down"></i>
                 </span>
@@ -121,6 +142,7 @@ if ($varStatusNota == 'L') {
 
             <div class="tipoNota fw-bold">
                 <span>Nº nota: <?php echo $nunota ?></span>
+                <span>End. retirada: <?php echo $endereco ?></span>
             </div>
         </header>
 
@@ -135,7 +157,7 @@ if ($varStatusNota == 'L') {
                         <label for="endereco" class="form-label">Endereço <span style="color: red">*</span> </label>
                         <input type="number" class="form-control" id="endereco" style="color: #86B7FE !important;">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" onchange="checkboxChange(this)" value="" id="enderecoReservaCheckbox" data-toggle="modal" data-target="" tabindex="-1">
+                            <input class="form-check-input" type="checkbox" onchange="checkboxChange(this)" value="" id="enderecoReservaCheckbox" data-bs-toggle="modal" data-bs-target="" tabindex="-1">
                             <label class="form-check-label" for="enderecoReservaCheckbox">
                                 Usar endereço de reserva?
                             </label>
@@ -151,8 +173,11 @@ if ($varStatusNota == 'L') {
                             <input type="number" class="form-control" id="quantidade" style="color: #86B7FE !important;">
                         </div>
                         <div class="mb-1 col-6">
-                            <label for="qtdMax" class="form-label">Qtd Máx Local <span style="color: red">*</span></label>
-                            <input type="number" class="form-control" id="qtdMax" style="color: #86B7FE !important;">
+                            <label for="qtdMax" class="form-label" style="width: auto">Qtd Máx Local <span style="color: red">*</span></label>
+                            <span id='editMaxBtn' data-bs-toggle='modal' data-bs-target='#editModal' onclick='document.getElementById("novoMax").value = document.getElementById("qtdMax").value;'>
+                                <i class='fa-solid fa-pen' style='color: #d80e0e;'></i>
+                            </span>
+                            <input type="number" class="form-control" id="qtdMax" style="color: #86B7FE !important;" disabled>
                         </div>
                     </div>
                     <div class="row">
@@ -190,7 +215,7 @@ if ($varStatusNota == 'L') {
                 <button id="inserirProdutoBtn" class="btn btn-primary w-75 fw-bold">Inserir Produto</button>
             </div>
             <div class="mt-2 w-100 d-flex justify-content-center align-items-center">
-                <button data-toggle="modal" data-target="#modalConfirmaNota" id="inserirProdutoBtn" class="btn btn-primary w-75 fw-bold" style="background-color: red !important; border-color: red !important;">Confirmar nota</button>
+                <button data-bs-toggle="modal" data-bs-target="#modalConfirmaNota" id="inserirProdutoBtn" class="btn btn-primary w-75 fw-bold" style="background-color: red !important; border-color: red !important;">Confirmar nota</button>
             </div>
 
             <div class="modal fade" id="enderecoReservaModal" tabindex="-1" role="dialog" aria-labelledby="enderecoReservaModalLabel" aria-hidden="true">
@@ -204,7 +229,7 @@ if ($varStatusNota == 'L') {
                                 <input type="text" class="form-control" style="color: #86B7FE !important;" id="enderecoReservaInput">
                             </div>
                             <div class="mt-3">
-                                <button id="atualizaEnderecoReserva" onclick="atualizaEnderecoReserva();" type="button" class="btn btn-primary fw-bold w-100" data-dismiss="modal">Confirmar</button>
+                                <button id="atualizaEnderecoReserva" onclick="atualizaEnderecoReserva();" type="button" class="btn btn-primary fw-bold w-100" data-bs-dismiss="modal">Confirmar</button>
                             </div>
                         </div>
                     </div>
@@ -294,11 +319,37 @@ if ($varStatusNota == 'L') {
                 alert("Digite um valor.");
             }
         };
+
+        function atualizaValorMaximo() {
+            const novoMax = document.getElementById("novoMax").value;
+            document.getElementById("qtdMax").value = novoMax;
+            const inputReferencia = document.getElementById("referencia").value;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const nunota = urlParams.get("nunota");
+
+            const endereco = document.getElementById("endereco");
+            if (inputReferencia == '') {
+                alert('IPB: Favor bipar um item.')
+                document.getElementById("qtdMax").value = '';
+            } else if (endereco.placeholder != '') {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'html',
+                    url: '../Model/atualizaValorMaximo.php',
+                    beforeSend: function() {},
+                    data: {
+                        referencia: inputReferencia,
+                        nunota: nunota,
+                        qtdneg: novoMax
+                    },
+                    success: function() {
+
+                    }
+                });
+            }
+        };
     </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="../../components/emailFoto/js/emailFoto.js"></script>
 </body>
 

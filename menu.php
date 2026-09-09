@@ -5,16 +5,20 @@ require_once 'App/auth.php';
 $usuconf = $_SESSION["idUsuario"];
 
 $tsqlNomeUsu = "SELECT NOMEPARC FROM TGFPAR WHERE CODPARC = (
-		SELECT codparc FROM TSIUSU WHERE CODUSU = $usuconf)";
+				SELECT codparc FROM TSIUSU WHERE CODUSU = $usuconf)";
 $stmtNomeUsu = sqlsrv_query($conn, $tsqlNomeUsu);
 $rowNomeUsu = sqlsrv_fetch_array($stmtNomeUsu, SQLSRV_FETCH_NUMERIC);
 
 $a = array(2, 100, 3266, 42, 7257, 106, 692);
-$b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 3711, 36, 25, 3782, 82, 4041, 3370, 3149, 3254, 602, 605, 608, 603, 3320, 3563, 139, 196,12789,141,3930,12728, 7129, 195, 7125, 3311, 181, 3258,3329);
+$b = array(2, 100, 3266, 42, 7257, 692, 1696, 32, 3, 36, 3782, 82, 4041, 3370, 3254, 602, 605, 608, 603, 7129, 195, 7125, 181, 3319,14617, 15043);
 
 $tsqlAdmin = "SELECT AD_PERMISSAO_CONFERENCIA FROM TSIUSU WHERE CODUSU = $usuconf";
 $stmtAdmin = sqlsrv_query($conn, $tsqlAdmin);
 $row_countAdmin = sqlsrv_fetch_array($stmtAdmin, SQLSRV_FETCH_NUMERIC);
+
+$tsqlPermissaoTransf = "SELECT CODUSU FROM AD_CONTROLEUSUTRANSF WHERE CODUSU = $usuconf";
+$stmtPermissaoTransf = sqlsrv_query($conn, $tsqlPermissaoTransf);
+$row_permissaoTransf = sqlsrv_fetch_array($stmtPermissaoTransf, SQLSRV_FETCH_NUMERIC);
 
 $tsqlNotas = "  SELECT TOP 10 
 						TGFCAB.NUNOTA, 
@@ -162,26 +166,28 @@ $stmtNotas = sqlsrv_query($conn, $tsqlNotas);
 						sqlsrv_free_stmt($result);
 					}
 					?>
-					<a href="./SistemaReabastecimento/View" class="cardStyle" style="position: relative;">
-						<div class="padding">
-							<div class="icon-card">
-								<i class="fa-solid fa-right-left" style="background-color: #bf83ff"></i>
+					<?php if ($row_permissaoTransf === null) { ?>
+						<a href="./SistemaReabastecimento/View" class="cardStyle" style="position: relative;">
+							<div class="padding">
+								<div class="icon-card">
+									<i class="fa-solid fa-right-left" style="background-color: #bf83ff"></i>
+								</div>
+								<span>Transferências (Sankhya)</span>
+
+								<?php if (in_array(3, $notifications)) : ?>
+									<span class="notification" style="top: 5px; left: 1px;">3</span>
+								<?php endif; ?>
+
+								<?php if (in_array(2, $notifications)) : ?>
+									<span class="notification" style="top: 5px; left: 50%; transform: translateX(-50%);">2</span>
+								<?php endif; ?>
+
+								<?php if (in_array(5, $notifications)) : ?>
+									<span class="notification" style="top: 5px; right: 1px;">5</span>
+								<?php endif; ?>
 							</div>
-							<span>Transferências (Sankhya)</span>
-
-							<?php if (in_array(3, $notifications)) : ?>
-								<span class="notification" style="top: 5px; left: 1px;">3</span>
-							<?php endif; ?>
-
-							<?php if (in_array(2, $notifications)) : ?>
-								<span class="notification" style="top: 5px; left: 50%; transform: translateX(-50%);">2</span>
-							<?php endif; ?>
-
-							<?php if (in_array(5, $notifications)) : ?>
-								<span class="notification" style="top: 5px; right: 1px;">5</span>
-							<?php endif; ?>
-						</div>
-					</a>
+						</a>
+					<?php } ?>
 
 					<a href="./TransferenciaSimples/View/transfsimples.php" class="cardStyle">
 						<div class="padding">

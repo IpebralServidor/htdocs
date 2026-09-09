@@ -264,7 +264,7 @@ const verificaProximo = () => {
             route: 'verificaProximo'
         },
         success: function(response) {
-            if (response.success.msg.includes('pend')){                    
+            if (response.success.msg.includes('pend') && tipo != 'N'){                    
                 alert('APP: Existem contagens atribuidas em abertas para voce: ' + response.success.msg);                  
             } 
             else{

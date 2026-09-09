@@ -14,7 +14,7 @@ const tempoMaximoDigitacao = 250;
 $(document).ready(function() {
     document.getElementById('titleBoxH6').innerHTML = 'Produtos no endereço ' + codlocal;
     document.getElementById('enderecoAtual').innerHTML = 'Endereço: ' + codlocal;
-    codlocal.startsWith('1') || codlocal.startsWith('8') ? document.getElementById('qtdmax').disabled = false : document.getElementById('qtdmax').disabled = true;
+    codlocal.startsWith('1') || codlocal.startsWith('8') ? document.getElementById('editMaxBtn').style.display = 'inline' : document.getElementById('editMaxBtn').style.display = 'none';
     buscaItensInventario(codemp, codlocal);
     $('input').on('keydown', function (e) {
         if (e.key === 'Enter') {

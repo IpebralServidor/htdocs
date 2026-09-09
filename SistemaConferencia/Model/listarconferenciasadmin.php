@@ -19,7 +19,7 @@ $stmt = sqlsrv_query($conn, $tsql);
 $conferenciasList = "";
 
 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
-    if ($row[1] == 1780 || $row[1] == 1781 || $row[1] == 1782) {
+    if ($row[1] == 1780 || $row[1] == 1781 || $row[1] == 1782 || $row[1] == 1788) {
         $color = "white";
     } else if (utf8_encode($row[15]) == 'Separação em andamento') {
         $color = "#FFFF95;";

@@ -71,7 +71,7 @@ if ($rowPdtAtual[0] == 0) {
             header("Location: verificarprodutos.php?nunota=" . $nunota2);
         } else if (empty($row[0])) {
             echo "<script>alert('Acabaram os seus produtos'); location = './' </script>";
-        } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || strpos($rowEhTransf[0], 'TRANSF_ABAST') === 0)) {
+        } else if ($tipoNota == "A" && $fila == 'S' && ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0]  === 'TRANSFPROD_SAIDA_GONDOLA' || $rowEhTransf[0] === 'TRANSF_PENDENCIA' || strpos($rowEhTransf[0], 'TRANSF_ABAST') === 0)) {
             // Lógica para que os produtos de saída da produção que não sejam endereçados para o local padrão não possam ser pegos com fila
             if (
                 $rowProdutosParaLocalpad[0] === 'N'
@@ -295,7 +295,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?php if ($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' and $tipoNota === 'S') { ?>
+                    <?php if (($rowEhTransf[0]  === 'TRANSFPROD_SAIDA' || $rowEhTransf[0]  === 'TRANSFPROD_SAIDA_GONDOLA') and $tipoNota === 'S') { ?>
                         <p>Tem certeza que deseja separar todas as mercadorias?</p>
                     <?php } ?>
                 </div>
@@ -854,6 +854,12 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
             var selectedOption = $("input[name='fav_language']:checked").val();
             var observacao = document.getElementById("outros").value;
 
+            var selectedId = $("input[name='fav_language']:checked").attr("id");
+
+            if (selectedId === "nao_encontrado") {
+                $("#qtdneg").val(0);
+            }
+
             if (selectedOption == undefined) {
                 selectedOption = '';
             }
@@ -1024,7 +1030,8 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                 alert('Quantidade a mais do que existente no estoque!');
             } else if ((qtdDigitada > qtdRetornada) && ('<?php echo $rowEhTransf[0] ?>' != 'TRANSFAPP' &&
                     '<?php echo $rowEhTransf[0] ?>' != 'TRANSF_PENDENCIA' &&
-                    !('<?php echo $rowEhTransf[0] ?>'.startsWith('TRANSF_ABAST')))) {
+                    !('<?php echo $rowEhTransf[0] ?>'.startsWith('TRANSF_ABAST')) &&
+                  '<?php echo $rowEhTransf[0] ?>' != 'TRANSFPROD_SAIDA_GONDOLA')) {
                 alert('Esta nota não é possível passar quantidade a mais!')
             } else if ((qtdDigitada != qtdRetornada) && '<?php echo $tipoNota ?>' == 'S') {
                 $('#btnProximo').click();
@@ -1277,7 +1284,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         }
 
         <?php if ($fila == 'N') { ?>
-            if (('<?php echo $tipoNota ?>' == "S") && ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA')) {
+            if (('<?php echo $tipoNota ?>' == "S") && (('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA') || ('<?php echo $rowEhTransf[0] ?>' == 'TRANSFPROD_SAIDA_GONDOLA'))) {
                 <?php
                 $tsqlCodLocal =
                     "SELECT DISTINCT ITE.CODLOCALORIG
@@ -1350,7 +1357,7 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
                     if (msg == '') {
                         <?php if ($tipoNota == 'A') { ?>
                             alert('Este item não foi separado!');
-                        <?php } else if ($tipoNota == 'S' && $rowEhTransf[0] === 'TRANSFPROD_SAIDA') { ?>
+                        <?php } else if ($tipoNota == 'S' && ($rowEhTransf[0] === 'TRANSFPROD_SAIDA' || $rowEhTransf[0] === 'TRANSFPROD_SAIDA_GONDOLA')) { ?>
                             alert('Item não está na lista de separação!');
                         <?php } else { ?>
                             alert('Ocorreu um erro favor contatar a T.I');
@@ -1585,6 +1592,12 @@ $stmt2 = sqlsrv_query($conn, $tsql2);
         function procurarOutroLocal(qtdneg, nunota, sequencia, codprod, codusu) {
             var selectedOption = $("input[name='fav_language']:checked").val();
             var observacao = document.getElementById("outros").value;
+
+            var selectedId = $("input[name='fav_language']:checked").attr("id");
+
+            if (selectedId === "nao_encontrado") {
+                qtdneg = 0;
+            }
 
             if (selectedOption == undefined) {
                 selectedOption = '';
