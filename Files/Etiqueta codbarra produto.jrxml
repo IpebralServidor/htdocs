@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template_etiquetas" printOrder="Horizontal" pageWidth="306" pageHeight="130" columnWidth="304" leftMargin="2" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="4.287177620000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.definition"/>
+	<parameter name="CODPROD" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT (SELECT IMAGEM
+        FROM TGFPRO P2
+        WHERE P2.REFERENCIA = PRO.REFERENCIA) AS FOTO,
+		PRO.CODPROD,
+		PRO.REFERENCIA,
+		PRO.DESCRPROD,
+		PRO.AGRUPMIN,
+		ISNULL(OEM.REFFORN,'') AS REFFORN,
+		BAR.CODBARRA
+FROM TGFPRO PRO OUTER APPLY
+	(SELECT TOP 1 CODBARRA
+     FROM TGFBAR B
+     WHERE B.CODPROD = PRO.CODPROD
+       AND B.CODBARRA <> PRO.REFERENCIA) BAR LEFT JOIN
+	 AD_TGFOEM OEM ON OEM.CODPROD = PRO.CODPROD
+WHERE PRO.REFERENCIA IN (SELECT LTRIM(RTRIM(value))
+						 FROM STRING_SPLIT($P{CODPROD}, ','))]]>
+	</queryString>
+	<field name="FOTO" class="java.lang.Object"/>
+	<field name="CODPROD" class="java.lang.Integer"/>
+	<field name="REFERENCIA" class="java.lang.String"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="AGRUPMIN" class="java.math.BigDecimal"/>
+	<field name="REFFORN" class="java.lang.String"/>
+	<field name="CODBARRA" class="java.lang.String"/>
+	<sortField name="REFERENCIA"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="113" splitType="Stretch">
+			<image vAlign="Bottom">
+				<reportElement positionType="FixRelativeToBottom" x="-2" y="34" width="143" height="73"/>
+				<imageExpression class="java.lang.String"><![CDATA["http://10.0.0.227:8580/barbecue/barcode?data="+$F{CODBARRA}.trim()+"&height=50"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="7" y="1" width="130" height="41"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRPROD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="7" y="60" width="130" height="16"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFFORN}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="false">
+				<reportElement x="162" y="1" width="142" height="112">
+					<property name="Rotacionar" value="BufferedImage original = (BufferedImage)$F{minhaImagem}; BufferedImage rotated = new BufferedImage(original.getHeight(), original.getWidth(), original.getType()); Graphics2D g2d = rotated.createGraphics(); g2d.rotate(Math.toRadians(90), rotated.getWidth() / 2, rotated.getHeight() / 2); g2d.drawImage(original, 0, -original.getHeight(), null); g2d.dispose(); rotated"/>
+				</reportElement>
+				<imageExpression class="java.awt.Image"><![CDATA[(new javax.swing.ImageIcon((byte[])$F{FOTO})).getImage()]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="7" y="42" width="130" height="23"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

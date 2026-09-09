@@ -150,7 +150,7 @@ function verificaRecontagem($conn, $codemp, $codlocal, $referencia, $controle, $
             AND EST.ESTOQUE <> 0
             AND ((PRO.TIPCONTEST = 'L' AND EST.CONTROLE = ?) OR PRO.TIPCONTEST <> 'L')
                 
-        SELECT SUM(ESTOQUE - RESERVADO) AS QTDESTOQUE
+        SELECT ISNULL(SUM(ESTOQUE - RESERVADO), 0) AS QTDESTOQUE
         FROM TGFEST 
         WHERE CODEMP = @CODEMP_ITEM 
             AND CODPARC = 0 

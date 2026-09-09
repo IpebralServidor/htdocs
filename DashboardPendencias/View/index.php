@@ -10,12 +10,12 @@ require_once '../../App/auth.php';
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
 	<meta http-equiv="Pragma" content="no-cache">
-	<link rel="stylesheet" type="text/css" href="../css/main.css?v=<?php time() ?>">
+	<link rel="stylesheet" type="text/css" href="../css/main.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="../Controller/IndexController.js?v=<?php time() ?>"></script>
+	<script src="../Controller/IndexController.js?v=<?php echo time(); ?>"></script>
 	<title>Dashboard Pendências</title>
 </head>
 
@@ -36,6 +36,13 @@ require_once '../../App/auth.php';
 
 							<strong>Parceiro:</strong>
 							<input type="number" id="codparc">
+
+							<strong>Empresa:</strong>
+							<input type="number" id="codemp">
+
+							<strong>Referência:</strong>
+							<input type="string" id="referencia">
+
 							<button id="confirmaFiltroPendencia" onclick="confirmaFiltroPendencia()">Confirmar</button>
 						</div>
 					</div>
@@ -63,15 +70,13 @@ require_once '../../App/auth.php';
 					<tr>
 						<th>Referência</th>
 						<th>Descrição</th>
-						<th>Status</th>
-						<th>Emp./Local orig.</th>
-						<th>Local dest.</th>
-						<th>Quantidade</th>
-						<th>Ult. mov.</th>
-						<th>Ult. bip</th>
-						<th>Nota sep./abast.</th>
+						<th>Cód. Local</th>
+						<th>Descrição Local</th>
+						<th>Qtd. Pendente</th>
 						<th>Controle</th>
-						<th>Nota abast.</th>
+						<th>Estoque Possível</th>
+						<th>Núm. Único</th>
+						<th>Cód. Parc.</th>
 					</tr>
 				</thead>
 				<tbody id="pendencias"></tbody>

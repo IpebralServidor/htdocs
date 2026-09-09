@@ -58,7 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $endchegada = $_GET['endchegada'];
                     $qtdneg = $_GET['qtdneg'];
                     $qtdmax = $_GET['qtdmax'];
-                    validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax);
+                    validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+            case 'atualizaValorMaximo':
+                if (isset($_GET['codemp']) && isset($_GET['qtdneg']) && isset($_GET['codemp'])) {
+                    $codemp = $_GET['codemp'];
+                    $referencia = $_GET['referencia'];
+                    $qtdneg = $_GET['qtdneg'];
+                    atualizaValorMaximo($conn, $codemp, $referencia, $qtdneg);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }

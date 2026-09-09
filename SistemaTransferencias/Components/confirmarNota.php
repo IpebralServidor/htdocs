@@ -9,7 +9,7 @@ echo '
                     </div>
                     <div class="modal-footer flex-nowrap">
                         <button type="button" class="btn btn-primary btnAlterarMaxLocal fw-bold" id="btnConfirmaNota">Sim</button>
-                        <button type="button" class="btn btn-secondary closePopUp fw-bold" id="closePopUpConfirma" data-dismiss="modal">Não</button>
+                        <button type="button" class="btn btn-secondary closePopUp fw-bold" id="closePopUpConfirma" data-bs-dismiss="modal">Não</button>
                     </div>
                 </div>
             </div>

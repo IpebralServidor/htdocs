@@ -10,25 +10,29 @@ $_POST["nunotaFiltro"] === '' ? $nunota = -1 : $nunota = $_POST["nunotaFiltro"];
 $_POST["parceiroFiltro"] === '' ? $parceiro = -1 : $parceiro = $_POST["parceiroFiltro"];
 $status = $_POST["statusFiltro"];
 
-$params = array($nunota, $numnota, $parceiro, $status, $usuarioLogado);
+$params = array($nunota, $numnota, $parceiro, $status, $usuarioLogado, $usuarioLogado, $usuarioLogado);
 
-$tsql = "SELECT * FROM [sankhya].[AD_FNT_LISTANOTAS_CONFERENCIA](?, ?, ?, ?, ?) ORDER BY NUNOTA DESC";
-$tsqlTiposConferencia = "SELECT CODTIPOPER FROM [SANKHYA].[AD_FNT_TOP_PORTIPO]('Conferencia', NULL, NULL, NULL, NULL)";
+$tsql = "SELECT *
+         FROM [sankhya].[AD_FNT_LISTANOTAS_CONFERENCIA](?, ?, ?, ?, ?)
+         ORDER BY CASE WHEN ? IN (3302,14902,181) THEN CODPARC END ASC,
+                  CASE WHEN ? NOT IN (3302,14902,181) THEN NUNOTA END DESC";
+// $tsqlTiposConferencia = "SELECT CODTIPOPER FROM [SANKHYA].[AD_FNT_TOP_PORTIPO]('Conferencia', NULL, NULL, NULL, NULL)";
 
 $stmt = sqlsrv_query($conn, $tsql, $params);
-$stmtTiposConferencia = sqlsrv_query($conn, $tsqlTiposConferencia);
-$arrayTiposConferencia = array();
+// $stmtTiposConferencia = sqlsrv_query($conn, $tsqlTiposConferencia);
+// $arrayTiposConferencia = array();
 
-while ($rowTiposConferencia = sqlsrv_fetch_array($stmtTiposConferencia, SQLSRV_FETCH_NUMERIC)) {
-    array_push($arrayTiposConferencia, $rowTiposConferencia[0]);
-}
+// while ($rowTiposConferencia = sqlsrv_fetch_array($stmtTiposConferencia, SQLSRV_FETCH_NUMERIC)) {
+//     array_push($arrayTiposConferencia, $rowTiposConferencia[0]);
+// }
 
 $listaConferencias = "";
 
 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
-    if (in_array($row[1], $arrayTiposConferencia)) {
-        $color = "white";
-    } else if (utf8_encode($row[16]) == 'Separação em andamento') {
+    // if (in_array($row[1], $arrayTiposConferencia)) {
+    //     $color = "white";
+    // } else 
+    if (utf8_encode($row[16]) == 'Separação em andamento') {
         $color = "#FFFF95;";
     } else if (utf8_encode($row[16]) == 'Separação não iniciada') {
         $color = "#ff9595;";
@@ -36,6 +40,8 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
         $color = "#9c95ff;";
     } else if (utf8_encode($row[16]) == 'Separação concluída') {
         $color = "#8fffb1";
+    } else {
+        $color = "white";
     }
 
     $vlrNota = str_replace('.', ',', $row[17]);

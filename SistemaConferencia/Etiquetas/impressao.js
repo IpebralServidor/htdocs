@@ -55,3 +55,54 @@ const impressao = (tipoImpressao) => {
     });
     // Configurações adicionais para a impressora de etiqueta no Linux: Alterar o ppd, criando um novo modelo de página com o tamanho "306.142 113.386"; Apagar as linhas de opção de DPI e deixar apenas a opção de 203 DPI.
 }
+
+const impressaoReferencia = (referencia) => {
+    console.log(referencia);
+    console.log('impressao referencia');
+    let tipoImpressao = 'etiqueta';
+    const urlParams = new URLSearchParams(window.location.search);
+    const numeroNota = urlParams.get("nunota");
+    const gif = document.getElementById("loader");
+    let file = 'Etiqueta codbarra produto';
+    
+    $.ajax({
+        type: 'POST',
+        dataType: 'html',
+        url: '../Etiquetas/compileJasper.php',
+        beforeSend: function() {
+            gif.style.display = "block"
+            gif.classList.add("loader")
+        },
+        complete: function() {
+            gif.style.display = "none"
+            gif.classList.remove("loader")
+        },
+        data: {
+            nunota: numeroNota,
+            referencia: referencia,
+            arquivo: file,
+            funcao: 'compileJasperReferencia'
+        },
+        success: function(msg) {    
+            jsWebClientPrint.print('printerName=' + tipoImpressao + '&filePath=' + 'C:/xampp/htdocs/SistemaConferencia/Etiquetas/nunotas/' + numeroNota + '/' + file + '.pdf');
+            $.ajax({
+                type: 'POST',
+                dataType: 'html',
+                url: '../Etiquetas/compileJasper.php',
+                beforeSend: function() {
+                    gif.style.display = "block"
+                    gif.classList.add("loader")
+                },
+                complete: function() {
+                    gif.style.display = "none"
+                    gif.classList.remove("loader")
+                },
+                data: {
+                    funcao: 'fechaJanelaWcpp'
+                },
+                success: function() {
+                }
+            });
+        }
+    });
+}

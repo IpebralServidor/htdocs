@@ -114,7 +114,7 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
         $params = array($referencia, $codemp, $endchegada);
         $tsql = "SELECT ISNULL(AD_QTDMAXLOCAL, 0) AS QTDMAX
                  FROM TGFPEM 
-                 WHERE CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)
+                 WHERE CODPROD = (SELECT DISTINCT CODPROD FROM TGFBAR WHERE CODBARRA = ?)
                  AND CODEMP = ?
                  AND (CODLOCALPAD = ? OR CODLOCALPAD = 1990000)
         ";
@@ -142,12 +142,12 @@ function buscaQtdMax($conn, $referencia, $codemp, $endchegada)
     }
 }
 
-function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax)
+function validaParametros($conn, $codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario)
 {
     try {
-        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax);
+        $params = array($codemp, $referencia, $lote, $endsaida, $endchegada, $qtdneg, $qtdmax, $idUsuario);
 
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?, ?)";
+        $tsql = "SELECT * FROM [sankhya].[AD_FNT_VALIDA_PARAMETROS_TRANSF_SIMPLES_APP](?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
 
@@ -220,6 +220,23 @@ function transferirProduto($conn, $codemp, $referencia, $lote, $endsaida, $endch
         }
 
         echo json_encode(['success' => 'ok']);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+function atualizaValorMaximo($conn, $codemp, $referencia, $qtdneg)
+{
+    try {
+        $params = array($qtdneg, $codemp, $referencia);
+        $tsql = "UPDATE TGFPEM
+                 SET AD_QTDMAXLOCAL = ?
+                 WHERE CODEMP = ?
+                   AND CODPROD = (SELECT CODPROD FROM TGFPRO WHERE REFERENCIA = ?)";
+
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        echo json_encode(['success' => $referencia]);
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }

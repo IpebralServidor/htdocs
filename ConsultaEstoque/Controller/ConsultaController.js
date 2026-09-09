@@ -43,3 +43,35 @@ const atualizarNovoValor = () => {
         }
     });
 }
+
+
+
+const abrirPopMediaVenda = () => {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+        },
+        success: function(response) {
+
+            document.getElementById("msg").textContent =   document.getElementById("msg").textContent 
+                                                                                  
+        }
+    });
+
+
+
+    document.getElementById('popupMediaVenda').classList.toggle("active");
+}
+
+
+   const fecharPopmediaVenda = () => {
+        document.getElementById('popupMediaVenda').classList.remove("active");
+    }

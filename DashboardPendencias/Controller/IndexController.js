@@ -1,17 +1,39 @@
 // Função executada quando o DOM estiver pronto
 $(function() {
-    buscaPendencias(null, null);
+    
+    //Função para salvar os filtros caso esteja filtrado
+    const filtroSalvo = JSON.parse(sessionStorage.getItem('filtroPendencia')) || {};
+    
+    buscaPendencias(
+        filtroSalvo.nunota || null, 
+        filtroSalvo.codparc || null, 
+        filtroSalvo.codemp || null,
+        filtroSalvo.referencia || ''
+    );
+
     const nunotaInput = document.getElementById('nunota');
     const codparcInput = document.getElementById('codparc');
+    const codempInput = document.getElementById('codemp');
+    const referenciaInput = document.getElementById('referencia');
     
-    // Adiciona um evento de escuta para a tecla 'Enter'
     nunotaInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             confirmaFiltroPendencia();
         }
     });
-
     codparcInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            confirmaFiltroPendencia();
+        }
+    });
+
+    codempInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            confirmaFiltroPendencia();
+        }
+    });
+
+    referenciaInput.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             confirmaFiltroPendencia();
         }
@@ -22,13 +44,17 @@ const recarregarPagina = () => {
     location.reload();
 }
 
-// Define um tempo aleatório entre 60 e 120 segundos (60000 a 120000 milissegundos)
-const tempoRecarregar = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+setTimeout(recarregarPagina, 30000);
 
-// Chama a função recarregarPagina após o tempo definido
-setTimeout(recarregarPagina, tempoRecarregar);
+const buscaPendencias = (nunota, codparc, codemp, referencia) => {
+    // Salva os filtros antes de buscar
+    sessionStorage.setItem('filtroPendencia', JSON.stringify({
+        nunota: nunota,
+        codparc: codparc,
+        codemp: codemp,
+        referencia: referencia  
+    }));
 
-const buscaPendencias = (nunota, codparc) => {
     $.ajax({
         method: 'GET',
         url: '../routes/routes.php',
@@ -42,6 +68,8 @@ const buscaPendencias = (nunota, codparc) => {
         data: {
             nunota: nunota,
             codparc: codparc,
+            codemp: codemp,
+            referencia: referencia,
             route: 'buscaPendencias'
         },
         success: function(response) {
@@ -60,19 +88,30 @@ const buscaPendencias = (nunota, codparc) => {
 }
 
 const abrirPopFiltroPendencia = () => {
-    document.getElementById('nunota').value = '';
-    document.getElementById('codparc').value = '';
+    
+    const filtroSalvo = JSON.parse(sessionStorage.getItem('filtroPendencia')) || {};
+    
+    document.getElementById('nunota').value = filtroSalvo.nunota || '';
+    document.getElementById('codparc').value = filtroSalvo.codparc || '';
+    document.getElementById('codemp').value = filtroSalvo.codemp || '';
+    document.getElementById('referencia').value = filtroSalvo.referencia || '';
+
     document.getElementById('popFiltroPendencia').classList.toggle("active");
 }
 
 const confirmaFiltroPendencia = () => {
     let nunota = document.getElementById('nunota').value;
     let codparc = document.getElementById('codparc').value;
-    if((nunota !== '' && !isNaN(nunota)) || (codparc !== '' && !isNaN(codparc))) {
-        buscaPendencias(nunota !== '' ? nunota : null, codparc !== '' ? codparc : null);
-        abrirPopFiltroPendencia();
-    } else {
-        buscaPendencias(null, null);
-        abrirPopFiltroPendencia();
-    }
+    let codemp = document.getElementById('codemp').value;
+    let referencia = document.getElementById('referencia').value;
+    
+    // Busca com ou sem filtros
+    buscaPendencias(
+        nunota !== '' ? nunota : null, 
+        codparc !== '' ? codparc : null,
+        codemp !== '' ? codemp : null,
+        referencia !== '' ? referencia : null
+    );
+    abrirPopFiltroPendencia();
 }
+

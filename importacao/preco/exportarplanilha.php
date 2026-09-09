@@ -43,6 +43,7 @@ $sheet->setCellValue('E1', 'Agrup. Mín.');
 $sheet->setCellValue('F1', 'Preço Unit.');
 $sheet->setCellValue('G1', 'Preço Total');
 $sheet->setCellValue('H1', 'Promoção?');
+$sheet->setCellValue('I1', 'Marca');
 
 
 // Preencher os dados
@@ -57,6 +58,7 @@ while ($data = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     $sheet->setCellValue('F' . $row, $data['PRECOVENDA']);
     $sheet->setCellValue('G' . $row, ($data['PRECOVENDA'] * $data['QUANTIDADE']));
     $sheet->setCellValue('H' . $row, ($data['PROMOCAO']));
+    $sheet->setCellValue('I' . $row, ($data['MARCA']));
     $row++;
 
 }

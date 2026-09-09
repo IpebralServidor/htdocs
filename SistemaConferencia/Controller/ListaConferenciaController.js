@@ -202,11 +202,16 @@ function confirmarPopImpressao() {
 
 function abrirPopSeparador() {
     document.getElementById('popSeparador').classList.toggle("active");
+    document.getElementById('codSeparador').focus();
 }
 
-function confirmarPopSeparador() {
+function confirmarPopSeparador(codusu) {
     let codSeparador = document.getElementById('codSeparador').value;
-    if(codSeparador) {
+    if(!codSeparador) {
+        alert("Digite um código válido!");
+    } else if(codSeparador == codusu) {
+        alert("O separador não pode ser o mesmo que o conferente!");
+    } else {
         let notaSeparador = document.getElementById('notaSeparador').value;
         $.ajax({
             type: 'POST',
@@ -220,8 +225,6 @@ function confirmarPopSeparador() {
                 abrirPopSeparador();
                 $("#listaConferencias tr[data-nota="+notaSeparador+"]").trigger("dblclick");
             }
-        });
-    } else {
-        alert("Digite um código válido!");
+        });    
     }
 }
