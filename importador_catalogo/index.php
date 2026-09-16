@@ -71,21 +71,30 @@
 					}
 					$codigo = substr($line, strpos($line, $letra), strlen($line));
 			    } elseif (strpos($line, "QUANTIDADE:") !== FALSE ){
-			    	$letras = str_split($line);
-			    	for ($x = 0; $x <= count($letras); $x++) {
+					$letras = str_split($line);
+					$total = count($letras);
+					$quantidade = "";
+
+					for ($x = 0; $x < $total; $x++) {
 						if (ctype_digit($letras[$x])) {
 							$quantidade = $letras[$x];
 							$x++;
-							while(ctype_digit($letras[$x])) {
-								$quantidade = $quantidade . $letras[$x];
+							while ($x < $total && (ctype_digit($letras[$x]) || $letras[$x] === ',')) {
+								$quantidade .= $letras[$x];
 								$x++;
 							}
-							break;	
+							break;
 						}
 					}
+
+					// Converte vírgula decimal (padrão BR) para ponto (padrão SQL Server)
+					$quantidade = str_replace(',', '.', $quantidade);
+					// Evita ficar com ponto sobrando no final, caso a vírgula seja o último caractere capturado
+					$quantidade = rtrim($quantidade, '.');
+
 					$produtos[$qtd_produto] = array(trim($codigo), $quantidade);
 					$qtd_produto++;
-			    } elseif (strpos($line, "## MENSAGEM:") !== FALSE ){
+				} elseif (strpos($line, "## MENSAGEM:") !== FALSE ){
 			    	$e_mensagem = true;
 			    } elseif ($e_mensagem) {
 			    	$mensagem = $mensagem . $line . " ";
