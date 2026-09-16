@@ -236,8 +236,6 @@ function validaNumeroInserido() {
 
 function imprimeReferencia() {
     let referencia = document.getElementById('referenciaImpressao').value;
-    console.log(referencia);
-    console.log('detalhes conf');
     const urlParams = new URLSearchParams(window.location.search);
     const nunota = urlParams.get('nunota');
     $.ajax({

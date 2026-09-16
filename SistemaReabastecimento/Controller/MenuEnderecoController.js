@@ -93,7 +93,7 @@ function abrirNota(nunota, fila) {
                     nunota: nunota
                 }, 
                 success: function(tipotransf) { 
-                    if(tipotransf === 'TRANSFPROD_SAIDA') {
+                    if(tipotransf === 'TRANSFPROD_SAIDA' || tipotransf === 'TRANSFPROD_SAIDA_GONDOLA') {
                         window.location.href = 'reabastecimento.php?nunota=' + nunota + '&fila=N';
                     } else {
                         window.location.href = 'reabastecimento.php?nunota=' + nunota + '&fila=S';

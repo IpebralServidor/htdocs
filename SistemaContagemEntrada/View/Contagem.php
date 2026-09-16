@@ -48,6 +48,78 @@
             </div>
         </div>
 
+        
+        <div class="popup" id="popAutorizaTravaCodBar">
+            <div class="overlay"></div>
+            <div class="content">
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="abrirPopAutorizaContagem()">
+                        <i class="fa-solid fa-xmark" onclick="fecharPopAutorizaContagem()"></i>
+                    </div>
+
+                    <div class="form">
+                        <i class="fa fa-barcode" aria-hidden="true" style="font-size: 32px;"></i>
+                        <strong><label id="msg">Item sem código de barras cadastrado, solicitar autorizção de gerente.</label></strong>
+                        <br>
+                        <label>Usuário:</label>
+                        <input type="text" id="user3" required>
+
+                        <label>Senha:</label>
+                        <input type="password" id="senha3" required>
+                        <button id="btn-autorizacorte" onclick="autorizaTravaCodbar();">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="popup" id="popAutorizaEntrada">
+            <div class="overlay"></div>
+            <div class="content">
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="abrirPopAutorizaContagem()">
+                        <i class="fa-solid fa-xmark" onclick="fecharPopAutorizaContagem()"></i>
+                    </div>
+
+                    <div class="form">
+                        <strong><label id="msgEntrada">Existem itens de primeira entrada. Para finalizar, é necessária a autorização do compras para verificar.  </label></strong>
+                        <br>
+                        <label>Usuário:</label>
+                        <input type="text" id="user2" required>
+
+                        <label>Senha:</label>
+                        <input type="password" id="senha2" required>
+                        <button id="btn-autorizacorte2" onclick="autorizatravaEntrada()">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="popup" id="popEstoqueInsuficiente">
+            <div class="overlay"></div>
+            <div class="content">
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="abrirPopAutorizaContagem()" style="background-color: red;">
+                        <i class="fa-solid fa-xmark" onclick="fecharPopAutorizaContagem()"></i>
+                    </div>
+                      <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+                        <i class="fa-solid fa-circle-exclamation" 
+                            style="color: red; font-size: 40px;"></i>
+                        </div>
+                    <div class="form">
+                        <strong><label id="msgEntrada2" Style = "font-size: 25px;">Matérias primas faltando no 500000 ou FORMULA ERRADA, favor consultar Gerência/formula.  </label></strong>
+                        <br>
+                        
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="popup" id="popQtdContada">
             <div class="overlay"></div>
             <div class="content">
@@ -139,6 +211,7 @@
                             <th>Controle</th>
                             <th>Qtd Contagem</th>
                             <th></th>
+                            <th>Responsável</th>
                         </tr>
                     </thead>
                     <tbody id="itens">
@@ -173,6 +246,14 @@
             <a style="background"><img src="../../../images/216446_arrow_left_icon.png" alt="Voltar" onclick = "setaVoltar();"></a></div>
             <div class="nota fw-bold">
                 <span id="notaAtual"></span>
+               
+                    
+                    
+                    <span id="farol">
+                    <img src="https://www.pngall.com/wp-content/uploads/15/Red-Button-PNG-Image.png" 
+                        alt="Parceiro não confiável"
+                        style="width: 60px; height: 60px;">
+                    </span>
             </div>
             <div id="setaDownDiv" class="setaDown" data-bs-toggle="collapse" data-bs-target="#itensContagem" aria-expanded="false" aria-controls="itensContagem">
                 <span>
@@ -182,25 +263,52 @@
         </header>
 
         <main>
+        <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Seleciona todos os inputs dentro do formulário
+  const inputs = document.querySelectorAll('input');
+
+  inputs.forEach((input, index) => {
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // impede submit ou recarregar a página
+        const nextInput = inputs[index + 1];
+        if (nextInput) {
+          nextInput.focus(); // vai para o próximo campo
+        } else {
+          input.blur(); // se for o último, apenas tira o foco
+        }
+      }
+    });
+  });
+});
+</script>
+
             <div class="header-body">
                 <div style="width: 100%">
                     <div class="row">
                         <div class="mb-1 col-6">
                         <span >
-            <i class="fa fa-search"  onclick="popupAplicacao()"></i> <!-- Altere o ícone aqui -->
-        </span> <span style="color: red">*</span>
+                        <i class="fa fa-search"  onclick="popupAplicacao()"></i> <!-- Altere o ícone aqui -->
+                             </span> <span style="color: red">*</span>
                             <label for="referencia" class="form-label">Referência </label>
                             <input type="text" class="form-control" id="referencia" oninput="iniciarMedicaoReferencia();" onchange="finalizarMedicaoReferencia();">
                         </div>
                         <div class="mb-1 col-6">
-                            <label for="lote" class="form-label">Lote</label>
-                            <input type="text" class="form-control" id="lote" disabled >
+                        <span >
+                             </span> <span style="color: red">*</span>
+                            <label for="referencia" class="form-label">Qtd. Total Contada </label>
+                            <input type="number" class="form-control" id="quantidade">
                         </div>
+                        <!-- <div class="mb-1 col-6">
+                            <input type="number" class="form-control" id="quantidade">
+                        </div> -->
+                       
                     </div>
                     <div class="row">
-                        <div class="mb-1 col-6">
-                            <label for="quantidade" class="form-label">Qtd. Total Contada</label>
-                            <input type="number" class="form-control" id="quantidade">
+                    <div class="mb-1 col-6">
+                            <label for="lote" class="form-label">Lote</label>
+                            <input type="text" class="form-control" id="lote"  >
                         </div>
                         <div class="mb-1 col-6">
                             <label for="codbalanca" class="form-label">Cod. Balança</label>
@@ -216,6 +324,10 @@
                           
                             </span>
                             <span id="primeiraentrada"></span>
+                            <span class="fw-bold" style="color: red; ">
+                          
+                            </span>
+                            <span id="CD3msg"></span>
 
                         </div>
                         <div>
@@ -240,6 +352,7 @@
                         <div class="special-item total">
                             <span class="fw-bold">Est./Max. CD1 </span><span id="CD1"></span><br>
                             <span class="fw-bold">Est./Max. CD3 </span><span id="CD3"></span><br>
+                          <span id="OBS" class="fw-bold" style="color:red; font-weight:bold; font-size:18px;"></span><br>
                         </div>
                     </div>
                 </div>
@@ -280,7 +393,82 @@
                     </div>
                 </div>    
             </div>
-        
+
+    
+            <!-- Botão para abrir o popup -->
+            <button onclick="abrirPopup()" 
+    style="
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    "
+    onmouseover="this.style.background='linear-gradient(135deg, #3399ff, #007bff)'"
+    onmouseout="this.style.background='linear-gradient(135deg, #007bff, #0056b3)'">
+    <i class="fa-solid fa-camera"></i> Adicionar Fotos
+</button>
+
+<!-- Modal Popup -->
+<div id="popupFotos" class="modal">
+  <div>
+    <div class="modal-content">
+      <span class="close" onclick="fecharPopup()">&times;</span>
+        <div class="image d-flex justify-content-center">
+            <img id="imagemprodutom" style="vertical-align: middle; margin: auto; max-width: 100%; max-height: 166px;" src="" />
+        </div>
+
+      <h3>Enviar Imagens</h3>
+
+      <form id="formFotos" enctype="multipart/form-data">
+        <div id="inputsContainer">
+          <input type="file" name="imagens[]" class="imagemInput" accept="image/*" required>
+        </div>
+
+        <div style="margin-top:10px;">
+          <button type="button" onclick="adicionarInput()">+</button>
+          <button type="button" onclick="abrirCamera()">📷 Tirar Foto</button>
+          <button type="button" onclick="enviarFotos()">Enviar</button>
+        </div>
+      </form>
+
+      <div id="resultado"></div>
+    </div>
+  </div>
+</div>
+
+            <!-- Popup da Câmera -->
+            <div id="popupCamera" style="
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.7);
+            justify-content:center;
+            align-items:center;
+            z-index:9999;">
+            
+            <div style="
+                background:white;
+                padding:20px;
+                border-radius:12px;
+                text-align:center;">
+                
+                <video id="video" autoplay style="width:300px;border-radius:8px;"></video><br><br>
+                <button onclick="tirarFoto()">📸 Capturar</button>
+                <button onclick="fecharCamera()">❌ Fechar</button>
+                <canvas id="canvas" style="display:none;"></canvas>
+            </div>
+            </div>
+                <!-- Preview opcional -->
+                <div id="previewContainer"></div>
 		
             <div class = "popup" id="popupConfirmacao" style=" display:none; font-size: 1rem; font-weight: bold; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
             background: white; border: 1px solid #ccc; padding: 30px; z-index: 1000; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3); text-align: center; width: 300px;">

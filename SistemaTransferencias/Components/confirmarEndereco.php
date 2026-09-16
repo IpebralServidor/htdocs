@@ -11,14 +11,14 @@
                             <input type="number" class="form-control" id="novoEndereco">
                         </div>
                         <div class="mt-3">
-                            <button id="btnConfirmarEndereco" class="btn btn-primary fw-bold w-100" style="background-color: var(--color-pad) !important; border-color: var(--color-pad) !important" data-dismiss="modal">Confirmar</button>
+                            <button id="btnConfirmarEndereco" class="btn btn-primary fw-bold w-100" style="background-color: var(--color-pad) !important; border-color: var(--color-pad) !important" data-bs-dismiss="modal">Confirmar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <button type="button" class="btn btn-primary d-none" id="btnConfirmaEndereco" data-toggle="modal" data-target="#modalConfirmaEndereco">
+        <button type="button" class="btn btn-primary d-none" id="btnConfirmaEndereco" data-bs-toggle="modal" data-bs-target="#modalConfirmaEndereco">
             Launch demo modal
         </button>
     ';

@@ -88,9 +88,11 @@
  				//$_SESSION['foto']      = $this->dados['imagem'];
  				
  				
- 				if($grupoUsuario == 4 || $_SESSION['idUsuario'] == 181) {
+ 				if($grupoUsuario == 4) {
  					header("Location: ../importacao/preco/listaorcamento.php");
- 				} else {
+ 				} else if ($_SESSION['idUsuario'] == 3367){
+					header("Location: ../importacao/importacaoCotacao/listaImportacoes.php");
+				} else {
  					header("Location: ../menu.php");
  				}
 

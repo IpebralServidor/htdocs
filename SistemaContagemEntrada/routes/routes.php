@@ -46,6 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }              
                 break;
+            case 'buscaInformacoesNota':
+                if (isset($_GET['nunota'])) {
+                    $nunota = $_GET['nunota'];
+                    buscaInformacoesNota($conn, $nunota);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+    
             case 'getReferenciaOp':                                
                 if (isset($_GET['nunota']))  {
                     $nunota = $_GET['nunota'];
@@ -111,6 +120,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+                 case 'autorizatravaEntrada':
+                if (isset($_GET['user']) && isset($_GET['senha'])) {
+                    $user = $_GET['user'];
+                    $senha = $_GET['senha'];
+
+                    autorizatravaEntrada($conn, $user,$senha);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
             case 'retornaQtdContada':
                 if (isset($_GET['nunota']) ) {
                     $nunota = $_GET['nunota'];
@@ -119,6 +138,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
                 break;
+                case 'retornaMsgEntrada':
+                if (isset($_GET['nunota']) ) {
+                    $nunota = $_GET['nunota'];
+                    retornaMsgEntrada($conn,$nunota);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+                case 'retornaMsgEstoqueInsuficiente':
+                if (isset($_GET['nunota']) ) {
+                    $nunota = $_GET['nunota'];
+                    retornaMsgEstoqueInsuficiente($conn,$nunota);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+                
             case 'verificaEmpresa':
                 if (isset($_GET['nunota']) && isset($_GET['tipo']) ) {
                     $nunota = $_GET['nunota'];
@@ -224,6 +260,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
                 break;
+            case 'tiraTravaCodbar':
+            if (isset($_POST['nunota']) && isset($_POST['tipo'])) {
+                $nunota = $_POST['nunota'];
+                $tipo = $_POST['tipo'];
+                tiraTravaCodbar($conn,$nunota,$tipo, $codusu);
+            } else {
+                echo json_encode(['error' => 'Parâmetros não enviados']);
+            }   
+            break;
             case 'verificaFinalizaContagem':
                 if (isset($_POST['nunota']) && isset($_POST['tipo'])) {
                     $nunota = $_POST['nunota'];
@@ -242,6 +287,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
                 break;
+
                 case 'finalizarContagem':
                     if (isset($_POST['nunota']) && isset($_POST['tipo']) && isset($_POST['separar'])) {
                         $nunota = $_POST['nunota'];
@@ -311,6 +357,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }   
                 break;
+                case 'enviarFotos':
+                    if (isset($_POST['nunota']) && isset($_POST['imagens'])) {
+                        $nunota = $_POST['nunota'];
+                        $codprod = $_POST['codprod'];    
+                        $imagens = $_POST['imagens'];    
+
+                        enviarFotos($conn, $nunota, $codusu,$codprod ,$imagens);                    
+                    } else {
+                        echo json_encode(['error' => 'Parâmetros não enviados']);
+                    }
+                    break;
                 case 'desatribuirNota':
                     if (isset($_POST['tipo']) && isset($_POST['notas']) && isset($_POST['usuario']) ) {
                         $tipo = $_POST['tipo'];

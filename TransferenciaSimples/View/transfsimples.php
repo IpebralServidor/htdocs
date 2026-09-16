@@ -128,6 +128,7 @@
                         <option value="7">Triângulo</option>
                         <option value="10">Mecontech</option>
                         <option value="30">Remedcar (Emp 30)</option>
+                        <option value="4">Paraiba (Emp 4)</option>
                     </select>
                 </div>
                 <div class="row">

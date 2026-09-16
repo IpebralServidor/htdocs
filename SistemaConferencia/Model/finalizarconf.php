@@ -59,7 +59,21 @@ if ($checkCorte[0] == 'ERRO') {
             $tsql4 = "EXEC [sankhya].[AD_STP_FINALIZAR_CONFERENCIA] $nunota, $usuconf, '$pesobruto', '$qtdvol', '$volume', '$observacao', '', '$codusulib' ";
         }
         $stmt4 = sqlsrv_query($conn, $tsql4);
-        $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);
+        if ($stmt4 === false) {
+            $errors = sqlsrv_errors();
+            if ($errors !== null) {
+                echo "Erro ao executar a procedure no SQL Server:";
+                foreach ($errors as $error) {
+                    echo "Mensagem: " . $error['message'];
+                }
+            } else {
+                echo "Erro desconhecido ao executar a procedure.";
+            }
+            die();
+        } else {
+            $row = sqlsrv_fetch_array($stmt4, SQLSRV_FETCH_NUMERIC);
+            echo $row[0];
+        }
 
         echo $row[0];
     } else {

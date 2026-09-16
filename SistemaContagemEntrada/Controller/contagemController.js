@@ -1,6 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search);
 const nunota = urlParams.get('nunota');
 const tipo = urlParams.get('tipo');
+let qtdgondolasep = 0;
+
 
 // Variáveis que guardarão o tempo de digitação dos campos
 let tempoInicialReferencia = 0;
@@ -15,7 +17,13 @@ $(document).ready(function() {
     document.getElementById('titleBoxH6').innerHTML = 'Produtos na nota: ' + nunota;
     document.getElementById('notaAtual').innerHTML = 'Nota: ' + nunota;
     buscaItensContagem(nunota, tipo);
+    buscaInformacoesNota();
     desabilitaFinalizaCont(); //libero ou nao o botao de finalizar contagem
+
+    if (tipo === 'N') {
+        const botao = document.getElementById('botaoFotos');
+            botao.style.display = 'none';
+    }
 
     $('input').on('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -162,6 +170,11 @@ const buscaInformacoesProduto = () => {
             route: 'buscaInformacoesProduto'
         },
         success: function(response) {
+            
+        if (response.error == 'Item sem código de barra, favor solicitar liberação para o responsável.') {
+            abrirPopAutorizaTravaCodbar();
+        }
+
             if(response.success) {
                 document.getElementById('imagemproduto').src = 'data:image/jpeg;base64,' + response.success.imagem;
                 response.success.tipcontest != 'L' ? document.getElementById('lote').disabled = true : (document.getElementById('lote').disabled = false, document.getElementById('lote').focus());
@@ -178,6 +191,7 @@ const buscaInformacoesProduto = () => {
                 document.getElementById('CD1').innerHTML  = response.success.CD1;
                 document.getElementById('CD3').innerHTML  = response.success.CD3;
                 document.getElementById('codvol').innerHTML  = response.success.CODVOL;
+                document.getElementById('OBS').innerHTML  = response.success.OBSERVACAO;
 
 
                 //document.getElementById('total').textContent = response.success.qtdseparar;
@@ -190,9 +204,19 @@ const buscaInformacoesProduto = () => {
 
             if(response.success.PRIMEIRAENTRADACODVOL == 'S') {
 
-                document.getElementById('primeiraentrada').innerHTML ='<span style="color:red;">*PRIMEIRA ENTRADA DO FORNECEDOR: FAVOR SEPARAR</span>';
-
+                document.getElementById('primeiraentrada').innerHTML =
+    '<span style="color:red; font-weight:bold; font-size:18px;">*PRIMEIRA ENTRADA DO FORNECEDOR FAVOR PASSAR PARA RESPONSAVEL: (' +
+    response.success.USURESP +
+    ')</span>';
             }
+
+            if(response.success.QTDCD3 != 0) {
+
+                document.getElementById('CD3msg').innerHTML =
+    '<span style="color:red; font-weight:bold; font-size:18px;">*ITEM COM ESTOQUE NO CD3 , NÃO SEPARAR (' +
+    ')</span>';
+            }
+
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
@@ -201,6 +225,280 @@ const buscaInformacoesProduto = () => {
         }
     });   
 }
+
+
+
+const buscaInformacoesNota = () => {
+    const referencia = document.getElementById('referencia').value;
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            nunota: nunota,
+            route: 'buscaInformacoesNota'
+        },
+        success: function(response) {
+            if(response.success.conf !== 'N') {                
+                 document.getElementById('farol').style.display = 'none';
+                 
+            } 
+            
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });   
+}
+
+
+let stream;
+function abrirCamera() {
+    const popup = document.getElementById('popupCamera');
+    popup.style.display = 'flex';
+    
+    const video = document.getElementById('video');
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } } })
+
+        .then((mediaStream) => {
+            stream = mediaStream;
+            video.srcObject = mediaStream;
+        })
+        .catch((err) => {
+            alert('Erro ao acessar câmera: ' + err.message);
+        });
+}
+function tirarFoto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const container = document.getElementById('inputsContainer');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Converte para Base64 (PNG)
+    const imagemBase64 = canvas.toDataURL('image/png');
+
+    // Cria um input hidden (para enviar junto no form)
+    const inputHidden = document.createElement('input');
+    inputHidden.type = 'hidden';
+    inputHidden.name = 'imagensBase64[]';
+    inputHidden.value = imagemBase64.split(',')[1]; // só o base64 puro
+    container.appendChild(inputHidden);
+
+    // Mostra no preview
+    const previewDiv = document.querySelector('.preview') || criarPreviewContainer();
+    const imgPreview = document.createElement('img');
+    imgPreview.src = imagemBase64;
+    imgPreview.alt = 'Foto tirada';
+    previewDiv.appendChild(imgPreview);
+
+    alert('📸 Foto capturada com sucesso!');
+    fecharCamera();
+}   
+
+function fecharCamera() {
+    const popup = document.getElementById('popupCamera');
+    popup.style.display = 'none';
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+}
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('popupFotos');
+    const modalContent = modal.querySelector('.modal-content');
+    if (event.target === modal) fecharPopup();
+});
+
+function abrirPopup() {
+    document.getElementById('popupFotos').style.display = 'flex';
+}
+
+function fecharPopup() {
+    document.getElementById('popupFotos').style.display = 'none';
+    document.getElementById('inputsContainer').innerHTML = '<input type="file" name="imagens[]" class="imagemInput" accept="image/*" required>';
+    document.getElementById('resultado').innerHTML = '';
+}
+
+function initImageInputs() {
+    document.querySelectorAll('.imagemInput').forEach(input => {
+        input.removeEventListener('change', mostrarPreview);
+        input.addEventListener('change', mostrarPreview);
+    });
+}
+
+function adicionarInput() {
+    const container = document.getElementById('inputsContainer');
+    const wrapper = document.createElement('div');
+    wrapper.className = 'input-wrapper';
+
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.name = 'imagens[]';
+    input.className = 'imagemInput';
+    input.accept = 'image/*';
+    input.required = true;
+    input.addEventListener('change', mostrarPreview);
+
+    const btnRemove = document.createElement('button');
+    btnRemove.type = 'button';
+    btnRemove.textContent = '×';
+    btnRemove.style.marginLeft = '5px';
+    btnRemove.className = 'btn btn-danger btn-sm';
+    btnRemove.addEventListener('click', function() {
+        wrapper.remove();
+        mostrarPreview();
+    });
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(btnRemove);
+    container.appendChild(wrapper);
+    initImageInputs();
+}
+
+function mostrarPreview() {
+    const previewDiv = document.querySelector('.preview') || criarPreviewContainer();
+    previewDiv.innerHTML = '';
+    const inputs = document.querySelectorAll('.imagemInput');
+    inputs.forEach(input => {
+        if (input.files && input.files.length > 0) {
+            Array.from(input.files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = file.name;
+                    previewDiv.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    });
+}
+
+function criarPreviewContainer() {
+    const previewDiv = document.createElement('div');
+    previewDiv.classList.add('preview');
+    const inputsContainer = document.getElementById('inputsContainer');
+    inputsContainer.insertAdjacentElement('afterend', previewDiv);
+    return previewDiv;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initImageInputs();
+});
+async function enviarFotos() {
+    const inputs = document.querySelectorAll('.imagemInput');
+    const inputsBase64 = document.querySelectorAll('input[name="imagensBase64[]"]');
+
+    if (inputs.length === 0 && inputsBase64.length === 0) {
+        alert("Selecione ou tire ao menos uma imagem!");
+        return;
+    }
+
+    // 🔹 Envia arquivos escolhidos (um por um, mas de forma segura)
+    for (const input of inputs) {
+        if (input.files.length > 0) {
+            const file = input.files[0];
+            const base64 = await lerArquivoBase64(file);
+            await enviarAjax(base64);
+        }
+    }
+
+    // 🔹 Envia fotos tiradas pela câmera
+    for (const hidden of inputsBase64) {
+        await enviarAjax(hidden.value);
+    }
+
+    alert('✅ Todas as imagens foram enviadas com sucesso!');
+    fecharPopup();
+}
+
+// Lê arquivo como base64 e aguarda o resultado
+function lerArquivoBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result.split(',')[1]);
+        reader.onerror = e => reject(e);
+        reader.readAsDataURL(file);
+    });
+}
+
+// Envia uma imagem por vez via AJAX
+function enviarAjax(imgBase64) {
+
+    const codprod = document.getElementById('referencia').value;
+
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            method: 'POST',
+            url: '../routes/routes.php',
+            dataType: 'json',
+            timeout: 0, // 🔹 sem limite de tempo
+            data: {
+                nunota: nunota,
+                imagens: imgBase64,
+                codprod: codprod,
+                route: 'enviarFotos'
+            },
+            success: function(response) {
+                console.log(response);
+                // document.getElementById('imagemprodutom').src = 'data:image/jpeg;base64,' + response.success;
+                if (response.success) {
+                    console.log('Imagem enviada:', response.success.msg);
+                    resolve();
+                } else {
+                    alert('Erro: ' + response.error);
+                    reject(response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Erro na requisição AJAX: ' + error);
+                reject(error);
+            }
+        });
+    });
+}
+
+
+
+function carregarImagem(nunota) {
+    $.ajax({
+        method: 'POST',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        data: {
+            nunota: nunota,
+            route: 'buscarImagem'
+        },
+        success: function(response) {
+            if (response.success && response.imagem) {
+                var imgSrc = 'data:image/jpeg;base64,' + response.imagem;
+                document.getElementById('imagemPreview').src = imgSrc;
+            } else {
+                alert(response.error || 'Imagem não encontrada.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); // mostra o que o PHP realmente retornou
+            alert('Erro ao buscar imagem: ' + error);
+        }
+    });
+}
+
 
 const atualizarDimensoes = () => {
     const referencia = document.getElementById('referencia').value;
@@ -302,8 +600,9 @@ const atualizaContagem = (qtdcont) => {
             tipo : tipo,    
             codbalanca: codbalanca,
             qtdcont: qtdcont,
-            lote: lote,
             qtdseparar: qtdseparar,
+            qtdseparar: qtdseparar,
+            lote: lote,
             route: 'atualizarContagem'
         },
         success: function(response) {
@@ -394,6 +693,8 @@ const verificaRecontagem = () => {
     }
 }
 
+
+
 const abrirPopAutorizaTrava = () => {
     $.ajax({
         type: 'GET',
@@ -421,6 +722,164 @@ const abrirPopAutorizaTrava = () => {
     document.getElementById('popAutorizaTrava').classList.toggle("active");
     document.getElementById('user').value = '';
     document.getElementById('senha').value = '';
+}
+
+
+
+const autorizaTravaCodbar = () => {
+
+
+    let user = document.getElementById('user3').value;
+    let senha = document.getElementById('senha3').value;
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            user: user,
+            senha: senha,
+            route: 'autorizatrava'
+        },
+        success: function(response) {
+           console.log(response);
+            if(response.success.msg == 'erro') {
+                alert('Não foi possível autorizar.');
+            } else {
+                
+                 document.getElementById('popAutorizaTravaCodBar').classList.remove("active");
+                
+                tiraTravaCodbar();
+            }
+        }
+    });
+}
+
+
+
+const tiraTravaCodbar = () => {
+    
+
+    $.ajax({
+        method: 'POST',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            nunota: nunota,
+            tipo : tipo,    
+            route: 'tiraTravaCodbar'
+        },
+         success: function(response) {
+           
+            window.alert("APP: Nota liberada! Favor preencher quantidade contada novamente")
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });   
+}
+
+
+const abrirPopAutorizaTravaCodbar = () => {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        beforeSend: function() { 
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            nunota: nunota,
+            route: 'retornaMsgEntrada'
+        },
+        success: function(response) {
+
+            document.getElementById("msgEntrada").textContent = document.getElementById("msgEntrada").textContent + response.success;
+
+                                                                                  
+        }
+    });
+
+
+
+    document.getElementById('popAutorizaTravaCodBar').classList.toggle("active");
+    document.getElementById('user').value = '';
+    document.getElementById('senha').value = '';
+}
+
+
+
+const abrirPopAutorizaEntrada = () => {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+            nunota: nunota,
+            route: 'retornaMsgEntrada'
+        },
+        success: function(response) {
+
+            document.getElementById("msgEntrada").textContent = document.getElementById("msgEntrada").textContent + response.success;
+
+                                                                                  
+        }
+    });
+
+
+
+    document.getElementById('popAutorizaEntrada').classList.toggle("active");
+    document.getElementById('user').value = '';
+    document.getElementById('senha').value = '';
+}
+
+
+
+
+
+const abrirPopEstoqueInsuficiente = () => {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+            nunota: nunota,
+            route: 'retornaMsgEstoqueInsuficiente'
+        },
+        success: function(response) {
+            document.getElementById("msgEntrada2").textContent = document.getElementById("msgEntrada2").textContent + response.success;
+        }
+    });
+
+    document.getElementById('popEstoqueInsuficiente').classList.toggle("active");
 }
 
 const abrirPopQtdContada = () => {
@@ -455,7 +914,10 @@ const abrirPopQtdContada = () => {
 
 function fecharPopAutorizaContagem() {
     document.getElementById("popAutorizaTrava").classList.remove("active");
+    document.getElementById("popAutorizaEntrada").classList.remove("active");
     document.getElementById("popQtdContada").classList.remove("active");
+    document.getElementById("popEstoqueInsuficiente").classList.remove("active");
+
 
 }
 
@@ -493,6 +955,39 @@ const autorizaTrava = () => {
 }
 
 
+const autorizatravaEntrada = () => {
+
+
+    let user = document.getElementById('user2').value;
+    let senha = document.getElementById('senha2').value;
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '../routes/routes.php',
+        // beforeSend: function() {
+        //     $("#loader").show();
+        // },
+        // complete: function() {
+        //     $("#loader").hide();
+        // },
+        data: {
+            user: user,
+            senha: senha,
+            route: 'autorizatravaEntrada'
+        },
+        success: function(response) {
+           console.log(response);
+            if(response.success.msg == 'erro') {
+                alert('Não foi possível autorizar.');
+            } else {
+               verificaQtdSeparar();
+                //finalizarContagem();
+            }
+        }
+    });
+}
+
+
 
 const verificaFinalizaContagem = () => {
     
@@ -515,6 +1010,12 @@ const verificaFinalizaContagem = () => {
          success: function(response) {
             if(response.success.msg == 'senha') {
                 abrirPopAutorizaTrava();                        
+            } 
+            else if(response.success.msg == 'PRIMEIRAENTRADA') {
+                abrirPopAutorizaEntrada();                        
+             } 
+             else if(response.success.msg == 'estoque') {
+                abrirPopEstoqueInsuficiente();                        
             } 
             else  {
                  verificaQtdSeparar() ;
@@ -551,6 +1052,8 @@ function verificaQtdSeparar()  {
             route: 'verificaQtdSeparar'
         },
          success: function(response) {
+              qtdgondolasep = response.success.qtdgondola;           
+
             if(response.success.codemp == '3' && tipo == 'O' && response.success.qtdgondola != 0 ) {
                
                 $('#popupConfirmacao').find('.mensagem-qtd').remove(); // Remove mensagem anterior, se existir
@@ -562,7 +1065,7 @@ function verificaQtdSeparar()  {
                 
                   $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSeparar">Palete CD3 Emp.3:</label>
+                    <label for="inputQtdSeparar">5980303 Palete CD3 Emp.3:</label>
                     <input 
                         type="number" 
                         id="inputQtdSeparar" 
@@ -572,11 +1075,21 @@ function verificaQtdSeparar()  {
                 </div>
 
                  <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto"> Palete CD5 Emp.3:</label>
+                    <label for="inputQtdSepararResto">5980305 Palete CD5 Emp.3:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
                         placeholder="${response.success.qtdresto}" 
+                        style="margin-left: 10px; padding: 5px; width: 100px;" 
+                    />
+                </div>
+
+                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
+                    <label for="inputQtdSepararGondola">5980199 Palete Gondola:</label>
+                    <input 
+                        type="number" 
+                        id="inputQtdSepararGondola" 
+                        placeholder="${response.success.qtdgondola}" 
                         style="margin-left: 10px; padding: 5px; width: 100px;" 
                     />
                 </div>
@@ -589,8 +1102,10 @@ function verificaQtdSeparar()  {
                 $('#btnSim').off('click').on('click', function () {
                 const qtdseparar = $('#inputQtdSeparar').val(); // <-- valor digitado
                 const qtdResto = $('#inputQtdSepararResto').val(); // <-- valor digitado
+                const qtdgondola = $('#inputQtdSepararGondola').val(); // <-- valor digitado
+
                     $('#overlay, #popupConfirmacao').hide();
-                   finalizarContagemSeparar(qtdseparar,qtdResto,0,0,0,response.success.qtdcont);
+                   finalizarContagemSeparar(qtdseparar,qtdResto,qtdgondola,0,0,response.success.qtdcont);
                 });
                             
             } 
@@ -604,7 +1119,7 @@ function verificaQtdSeparar()  {
                 
                   $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSeparar">Palete CD3 Emp.3:</label>
+                    <label for="inputQtdSeparar">5980303 Palete CD3 Emp.3:</label>
                     <input 
                         type="number" 
                         id="inputQtdSeparar" 
@@ -614,7 +1129,7 @@ function verificaQtdSeparar()  {
                 </div>
 
                  <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto"> Palete CD5 Emp.3:</label>
+                    <label for="inputQtdSepararResto">5980305 Palete CD5 Emp.3:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
@@ -652,7 +1167,7 @@ function verificaQtdSeparar()  {
 
                   $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto">Palete CD5 Emp.1:</label>
+                    <label for="inputQtdSepararResto">5980105 Palete CD5 Emp.1:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
@@ -662,7 +1177,7 @@ function verificaQtdSeparar()  {
                 </div>
 
                  <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararGondola">Palete Gondola:</label>
+                    <label for="inputQtdSepararGondola">5980199 Palete Gondola:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararGondola" 
@@ -692,7 +1207,7 @@ function verificaQtdSeparar()  {
 
             $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto">Palete CD5 Emp.1:</label>
+                    <label for="inputQtdSepararResto">5980105 Palete CD5 Emp.1:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
@@ -720,7 +1235,7 @@ function verificaQtdSeparar()  {
                
                    $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto">Palete CD5 Emp.10:</label>
+                    <label for="inputQtdSepararResto">5981005 Palete CD5 Emp.10:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
@@ -730,7 +1245,7 @@ function verificaQtdSeparar()  {
                 </div>
 
                  <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararQtdgondola">Palete Gondola:</label>
+                    <label for="inputQtdSepararQtdgondola">5980199 Palete Gondola:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararQtdgondola" 
@@ -760,7 +1275,7 @@ function verificaQtdSeparar()  {
 
                    $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto">Palete CD5 Emp.10:</label>
+                    <label for="inputQtdSepararResto">5981005 Palete CD5 Emp.10:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
@@ -794,7 +1309,7 @@ function verificaQtdSeparar()  {
 
                     $('#popupConfirmacao').prepend(`
                 <div class="mensagem-qtd" style="margin-bottom: 10px;">
-                    <label for="inputQtdSepararResto">Palete CD5 Emp.1:</label>
+                    <label for="inputQtdSepararResto">5980105 Palete CD5 Emp.1:</label>
                     <input 
                         type="number" 
                         id="inputQtdSepararResto" 
@@ -879,6 +1394,25 @@ function verificaQtdSeparar()  {
         verificaQtdSeparar();
         return;
      }
+
+        
+    if (qtdgondolasep != 0 && qtdgondolasep < Number(document.getElementById("inputQtdSepararGondola").value) && tipo == 'O')  
+       {
+
+        window.alert("APP: Quantidade da gondola maior do que o que cabe, digitar menos ou a quantidade recomendada!!");
+        verificaQtdSeparar();
+        return;
+        
+       } 
+    //    if (Number(QTDGONDOLA) > Number(document.getElementById("inputQtdSepararGondola").value)) 
+    //    {
+
+    //     window.alert("APP: Quantidade da gondola maior do que o que cabe, digitar menos ou a quantidade recomendada!!");
+    //     verificaQtdSeparar();
+    //     return;
+        
+    //    }
+
     
     $.ajax({
          method: 'POST',

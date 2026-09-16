@@ -489,7 +489,7 @@ function verificaGerente ($conn, $codusu) {
         $params = array($codusu);
         $tsql = "select CODUSU
                  from tsiusu 
-                 where codusu in (4046,3,1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100,30,3564,135,3327, 691)
+                 where codusu in (3813,89,3308,4046,3,1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100,30,3564,135, 691,135)
                    and codusu = ?";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);

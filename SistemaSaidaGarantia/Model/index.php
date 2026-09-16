@@ -4,7 +4,21 @@
 function buscaItensGarantia($conn)
 {
     try {
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_SAIDA_GARANTIA]()";
+        $tsql = "SELECT 
+    REFERENCIA,
+    QTD,
+    CODEMP,
+    CONVERT(VARCHAR(10), DATA, 103) AS DATA_FORMATADA,
+    CODUSU,
+    nomeusu,
+    DESCRPROD,
+    CODLOCAL
+    FROM [AD_FNT_LISTA_ITENS_SAIDA_GARANTIA]()
+   
+
+    ORDER BY DATA,codusu DESC;
+
+            ";
         $stmt = sqlsrv_query($conn, $tsql); 
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
@@ -15,10 +29,16 @@ function buscaItensGarantia($conn)
             $action = '';
             $tipoText = '';
 
+            
+            
             $tableHtml .= '<td><input type="checkbox" id="check" class="linha-checkbox"></td>' ; 
            $tableHtml .= '<td class="referencia">' . $row['REFERENCIA'] . '</td>';
+           $tableHtml .= '<td>' . $row['DESCRPROD'] . '</td>';
             $tableHtml .= '<td>' . $row['QTD'] . '</td>';
             $tableHtml .= '<td>' . $row['CODEMP'] . '</td>';
+            $tableHtml .= '<td>' . $row['DATA_FORMATADA'] . '</td>';
+            $tableHtml .= '<td>' . $row['CODUSU'] . '</td>';
+            $tableHtml .= '<td>' . $row['nomeusu'] . '</td>';
             $tableHtml .= '<td>' . $row['CODLOCAL'] . '</td>';
             $tableHtml .= '</tr>';
         }

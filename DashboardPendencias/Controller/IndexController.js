@@ -44,7 +44,7 @@ const recarregarPagina = () => {
     location.reload();
 }
 
-setTimeout(recarregarPagina, 15000);
+setTimeout(recarregarPagina, 30000);
 
 const buscaPendencias = (nunota, codparc, codemp, referencia) => {
     // Salva os filtros antes de buscar

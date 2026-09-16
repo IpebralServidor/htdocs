@@ -18,6 +18,8 @@ function buscaItensContagem($conn, $nunota, $tipo, $codusu)
             $tableHtml .= '<td>' . $row['CONTROLE'] . '</td>';  
             $tableHtml .= "<td>" . $row['QTDCONT'] . '</td>';
             $tableHtml .= "<td><i class='btnLupa fa-solid fa-magnifying-glass' onclick='mostraContagens(". $row['NUCONTITE'] . ")'></i></td>";
+            $tableHtml .= "<td style='color:red;'>" . $row['USURESP'] . "</td>";
+
             $tableHtml .= '</tr>';
             $progressBar = $row['PROGRESS_BAR'];
         }
@@ -48,11 +50,15 @@ function buscaInformacoesProduto($conn,$nunota,$referencia,$tipo)
        
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
-        if (!isset($row['CODPROD'])) {
+        // if (!isset($row['CODPROD'])) {
             
-            throw new Exception('APP: Produto não existe nessa nota.');
+        //     throw new Exception('APP: Produto não existe nessa nota.');
         
-         }
+        //  }
+
+         IF ($row['LIBERATRAVA'] == null && $row['CODBARRA'] == null && $tipo == 'N'){
+                throw new Exception('Item sem código de barra, favor solicitar liberação para o responsável.');
+                }
 
        
          $response = [
@@ -72,7 +78,10 @@ function buscaInformacoesProduto($conn,$nunota,$referencia,$tipo)
                 'CD1' => $row['CD1'],
                 'CD3' => $row['CD3'],
                 'CODVOL' => $row['CODVOL'],
-                'PRIMEIRAENTRADACODVOL' => $row['PRIMEIRAENTRADA']
+                'PRIMEIRAENTRADACODVOL' => $row['PRIMEIRAENTRADA'],
+                'USURESP' => $row['USURESP'],
+                'QTDCD3' => $row['QTDCD3'],
+                // 'OBSERVACAO' => $row['OBSERVACAO']
 
 
 
@@ -153,24 +162,24 @@ function desabilitaFinalizaCont($conn,$nunota)
         $tsql = "
        DECLARE @NUNOTA INT = ?
 
-	IF (SELECT TOP 1 TIPO FROM AD_TGFCONTCAB WHERE NUNOTA  = @NUNOTA) = 'N'
-	BEGIN 
-	
-	SELECT 0  as CODPROD
+        IF (SELECT TOP 1 TIPO FROM AD_TGFCONTCAB WHERE NUNOTA  = @NUNOTA) = 'N'
+        BEGIN 
+        
+        SELECT 0  as CODPROD
 
-	END ELSE
-	BEGIN
+        END ELSE
+        BEGIN
 
-       SELECT count(CODPROD) AS CODPROD
-		FROM ad_tgfcontite ite INNER JOIN
-			 ad_tgfcontcab cab ON cab.nucont = ite.nucont
-		WHERE qtdcont IS null 
-		  AND nunota = @NUNOTA
-		  AND cab.nucont = (SELECT MAX(nucont)
-						FROM sankhya.AD_TGFCONTCAB
-						WHERE nunota = @NUNOTA)
+        SELECT count(CODPROD) AS CODPROD
+            FROM ad_tgfcontite ite INNER JOIN
+                ad_tgfcontcab cab ON cab.nucont = ite.nucont
+            WHERE qtdcont IS null 
+            AND nunota = @NUNOTA
+            AND cab.nucont = (SELECT MAX(nucont)
+                            FROM sankhya.AD_TGFCONTCAB
+                            WHERE nunota = @NUNOTA)
 
-	END
+        END
         ";
 
         $stmt = sqlsrv_query($conn, $tsql, $params);
@@ -202,15 +211,15 @@ function desabilitaFinalizaCont($conn,$nunota)
 function atualizarContagem($conn,$referencia,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar,$codusu)
 {
     try {
-        $params = array($referencia,$referencia,$referencia,$referencia,$tipo ,$nunota,$tipo,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar,$codusu);
+        $params = array($referencia,$referencia,$referencia,$referencia,$tipo ,$nunota,$tipo,$nunota,$nunota,$tipo,$codbalanca,$qtdcont, $lote,$qtdseparar,$codusu);
         $tsql = "
         DECLARE @CODPROD INT = (SELECT top 1 TGFPRO.CODPROD 
                                     FROM TGFPRO LEFT JOIN 
                                         TGFBAR ON TGFBAR.CODPROD = TGFPRO.CODPROD left join
                                         tgfpap on tgfpap.codprod = tgfpro.codprod
                                     WHERE (REFERENCIA = ? OR TGFBAR.CODBARRA = ? or tgfpap.codbarra = ? or tgfpap.codproparc = ?)
-                         			 AND (? = 'N' AND EXISTS (SELECT 1 FROM tgfite WHERE nunota = ? AND codprod = TGFPRO.CODPROD) OR ? = 'O')
-
+                         			 AND (? = 'N' AND EXISTS (SELECT 1 FROM tgfite WHERE nunota = ? AND codprod = TGFPRO.CODPROD) OR (? = 'O' AND tgfpro.codprod = 
+																																		(SELECT codprodpa FROM tpripa WHERE idiproc= ?) ))
                                     )
           DECLARE @NUNOTA INT  = ?,
 		  @TIPO VARCHAR(1) = ?,
@@ -370,7 +379,7 @@ function autorizatrava($conn,$user,$senha)
     try {
         $msg = '';
         $params = array($user, $senha);            
-        $tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND CODUSU IN (4046,3,1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100,30,3564)";
+        $tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND CODUSU IN (4046,3,1696, 32, 3195, 692, 3266, 42, 4418, 181, 694, 7257, 100,30,3564,135,89,3813)";
         $stmtAutorizaCorte = sqlsrv_query($conn, $tsqlAutorizaCorte, $params);
         
         $row = sqlsrv_fetch_array($stmtAutorizaCorte, SQLSRV_FETCH_NUMERIC);                
@@ -394,6 +403,69 @@ function autorizatrava($conn,$user,$senha)
     }
 }
 
+
+
+function tiraTravaCodbar($conn,$nunota,$tipo, $codusu)
+{
+    try {
+        $msg = '';
+        $params = array($nunota,$tipo, $codusu);
+        $tsql = "UPDATE AD_TGFCONTCAB SET LIBERATRAVA = 'S' WHERE NUNOTA = ?";
+            
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        
+
+        if ($stmt === false) {
+            $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
+            if ($errors !== null) {
+                foreach ($errors as $error) {
+                    $errorMessage = $error['message'];       
+                    $msg = preg_replace('/\[[^\]]*\]/', '', $errorMessage);
+                }
+            }
+        }
+
+        $response = [
+            'success' => [
+               'msg' => $msg
+            ]
+        ];
+
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+
+function autorizatravaEntrada($conn,$user,$senha)
+{
+    try {
+        $msg = '';
+        $params = array($user, $senha);            
+        $tsqlAutorizaCorte = "SELECT CODUSU FROM TSIUSU WHERE NOMEUSU = ? AND AD_SENHA = ? AND CODUSU IN ( 3266,168,41,3445,25,134,14805,3367)";
+        $stmtAutorizaCorte = sqlsrv_query($conn, $tsqlAutorizaCorte, $params);
+        
+        $row = sqlsrv_fetch_array($stmtAutorizaCorte, SQLSRV_FETCH_NUMERIC);                
+
+        if (isset($row[0])) {
+            $msg = 'sucess';
+        } else {
+            $msg = 'erro';
+        }        
+        
+        $response = [
+            'success' => [
+               'msg' => $msg
+            ]
+        ];
+   
+        
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
 
 
 function verificaFinalizaContagem($conn,$nunota,$tipo, $codusu)
@@ -616,14 +688,16 @@ function mostraContagens ($conn, $nucontite) {
 function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$tipo, $lote, $qtdseparar,$codusu)
 {
     try {
-        $params = array($referencia, $referencia,$referencia,$referencia, $tipo,$nunota,$tipo , $nunota, $qtdcont, $tipo, $lote, $codbalanca, $codbalanca);
+        $params = array($referencia,$referencia, $referencia,$referencia,$referencia, $tipo,$nunota,$tipo , $nunota,$nunota, $qtdcont, $tipo, $lote, $codbalanca, $codbalanca);
         $tsql = "
+        DECLARE @REFERENCIA VARCHAR(100) = ?
             DECLARE @CODPROD INT =  (SELECT top 1 TGFPRO.CODPROD 
                                     FROM TGFPRO LEFT JOIN 
                                         TGFBAR ON TGFBAR.CODPROD = TGFPRO.CODPROD left join
                                         tgfpap on tgfpap.codprod = tgfpro.codprod
                                     WHERE (REFERENCIA = ? OR TGFBAR.CODBARRA = ? or tgfpap.codbarra = ? or tgfpap.codproparc = ?)
-                                     AND (?= 'N' AND EXISTS (SELECT 1 FROM tgfite WHERE nunota = ? AND codprod = tgfpro.CODPROD) OR ? = 'O')
+                                     AND (?= 'N' AND EXISTS (SELECT 1 FROM tgfite WHERE nunota = ? AND codprod = tgfpro.CODPROD) OR (? = 'O' AND tgfpro.codprod = 
+																																		(SELECT codprodpa FROM tpripa WHERE idiproc= ?) ))
                                     )
             DECLARE @NUNOTA INT = ? ,
                     @QTDCONT FLOAT  = ? ,
@@ -641,8 +715,12 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
             IF(@TIPO = 'N')
             BEGIN
                 SELECT sum(ITE.QTDNEG) as QTDNEG,
-                    ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA
-                FROM TGFITE ITE INNER JOIN
+                    ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA,
+                     ISNULL((select top 1 NUNOTA FROM SANKHYA_FOTOS.dbo.AD_IMAGEMCONTAGEM WHERE NUNOTA = @nunota AND CODPROD = @REFERENCIA ),0) AS FOTO,
+                       (SELECT isnull(LIBERATRAVA,'N') FROM AD_TGFCONTCAB WHERE NUCONT = @NUCONT) AS LIBERATRAVA,
+                    (SELECT TOP 1 isnull(codbarra,'N') FROM tgfbar WHERE codbarra <> @referencia AND codprod = @codprod) as CODBARRA
+              
+                     FROM TGFITE ITE INNER JOIN
                      TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
                 WHERE ITE.NUNOTA = @NUNOTA
                   AND ITE.CODPROD = @CODPROD
@@ -655,7 +733,10 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
                                                                                     WHERE NUNOTA = @NUNOTA
                                                                                     AND TIPO = 'O'
                                                                                     AND STATUS = 'A'))) as QTDNEG,
-                       ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA
+                       ISNULL((SELECT 1 FROM AD_TGFBALANCA WHERE CODBALANCA = ?),0) AS CODBALANCA,
+                       null as FOTO,
+                        (SELECT LIBERATRAVA FROM AD_TGFCONTCAB WHERE NUCONT = @NUCONT) AS LIBERATRAVA,
+                        (SELECT TOP 1 codbarra FROM tgfbar WHERE codbarra not like @referencia + '%'  AND codprod = @codprod) as CODBARRA
                 FROM TPRIPA INNER join
                     TPRIPROC ON TPRIPA.idiproc = TPRIPROC.IDIPROC  inner join
                     TGFPRO PRO ON PRO.CODPROD = TPRIPA.CODPRODPA  INNER JOIN
@@ -676,12 +757,19 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-        if (isset($row['QTDNEG'])) {
+        if (!empty($row['QTDNEG'])) {
             $tolerance = 0.000001;
             if ($qtdcont > $row['QTDNEG'] && $tipo == 'O'){
                 throw new Exception('APP: Contagem acima do esperado! Verifique com gerente se já existem apontamentos pra essa op!');
             }
-            // else if ($qtdcont > $row['QTDNEG'] && $tipo == 'N'){
+
+            if ($row['FOTO'] == 0 && $tipo == 'N' ){
+                throw new Exception('APP: É obrigatório o envio de foto para realizar a contagem!');
+            }
+             IF ($row['LIBERATRAVA'] == null && $row['CODBARRA'] == null && $tipo == 'N'){
+                throw new Exception('CODBARRA');
+                }
+            //  if ($qtdcont > $row['QTDNEG'] && $tipo == 'N'){
             //     throw new Exception('APP: Contagem acima do esperado! Verifique com gerente');
             // } 
             
@@ -793,7 +881,6 @@ function verificaRecontagem($conn, $nunota, $referencia, $qtdcont, $codbalanca,$
 
 
 
-
 function retornaQtdContada ($conn,$nunota) {
     try {
         $params = array($nunota);
@@ -836,6 +923,79 @@ function retornaQtdContada ($conn,$nunota) {
 
 
 
+function retornaMsgEntrada ($conn,$nunota) {
+    try {
+        $params = array($nunota);
+        $tsql = "
+                DECLARE @NUNOTA INT = ?        
+
+                 select NOMEUSU 
+                 from tsiusu
+                 where codusu = (select top 1 AD_RESPONSAVEL1ENTRADA from tgfite where nunota = @NUNOTA and AD_RESPONSAVEL1ENTRADA is not null)  
+                ";
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        if ($stmt === false) {
+            throw new Exception('Erro na consulta.');
+        }
+        
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        echo json_encode([
+            'success' => 'Ligar para responsável: '. $row['NOMEUSU'] 
+        ]);
+
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+
+
+
+
+function retornaMsgEstoqueInsuficiente ($conn,$nunota) {
+    try {
+        $params = array($nunota);
+        $tsql = "
+                
+                DECLARE @NUNOTA INT = @NUNOTA    
+
+                DECLARE @CODPRC INT = (SELECT CODPLP FROM TPRIPROC WHERE IDIPROC = @nunota)
+                DECLARE @CODPRODPA INT = (SELECT CODPRODPA FROM TPRIPA WHERE IDIPROC = @nunota)
+                DECLARE @codempformula INT = (SELECT TOP 1 AD_CODEMP FROM TPRPRC WHERE CODPRC = @CODPRC)
+                DECLARE @QTDCONT FLOAT = (SELECT QTDCONT FROM AD_TGFCONTITE WHERE NUCONT = (SELECT NUCONT FROM AD_TGFCONTCAB WHERE NUNOTA = @NUNOTA))
+                 	 
+                SELECT STRING_AGG(referencia, ',') AS REFERENCIA
+                FROM tgfpro 
+                INNER JOIN tgfest 
+                    ON tgfest.codprod = tgfpro.codprod 
+                INNER JOIN AD_FORMULAS_PRODUCAO_W f 
+                    ON f.codprodmp = tgfest.codprod 
+                WHERE CODLOCAL = 5000000
+                    AND CODPARC = 0 
+                    AND CODEMP = @codempformula
+                    AND f.codprodpa = @CODPRODPA 
+                    AND F.CODPRC = @CODPRC
+                    AND TGFEST.ESTOQUE < F.QTDMISTURA * @QTDCONT
+                    AND tgfpro.DESCRPROD NOT LIKE '%smk%'
+                    
+                "; 
+
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        if ($stmt === false) {
+            throw new Exception('Erro na consulta.');
+        }
+        
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        echo json_encode([
+            'success' => 'Itens: '. $row['REFERENCIA'] 
+        ]);
+
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
 
 function verificaQtdSeparar ($conn, $nunota,$tipo) {
     try {
@@ -894,6 +1054,79 @@ function verificaQtdSeparar ($conn, $nunota,$tipo) {
         ];
         
         echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+
+function buscaInformacoesNota($conn,$nunota)
+{
+    try {
+        $params = array($nunota);
+        $tsql = "
+        SELECT * FROM [sankhya].[AD_FNT_BUSCA_INFO_NOTA_ENTRADA_APP] (?) 
+        ";
+
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+
+        if ($stmt === false) {
+            throw new Exception('Erro ao executar a consulta SQL.');
+        }
+
+       
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+      
+
+       
+         $response = [
+            'success' => [
+                'conf' => $row['CONF']
+
+
+            ]
+        ];
+        
+
+        echo json_encode($response);
+    } catch (Exception $e) {
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+}
+
+
+   
+function enviarFotos($conn, $nunota, $codusu, $codprod ,$imagens_base64) {
+    ob_clean();
+
+    try {
+        // Converte Base64 para binário
+        $binario = base64_decode($imagens_base64);
+
+        $tsql = " SET IDENTITY_INSERT sankhya_fotos.dbo.AD_IMAGEMCONTAGEM ON;
+
+                INSERT INTO sankhya_fotos.dbo.AD_IMAGEMCONTAGEM (CODIMG, NUNOTA, CODUSU, CODPROD,IMG, DTUPLOAD)
+                VALUES ((SELECT ISNULL(MAX(CODIMG),0)+1 FROM sankhya_fotos.dbo.AD_IMAGEMCONTAGEM), ?, ?, ?,?, GETDATE());
+
+                SET IDENTITY_INSERT sankhya_fotos.dbo.AD_IMAGEMCONTAGEM OFF;
+";
+        $params = array( $nunota, $codusu,$codprod,$binario);
+
+        $stmt = sqlsrv_query($conn, $tsql, $params);
+        if ($stmt === false) {
+            $errors = sqlsrv_errors();
+            throw new Exception(print_r($errors, true));
+        }
+        // $tsql2 = "SELECT top 1 IMG FROM AD_ADADIMAGEMCONTAGEM WHERE NUNOTA = 3 AND CODUSU = 3";
+        // $stmt2 = sqlsrv_query($conn, $tsql2);
+        // // $result = gzinflate($binario_comprimido);
+        // $row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC);
+        echo json_encode([
+            // 'success' => base64_encode($row2['IMG'])
+            'success' => 'Imagens Enviadas com sucesso!'
+                        ]);
+
     } catch (Exception $e) {
         echo json_encode(['error' => $e->getMessage()]);
     }
