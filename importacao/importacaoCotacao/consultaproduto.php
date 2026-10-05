@@ -7,7 +7,7 @@ $nuimportacao = $_SESSION['nuimportacao'];
 
 $params = array($codprod,$nuimportacao);
 
-$tsql = "SELECT * FROM [sankhya].[AD_FNT_ConsultaProduto_ConsultaEstoque_COTACAO](?,?)";
+$tsql = "SELECT * FROM [sankhya].[AD_FNT_ConsultaProduto_ConsultaEstoque_COTACAO_COMPRAS](?,?)";
 
 $stmt = sqlsrv_query($conn, $tsql, $params);
 $returnArray = '';

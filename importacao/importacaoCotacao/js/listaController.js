@@ -171,23 +171,23 @@ function atualizarContadorItens() {
     });
 }
 
-document.addEventListener("keydown", function(e) {
-    // Só intercepta se a tecla for Enter
-    if (e.key === "Enter") {
-        let ativo = document.activeElement;
+// document.addEventListener("keydown", function(e) {
+//     // Só intercepta se a tecla for Enter
+//     if (e.key === "Enter") {
+//         let ativo = document.activeElement;
 
-        // Verifica se o foco está em um input de quantidade
-        if (ativo && ativo.classList.contains("quantidade")) {
-            e.preventDefault(); // impede o Enter normal (ex: submit)
+//         // Verifica se o foco está em um input de quantidade
+//         if (ativo && ativo.classList.contains("quantidade")) {
+//             e.preventDefault(); // impede o Enter normal (ex: submit)
 
-            // Move o foco para o próximo elemento
-            let inputs = Array.from(document.querySelectorAll("input, select, textarea, button"));
-            let index = inputs.indexOf(ativo);
-            if (index > -1 && index < inputs.length - 1) {
-                let proximo = inputs[index + 1];
-                proximo.focus(); //foca no conteúdo
-                proximo.select(); // já seleciona o conteúdo
-            }
-        }
-    }
-});
+//             // Move o foco para o próximo elemento
+//             let inputs = Array.from(document.querySelectorAll("input, select, textarea, button"));
+//             let index = inputs.indexOf(ativo);
+//             if (index > -1 && index < inputs.length - 1) {
+//                 let proximo = inputs[index + 1];
+//                 proximo.focus(); //foca no conteúdo
+//                 proximo.select(); // já seleciona o conteúdo
+//             }
+//         }
+//     }
+// });
