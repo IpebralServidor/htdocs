@@ -7,7 +7,8 @@ include "../../conexaophp.php";
 
 // Caminho do script Python responsavel por ler o PDF e devolver o JSON.
 // Ajuste se o python3 do servidor nao estiver no PATH (ex: '/usr/bin/python3').
-$pythonBin    = 'C:\Users\leand\AppData\Local\Programs\Python\Python313\python.exe';//'python3';
+//$pythonBin    = 'C:\Users\leand\AppData\Local\Programs\Python\Python313\python.exe';//'python3';
+$pythonBin = 'C:\Program Files\Python314\python.exe';
 $scriptPython = __DIR__ . '/scripts/parse_unimed.py';
 
 // Converte UTF-8 para Windows-1252 (padrão SQL Server VARCHAR)
@@ -52,8 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $tipoArquivo = $_POST['tipoArquivo'] ?? null;
 
+        // Empresa (Ipebral / Mecontech) - valida contra a lista permitida
+        $empresasPermitidas = ['IPEBRAL', 'MECONTECH'];
+        $empresa = strtoupper(trim($_POST['empresa'] ?? ''));
+        if (!in_array($empresa, $empresasPermitidas, true)) {
+            die("ERRO: Empresa invalida ou nao informada.");
+        }
+
         // ---- 1) Chama o Python para extrair os dados do PDF ----
-        $comando = escapeshellcmd($pythonBin) . ' ' . escapeshellarg($scriptPython) . ' ' . escapeshellarg($uploadFilePath);
+        //$comando = escapeshellcmd($pythonBin) . ' ' . escapeshellarg($scriptPython) . ' ' . escapeshellarg($uploadFilePath);
+        $comando = escapeshellarg($pythonBin) . ' ' . escapeshellarg($scriptPython) . ' ' . escapeshellarg($uploadFilePath);
         $saidaPython = shell_exec($comando . ' 2>&1');
 
         $dadosExtraidos = json_decode($saidaPython, true);
@@ -89,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $sqlBeneficiario = "INSERT INTO AD_UNIMED_BENEFICIARIO
             (NOTAFISCAL, CODIGO, NOME, DATANASC, DATAINCL, FAIXAETARIA, CONTRATOREF,
-             VALOR, DESCONTO, CREDITO, DEBITO, TOTAL, TITULAR, CODIGOTITULAR, TIPOARQUIVO)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+             VALOR, DESCONTO, CREDITO, DEBITO, TOTAL, TITULAR, CODIGOTITULAR, TIPOARQUIVO, EMPRESA)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         foreach ($beneficiarios as $b) {
             $paramsBeneficiario = [
@@ -109,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $b['eh_titular'] ? 1 : 0,
                 $b['codigo_titular'],
                 $tipoArquivo,
+                $empresa,
             ];
 
             $stmtBeneficiario = sqlsrv_query($conn, $sqlBeneficiario, $paramsBeneficiario);
@@ -129,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // ---- 3) Mensagem de retorno ----
         $mensagem = "Fatura importada com sucesso!\n"
+            . "Empresa: " . $empresa . "\n"
             . "Cliente: " . $header['cliente'] . "\n"
             . "NFS-e: " . $header['nota_fiscal'] . " | Competencia: " . $header['competencia'] . "\n"
             . "Beneficiarios gravados: " . count($beneficiarios) . "\n"

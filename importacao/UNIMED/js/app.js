@@ -4,10 +4,16 @@ $(document).ready(function () {
 
         var fileInput = $('#escolherArquivo')[0].files[0];
         var tipoArquivo = $('#tipoArquivo').val();
+        var empresa = $('#empresa').val();
 
         // Validações
         if (!fileInput) {
             alert('Selecione o PDF da fatura.');
+            return;
+        }
+
+        if (!empresa) {
+            alert('Selecione a Empresa (Ipebral ou Mecontech).');
             return;
         }
 
@@ -19,6 +25,7 @@ $(document).ready(function () {
         var formData = new FormData();
         formData.append('pdfFile', fileInput);
         formData.append('tipoArquivo', tipoArquivo);
+        formData.append('empresa', empresa);
 
         $.ajax({
             url: 'insereUNIMED.php',

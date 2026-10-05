@@ -18,12 +18,21 @@
 
     <div class="container">
 
-        <h2 class="titulo">Importação de Fatura UNIMED</h2>
-        <h5>Selecione o PDF da fatura ("Dados da Fatura") para extrair e gravar os beneficiários no banco.</h5><br>
+        <h2 class="titulo">Importação de Relatórios UNIMED</h2>
+        <h5>Selecione o PDF do Relatório para extrair e gravar os beneficiários no Sankhya.</h5><br>
 
         <div class="upload-button">
             <input type="file" name="pdfFile" accept=".pdf" id="escolherArquivo" required>
         </div>
+
+        <div class="campo-tipo">
+            <label for="empresa">Empresa:</label>
+            <select id="empresa" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="IPEBRAL">Ipebral</option>
+                <option value="MECONTECH">Mecontech</option>
+            </select>
+        </div> <br>
 
         <div class="campo-tipo">
             <label for="tipoArquivo">Tipo de Arquivo:</label>
