@@ -107,12 +107,11 @@ $_SESSION['nuImportacao'] = $nuimportacao;
                     <th width="10%">Referência Forn.</th>
                     <th width="20%">Descrição Fornecedor</th>
                     <th width="10%">Quantidade</th>
-                    <th width="10%">Preço Orçamento</th>
-                    <th width="10%">Referência Interna</th>
                     <th width="20%">Descrição Interna</th>
                     <th width="10%">Unidade Forn.</th>
                     <th width="10%">Unidade Sankhya</th>
-
+                    <th width="12%">Operador (Quantidade)</th>
+                    <th width="8%">Fator</th>
                 </tr>
             </thead>
 
@@ -132,9 +131,7 @@ $_SESSION['nuImportacao'] = $nuimportacao;
                             UNIDADE_PARC,
                             UNIDADE_SANKHYA,
                             FATOR,
-                            PRECO_ORCAMENTO,
-                            PRECO_GRAVAR,
-                            TGFPRO.REFERENCIA,
+                            OPERADOR_QTD,
                             TGFPRO.DESCRPROD,
                             CORLINHA
                       FROM AD_IMPORTACAO_COTACAO_ITE LEFT JOIN
@@ -149,16 +146,27 @@ $_SESSION['nuImportacao'] = $nuimportacao;
 
             while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
 
+                //Operador da quantidade (M = multiplicar | D = dividir) e fator decimal
+                $operador = isset($row['OPERADOR_QTD']) ? $row['OPERADOR_QTD'] : 'M';
+                $selMultiplicar = ($operador != 'DIVIDE') ? 'selected' : '';
+                $selDividir = ($operador == 'DIVIDE') ? 'selected' : '';
+                $fator = ($row['FATOR'] !== null && $row['FATOR'] !== '') ? $row['FATOR'] : 1;
+
                 $listaConferencias .= "
                         <tr id='linhaSelecionada' data-id='$row[CODPROPARC]' style='background-color: $row[CORLINHA];'>
                             <td style='width: 10%;'>$row[CODPROPARC] </td>
                             <td style='width: 20%;'>$row[DESCRICAO_FORNECEDOR] </td>
                             <td style='width: 10%;'>$row[QUANTIDADE] </td>
-                            <td style='width: 10%;'>$row[PRECO_ORCAMENTO] </td>
-                            <td style='width: 10%;'>$row[REFERENCIA] </td>
                             <td style='width: 20%;'>$row[DESCRPROD] </td>
                             <td style='width: 10%;'><input class='unidade' style='width: 100%;' type='text' value='$row[UNIDADE_PARC]'> </td>
                             <td style='width: 10%;'><input class='unidade' style='width: 100%;' type='text' value='$row[UNIDADE_SANKHYA]'> </td>
+                            <td style='width: 12%;'>
+                                <select class='operador' style='width: 100%;'>
+                                    <option value='MULTIPLICA' $selMultiplicar>Multiplicar</option>
+                                    <option value='DIVIDE' $selDividir>Dividir</option>
+                                </select>
+                            </td>
+                            <td style='width: 8%;'><input class='fator' style='width: 100%;' type='number' step='any' min='0' value='$fator'> </td>
                         </tr>
                 ";
             }
@@ -190,7 +198,7 @@ $_SESSION['nuImportacao'] = $nuimportacao;
         &laquo; Página Anterior
     </button>
 
-    <button id="btnFinalizar" onclick="finalizarConferencia()">
+    <button id="btnFinalizar" onclick="finalizarCotacao()">
         Finalizar &check;
     </button>
 </div>

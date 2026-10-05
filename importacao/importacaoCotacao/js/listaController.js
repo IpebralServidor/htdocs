@@ -191,3 +191,28 @@ function atualizarContadorItens() {
 //         }
 //     }
 // });
+
+
+
+function finalizarCotacao() {
+    const botao = document.getElementById('btnFinalizar');
+    botao.disabled = true;
+    $('#loader').show();
+
+    fetch('finalizaCotacao.php', { method: 'POST' })
+        .then(response => response.text())
+        .then(mensagem => {
+            mensagem = mensagem.trim();
+            alert(mensagem);
+
+            if (mensagem === 'Finalizado com Sucesso!') {
+                // Só volta para a tela inicial quando a procedure confirmar o sucesso
+                window.location.href = 'listaImportacoes.php';
+            }
+        })
+        .catch(() => alert('Erro de comunicação com o servidor.'))
+        .finally(() => {
+            botao.disabled = false;
+            $('#loader').hide();
+        });
+}
