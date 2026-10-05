@@ -192,6 +192,107 @@ def _marcar_titulares(people):
             m['codigo_titular'] = titular['codigo']
 
 
+
+# ---------------------------------------------------------------------------
+# Tipo COPARTICIPACAO (layout diferente: "Relatorio de Utilizacao por Familia")
+# Aqui so interessa, por titular: codigo, nome, Total Familia e Total Base
+# IR/PIS/Cofins/CSLL. Os itens de utilizacao entre eles sao ignorados.
+# ---------------------------------------------------------------------------
+TITULAR_RE = re.compile(r'^Titular:\s*(\d{15,18})\s+(.+?)(?:\s+Matr[i\u00ed]cula:.*)?$')
+CONTRATO_RE = re.compile(r'Contrato:\s*(\d{6,7})')
+VALOR_RE = re.compile(r'([\d.]+,\d{2})\s*$')
+
+
+def parse_coparticipacao(path):
+    header = {}
+    titulares = []
+    atual = None
+    contrato = None
+
+    with pdfplumber.open(path) as pdf:
+        text1 = pdf.pages[0].extract_text()
+
+        m = re.search(r'NFS-e:\s*(\d+)', text1)
+        header['nota_fiscal'] = m.group(1) if m else None
+        m = re.search(r'Compet[\u00eae]ncia:\s*([\d/]+)', text1)
+        header['competencia'] = m.group(1) if m else None
+        # Este layout traz so MM/AAAA; a procedure converte para DATE, entao
+        # normaliza para o dia 01 (igual aos outros tipos: 01/MM/AAAA)
+        if header['competencia'] and re.match(r'^\d{2}/\d{4}$', header['competencia']):
+            header['competencia'] = '01/' + header['competencia']
+        m = re.search(r'Pagador:\s*(.+?)\s+CPF/CNPJ', text1)
+        header['cliente'] = m.group(1).strip() if m else None
+        m = re.search(r'CNPJ:\s*([\d./-]+)', text1)
+        header['cnpj'] = m.group(1) if m else None
+        m = re.search(r'Total Geral:\s*([\d.,]+)', text1)
+        header['total_relatorio'] = to_float(m.group(1)) if m else None
+        header['total_nota_fiscal'] = header['total_relatorio']
+        header['contratos'] = []
+
+        # Pagina 1 e so resumo por contrato; os titulares comecam na pagina 2.
+        # O Total Familia / Total Base de um titular pode cair na pagina seguinte,
+        # por isso 'atual' e mantido entre as paginas.
+        for page in pdf.pages[1:]:
+            words = page.extract_words(use_text_flow=False, keep_blank_chars=False, x_tolerance=1)
+            for row in group_rows(words):
+                row_text = ' '.join(w['text'] for w in row)
+
+                if row_text.startswith('Num. Aux:'):
+                    m = CONTRATO_RE.search(row_text)
+                    if m:
+                        contrato = m.group(1)
+                    continue
+
+                if row_text.startswith('Total Contrato:') or row_text.startswith('Legenda'):
+                    atual = None  # fim do contrato: nada mais a ler ate o proximo titular
+                    continue
+
+                m = TITULAR_RE.match(row_text)
+                if m:
+                    atual = {
+                        'codigo': m.group(1),
+                        'nome': m.group(2).strip(),
+                        'contrato_ref': contrato,
+                        'total_familia': None,
+                        'base_imposto': None,
+                    }
+                    titulares.append(atual)
+                    continue
+
+                if atual is None:
+                    continue
+
+                if row_text.startswith('Total Fam'):
+                    m = VALOR_RE.search(row_text)
+                    if m:
+                        atual['total_familia'] = to_float(m.group(1))
+                elif row_text.startswith('Total Base IR/PIS/Cofins/CSLL'):
+                    m = VALOR_RE.search(row_text)
+                    if m:
+                        atual['base_imposto'] = to_float(m.group(1))
+
+    # Mesmo formato dos beneficiarios dos outros tipos, para o PHP gravar igual
+    pessoas = []
+    for t in titulares:
+        pessoas.append({
+            'codigo': t['codigo'],
+            'nome': t['nome'],
+            'data_nasc': None,
+            'data_incl': None,
+            'faixa_etaria': None,
+            'contrato_ref': t['contrato_ref'],
+            'valor': None,
+            'desconto': None,
+            'credito': None,
+            'debito': None,
+            'total': t['total_familia'] if t['total_familia'] is not None else 0.0,
+            'base_imposto': t['base_imposto'] if t['base_imposto'] is not None else 0.0,
+            'eh_titular': True,
+            'codigo_titular': t['codigo'],
+        })
+    return header, pessoas
+
+
 if __name__ == '__main__':
     # Uso: python3 parse_unimed.py <caminho_do_pdf>
     # Sempre imprime APENAS um JSON em stdout (nada de texto solto),
@@ -202,9 +303,13 @@ if __name__ == '__main__':
         sys.exit(1)
 
     path = sys.argv[1]
+    tipo = sys.argv[2].upper() if len(sys.argv) > 2 else ''
 
     try:
-        header, people = parse_invoice(path)
+        if tipo == 'COPARTICIPACAO':
+            header, people = parse_coparticipacao(path)
+        else:
+            header, people = parse_invoice(path)
         soma = sum(p['total'] for p in people)
         total_relatorio = header.get('total_relatorio') or 0.0
 

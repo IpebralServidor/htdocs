@@ -41,6 +41,7 @@
                 <option value="UNIMAX">UNIMAX</option>
                 <option value="UNIPART">UNIPART</option>
                 <option value="ODONTO">Odonto</option>
+                <option value="COPARTICIPACAO">Coparticipação</option>
             </select>
         </div> <br>
 

@@ -18,7 +18,7 @@ $(document).ready(function () {
         }
 
         if (!tipoArquivo) {
-            alert('Selecione o Tipo de Arquivo (UNIMAX, UNIPART ou Odonto).');
+            alert('Selecione o Tipo de Arquivo (UNIMAX, UNIPART, Odonto ou Coparticipação).');
             return;
         }
 

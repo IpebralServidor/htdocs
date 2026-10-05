@@ -7,8 +7,11 @@ include "../../conexaophp.php";
 
 // Caminho do script Python responsavel por ler o PDF e devolver o JSON.
 // Ajuste se o python3 do servidor nao estiver no PATH (ex: '/usr/bin/python3').
-//$pythonBin    = 'C:\Users\leand\AppData\Local\Programs\Python\Python313\python.exe';//'python3';
+// LOCALHOST
+//$pythonBin = 'C:\Users\leand\AppData\Local\Programs\Python\Python313\python.exe';
+// PRODUCAO (descomentar ao subir e comentar a linha de cima)
 $pythonBin = 'C:\Program Files\Python314\python.exe';
+//$pythonBin = 'python3';
 $scriptPython = __DIR__ . '/scripts/parse_unimed.py';
 
 // Converte UTF-8 para Windows-1252 (padrão SQL Server VARCHAR)
@@ -62,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // ---- 1) Chama o Python para extrair os dados do PDF ----
         //$comando = escapeshellcmd($pythonBin) . ' ' . escapeshellarg($scriptPython) . ' ' . escapeshellarg($uploadFilePath);
-        $comando = escapeshellarg($pythonBin) . ' ' . escapeshellarg($scriptPython) . ' ' . escapeshellarg($uploadFilePath);
+        $comando = escapeshellarg($pythonBin) . ' ' . escapeshellarg($scriptPython) . ' ' . escapeshellarg($uploadFilePath) . ' ' . escapeshellarg((string) $tipoArquivo);
         $saidaPython = shell_exec($comando . ' 2>&1');
 
         $dadosExtraidos = json_decode($saidaPython, true);
@@ -101,7 +104,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              VALOR, DESCONTO, CREDITO, DEBITO, TOTAL, TITULAR, CODIGOTITULAR, TIPOARQUIVO, EMPRESA)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        // COPARTICIPACAO: layout proprio, grava so titular + Total Familia (TOTAL) + Total Base (BASEIMPOSTO)
+        $sqlBeneficiarioCopart = "INSERT INTO AD_UNIMED_BENEFICIARIO
+            (NOTAFISCAL, CODIGO, NOME, DATANASC, DATAINCL, FAIXAETARIA, CONTRATOREF,
+             VALOR, DESCONTO, CREDITO, DEBITO, TOTAL, TITULAR, CODIGOTITULAR, TIPOARQUIVO, EMPRESA, BASEIMPOSTO)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         foreach ($beneficiarios as $b) {
+
+            if ($tipoArquivo === 'COPARTICIPACAO') {
+                $paramsCopart = [
+                    $header['nota_fiscal'],
+                    $b['codigo'],
+                    converteSql($b['nome']),
+                    null,                       // DATANASC
+                    null,                       // DATAINCL
+                    null,                       // FAIXAETARIA
+                    $b['contrato_ref'],
+                    null,                       // VALOR
+                    null,                       // DESCONTO
+                    null,                       // CREDITO
+                    null,                       // DEBITO
+                    $b['total'],                // Total Familia
+                    1,                          // TITULAR
+                    $b['codigo_titular'],
+                    $tipoArquivo,
+                    $empresa,
+                    $b['base_imposto'],         // Total Base IR/PIS/Cofins/CSLL
+                ];
+
+                $stmtCopart = sqlsrv_query($conn, $sqlBeneficiarioCopart, $paramsCopart);
+
+                if ($stmtCopart === false) {
+                    die("ERRO: " . formatarErroSql(sqlsrv_errors()) . "\n\nTitular com erro: " . $b['nome'] . " (codigo " . $b['codigo'] . ")");
+                }
+                continue;
+            }
+
             $paramsBeneficiario = [
                 $header['nota_fiscal'],
                 $b['codigo'],
