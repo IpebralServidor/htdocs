@@ -318,8 +318,16 @@ $qtdVolume = $rowStatusVolume[1];
 		<a href="./listaconferencia.php">
 			<aabr title="Voltar"><img style="width: 35px; float: left; padding-right: 20px" src="../images/Seta%20Voltar.png" /></aabr>
 		</a>
-		Cód. Barras: <input type="text" name="CODBAR" size="13" class="text" id='codigodebarra' required>
-		<input type="hidden" id="referencia">
+		Cód. Barras:<input 
+    type="text" 
+    name="CODBAR" 
+    size="13" 
+    class="text" 
+    id="codigodebarra" 
+    required
+    oninput="iniciarMedicaoReferencia();"
+    onchange="finalizarMedicaoReferencia();"
+>	<input type="hidden" id="referencia">
 		Quantidade: <input type="text" name="QUANTIDADE" id="quantidade" class="text" size="1" style="text-align: left;">
 		Lote: <input type="text" name="CONTROLE" size="6" id="controle" class="text">
 		Volume: <input type="text" name="VOLUMEITEM" size="1" id="volumeItem" class="text">
@@ -765,6 +773,30 @@ $qtdVolume = $rowStatusVolume[1];
 			</div>
 		</div> <!-- Itens Conferência -->
 
+		
+		<!-- POPUP CONFIRMAR REFERENCIA -->
+		
+        <!-- <div class="popup" id="popupConfirmarReferencia" style="display: none; ">
+            <div class="overlay"></div>
+            <div class="content">
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="togglePopupConfirmarReferencia(); limpaCampo('referencia');">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <div class="div-form">
+                        <div class="form">
+                            <label>Digite a referência novamente:</label>
+                            <input type="text" class="form-control" id="confirmacaoReferencia" style="color: #86B7FE !important;" required>
+                            <button onclick="confirmaReferencia()">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div> -->
+
+
 		<!-- Itens Conferidos-->
 
 		<div style="width: 48%; height:48%; /*background-color: yellow;*/ display: inline-block; float: right; margin-left: 0;;  margin-top: 50px;">
@@ -991,6 +1023,28 @@ $qtdVolume = $rowStatusVolume[1];
 
 			</div>
 		</div>
+
+
+		<!-- POPUP CONFIRMAR REFERENCIA -->
+		
+        <div class="popup" id="popupConfirmarReferencia" >
+            <div class="overlay"></div>
+            <div class="content"> 
+                <div style="width: 100%;">
+                    <div class="close-btn" onclick="togglePopupConfirmarReferencia(); limpaCampo('referencia');">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+					<div class="form">
+						<label>Digite a referência novamente:</label>
+						<input type="text" class="form-control" id="confirmacaoReferencia" style="color: #86B7FE !important;" required>
+						<button onclick="confirmaReferencia()">Confirmar</button>
+					</div>
+
+                </div>
+
+            </div>
+        </div> 
 	</div> <!--container-->
 
 	<script>

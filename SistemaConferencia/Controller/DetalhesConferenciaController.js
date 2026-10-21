@@ -7,6 +7,7 @@ let ultimoClique = 0;
 function hideURLbar() {
     window.scrollTo(0, 1);
 } 
+const tempoMaximoDigitacao = 250;
 
 $(document).ready(function() {
 
@@ -22,6 +23,73 @@ $(document).ready(function() {
     }, 1000);
     
 });
+
+
+
+const limpaCampo = (campo) => {
+    document.getElementById(campo).value = '';
+}
+
+const iniciarMedicaoReferencia = () => {
+    tempoInicialReferencia = Date.now();
+
+}
+
+
+const finalizarMedicaoReferencia = () => {
+    let tempoFinalReferencia = Date.now();
+    if(tempoFinalReferencia - tempoInicialReferencia > tempoMaximoDigitacao) {
+        inputInicialReferencia = document.getElementById('codigodebarra').value;
+        togglePopupConfirmarReferencia();
+        limpaCampo('referencia');
+    } else {
+        referenciaBipado = 'S';
+        buscaInformacoesProduto();
+    }
+}
+const togglePopupConfirmarReferencia = () => {
+    // const popup = document.getElementById('popupConfirmarReferencia');
+    // popup.style.display = (popup.style.display === 'none') ? 'flex' : 'none';
+
+    document.getElementById('popupConfirmarReferencia').classList.toggle("active");
+    document.getElementById('userCorte').value = '';
+    document.getElementById('senhaCorte').value = '';
+
+    document.getElementById('confirmacaoReferencia').value = '';
+    document.getElementById('confirmacaoReferencia').focus();
+}
+
+let confirmacoesReferencia = 0;
+
+const confirmaReferencia = () => {
+    let inputNovoReferencia = document.getElementById('confirmacaoReferencia').value;
+    
+    if(inputNovoReferencia == '') {
+        alert('Digite um valor.');
+        return;
+    }
+
+    if(inputNovoReferencia != inputInicialReferencia) {
+        alert('Valores digitados não batem. Verifique a digitação');
+        confirmacoesReferencia = 0; // zera se errar
+        return;
+    }
+
+    confirmacoesReferencia++;
+
+    if(confirmacoesReferencia < 2) {
+        alert('Confirme novamente para validar.');
+        document.getElementById('confirmacaoReferencia').value = '';
+        document.getElementById('confirmacaoReferencia').focus();
+    } else {
+        // passou nas duas confirmações, faz o resto
+        confirmacoesReferencia = 0; // reseta pra próxima vez
+        togglePopupConfirmarReferencia();
+        document.getElementById('referencia').value = inputNovoReferencia;
+        referenciaBipado = 'N';
+        buscaInformacoesProduto();
+    }
+}
 
 function atualizarContador(tempoAtualSegundos) {
     var horas = Math.floor(tempoAtualSegundos / 3600);
