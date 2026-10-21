@@ -64,7 +64,7 @@ $_SESSION['codCotacao'] = null;
                             DTCRIACAO,
                             ISNULL((SELECT RAZAOSOCIAL FROM TGFPAR WHERE TGFPAR.CODPARC = AD_IMPORTACAO_COTACAO_CAB.CODPARC),'') AS RAZAOSOCIAL,
                             CASE WHEN STATUSIMPORTACAO = 'A' THEN 'Em Andamento'
-                                 WHEN STATUSIMPORTACAO = 'C' THEN 'Concluído'
+                                 WHEN STATUSIMPORTACAO = 'F' THEN 'Finalizado'
                             END AS STATUSIMPORTACAO,
                             CORLINHA
                      FROM AD_IMPORTACAO_COTACAO_CAB
