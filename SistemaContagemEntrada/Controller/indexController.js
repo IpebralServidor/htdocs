@@ -312,14 +312,21 @@ const pegaProximaNota = () => {
                 let endereco = response.success.endereco;
 
 
-                if(status === 'D') {
-                    confirmMsg = `Deseja abrir contagem o N° ${nunota}? ref: ${referencia} local: ${endereco}  `;
-                } 
-                const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
-                if(confirmacao) {
-                    window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;
-                }        
-            
+                // if(status === 'D') {
+                //     confirmMsg = `Deseja abrir contagem o N° ${nunota}? ref: ${referencia} local: ${endereco}  `;
+                // } 
+                // const confirmacao = (status === 'D' || status.includes('C')) ? confirm(confirmMsg) : true;
+                // if(confirmacao) {
+                //     window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;
+                // }        
+             if (status === 'D' || status.includes('C')) {
+                    const msg = status === 'D'
+                        ? `Abrindo contagem N° ${nunota}\nRef: ${referencia}\nLocal: ${endereco}`
+                        : `Contagem N° ${nunota}\nRef: ${referencia}\nLocal: ${endereco}`;
+                    alert(msg);
+                }
+
+                window.location.href = `./Contagem.php?nunota=${nunota}&tipo=${tipo}`;  
             } else {
                 alert('Erro: ' + response.error);
             }                            

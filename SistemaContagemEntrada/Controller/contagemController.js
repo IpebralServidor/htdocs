@@ -192,6 +192,7 @@ const buscaInformacoesProduto = () => {
                 document.getElementById('CD3').innerHTML  = response.success.CD3;
                 document.getElementById('codvol').innerHTML  = response.success.CODVOL;
                 document.getElementById('OBS').innerHTML  = response.success.OBSERVACAO;
+                document.getElementById('OBS').innerHTML  = response.success.CODEMP;
 
 
                 //document.getElementById('total').textContent = response.success.qtdseparar;
@@ -210,7 +211,7 @@ const buscaInformacoesProduto = () => {
     ')</span>';
             }
 
-            if(response.success.QTDCD3 != 0) {
+            if(response.success.QTDCD3 != 0 && response.success.CODEMP != 1) {
 
                 document.getElementById('CD3msg').innerHTML =
     '<span style="color:red; font-weight:bold; font-size:18px;">*ITEM COM ESTOQUE NO CD3 , NÃO SEPARAR (' +
@@ -220,7 +221,7 @@ const buscaInformacoesProduto = () => {
         },
         error: function(xhr, status, error) {
             alert('Erro na requisição AJAX: ' + error);
-            console.log(xhr);
+            console.log(xhr);s
             console.log(status);
         }
     });   
