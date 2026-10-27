@@ -9,6 +9,7 @@ $(document).ready(function() {
     buscaLiberaPaletes(nunota,tipo);
     buscaPaletesPendentes(nunota,tipo);
     verificaTipo(tipo);
+    verificaPermissaoPrioridade();
 
 
 });
@@ -601,6 +602,76 @@ const getReferenciaOp = (row) => {
 
     }
     
+const verificaPermissaoPrioridade = () => {
+    if (tipo != 'N') {
+        return;
+    }
+
+    $.ajax({
+        method: 'GET',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        data: {
+            route: 'verificaPermissaoPrioridade'
+        },
+        success: function(response) {
+            if(response.success && response.success.msg.includes('true')) {
+                document.getElementById('btnPriorizar').style.display = 'inline-block';
+                document.getElementById('btnRemoverPrioridade').style.display = 'inline-block';
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
+}
+
+const alteraPrioridadeNota = (acao) => {
+
+    const resultadoTexto = getNrosUnicosSelecionados();
+
+    if (!resultadoTexto) {
+        alert('App: selecione ao menos uma nota!');
+        return;
+    }
+
+    $.ajax({
+        method: 'POST',
+        url: '../routes/routes.php',
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
+        complete: function() {
+            $("#loader").hide();
+        },
+        data: {
+            tipo: tipo,
+            route: 'alteraPrioridadeNota',
+            notas: resultadoTexto,
+            acao: acao
+        },
+        success: function(response) {
+            if(response.success) {
+                alert(response.success.msg);
+                document.getElementById('selectAll').checked = false;
+                buscaNotasContagem();
+                buscaAtribuirNotas();
+            } else {
+                alert('Erro: ' + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Erro na requisição AJAX: ' + error);
+            console.log(xhr);
+            console.log(status);
+        }
+    });
+
+}
+
 //  selecionar todos os checkboxes
     function selecionarTodos(master) {
         const checkboxes = document.querySelectorAll('.linha-checkbox');

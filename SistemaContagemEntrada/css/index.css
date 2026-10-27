@@ -235,6 +235,11 @@ body{
     
 }
 
+#btnPriorizar,
+#btnRemoverPrioridade{
+    display: none;
+}
+
 #popup-overlay{
 
  
