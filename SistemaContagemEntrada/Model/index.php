@@ -14,11 +14,11 @@ function buscaNotasContagem($conn, $tipo, $codusu)
         END ELSE
         IF @TIPO = 'O' AND isnull(@CODUSU,0) NOT IN  (0,3813,89,3308,4046,3,1696, 32, 3195, 692, 42, 4418, 181, 694, 7257, 100,30,3564,135, 691,135)
         BEGIN
-         SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_CONTAGEM_ENTRADA_MERCADORIAS] (@TIPO) WHERE STATUS = 'A' ORDER BY case when EST1 = 0 then EST1 else nunota end
+         SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_CONTAGEM_ENTRADA_MERCADORIAS] (@TIPO) WHERE STATUS = 'A' ORDER BY ORDEM
         END else 
         IF @TIPO = 'O' AND isnull(@CODUSU,0)  IN  (0,3813,89,3308,4046,3,1696, 32, 3195, 692, 42, 4418, 181, 694, 7257, 100,30,3564,135, 691,135,3266)
         BEGIN
-         SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_CONTAGEM_ENTRADA_MERCADORIAS] (@TIPO) WHERE (STATUS = 'A' OR STATUS = 'D') ORDER BY case when EST1 = 0 then EST1 else nunota end
+         SELECT * FROM [sankhya].[AD_FNT_LISTA_ITENS_CONTAGEM_ENTRADA_MERCADORIAS] (@TIPO) WHERE (STATUS = 'A' OR STATUS = 'D') ORDER BY ORDEM
         END
         
         
@@ -133,11 +133,16 @@ function buscaNotasContagem($conn, $tipo, $codusu)
 
 
 
-function buscaAtribuirNotas($conn, $tipo)
+function buscaAtribuirNotas($conn, $tipo, $codusu)
 {
     try {
+        $podeVerPrioridade = usuarioPodePriorizar($codusu);
         $params = array($tipo);
-        $tsql = "SELECT * FROM [sankhya].[AD_FNT_LISTA_GERENCIA_CONTAGEM] (?) ORDER BY ORDEM, NUNOTA";
+        $tsql = "SELECT G.*, CAB.REBOQUE3
+                 FROM [sankhya].[AD_FNT_LISTA_GERENCIA_CONTAGEM] (?) G LEFT JOIN
+                      TGFCAB CAB ON CAB.NUNOTA = G.NUNOTA
+                                AND G.TIPO = 'N'
+                 ORDER BY G.ORDEM, G.NUNOTA";
         $stmt = sqlsrv_query($conn, $tsql, $params);
         if ($stmt === false) {
             throw new Exception('Erro ao executar a consulta SQL.');
@@ -215,9 +220,16 @@ function buscaAtribuirNotas($conn, $tipo)
             } else if ($row['TIPO'] === 'O') {
                 $tipoText = 'OP';
             }
+            $linhaPrioritaria = $podeVerPrioridade && $row['TIPO'] === 'N' && (int)$row['REBOQUE3'] === 1;
+            $estiloLinha = $linhaPrioritaria ? " style='background-color: #ffcccc'" : '';
+            $colunaReferenciaParceiro = $row['TIPO'] === 'N'
+                ? htmlspecialchars((string)$row['RAZAOSOCIAL'], ENT_QUOTES, 'ISO-8859-1')
+                : $row['REFERENCIA'];
+
+            $tableHtml .= '<tr' . $estiloLinha . '>';
             $tableHtml .= '<td><input type="checkbox" id="check" class="linha-checkbox"></td>';
             $tableHtml .= '<td  class="nro-unico">' . $row['NUNOTA'] . '</td>';
-            $tableHtml .= '<td>' . $row['REFERENCIA'] . '</td>';
+            $tableHtml .= '<td>' . $colunaReferenciaParceiro . '</td>';
             $tableHtml .= '<td>' . $row['QTDOP'] . '</td>';
             $tableHtml .= '<td>' . $row['DTNEG'] . '</td>';
             $tableHtml .= '<td>' . $row['CODEMP'] . '</td>';
@@ -523,7 +535,7 @@ function verificaGerente($conn, $codusu)
 
 function usuarioPodePriorizar($codusu)
 {
-    $usuariosPrioridade = array(692);
+    $usuariosPrioridade = array(692, 89, 3, 1696, 3195, 3266, 42, 4418, 181, 694, 7257, 100);
 
     return in_array((int)$codusu, $usuariosPrioridade, true);
 }

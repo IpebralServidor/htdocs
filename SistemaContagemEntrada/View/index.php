@@ -8,13 +8,13 @@
     <meta http-equiv="Pragma" content="no-cache">
     <title>Contagem de Entrada</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="../css/index.css?v=<?php time() ?>">
+    <link rel="stylesheet" type="text/css" href="../css/index.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="">
     <link rel="stylesheet" href="../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script src="../../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../Controller/IndexController.js?v=<?php time() ?>"></script>
+    <script src="../Controller/IndexController.js?v=<?php echo time(); ?>"></script>
 </head>
 
 <body>
@@ -91,7 +91,7 @@
                             <tr>
                                 <th><input type="checkbox" id="selectAll" onclick="selecionarTodos(this)"></th>
                                 <th width="20%">Nro. Único</th>
-                                <th width="20%">Referência</th>
+                                <th width="20%" id="thReferenciaParceiro">Referência</th>
                                 <th width="20%">Qtd.Op</th>
                                 <th width="20%">Dt.Neg.</th>
                                 <th width="20%">Empresa</th>

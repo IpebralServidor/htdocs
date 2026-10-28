@@ -4,6 +4,7 @@ require_once "../../conexaophp.php";
 require_once '../../App/auth.php';
 require_once '../Model/index.php';
 require_once '../Model/Contagem.php';
+require_once '../Model/Impressao.php';
 
 $codusu = $_SESSION["idUsuario"];
 
@@ -42,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             case 'buscaAtribuirNotas':
                 if (isset($_GET['tipo'])) {
                     $tipo = $_GET['tipo'];
-                    buscaAtribuirNotas($conn, $tipo);
+                    buscaAtribuirNotas($conn, $tipo, $codusu);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }
@@ -185,6 +186,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $tipo = $_GET['tipo'];
 
                     pegaProximaNota($conn, $tipo, $codusu);
+                } else {
+                    echo json_encode(['error' => 'Parâmetros não enviados']);
+                }
+                break;
+            case 'buscaListaImpressao':
+                if (isset($_GET['tipo'])) {
+                    $tipo = $_GET['tipo'];
+                    buscaListaImpressao($conn, $tipo);
                 } else {
                     echo json_encode(['error' => 'Parâmetros não enviados']);
                 }

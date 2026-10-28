@@ -423,8 +423,9 @@ const getReferenciaOp = (row) => {
 
     function verificaTipo(){
         if (tipo == 'N') {
-            
+
             document.getElementById("botaoExpandir").style.display = "none";
+            document.getElementById("thReferenciaParceiro").textContent = "Parceiro";
         } else if (tipo == 'O'){
             document.getElementById("botaoExpandir").style.display = "flex";
 
